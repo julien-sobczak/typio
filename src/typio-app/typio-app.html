@@ -1,0 +1,41 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="/src/typio-app/typio-code-editor.html">
+
+<dom-module id="typio-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+    <typio-code-editor language="python">
+      <pre name="code">print
+print("Hello World!")
+if True:</pre>
+    </typio-code-editor>
+    <!--
+    <typio-code-editor></typio-code-editor>
+    -->
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioApp extends Polymer.Element {
+      static get is() { return 'typio-app'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'typio-app'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(TypioApp.is, TypioApp);
+  </script>
+</dom-module>

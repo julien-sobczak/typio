@@ -1,0 +1,7 @@
+{
+  "name": "typio",
+  "short_name": "typio",
+  "description": "Practice deliberatly touch typing",
+  "start_url": "/",
+  "display": "standalone"
+}

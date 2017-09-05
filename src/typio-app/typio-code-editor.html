@@ -35,11 +35,6 @@
         outline: 1px solid #40be27;
         color: #fff !important;
       }
-      #editor2.error span.char-active {
-        background-color: #e63d3d;
-        outline: 1px solid #e63d3d;
-        color: #fff !important;
-      }
       span.char-invalid {
         background-color: #e63d3d;
         outline: 1px solid #e63d3d;
@@ -92,6 +87,84 @@
      */
     const GRAMMARS = {};
 
+
+    class Stats {
+
+      constructor() {
+        this._totalCharacters = 0;
+        this._enteredCharacters = 0;
+        this._startTimestamp = null;
+        this._endTimestamp = null;
+        this._wpm = 0;
+      }
+
+      set totalCharacters(value) {
+        this._totalCharacters = value;
+      }
+
+      get enteredCharacters() {
+        return this._enteredCharacters;
+      }
+
+      get totalCharacters() {
+        return this._totalCharacters;
+      }
+
+      startTimer() {
+        this._startTimestamp = new Date();
+      }
+
+      newCharacter(character) {
+        let timestamp = new Date();
+        this._enteredCharacters++;
+      }
+
+      stopTimer() {
+        this._endTimestamp = new Date();
+      }
+
+      resumeTimer() {
+        if (!this._startTimestamp) {
+          this.startTimer();
+        }
+      }
+
+      currentWpm() {
+        return 0;
+      }
+
+      /* Summary statistics */
+
+      // Example of summary statistics:
+      // - Typeable characters 690
+      // - Typed characters 860
+      // - Unproductive keystroke overhead 25%
+      // - elasped time 4:06
+      // - wpm 34  (Typeable characters / elasped time in minutes / 5)
+
+      typeableCharacters() {
+        return this._totalCharacters;
+      }
+
+      typedCharacters() {
+        return this._enteredCharacters;
+      }
+
+      unproductiveKeystrokeOverhead() {
+        return Math.round(this.typedCharacters() * 100 / this.typeableCharacters() - 100, "%");
+      }
+
+      elapsedTimeInS() {
+        return Math.round((this._endTimestamp - this._startTimestamp) / 1000);
+      }
+
+      wpm() {
+        // see https://en.wikipedia.org/wiki/Words_per_minute for official definition
+        return Math.round(this.typeableCharacters() / this.elapsedTimeInS() * 60.0 / 5);
+      }
+
+    }
+
     class TypioCodeEditor extends Polymer.Element {
 
       static get is() { return 'typio-code-editor'; }
@@ -132,6 +205,17 @@
             value: false
           },
 
+          paused: {
+            type: Boolean,
+            value: true
+          },
+
+          // Collect statistics during edition
+          _stats: {
+            type: Object,
+            value: new Stats()
+          },
+
           // The list of <span class="editable"> elements representing the characters to enter
           _characters: {
             type: Array,
@@ -148,17 +232,21 @@
 
       ready() {
         super.ready();
+
+        // Watch for content update
         new Polymer.FlattenedNodesObserver(this, this._contentChanged);
         this.start();
       }
 
       start() {
+        // We listen keyup for nonprintable characters
         document.addEventListener('keyup', (event) => {
           if (event.key === 'Backspace') {
             this.backward();
           }
         });
 
+        // ... and keypress for printable ones (keypress support dead keys)
         document.addEventListener('keypress', (event) => {
           const keyName = event.key;
           const keyCode = event.code;
@@ -208,9 +296,8 @@
 
         let annotatedContent = '';
 
-
+        // Step 1: search tokens from the language grammar
         let grammar = GRAMMARS[this.language.toLowerCase()];
-
         for (let token in grammar) {
           if (!grammar.hasOwnProperty(token) || !grammar[token]) {
             continue;
@@ -241,13 +328,12 @@
                 this._tokens[i] = token;
               }
             }
-
             //console.log(token, match, start, len);
           }
-
         }
 
-
+        // Step 2: Rebuild the content adding a <span> around each character
+        // CSS classes are added to mark annotate the characters (space, variable, ...)
         let fragment = document.createDocumentFragment();
         let eol = false;
         this._length = newSourceCode.length;
@@ -261,6 +347,7 @@
           let classes = [];
 
           let span = document.createElement('span');
+          span.classList.add('character');
           span.classList.add('editable');
           span.classList.add('disabled');
 
@@ -269,23 +356,25 @@
             charName = 'Enter';
             charPrint = ' <strong>&#9166;</strong> \n';
             span.classList.add('print-on-focus');
+            span.classList.add('backslash');
             eol = true;
-          }
-
-          let iSpace = spaces.indexOf(charTxt);
-          if (iSpace !== -1) {
-            charPrintableTxt = spacesText[iSpace];
-            span.classList.add('space');
-            if (eol) {
-              span.classList.add('indent');
-            }
           } else {
-            span.classList.add('letter');
-            eol = false;
-          }
-          if (this._tokens[i]) {
-            span.classList.add('token');
-            span.classList.add(this._tokens[i]);
+
+            let iSpace = spaces.indexOf(charTxt);
+            if (iSpace !== -1) {
+              charPrintableTxt = spacesText[iSpace];
+              span.classList.add('space');
+              if (eol) {
+                span.classList.add('indent');
+              }
+            } else {
+              span.classList.add('letter');
+              eol = false;
+            }
+            if (this._tokens[i]) {
+              span.classList.add('token');
+              span.classList.add(this._tokens[i]);
+            }
           }
 
           span.dataset.text = charName;
@@ -295,14 +384,35 @@
         this.$.editor2.appendChild(fragment);
 
         this._characters = this.$.editor2.querySelectorAll('.editable');
+        this._stats.totalCharacters = this.enterableCharacters();
         this.advanceNextInput();
+      }
 
+      enterableCharacters() {
+        return this.$.editor2.querySelectorAll('.character').length -
+               (this.ignoreComments ? this.$.editor2.querySelectorAll('.comment').length : 0) -
+               (this.ignoreIndents ? this.$.editor2.querySelectorAll('.indent').length : 0) - 1;
+      }
+
+      resume() {
+        this.paused = false;
+        this._stats.resumeTimer();
       }
 
       checkInput(event, keyName) {
+        if (this.paused) {
+          this.resume();
+        }
+
+        this._stats.newCharacter();
+
         if (this._characters[this._i].dataset.text == keyName) {
           this._characters[this._i].classList.remove('disabled');
-          this._characters[this._i].classList.remove('char-invalid');
+          if (this.continueOnErrors) {
+            this._characters[this._i].classList.remove('char-invalid');
+          } else if (this._error && !this.continueOnErrors) {
+            this._characters[this._i].classList.add('char-invalid');
+          }
           this.advanceNextInput();
         } else {
           this._characters[this._i].classList.add('char-invalid');
@@ -334,13 +444,24 @@
           this._cursor().classList.remove('char-active');
         }
         this._i++;
-        while (this._isIgnorable()) { this._i++ }
+        while (!this._isEndOfFile() && this._isIgnorable()) { this._i++ }
         if (this._isEndOfFile()) {
-          this.dispatchEvent(new CustomEvent('endOfInput', {detail: {length: this._length}}));
+          this.end();
           return;
         }
         this._highlight();
       }
+
+      end() {
+        this.dispatchEvent(new CustomEvent('endOfInput', {detail: {length: this._length}}));
+        this._stats.stopTimer();
+        console.log("Typeable characters", this._stats.typeableCharacters());
+        console.log("Typed characters", this._stats.typedCharacters());
+        console.log("Unproductive keystroke overhead", this._stats.unproductiveKeystrokeOverhead());
+        console.log("Elasped time", this._stats.elapsedTimeInS());
+        console.log("WPM", this._stats.wpm());
+      }
+
 
       // Utility methods to manipulate current character
 

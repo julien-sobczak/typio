@@ -216,7 +216,7 @@
             value: new Stats()
           },
 
-          // The list of <span class="editable"> elements representing the characters to enter
+          // The list of <span class="character"> elements representing the characters to enter
           _characters: {
             type: Array,
             value: []
@@ -228,6 +228,13 @@
               value: -1
           }
         };
+      }
+
+      static get observers() {
+        return [
+          // Observer method name, followed by a list of dependencies, in parenthesis
+          '_refreshIgnorable(continueOnErrors, ignoreIndents)'
+        ]
       }
 
       ready() {
@@ -285,18 +292,87 @@
       }
 
       _parse() {
+        if (!this._sourceTag) return;
+        console.log('reparse');
         let newSourceCode = this._sourceTag.innerHTML;
 
         this._raw = newSourceCode;
         this._sourceCode = newSourceCode;
-        this._tokens = new Array(this._raw.length);
+        this._determineTokens();
 
         let spaces = ' \t\n\r\v';
-        let spacesText = [' ', '\\t', '\\n', '\\r', '\\v'];
 
         let annotatedContent = '';
 
-        // Step 1: search tokens from the language grammar
+        // Step 2: Rebuild the content adding a <span> around each character
+        // CSS classes are added to mark annotate the characters (space, variable, ...)
+        let fragment = document.createDocumentFragment();
+        let eol = false;
+        this._length = newSourceCode.length;
+        let onlyIgnorableCharacters = true; // Does the current line contains only ignorable characters?
+        for (let i = 0; i < this._length; i++) {
+          let charTxt = newSourceCode[i]; // The original character
+          let charName = charTxt; // The name as returned by the keypress/keyup event (see key property)
+          let charPrint = charTxt; // The character print on screen
+
+          let charCode = newSourceCode.charCodeAt(i);
+          let classes = [];
+
+          let span = document.createElement('span');
+          span.classList.add('character');
+          span.classList.add('disabled');
+
+          if (charTxt == '\n') {
+            // Put Unicode return symbol as content &#9166; (should be displayed only when actived)
+            charName = 'Enter';
+            charPrint = ' <strong>&#9166;</strong> \n';
+            span.classList.add('print-on-focus');
+            span.classList.add('backslash');
+            if (onlyIgnorableCharacters) {
+              span.classList.add('ignorable');
+            }
+            eol = true;
+            onlyIgnorableCharacters = true;
+          } else {
+
+            let iSpace = spaces.indexOf(charTxt);
+            if (iSpace !== -1) {
+              span.classList.add('space');
+              if (eol) {
+                span.classList.add('indent');
+              }
+            } else {
+              span.classList.add('letter');
+              eol = false;
+            }
+            if (this._tokens[i]) {
+              let token = this._tokens[i];
+              span.classList.add('token');
+              span.classList.add(token);
+              if (!this.ignoreComments || token != "comment") {
+                onlyIgnorableCharacters = false;
+              }
+            }
+          }
+
+          span.dataset.text = charName;
+          span.innerHTML = charPrint;
+          fragment.appendChild(span);
+        }
+        this.$.editor2.appendChild(fragment);
+
+        this._characters = this.$.editor2.querySelectorAll('.character');
+        this._stats.totalCharacters = this.enterableCharacters();
+        this.advance();
+      }
+
+      _refreshIgnorable() {
+        // TODO When the user toggle switches, we should update the 'ignorable' CSS class
+      }
+
+      _determineTokens() {
+        this._tokens = new Array(this._raw.length);
+
         let grammar = GRAMMARS[this.language.toLowerCase()];
         for (let token in grammar) {
           if (!grammar.hasOwnProperty(token) || !grammar[token]) {
@@ -328,65 +404,10 @@
                 this._tokens[i] = token;
               }
             }
-            //console.log(token, match, start, len);
           }
         }
-
-        // Step 2: Rebuild the content adding a <span> around each character
-        // CSS classes are added to mark annotate the characters (space, variable, ...)
-        let fragment = document.createDocumentFragment();
-        let eol = false;
-        this._length = newSourceCode.length;
-        for (let i = 0; i < this._length; i++) {
-          let charTxt = newSourceCode[i]; // The original character
-          let charName = charTxt; // The name as returned by the keypress/keyup event (see key property)
-          let charPrint = charTxt; // The character print on screen
-
-          let charPrintableTxt = newSourceCode[i];
-          let charCode = newSourceCode.charCodeAt(i);
-          let classes = [];
-
-          let span = document.createElement('span');
-          span.classList.add('character');
-          span.classList.add('editable');
-          span.classList.add('disabled');
-
-          if (charTxt == '\n') {
-            // Put Unicode return symbol as content &#9166; (should be displayed only when actived)
-            charName = 'Enter';
-            charPrint = ' <strong>&#9166;</strong> \n';
-            span.classList.add('print-on-focus');
-            span.classList.add('backslash');
-            eol = true;
-          } else {
-
-            let iSpace = spaces.indexOf(charTxt);
-            if (iSpace !== -1) {
-              charPrintableTxt = spacesText[iSpace];
-              span.classList.add('space');
-              if (eol) {
-                span.classList.add('indent');
-              }
-            } else {
-              span.classList.add('letter');
-              eol = false;
-            }
-            if (this._tokens[i]) {
-              span.classList.add('token');
-              span.classList.add(this._tokens[i]);
-            }
-          }
-
-          span.dataset.text = charName;
-          span.innerHTML = charPrint;
-          fragment.appendChild(span);
-        }
-        this.$.editor2.appendChild(fragment);
-
-        this._characters = this.$.editor2.querySelectorAll('.editable');
-        this._stats.totalCharacters = this.enterableCharacters();
-        this.advanceNextInput();
       }
+
 
       enterableCharacters() {
         return this.$.editor2.querySelectorAll('.character').length -
@@ -404,26 +425,29 @@
           this.resume();
         }
 
+        let character = this._cursor();
         this._stats.newCharacter();
 
-        if (this._characters[this._i].dataset.text == keyName) {
-          this._characters[this._i].classList.remove('disabled');
+        if (character.dataset.text == keyName) {
+          character.classList.remove('disabled');
           if (this.continueOnErrors) {
-            this._characters[this._i].classList.remove('char-invalid');
+            character.classList.remove('char-invalid');
           } else if (this._error && !this.continueOnErrors) {
-            this._characters[this._i].classList.add('char-invalid');
+            character.classList.add('char-invalid');
           }
-          this.advanceNextInput();
+          this.advance();
         } else {
-          this._characters[this._i].classList.add('char-invalid');
+          character.classList.add('char-invalid');
           this._error = true;
           this._iError = this._i;
           this.$.editor2.classList.add('error');
-          this.advanceNextInput();
+          this.advance();
         }
       }
 
       backward() {
+        if (this._i == 0) return; // Do nothing if at start
+
         do {
           this._unhighlight();
           this._i--;
@@ -439,17 +463,24 @@
         }
       }
 
-      advanceNextInput() {
+      advance() {
         if (this._i >=0) {
           this._cursor().classList.remove('char-active');
         }
-        this._i++;
-        while (!this._isEndOfFile() && this._isIgnorable()) { this._i++ }
         if (this._isEndOfFile()) {
-          this.end();
+          // Do not trigger end if there is error, except if allowed
+          if (this._allowToEnd()) {
+            this.end();
+          }
           return;
         }
+        this._i++;
+        while (!this._isEndOfFile() && this._isIgnorable()) { this._i++ }
         this._highlight();
+      }
+
+      _allowToEnd() {
+        return this._error == false || this.continueOnErrors;
       }
 
       end() {
@@ -475,6 +506,9 @@
           return true;
         }
         if (this.ignoreIndents && character.classList.contains('indent')) {
+          return true;
+        }
+        if (character.classList.contains('ignorable')) { // special marker
           return true;
         }
         return false;

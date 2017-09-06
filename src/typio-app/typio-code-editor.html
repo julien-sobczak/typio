@@ -53,6 +53,18 @@
         padding: 1cm;
       }
 
+
+      #stats {
+        position: fixed;
+        top: 0;
+        right: 0;
+        padding: 1in;
+        transition: width 0.5s, height 0.5s;
+      }
+      #stats .wpm {
+        font-weight: bold;
+        font-size: 2em;
+      }
     </style>
 
 
@@ -61,6 +73,23 @@
       <paper-toggle-button checked="{{ignoreIndents}}">Ignore indents?</paper-toggle-button>
       <paper-toggle-button checked="{{continueOnErrors}}">Continue on errors?</paper-toggle-button>
     <div>
+    <div id="stats">
+      <template is="dom-if" if="{{!ended}}">
+        <span class="wpm">[[_wpm]] WPM</span>
+      </template>
+      <template is="dom-if" if="{{ended}}">
+        <table>
+          <tbody>
+            <tr><th>Typeable characters</th><td>[[_stats.typeableCharacters]]</td></tr>
+            <tr><th>Typed characters</th><td>[[_stats.typedCharacters]]</td></tr>
+            <tr><th>Unproductive keystroke overhead</th><td>[[_stats.unproductiveKeystrokeOverhead]]%</td></tr>
+            <tr><th>Elasped time</th><td>[[_stats.elapsedTimeInS]]s</td></tr>
+            <tr><th>WPM</th><td>[[_stats.wpm]]</td></tr>
+          </tbody>
+        </table>
+      </template>
+    </div>
+
     <div id="content">
       <pre id="editor2"></pre>
     </div>
@@ -129,10 +158,6 @@
         }
       }
 
-      currentWpm() {
-        return 0;
-      }
-
       /* Summary statistics */
 
       // Example of summary statistics:
@@ -142,25 +167,37 @@
       // - elasped time 4:06
       // - wpm 34  (Typeable characters / elasped time in minutes / 5)
 
-      typeableCharacters() {
+      get typeableCharacters() {
         return this._totalCharacters;
       }
 
-      typedCharacters() {
+      get typedCharacters() {
         return this._enteredCharacters;
       }
 
-      unproductiveKeystrokeOverhead() {
-        return Math.round(this.typedCharacters() * 100 / this.typeableCharacters() - 100, "%");
+      get unproductiveKeystrokeOverhead() {
+        return Math.round(this.typedCharacters * 100 / this.typeableCharacters - 100, "%");
       }
 
-      elapsedTimeInS() {
-        return Math.round((this._endTimestamp - this._startTimestamp) / 1000);
+      get elapsedTimeInS() {
+        let end = this._endTimestamp;
+        if (!end) {
+          end = new Date();
+        }
+        return Math.round((end - this._startTimestamp) / 1000);
       }
 
-      wpm() {
+      get wpm() {
         // see https://en.wikipedia.org/wiki/Words_per_minute for official definition
-        return Math.round(this.typeableCharacters() / this.elapsedTimeInS() * 60.0 / 5);
+        return Math.round(this.typeableCharacters / this.elapsedTimeInS * 60.0 / 5);
+      }
+
+      // Current WPM value. Unlike wpm(), this method could be call anytime.
+      currentWpm() {
+        if (this._enteredCharacters < 10) {
+          return 0;
+        }
+        return Math.round(this._enteredCharacters / this.elapsedTimeInS * 60.0 / 5);
       }
 
     }
@@ -210,6 +247,11 @@
             value: true
           },
 
+          ended: {
+            type: Boolean,
+            value: false
+          },
+
           // Collect statistics during edition
           _stats: {
             type: Object,
@@ -226,7 +268,14 @@
           _i: {
               type: Number,
               value: -1
+          },
+
+          // The currently estimated WPM
+          _wpm: {
+            type: Number,
+            value: 0
           }
+
         };
       }
 
@@ -292,12 +341,10 @@
       }
 
       _parse() {
-        if (!this._sourceTag) return;
-        console.log('reparse');
         let newSourceCode = this._sourceTag.innerHTML;
 
-        this._raw = newSourceCode;
         this._sourceCode = newSourceCode;
+        this._length = this._sourceCode.length;
         this._determineTokens();
 
         let spaces = ' \t\n\r\v';
@@ -308,14 +355,14 @@
         // CSS classes are added to mark annotate the characters (space, variable, ...)
         let fragment = document.createDocumentFragment();
         let eol = false;
-        this._length = newSourceCode.length;
+
         let onlyIgnorableCharacters = true; // Does the current line contains only ignorable characters?
         for (let i = 0; i < this._length; i++) {
-          let charTxt = newSourceCode[i]; // The original character
+          let charTxt = this._sourceCode[i]; // The original character
           let charName = charTxt; // The name as returned by the keypress/keyup event (see key property)
           let charPrint = charTxt; // The character print on screen
 
-          let charCode = newSourceCode.charCodeAt(i);
+          let charCode = this._sourceCode.charCodeAt(i);
           let classes = [];
 
           let span = document.createElement('span');
@@ -371,7 +418,7 @@
       }
 
       _determineTokens() {
-        this._tokens = new Array(this._raw.length);
+        this._tokens = new Array(this._length);
 
         let grammar = GRAMMARS[this.language.toLowerCase()];
         for (let token in grammar) {
@@ -427,6 +474,7 @@
 
         let character = this._cursor();
         this._stats.newCharacter();
+        this._wpm = this._stats.currentWpm();
 
         if (character.dataset.text == keyName) {
           character.classList.remove('disabled');
@@ -484,13 +532,14 @@
       }
 
       end() {
-        this.dispatchEvent(new CustomEvent('endOfInput', {detail: {length: this._length}}));
         this._stats.stopTimer();
-        console.log("Typeable characters", this._stats.typeableCharacters());
-        console.log("Typed characters", this._stats.typedCharacters());
-        console.log("Unproductive keystroke overhead", this._stats.unproductiveKeystrokeOverhead());
-        console.log("Elasped time", this._stats.elapsedTimeInS());
-        console.log("WPM", this._stats.wpm());
+        this.ended = true;
+        console.log("Typeable characters", this._stats.typeableCharacters);
+        console.log("Typed characters", this._stats.typedCharacters);
+        console.log("Unproductive keystroke overhead", this._stats.unproductiveKeystrokeOverhead);
+        console.log("Elasped time", this._stats.elapsedTimeInS);
+        console.log("WPM", this._stats.wpm);
+        this.dispatchEvent(new CustomEvent('endOfInput', {detail: {length: this._length}}));
       }
 
 

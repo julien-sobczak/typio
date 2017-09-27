@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/utils/flattened-nodes-observer.html">
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../bower_components/google-chart/google-chart.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
@@ -65,6 +66,15 @@
         font-weight: bold;
         font-size: 2em;
       }
+
+      #chart {
+        height: 200px;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
     </style>
 
 
@@ -106,6 +116,14 @@
 }</pre>
     </slot>
     </div>
+
+    <!-- See https://developers.google.com/chart/interactive/docs/gallery/steppedareachart -->
+    <google-chart id="chart"
+      type="stepped-area"
+      options='{"title": "WPM", "legend": "none", "chartArea": { "left": 0, "top": 0, "width": "100%", "height": "100%"}, "hAxis": { "textPosition": "in", "textStyle": { "color": "rgba(0,0,0,0)" }  }, "vAxis": {"textPosition": "in", "minValue": 0, "maxValue": 200, "gridlines": { "count": 0 } } }'
+      cols='[{"label": "Progress", "type": "string"},{"label": "WPM", "type": "number"}]'
+      rows$='{{_wpmPerInterval}}'>
+    </google-chart>
 
   </template>
 
@@ -200,6 +218,35 @@
         return Math.round(this._enteredCharacters / this.elapsedTimeInS * 60.0 / 5);
       }
 
+      progress(i) {
+        return Math.round((i + 1) * 100 / this.totalCharacters);
+      }
+
+      progressInterval(i) {
+        let p = this.progress(i);
+        if (p < 5) return '0';
+        if (p < 10) return '5';
+        if (p < 15) return '10';
+        if (p < 20) return '15';
+        if (p < 25) return '20';
+        if (p < 30) return '25';
+        if (p < 35) return '30';
+        if (p < 40) return '35';
+        if (p < 45) return '40';
+        if (p < 50) return '45';
+        if (p < 55) return '50';
+        if (p < 60) return '55';
+        if (p < 65) return '60';
+        if (p < 70) return '65';
+        if (p < 75) return '70';
+        if (p < 80) return '75';
+        if (p < 85) return '80';
+        if (p < 90) return '85';
+        if (p < 95) return '90';
+        if (p <= 100) return '95';
+        return 0;
+      }
+
     }
 
     class TypioCodeEditor extends Polymer.Element {
@@ -270,10 +317,43 @@
               value: -1
           },
 
+          // The index of the latest valid entered character
+          _countValid: {
+            type: Number,
+            value: 0
+          },
+
           // The currently estimated WPM
           _wpm: {
             type: Number,
             value: 0
+          },
+
+          // The WPM per time range
+          _wpmPerInterval: {
+            type: Array,
+            value: [
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined],
+              ["", undefined]
+            ]
           }
 
         };
@@ -455,7 +535,6 @@
         }
       }
 
-
       enterableCharacters() {
         return this.$.editor2.querySelectorAll('.character').length -
                (this.ignoreComments ? this.$.editor2.querySelectorAll('.comment').length : 0) -
@@ -476,12 +555,23 @@
         this._stats.newCharacter();
         this._wpm = this._stats.currentWpm();
 
+        let progressInterval = this._stats.progressInterval(this._countValid);
+        let indexInterval = parseInt(parseInt(progressInterval) / 5);
+        console.log('>', indexInterval, this._wpm, this._wpmPerInterval[indexInterval][1]);
+        this._wpmPerInterval[indexInterval][0] = '' + this._wpm; // Label
+        this._wpmPerInterval[indexInterval][1] = this._wpm; // Value
+        this.$.chart.rows = this._wpmPerInterval.slice(0);
+        this.$.chart.redraw();
+
         if (character.dataset.text == keyName) {
           character.classList.remove('disabled');
           if (this.continueOnErrors) {
             character.classList.remove('char-invalid');
           } else if (this._error && !this.continueOnErrors) {
             character.classList.add('char-invalid');
+          }
+          if (!this._error) {
+            this._countValid++;
           }
           this.advance();
         } else {
@@ -534,11 +624,6 @@
       end() {
         this._stats.stopTimer();
         this.ended = true;
-        console.log("Typeable characters", this._stats.typeableCharacters);
-        console.log("Typed characters", this._stats.typedCharacters);
-        console.log("Unproductive keystroke overhead", this._stats.unproductiveKeystrokeOverhead);
-        console.log("Elasped time", this._stats.elapsedTimeInS);
-        console.log("WPM", this._stats.wpm);
         this.dispatchEvent(new CustomEvent('endOfInput', {detail: {length: this._length}}));
       }
 

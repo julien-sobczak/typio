@@ -1,0 +1,19 @@
+[
+  {
+    "type": "github",
+    "name": "junit-team/junit4",
+    "url": "https://github.com/junit-team/junit4",
+    "language": "java",
+    "commit": "r4.12" 
+  },
+  // https://github.com/junit-team/junit4/archives/r4.12.zip
+
+  {
+    "type": "gutemberg",
+    "title": "The Adventures of Tom Sawyer",
+    "author": "Mark Twain",
+    "url": "https://www.gutenberg.org/ebooks/74",
+    "language": "english"
+  }
+  // https://www.gutenberg.org/files/74/74-0.txt =  url + lastPart + 0-"0.txt"
+]

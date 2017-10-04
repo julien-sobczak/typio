@@ -31,19 +31,21 @@
         visibility: visible;
       }
 
+      /* We need !important to override special code
+      such as operator, comment that also define a background. */
       span.char-active {
-        background-color: #47d42b;
-        outline: 1px solid #40be27;
+        background-color: #47d42b !important;
+        outline: 1px solid #40be27 !important;
         color: #fff !important;
       }
       span.char-invalid {
-        background-color: #e63d3d;
-        outline: 1px solid #e63d3d;
+        background-color: #e63d3d !important;
+        outline: 1px solid #e63d3d !important;
         color: #fff !important;
       }
       span.char-active.paused {
-        background-color: #ffc40d;
-        outline: 1px solid #f3b700;
+        background-color: #ffc40d !important;
+        outline: 1px solid #f3b700 !important;
         color: #fff !important;
       }
 
@@ -68,6 +70,16 @@
       }
 
       #chart {
+        display: none;
+        /*
+          There is a bug that displays:
+            'TypeError: cannot read property 'draw' of null'
+          on load time during a short time before showing the chart correctly.
+
+          As a hack, we hide the chart until the last moment.
+          At this time, the error message was already printed
+          and we can reveal the chart.
+         */
         height: 200px;
         width: 100%;
         position: fixed;
@@ -75,6 +87,27 @@
         left: 0;
         right: 0;
       }
+
+      #editor2 {
+        line-height: 1.5em;
+      }
+
+      #editor2.highlight-interval-0 span.interval-0,
+      #editor2.highlight-interval-1 span.interval-1,
+      #editor2.highlight-interval-2 span.interval-2,
+      #editor2.highlight-interval-3 span.interval-3,
+      #editor2.highlight-interval-4 span.interval-4,
+      #editor2.highlight-interval-5 span.interval-5,
+      #editor2.highlight-interval-6 span.interval-6,
+      #editor2.highlight-interval-7 span.interval-7,
+      #editor2.highlight-interval-8 span.interval-8,
+      #editor2.highlight-interval-9 span.interval-9,
+      #editor2.highlight-interval-10 span.interval-10 {
+        background-color: Gold !important;
+        outline: 1px solid Gold !important;
+        color: black !important;
+      }
+
     </style>
 
 
@@ -120,7 +153,7 @@
     <!-- See https://developers.google.com/chart/interactive/docs/gallery/steppedareachart -->
     <google-chart id="chart"
       type="stepped-area"
-      options='{"title": "WPM", "legend": "none", "chartArea": { "left": 0, "top": 0, "width": "100%", "height": "100%"}, "hAxis": { "textPosition": "in", "textStyle": { "color": "rgba(0,0,0,0)" }  }, "vAxis": {"textPosition": "in", "minValue": 0, "maxValue": 200, "gridlines": { "count": 0 } } }'
+      options='{"title": "WPM", "legend": "none", "tooltip": {"trigger": "none"}, "chartArea": { "left": 0, "top": 0, "width": "100%", "height": "100%"}, "hAxis": { "textPosition": "in", "textStyle": { "color": "rgba(0,0,0,0)" }  }, "vAxis": {"textPosition": "in", "minValue": 0, "maxValue": 200, "gridlines": { "count": 0 } } }'
       cols='[{"label": "Progress", "type": "string"},{"label": "WPM", "type": "number"}]'
       rows='[]'>
     </google-chart>
@@ -203,7 +236,6 @@
             // We wait at least 3 characters before displaying the WPM
             // to avoid diplaying peaks at the start of each interval
             let wpm = Math.round(characterCount / Stats.durationInS(firstTimestamp, lastTimestamp) * 60.0 / 5);
-            console.log(characterCount, i, '[', Stats.durationInS(firstTimestamp, lastTimestamp), '] => ', wpm);
             result[i][0] = '' + wpm;
             result[i][1] = wpm;
           }
@@ -230,6 +262,10 @@
           }
           this._intervals.push(parseInt(countEditables / charactersPerInterval));
         }
+      }
+
+      get intervals() {
+        return this._intervals;
       }
 
       startTimer() {
@@ -566,6 +602,10 @@
         this._characters = this.$.editor2.querySelectorAll('.character');
         this._stats.totalCharacters = this.enterableCharacters();
         this._stats.editables = editables;
+        let intervals = this._stats.intervals;
+        for (let i = 0; i < intervals.length; i++) {
+          this._characters[i].classList.add('interval-' + intervals[i]);
+        }
         this.advance();
       }
 
@@ -655,8 +695,10 @@
         this._stats.newCharacter(iCharacter, keyName, valid, accepted);
         this._wpm = this._stats.currentWpm();
 
+        this.$.chart.style.display = 'block';
         this.$.chart.rows = this._stats.wpmPerInterval;
         this.$.chart.redraw();
+        this.listenChartEvents();
       }
 
       backward() {
@@ -740,6 +782,33 @@
         character.classList.remove('char-active');
         character.classList.remove('char-invalid');
         character.classList.add('disabled');
+      }
+
+      listenChartEvents() {
+        if (!this._chartEventsListened) {
+          google.visualization.events.addListener(this.$.chart._chart, 'select', () => {
+            let selection = this.$.chart._chart.getSelection();
+            if (selection.length) {
+              this.selectInterval(selection[0].row);
+            }
+          });
+          this._chartEventsListened = true;
+        }
+      }
+
+      selectInterval(column) {
+        if (this.$.editor2.classList.contains('highlight-interval-' + column)) {
+          // unselect
+          this.$.editor2.classList.remove('highlight-interval-' + column);
+        } else {
+          // unselect all
+          for (let i = 0; i < this._stats.INTERVAL_NUMBER; i++) {
+            this.$.editor2.classList.remove('highlight-interval-' + i);
+          }
+          // and select the selected one
+          this.$.editor2.classList.add('highlight-interval-' + column);
+        }
+
       }
 
     }

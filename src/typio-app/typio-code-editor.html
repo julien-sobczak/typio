@@ -40,7 +40,7 @@
       }
       span.char-invalid {
         background-color: #e63d3d !important;
-        outline: 1px solid #e63d3d !important;
+        outline: none !important;
         color: #fff !important;
       }
       span.char-active.paused {
@@ -64,8 +64,13 @@
         width: 800px;
         margin: 0 auto;
         padding: 1cm;
+        position: fixed;
+        top: 0;
+        bottom: 100px; /* Allow 100px above the chart (200px height) as a last resort. */
+        z-index: 100;
+        left: 50%;
+        margin-left: -400px; /* Half of the width */
       }
-
 
       #stats {
         position: fixed;
@@ -114,7 +119,7 @@
       #editor2.highlight-interval-9 span.interval-9,
       #editor2.highlight-interval-10 span.interval-10 {
         background-color: Gold !important;
-        outline: 1px solid Gold !important;
+        outline: none !important;
         color: black !important;
       }
 
@@ -163,10 +168,13 @@
     <!-- See https://developers.google.com/chart/interactive/docs/gallery/steppedareachart -->
     <google-chart id="chart"
       type="stepped-area"
-      options='{"title": "WPM", "legend": "none", "tooltip": {"trigger": "none"}, "chartArea": { "left": 0, "top": 0, "width": "100%", "height": "100%"}, "hAxis": { "textPosition": "in", "textStyle": { "color": "rgba(0,0,0,0)" }  }, "vAxis": {"textPosition": "in", "minValue": 0, "maxValue": 200, "gridlines": { "count": 0 } } }'
-      cols='[{"label": "Progress", "type": "string"},{"label": "WPM", "type": "number"}]'
+      options='{"title": "WPM", "legend": "none", "tooltip": {"trigger": "none"}, "chartArea": { "left": 0, "top": 0, "width": "100%", "height": "100%"}, "hAxis": { "textPosition": "in", "textStyle": { "color": "black", "auraColor": "none" }  }, "vAxis": {"textPosition": "in", "minValue": 0, "maxValue": 200, "gridlines": { "count": 0 } }, "colors": ["DodgerBlue"], "lineWidth": 2, "annotations": {"textStyle": { "color": "orange"}}}'
+      cols='[{"label": "Progress", "type": "string"},{"label": "WPM", "type": "number"},{"type": "string", "role": "annotation"},{"type": "string", "role": "style"}]'
       rows='[]'>
     </google-chart>
+    <!--
+    see https://developers.google.com/chart/interactive/docs/roles?hl=en for the role property of columns
+    -->
 
   </template>
 
@@ -183,6 +191,9 @@
       constructor() {
         // Constants TODO see if there is a better way to declare constants inside a class
         this.INTERVAL_NUMBER = 10;
+        this.WPM_GREAT = 60;
+        this.WPM_WOW = 80;
+        this.WPM_FANTASTIC = 100;
 
         this._totalCharacters = 0;
         this._enteredCharacters = 0;
@@ -217,7 +228,7 @@
       get wpmPerInterval() {
         let result = [];
         for (let i = 0; i <= this.INTERVAL_NUMBER; i++) {
-          result.push(["", undefined]);
+          result.push(["", undefined, "", ""]);
         }
         let lastAcceptedIndex = 0;
         for (let i = 0; i < this._inputs.length; i++) {
@@ -226,7 +237,8 @@
             lastAcceptedIndex = input.index;
           }
         }
-        for (let i = 0; i <= this._intervals[lastAcceptedIndex]; i++) {
+        let currentInterval = this._intervals[lastAcceptedIndex];
+        for (let i = 0; i <= currentInterval; i++) {
           // we determine WPM for this range
           let firstTimestamp = undefined;
           let lastTimestamp = undefined;
@@ -248,8 +260,11 @@
             let wpm = Math.round(characterCount / Stats.durationInS(firstTimestamp, lastTimestamp) * 60.0 / 5);
             result[i][0] = '' + wpm;
             result[i][1] = wpm;
+            result[i][2] = (wpm > this.WPM_FANTASTIC) ? 'fantastic!' : (wpm > this.WPM_WOW) ? 'wow' : (wpm > this.WPM_GREAT) ? 'great' : '';
           }
         }
+
+        result[currentInterval][3] = "color: green";
 
         return result;
       }

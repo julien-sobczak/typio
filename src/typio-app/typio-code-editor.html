@@ -49,6 +49,16 @@
         color: #fff !important;
       }
 
+      #editor2.highlight-mistyping span.useless {
+        background-color: #faa937;
+        outline: 1px solid #faa937;
+        color: #fff !important;
+      }
+      #editor2.highlight-mistyping span.wrong {
+        background-color: #d51b1b;
+        outline: 1px solid #d51b1b;
+        color: #fff !important;
+      }
 
       #content {
         width: 800px;
@@ -206,7 +216,7 @@
 
       get wpmPerInterval() {
         let result = [];
-        for (let i = 0; i < this.INTERVAL_NUMBER; i++) {
+        for (let i = 0; i <= this.INTERVAL_NUMBER; i++) {
           result.push(["", undefined]);
         }
         let lastAcceptedIndex = 0;
@@ -677,6 +687,12 @@
           } else if (this._error && !this.continueOnErrors) {
             character.classList.add('char-invalid');
           }
+
+          // Add marker to highlight mistyping at the end
+          if (!character.classList.contains('wrong') && !character.classList.contains('useless')) {
+            character.classList.add(this._error ? 'useless' : 'right');
+          }
+
           if (!this._error) {
             this._countValid++;
           }
@@ -684,6 +700,7 @@
         } else {
           valid = false;
           character.classList.add('char-invalid');
+          character.classList.add('wrong');
           this._error = true;
           this._iError = this._i;
           this.$.editor2.classList.add('error');
@@ -741,6 +758,7 @@
 
       end() {
         this._stats.stopTimer();
+        this.$.editor2.classList.add('highlight-mistyping');
         this.ended = true;
         this.dispatchEvent(new CustomEvent('endOfInput', {detail: {length: this._length}}));
       }
@@ -818,6 +836,9 @@
     // ////////////////////
     // Language definitions
     ///////////////////////
+
+    // See https://github.com/PrismJS/prism/blob/gh-pages/components/
+    // for examples of language definitions.
 
     const basic = {
       'string': /"(?:""|[!#$%&'()*,\/:;<=>?^_ +\-.A-Z\d])*"/i,

@@ -13,7 +13,6 @@
     <link href="https://fonts.googleapis.com/css?family=Encode+Sans+Semi+Condensed:100,200,300,400,500,600,700,800,900" rel="stylesheet">
 
     <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-    <script src="/bower_components/typed.js/lib/typed.js"></script>
 
     <link rel="import" href="/src/typio-app/typio-app.html">
     <link rel="import" href="/src/typio-app/typio-code-editor.html">
@@ -22,26 +21,25 @@
       body {
         font-family: 'Encode Sans Semi Condensed', sans-serif;
       }
-
-      h2 a {
-        color: black;
-        text-decoration: none;
-        border-bottom: 5px dotted black;
-        line-height: 1.5em;
-      }
     </style>
   </head>
   <body>
 
-    <h2><span class="title"></span></h2>
+    <typio-code-editor language="english">
+      <pre name="text">"The deepest parts of the ocean are totally unknown to us,"
+admits Professor Aronnax early in this novel.  "What goes on in
+those distant depths?  What creatures inhabit, or could inhabit,
+those regions twelve or fifteen miles beneath the surface of the water?
+It's almost beyond conjecture."
+
+Jules Verne (1828-1905) published the French equivalents of these words
+in 1869, and little has changed since.  126 years later, a Time
+cover story on deep-sea exploration made much the same admission:
+"We know more about Mars than we know about the oceans."
+This reality begins to explain the dark power and otherworldly
+fascination of Twenty Thousand Leagues Under the Seas.
+</pre>
+    </typio-code-editor>
 
   </body>
-  <script>
-  var typed = new Typed('h2 span.title', {
-    strings: ["Practice<br>Touch Typing", "Practice <a href='#'>Deliberately</a><br><a href='#'>Touch Typing</a>"],
-    typeSpeed: 30,
-    smartBackspace: true,
-    backDelay: 1000,
-  });
-  </script>
 </html>

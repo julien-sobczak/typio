@@ -6,7 +6,8 @@
     "polymer": "Polymer/polymer#^2.0.0",
     "iron-a11y-keys": "PolymerElements/iron-a11y-keys#^2.0.0",
     "paper-toggle-button": "PolymerElements/paper-toggle-button#^2.0.0",
-    "google-chart": "GoogleWebComponents/google-chart#^2.0.0"
+    "google-chart": "GoogleWebComponents/google-chart#^2.0.0",
+    "typed.js": "^2.0.6"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",

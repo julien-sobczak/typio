@@ -246,10 +246,12 @@
           for (let j = 0; j < this._inputs.length; j++) {
             let input = this._inputs[j];
             if (this._intervals[input.index] != i) continue; // not the same interval
-            characterCount++;
+            if (input.accepted) {
+              characterCount++;
+            }
             if (!firstTimestamp) {
               firstTimestamp = input.timestamp;
-            } else if (input.accepted) {
+            } else {
               lastTimestamp = input.timestamp;
             }
           }
@@ -359,35 +361,6 @@
           return 0;
         }
         return Math.round(this._enteredCharacters / this.elapsedTimeInS * 60.0 / 5);
-      }
-
-      progress(i) {
-        return Math.round((i + 1) * 100 / this.totalCharacters);
-      }
-
-      progressInterval(i) {
-        let p = this.progress(i);
-        if (p < 5) return '0';
-        if (p < 10) return '5';
-        if (p < 15) return '10';
-        if (p < 20) return '15';
-        if (p < 25) return '20';
-        if (p < 30) return '25';
-        if (p < 35) return '30';
-        if (p < 40) return '35';
-        if (p < 45) return '40';
-        if (p < 50) return '45';
-        if (p < 55) return '50';
-        if (p < 60) return '55';
-        if (p < 65) return '60';
-        if (p < 70) return '65';
-        if (p < 75) return '70';
-        if (p < 80) return '75';
-        if (p < 85) return '80';
-        if (p < 90) return '85';
-        if (p < 95) return '90';
-        if (p <= 100) return '95';
-        return 0;
       }
 
     }

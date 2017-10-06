@@ -15,8 +15,9 @@
     <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="/bower_components/typed.js/lib/typed.js"></script>
 
+
     <link rel="import" href="/src/typio-app/typio-app.html">
-    <link rel="import" href="/src/typio-app/typio-code-editor.html">
+    <link rel="import" href="/src/typio-app/typio-home.html">
 
     <style>
       body {
@@ -34,14 +35,21 @@
   <body>
 
     <h2><span class="title"></span></h2>
+    <div>
+      <typio-home></typio-home>
+    </div>
 
   </body>
+
   <script>
-  var typed = new Typed('h2 span.title', {
-    strings: ["Practice<br>Touch Typing", "Practice <a href='#'>Deliberately</a><br><a href='#'>Touch Typing</a>"],
-    typeSpeed: 30,
-    smartBackspace: true,
-    backDelay: 1000,
-  });
+    //const strings = ["Practice<br>Touch Typing", "Practice <a href='#'>Deliberately</a><br><a href='#'>Touch Typing</a>"];
+    const strings = ["Practice<br>Touch Typing", "Practice Deliberately<br>Touch Typing"];
+    var typed = new Typed('h2 span.title', {
+      strings: strings,
+      typeSpeed: 30,
+      smartBackspace: true,
+      backDelay: 1000,
+    });
   </script>
+
 </html>

@@ -1,0 +1,90 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="/src/typio-app/typio-code-editor.html">
+
+<dom-module id="typio-home">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <!-- Use to retrieve contents and metadata. -->
+    <!--<iron-request id="xhr"></iron-request>-->
+    <iron-ajax auto url="{{_url}}" on-response="onContentLoaded" id="xhr"></iron-ajax>
+
+    <paper-button raised class="indigo" on-click="loadContent">raised</paper-button>
+
+    <typio-code-editor language="[[language]]">
+      <pre name="[[type]]">[[selectionContent]]</pre>
+    </typio-code-editor>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioHome extends Polymer.Element {
+      static get is() { return 'typio-home'; }
+      static get properties() {
+        return {
+          /*
+           * The content of the editor.
+           */
+          selectionContent: {
+            type: String,
+            value: 'Please select some text...'
+          },
+
+          /*
+           * The type of the content.
+           * Could be 'text' or 'code'.
+           */
+          type: {
+            type: String,
+            value: 'text'
+          },
+
+          /*
+           * The language of the content.
+           *
+           * Could be a programming language ('java', 'python')
+           * or a natural language ('english', 'french').
+           *
+           * Value should be in lowercase.
+           */
+          language: {
+            type: String,
+            value: 'english'
+          },
+
+          /*
+           * URL to download the content
+           */
+          _url: {
+            type: String,
+            value: null
+          }
+
+        };
+      }
+
+      loadContent() {
+        console.log('Loading demo text...');
+        this._url = '/content/text/demo.txt';
+      }
+
+      onContentLoaded(data) {
+        console.log(data); // TODO Use iron-ajax attribute handle-as to parse the response as plain text
+      }
+
+    }
+
+    window.customElements.define(TypioHome.is, TypioHome);
+  </script>
+</dom-module>

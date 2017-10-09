@@ -14,12 +14,12 @@
 
     <!-- Use to retrieve contents and metadata. -->
     <!--<iron-request id="xhr"></iron-request>-->
-    <iron-ajax auto url="{{_url}}" on-response="onContentLoaded" id="xhr"></iron-ajax>
+    <iron-ajax auto url="{{_url}}" handle-as="text" on-response="onContentLoaded" id="xhr"></iron-ajax>
 
     <paper-button raised class="indigo" on-click="loadContent">raised</paper-button>
 
-    <typio-code-editor language="[[language]]">
-      <pre name="[[type]]">[[selectionContent]]</pre>
+    <typio-code-editor id="editor" language="[[language]]">
+      <pre id="content" name="[[type]]">[[selectionContent]]</pre>
     </typio-code-editor>
 
   </template>
@@ -79,8 +79,11 @@
         this._url = '/content/text/demo.txt';
       }
 
-      onContentLoaded(data) {
-        console.log(data); // TODO Use iron-ajax attribute handle-as to parse the response as plain text
+      onContentLoaded(e, data) {
+        const text = data.response;
+        console.log('Text received!');
+        this.selectionContent = text;
+        this.$.editor.reset();
       }
 
     }

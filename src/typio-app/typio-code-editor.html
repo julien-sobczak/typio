@@ -70,6 +70,7 @@
         z-index: 100;
         left: 50%;
         margin-left: -400px; /* Half of the width */
+        /* TODO test font "Droid Sans Mono" */
       }
 
       #stats {
@@ -204,7 +205,6 @@
         this._editables = [];
         this._intervals = [];
 
-        this._wpmPerInterval = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         this._inputs = [];
       }
 
@@ -455,6 +455,18 @@
         ]
       }
 
+      reset() {
+        // Reset variables
+        this._stats = new Stats();
+        this._characters = [];
+        this._i = -1;
+        this._countValid = 0;
+        this._wpm = 0;
+
+        // Refresh editor
+        this._updateContent();
+      }
+
       ready() {
         super.ready();
 
@@ -595,13 +607,14 @@
           character.classList.add(editable ? 'editable' : 'ignorable');
         }
 
+        this.$.editor2.innerHTML = '';
         this.$.editor2.appendChild(fragment);
 
         this._characters = this.$.editor2.querySelectorAll('.character');
         this._stats.totalCharacters = this.enterableCharacters();
         this._stats.editables = editables;
         let intervals = this._stats.intervals;
-        for (let i = 0; i < intervals.length; i++) {
+        for (let i = 0; i < this._stats.totalCharacters; i++) {
           this._characters[i].classList.add('interval-' + intervals[i]);
         }
         this.advance();

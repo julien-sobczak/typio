@@ -70,8 +70,15 @@
         z-index: 100;
         left: 50%;
         margin-left: -400px; /* Half of the width */
-        /* TODO test font "Droid Sans Mono" */
       }
+
+      #content pre[data-type="text"]  {
+        font-family: 'Droid Sans Mono', monospace;
+      }
+      #content pre[data-type="code"] {
+        font-family: monospace;
+      }
+
 
       #stats {
         position: fixed;
@@ -150,7 +157,7 @@
     </div>
 
     <div id="content">
-      <pre id="editor2"></pre>
+      <pre id="editor2" data-type$="[[type]]"></pre>
     </div>
 
     <div style="display: none">
@@ -371,6 +378,11 @@
       static get properties() {
         return {
 
+          type: {
+            type: String,
+            value: "code"
+          },
+
           /*
            * Programming language of the code snippet.
            *
@@ -378,7 +390,7 @@
            */
           language: {
             type: String,
-            value: "Java"
+            value: "java"
           },
 
           /*

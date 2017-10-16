@@ -32,13 +32,6 @@
         padding: 0;
       }
 
-      h2 a {
-        color: black;
-        text-decoration: none;
-        border-bottom: 5px dotted black;
-        line-height: 1.5em;
-      }
-
       section {
         width: 100%;
         display: table;
@@ -61,45 +54,38 @@
         vertical-align: middle;
       }
 
-      h2 {
-        position: absolute;
-        width: 400px;
-        left: 50%;
-        margin-left: -200px;
-        color: white;
-        top: 20vh;
-        font-size: 35px;
-        text-align: left;
-      }
 
-      h2 .title, h2 .typed-cursor {
-        background-color: #009ee3;
-      }
-
-      .typed-cursor {
-      	opacity: 1;
-      	font-weight: 100;
-      	animation: blink 0.7s infinite;
-      }
-
-      @keyframes blink {
-      	0% { opacity:1; }
-      	50% { opacity:0; }
-      	100% { opacity:1; }
-      }
+      /*
+       * Logo
+       */
 
       h1 {
         position: absolute;
         text-align: center;
         font-family: 'Cutive', serif;
-        display: none;
         width: 100%;
-        bottom: 20vh;
+        top: 20vh;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 3s;
       }
-      #intro.completed h1 {
-        display: block;
+      #intro.loaded h1 {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 3s;
+      }
+      h1 div {
+        display: inline-block;
+        position: relative;
+        height: 80px;
+        width: 80px;
+        margin-left: 30px;
+        margin-right: 30px;
       }
       h1 span {
+        position: absolute;
+        top: 0;
+        left: 0;
         display: inline-block;
         height: 60px;
         width: 60px;
@@ -109,29 +95,146 @@
         color: white;
         text-align: center;
         padding-top: 18px;
-        margin-left: 30px;
-        margin-right: 30px;
       }
+
+      h1 div:nth-child(1) span { animation: press1 0.2s infinite 0s ease-out paused; }
+      h1 div:nth-child(2) span { animation: press2 0.25s infinite 0.25s ease-out paused; }
+      h1 div:nth-child(3) span { animation: press3 0.2s infinite 0.40s ease-out paused; }
+      h1 div:nth-child(4) span { animation: press4 0.15s infinite 0.15s ease-out paused;  }
+      h1 div:nth-child(5) span { animation: press5 0.25s infinite 0.3s ease-out paused;  }
 
       /* Inspired by https://codepen.io/birjolaxew/pen/EPOobx */
       /* box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px #19F, 3px 3px #19F, 4px 4px #19F, 5px 5px #19F, 6px 6px #19F, 7px 7px #19F, 8px 8px #19F, 9px 9px #19F, 10px 10px #19F, 11px 11px #19F, 12px 12px #19F, 13px 13px #EA0, 14px 14px #EA0, 15px 15px #EA0, 16px 16px #EA0, 17px 17px #EA0, 18px 18px #EA0, 19px 19px #EA0, 20px 20px #EA0, 21px 21px #EA0, 22px 22px #EA0, 23px 23px #EA0, 24px 24px #EA0, 25px 25px #E62, 26px 26px #E62, 27px 27px #E62, 28px 28px #E62, 29px 29px #E62, 30px 30px #E62, 31px 31px #E62, 32px 32px #E62, 33px 33px #E62, 34px 34px #E62, 35px 35px #E62, 36px 36px #E62, 37px 37px #E62, 38px 38px #C25, 39px 39px #C25, 40px 40px #C25, 41px 41px #C25, 42px 42px #C25, 43px 43px #C25, 44px 44px #C25, 45px 45px #C25, 46px 46px #C25, 47px 47px #C25, 48px 48px #C25, 49px 49px #C25, 50px 50px #19F; */
 
-      h1 span:nth-child(1) { color: #19F; box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px #19F, 3px 3px #19F, 4px 4px #19F, 5px 5px black; }
-      h1 span:nth-child(2) { color: #EA0; box-shadow: 0px 0px transparent, 1px 1px #EA0, 2px 2px #EA0, 3px 3px #EA0, 4px 4px #EA0, 5px 5px black; }
-      h1 span:nth-child(3) { color: #E62; box-shadow: 0px 0px transparent, 1px 1px #E62, 2px 2px #E62, 3px 3px #E62, 4px 4px #E62, 5px 5px black; }
-      h1 span:nth-child(4) { color: #C25; box-shadow: 0px 0px transparent, 1px 1px #C25, 2px 2px #C25, 3px 3px #C25, 4px 4px #C25, 5px 5px black; }
-      h1 span:nth-child(5) { color: #19F; box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px #19F, 3px 3px #19F, 4px 4px #19F, 5px 5px black; }
+      h1 div:nth-child(1) span { color: #19F; box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px #19F, 3px 3px #19F, 4px 4px #19F, 5px 5px black; }
+      h1 div:nth-child(2) span { color: #EA0; box-shadow: 0px 0px transparent, 1px 1px #EA0, 2px 2px #EA0, 3px 3px #EA0, 4px 4px #EA0, 5px 5px black; }
+      h1 div:nth-child(3) span { color: #E62; box-shadow: 0px 0px transparent, 1px 1px #E62, 2px 2px #E62, 3px 3px #E62, 4px 4px #E62, 5px 5px black; }
+      h1 div:nth-child(4) span { color: #C25; box-shadow: 0px 0px transparent, 1px 1px #C25, 2px 2px #C25, 3px 3px #C25, 4px 4px #C25, 5px 5px black; }
+      h1 div:nth-child(5) span { color: LimeGreen; box-shadow: 0px 0px transparent, 1px 1px LimeGreen, 2px 2px LimeGreen, 3px 3px LimeGreen, 4px 4px LimeGreen, 5px 5px black; }
 
+      @keyframes press1 {
+       0%   { top: 0px; left: 0px; box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px #19F, 3px 3px #19F, 4px 4px #19F, 5px 5px black; }
+       10%   { top: 1px; left: 1px; box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px #19F, 3px 3px #19F, 4px 4px black; }
+       20%  { top: 2px; left: 2px; box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px #19F, 3px 3px black; }
+       30%  { top: 3px; left: 3px; box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px black; }
+       40%  { top: 5px; left: 5px; box-shadow: 0px 0px transparent, 1px 1px black; }
+       60%  { top: 5px; left: 5px; box-shadow: 0px 0px transparent, 1px 1px black; }
+       70%  { top: 3px; left: 3px; box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px black; }
+       80%  { top: 2px; left: 2px; box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px #19F, 3px 3px black; }
+       90%   { top: 1px; left: 1px; box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px #19F, 3px 3px #19F, 4px 4px black; }
+       100% { top: 0px; left: 0px; box-shadow: 0px 0px transparent, 1px 1px #19F, 2px 2px #19F, 3px 3px #19F, 4px 4px #19F, 5px 5px black; }
+      }
+
+      @keyframes press2 {
+       0%   { top: 0px; left: 0px; box-shadow: 0px 0px transparent, 1px 1px #EA0, 2px 2px #EA0, 3px 3px #EA0, 4px 4px #EA0, 5px 5px black; }
+       10%   { top: 1px; left: 1px; box-shadow: 0px 0px transparent, 1px 1px #EA0, 2px 2px #EA0, 3px 3px #EA0, 4px 4px black; }
+       20%  { top: 2px; left: 2px; box-shadow: 0px 0px transparent, 1px 1px #EA0, 2px 2px #EA0, 3px 3px black; }
+       30%  { top: 3px; left: 3px; box-shadow: 0px 0px transparent, 1px 1px #EA0, 2px 2px black; }
+       40%  { top: 5px; left: 5px; box-shadow: 0px 0px transparent, 1px 1px black; }
+       60%  { top: 5px; left: 5px; box-shadow: 0px 0px transparent, 1px 1px black; }
+       70%  { top: 3px; left: 3px; box-shadow: 0px 0px transparent, 1px 1px #EA0, 2px 2px black; }
+       80%  { top: 2px; left: 2px; box-shadow: 0px 0px transparent, 1px 1px #EA0, 2px 2px #EA0, 3px 3px black; }
+       90%   { top: 1px; left: 1px; box-shadow: 0px 0px transparent, 1px 1px #EA0, 2px 2px #EA0, 3px 3px #EA0, 4px 4px black; }
+       100% { top: 0px; left: 0px; box-shadow: 0px 0px transparent, 1px 1px #EA0, 2px 2px #EA0, 3px 3px #EA0, 4px 4px #EA0, 5px 5px black; }
+      }
+
+      @keyframes press3 {
+       0%   { top: 0px; left: 0px; box-shadow: 0px 0px transparent, 1px 1px #E62, 2px 2px #E62, 3px 3px #E62, 4px 4px #E62, 5px 5px black; }
+       10%   { top: 1px; left: 1px; box-shadow: 0px 0px transparent, 1px 1px #E62, 2px 2px #E62, 3px 3px #E62, 4px 4px black; }
+       20%  { top: 2px; left: 2px; box-shadow: 0px 0px transparent, 1px 1px #E62, 2px 2px #E62, 3px 3px black; }
+       30%  { top: 3px; left: 3px; box-shadow: 0px 0px transparent, 1px 1px #E62, 2px 2px black; }
+       40%  { top: 5px; left: 5px; box-shadow: 0px 0px transparent, 1px 1px black; }
+       60%  { top: 5px; left: 5px; box-shadow: 0px 0px transparent, 1px 1px black; }
+       70%  { top: 3px; left: 3px; box-shadow: 0px 0px transparent, 1px 1px #E62, 2px 2px black; }
+       80%  { top: 2px; left: 2px; box-shadow: 0px 0px transparent, 1px 1px #E62, 2px 2px #E62, 3px 3px black; }
+       90%   { top: 1px; left: 1px; box-shadow: 0px 0px transparent, 1px 1px #E62, 2px 2px #E62, 3px 3px #E62, 4px 4px black; }
+       100% { top: 0px; left: 0px; box-shadow: 0px 0px transparent, 1px 1px #E62, 2px 2px #E62, 3px 3px #E62, 4px 4px #E62, 5px 5px black; }
+      }
+
+      @keyframes press4 {
+       0%   { top: 0px; left: 0px; box-shadow: 0px 0px transparent, 1px 1px #C25, 2px 2px #C25, 3px 3px #C25, 4px 4px #C25, 5px 5px black; }
+       10%   { top: 1px; left: 1px; box-shadow: 0px 0px transparent, 1px 1px #C25, 2px 2px #C25, 3px 3px #C25, 4px 4px black; }
+       20%  { top: 2px; left: 2px; box-shadow: 0px 0px transparent, 1px 1px #C25, 2px 2px #C25, 3px 3px black; }
+       30%  { top: 3px; left: 3px; box-shadow: 0px 0px transparent, 1px 1px #C25, 2px 2px black; }
+       40%  { top: 5px; left: 5px; box-shadow: 0px 0px transparent, 1px 1px black; }
+       60%  { top: 5px; left: 5px; box-shadow: 0px 0px transparent, 1px 1px black; }
+       70%  { top: 3px; left: 3px; box-shadow: 0px 0px transparent, 1px 1px #C25, 2px 2px black; }
+       80%  { top: 2px; left: 2px; box-shadow: 0px 0px transparent, 1px 1px #C25, 2px 2px #C25, 3px 3px black; }
+       90%   { top: 1px; left: 1px; box-shadow: 0px 0px transparent, 1px 1px #C25, 2px 2px #C25, 3px 3px #C25, 4px 4px black; }
+       100% { top: 0px; left: 0px; box-shadow: 0px 0px transparent, 1px 1px #C25, 2px 2px #C25, 3px 3px #C25, 4px 4px #C25, 5px 5px black; }
+      }
+
+      @keyframes press5 {
+       0%   { top: 0px; left: 0px; box-shadow: 0px 0px transparent, 1px 1px LimeGreen, 2px 2px LimeGreen, 3px 3px LimeGreen, 4px 4px LimeGreen, 5px 5px black; }
+       10%   { top: 1px; left: 1px; box-shadow: 0px 0px transparent, 1px 1px LimeGreen, 2px 2px LimeGreen, 3px 3px LimeGreen, 4px 4px black; }
+       20%  { top: 2px; left: 2px; box-shadow: 0px 0px transparent, 1px 1px LimeGreen, 2px 2px LimeGreen, 3px 3px black; }
+       30%  { top: 3px; left: 3px; box-shadow: 0px 0px transparent, 1px 1px LimeGreen, 2px 2px black; }
+       40%  { top: 5px; left: 5px; box-shadow: 0px 0px transparent, 1px 1px black; }
+       60%  { top: 5px; left: 5px; box-shadow: 0px 0px transparent, 1px 1px black; }
+       70%  { top: 3px; left: 3px; box-shadow: 0px 0px transparent, 1px 1px LimeGreen, 2px 2px black; }
+       80%  { top: 2px; left: 2px; box-shadow: 0px 0px transparent, 1px 1px LimeGreen, 2px 2px LimeGreen, 3px 3px black; }
+       90%   { top: 1px; left: 1px; box-shadow: 0px 0px transparent, 1px 1px LimeGreen, 2px 2px LimeGreen, 3px 3px LimeGreen, 4px 4px black; }
+       100% { top: 0px; left: 0px; box-shadow: 0px 0px transparent, 1px 1px LimeGreen, 2px 2px LimeGreen, 3px 3px LimeGreen, 4px 4px LimeGreen, 5px 5px black; }
+      }
+
+
+
+      /*
+       * Headline
+       */
+
+       h2 {
+         position: absolute;
+         width: 400px;
+         left: 50%;
+         margin-left: -200px;
+         color: white;
+         top: 40vh;
+         font-size: 35px;
+         text-align: center;
+       }
+
+       h2 .title, h2 .typed-cursor {
+         background-color: #009ee3;
+         padding: 10px 0;
+         line-height: 2.2em;
+       }
+
+       .typed-cursor {
+       	opacity: 1;
+       	font-weight: 100;
+       	animation: blink 0.7s infinite;
+       }
+
+       @keyframes blink {
+       	0% { opacity:1; }
+       	50% { opacity:0; }
+       	100% { opacity:1; }
+       }
+
+       h2 a {
+         color: white;
+         text-decoration: none;
+         border-bottom: 5px dotted white;
+         transition: border-bottom 2s; /* FIXME */
+       }
+
+      /* Inspiration pour les boutons */
+      /* https://codepen.io/giana/pen/yYBpVY */
 
     </style>
   </head>
   <body>
 
     <section id="intro">
-      <h1><span>T</span><span>Y</span><span>P</span><span>I</span><span>O</span></h1>
-      <h2><span class="title"></span></h2>
-
-
+      <h1>
+        <div><span id="t">T</span></div>
+        <div class="pressed"><span id="y">Y</span></div>
+        <div><span id="p">P</span></div>
+        <div><span id="i">I</span></div>
+        <div><span id="o">O</span></div>
+      </h1>
+      <h2><span id="title" class="title"></span></h2>
     </section>
     <section id="catalog">
 
@@ -146,17 +249,52 @@
   </body>
 
   <script>
-    //const strings = ["Practice<br>Touch Typing", "Practice <a href='#'>Deliberately</a><br><a href='#'>Touch Typing</a>"];
-    const strings = ["Practice<br>Touch Typing", "Practice Deliberately<br>Touch Typing"];
-    var typed = new Typed('h2 span.title', {
-      strings: strings,
-      typeSpeed: 30,
-      smartBackspace: true,
-      backDelay: 1000,
-      onComplete: function() {
-        document.getElementById('intro').classList.add('completed');
-      }
-    });
+    window.onload = function() {
+
+      // Cache letter elements
+      const letters = [
+        document.getElementById('t'),
+        document.getElementById('y'),
+        document.getElementById('p'),
+        document.getElementById('i'),
+        document.getElementById('o'),
+      ];
+
+      document.getElementById('intro').classList.add('loaded');
+
+      setTimeout(function() {
+
+        // Animate letters randomly
+        letters.forEach(l => l.style.animationPlayState = "running");
+
+        // Display the tagline
+        var typed = new Typed('h2 span.title', {
+          strings: ["Practice Touch Typing^1000 <br>Deliberately"],
+          typeSpeed: 60,
+          smartBackspace: true,
+          backDelay: 1000,
+          onTypingPaused: function() {
+            letters.forEach(l => l.style.animationIterationCount = "1");
+          },
+          onTypingResumed: function() {
+            letters.forEach(l => l.style.animationIterationCount = "infinite");
+            letters.forEach(l => l.style.animationPlayState = "running");
+          },
+          onComplete: function() {
+            // Add CSS class to reveal additional buttons
+            document.getElementById('intro').classList.add('completed');
+
+            // Stop typing
+            letters.forEach(l => l.style.animationIterationCount = "1");
+
+            // Add links to explain key terms
+            setTimeout(() => document.getElementById('title').innerHTML = 'Practice <a href="#">Touch Typing</a> <br><a href="#">Deliberately</a>', 1000);
+          }
+        });
+
+      }, 3000);
+
+    };
 
   </script>
 

@@ -19,12 +19,21 @@
 
     <link rel="import" href="/src/typio-app/typio-app.html">
     <link rel="import" href="/src/typio-app/typio-home.html">
+    <link rel="import" href="/src/typio-app/typio-button.html">
+    <link rel="import" href="/src/typio-app/shared-styles.html">
 
     <style>
 
       * {
         box-sizing: border-box;
       }
+
+      /* TODO remove if move to a Polymer element inheriting shared-styles.html */
+      * {
+        --typio-bg-color: #009ee3;
+        --typio-secondary-color: var(--paper-orange-500);
+      }
+
 
       body {
         font-family: 'Encode Sans Semi Condensed', sans-serif;
@@ -67,12 +76,12 @@
         top: 20vh;
         visibility: hidden;
         opacity: 0;
-        transition: visibility 3s;
+        transition: visibility 1s;
       }
       #intro.loaded h1 {
         opacity: 1;
         visibility: visible;
-        transition: opacity 3s;
+        transition: opacity 1s;
       }
       h1 div {
         display: inline-block;
@@ -221,7 +230,7 @@
        }
 
        h2 .title, h2 .typed-cursor {
-         background-color: #009ee3;
+         background-color: var(--typio-bg-color);
          padding: 10px 0;
          line-height: 2.2em;
        }
@@ -241,13 +250,45 @@
        h2 a {
          color: white;
          text-decoration: none;
-         border-bottom: 4px solid rgba(0, 0, 0, 0.5);
+         border-bottom: 4px solid black;
          cursor: help;
        }
 
-      /* Inspiration pour les boutons */
-      /* https://codepen.io/giana/pen/yYBpVY */
+       .buttons {
+         position: absolute;
+         width: 100%;
+         bottom: 10vh;
+         text-align: center;
+         opacity: 0;
+         transition: opacity 2s linear;
+       }
+       #intro.completed .buttons {
+         opacity: 1;
+       }
+       typio-button {
+         display: inline-block;
+       }
 
+       #catalog {
+         padding: 50px;
+         color: white;
+       }
+
+       #catalog h3 {
+         text-align: center;
+       }
+       #catalog .types {
+         flex-direction: row;
+       }
+       #catalog .type {
+         display: flex;
+         margin-left: 25px;
+         margin-right: 25px;
+         background-color: rgba(0, 0, 0, 0.2);
+       }
+       .icon-programming-language {
+         width: 40px;
+       }
 
     </style>
   </head>
@@ -262,8 +303,23 @@
         <div><span id="o" class="letter">O</span><span class="wave"></span></div>
       </h1>
       <h2><span id="title" class="title"></span></h2>
+
+      <div id="continue" class="buttons">
+        <a href="/#catalog"><typio-button>&#9166; Continue</typio-button></a>
+      </div>
     </section>
+
+
     <section id="catalog">
+
+      <h3>Practice</h3>
+
+      <div class="types">
+        <div class="type type-code">
+          <h4>Code</h4>
+          <img src="/images/java.svg" class="icon-programming-language" />
+        </div>
+      </div>
 
     </section>
 
@@ -294,7 +350,7 @@
         // Display the tagline
         var typed = new Typed('h2 span.title', {
           strings: ["Practice Touch Typing^1000 <br>Deliberately"],
-          typeSpeed: 60,
+          typeSpeed: 30,
           smartBackspace: true,
           backDelay: 1000,
           onComplete: function() {

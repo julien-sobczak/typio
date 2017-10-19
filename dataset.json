@@ -1,21 +1,741 @@
 [
-  {
-    "type": "github",
-    "name": "junit-team/junit4",
-    "url": "https://github.com/junit-team/junit4",
-    "language": "java",
-    "commit": "r4.12"
-  },
-  // https://github.com/junit-team/junit4/archives/r4.12.zip
 
   {
-    "type": "gutemberg",
+    "origin": "gutemberg",
     "title": "The Adventures of Tom Sawyer",
     "author": "Mark Twain",
     "url": "https://www.gutenberg.org/ebooks/74",
     "language": "english"
   }
-  // https://www.gutenberg.org/files/74/74-0.txt =  url + lastPart + 0-"0.txt"
 
-  // https://github.com/abseil/abseil-cpp
+  {
+    "origin": "github",
+    "name": "React",
+    "url": "https://github.com/facebook/react",
+    "language": "JavaScript",
+    "commit": "v16.0.0"
+  },
+  {
+    "origin": "github",
+    "name": "D3.js",
+    "url": "https://github.com/d3/d3",
+    "language": "JavaScript",
+    "commit": "v4.11.0"
+  },
+  {
+    "origin": "github",
+    "name": "jQuery",
+    "url": "https://github.com/jquery/jquery",
+    "language": "JavaScript",
+    "commit": "3.2.1"
+  },
+  {
+    "origin": "github",
+    "name": "Atom",
+    "url": "https://github.com/atom/atom",
+    "language": "JavaScript",
+    "commit": "v1.21.1"
+  },
+  {
+    "origin": "github",
+    "name": "three.js",
+    "url": "https://github.com/mrdoob/three.js",
+    "language": "JavaScript",
+    "commit": "r87"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "RxJava",
+    "url": "https://github.com/ReactiveX/RxJava",
+    "language": "Java",
+    "commit": "v2.1.5"
+  },
+  {
+    "origin": "github",
+    "name": "Spring Framework",
+    "url": "https://github.com/spring-projects/spring-framework",
+    "language": "Java",
+    "commit": "v5.0.0.RELEASE"
+  },
+  {
+    "origin": "github",
+    "name": "Netty",
+    "url": "https://github.com/netty/netty",
+    "language": "Java",
+    "commit": "netty-4.1.16.Final"
+  },
+  {
+    "origin": "github",
+    "name": "Bazel",
+    "url": "https://github.com/bazelbuild/bazel",
+    "language": "Java",
+    "commit": "0.7.0"
+  },
+  {
+    "origin": "github",
+    "name": "Open Zipkin",
+    "url": "https://github.com/openzipkin/zipkin",
+    "language": "Java",
+    "commit": "release-2.2.1"
+  },
+  {
+    "origin": "github",
+    "name": "Presto",
+    "url": "https://github.com/prestodb/presto",
+    "language": "Java",
+    "commit": "0.186"
+  },
+  {
+    "origin": "github",
+    "name": "Kafka",
+    "url": "https://github.com/apache/kafka",
+    "language": "Java",
+    "commit": "0.11.0.1"
+  },
+  {
+    "origin": "github",
+    "name": "Guice",
+    "url": "https://github.com/google/guice",
+    "language": "Java",
+    "commit": "4.1"
+  },
+  {
+    "origin": "github",
+    "name": "JUnit",
+    "url": "https://github.com/junit-team/junit5",
+    "language": "Java",
+    "commit": "r5.0.1"
+  },
+  {
+    "origin": "github",
+    "name": "Mockito",
+    "url": "https://github.com/mockito/mockito",
+    "language": "Java",
+    "commit": "v2.11.0"
+  },
+  {
+    "origin": "github",
+    "name": "Hadoop",
+    "url": "https://github.com/apache/hadoop",
+    "language": "Java",
+    "commit": "release-2.7.1"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "django",
+    "url": "https://github.com/django/django",
+    "language": "Python",
+    "commit": "1.11.6"
+  },
+  {
+    "origin": "github",
+    "name": "scikit-learn",
+    "url": "https://github.com/scikit-learn/scikit-learn",
+    "language": "Python",
+    "commit": "0.19.0"
+  },
+  {
+    "origin": "github",
+    "name": "Keras",
+    "url": "https://github.com/fchollet/keras",
+    "language": "Python",
+    "commit": "2.0.8"
+  },
+  {
+    "origin": "github",
+    "name": "Ansible",
+    "url": "https://github.com/ansible/ansible",
+    "language": "Python",
+    "commit": "v2.4.0.0-1"
+  },
+  {
+    "origin": "github",
+    "name": "Reddit",
+    "url": "https://github.com/reddit/reddit",
+    "language": "Python",
+    "commit": "master"
+  },
+  {
+    "origin": "github",
+    "name": "CPython",
+    "url": "https://github.com/python/cpython",
+    "language": "Python",
+    "commit": "v3.6.3"
+  },
+  {
+    "origin": "github",
+    "name": "Docker Compose",
+    "url": "https://github.com/docker/compose",
+    "language": "Python",
+    "commit": "1.16.1"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Bootstrap",
+    "url": "https://github.com/twbs/bootstrap",
+    "language": "CSS",
+    "commit": "v3.3.7"
+  },
+  {
+    "origin": "github",
+    "name": "Animate.css",
+    "url": "https://github.com/daneden/animate.css",
+    "language": "CSS",
+    "commit": "v3.1.0"
+  },
+  {
+    "origin": "github",
+    "name": "Material Design Icons",
+    "url": "https://github.com/google/material-design-icons",
+    "language": "CSS",
+    "commit": "v2.1.3"
+  },
+  {
+    "origin": "github",
+    "name": "Normalize.css",
+    "url": "https://github.com/necolas/normalize.css",
+    "language": "CSS",
+    "commit": "v2.1.3"
+  },
+  {
+    "origin": "github",
+    "name": "Hover.css",
+    "url": "https://github.com/IanLunn/Hover",
+    "language": "CSS",
+    "commit": "v2.1.1"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Laravel",
+    "url": "https://github.com/laravel/laravel",
+    "language": "PHP",
+    "commit": "v5.5.0"
+  },
+  {
+    "origin": "github",
+    "name": "Symfony",
+    "url": "https://github.com/symfony/symfony",
+    "language": "PHP",
+    "commit": "v3.3.10"
+  },
+  {
+    "origin": "github",
+    "name": "Composer",
+    "url": "https://github.com/composer/composer",
+    "language": "PHP",
+    "commit": "1.5.2"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Rails",
+    "url": "https://github.com/rails/rails",
+    "language": "Ruby",
+    "commit": "v5.1.4"
+  },
+  {
+    "origin": "github",
+    "name": "Jekyll",
+    "url": "https://github.com/jekyll/jekyll",
+    "language": "Ruby",
+    "commit": "v3.6.0"
+  },
+  {
+    "origin": "github",
+    "name": "Discourse",
+    "url": "https://github.com/discourse/discourse",
+    "language": "Ruby",
+    "commit": "v1.8.9"
+  },
+  {
+    "origin": "github",
+    "name": "GitLab",
+    "url": "https://github.com/gitlabhq/gitlabhq",
+    "language": "Ruby",
+    "commit": "v10.0.4"
+  },
+  {
+    "origin": "github",
+    "name": "Vagrant",
+    "url": "https://github.com/hashicorp/vagrant",
+    "language": "Ruby",
+    "commit": "v2.0.0"
+  },
+  {
+    "origin": "github",
+    "name": "Sass",
+    "url": "https://github.com/sass/sass",
+    "language": "Ruby",
+    "commit": "3.5.2"
+  },
+  {
+    "origin": "github",
+    "name": "Homebrew",
+    "url": "https://github.com/Homebrew/brew",
+    "language": "Ruby",
+    "commit": "1.3.6"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "TensorFlow",
+    "url": "https://github.com/tensorflow/tensorflow",
+    "language": "C++",
+    "commit": "v1.3.1"
+  },
+  {
+    "origin": "github",
+    "name": "Electron",
+    "url": "https://github.com/electron/electron",
+    "language": "C++",
+    "commit": "v1.8.1"
+  },
+  {
+    "origin": "github",
+    "name": "Swift",
+    "url": "https://github.com/apple/swift",
+    "language": "C++",
+    "commit": "master"
+  },
+  {
+    "origin": "github",
+    "name": "Protocol Buffers",
+    "url": "https://github.com/google/protobuf",
+    "language": "C++",
+    "commit": "v3.4.1"
+  },
+  {
+    "origin": "github",
+    "name": "RethinkDB",
+    "url": "https://github.com/rethinkdb/rethinkdb",
+    "language": "C++",
+    "commit": "v2.3.6"
+  },
+  {
+    "origin": "github",
+    "name": "Bitcoin",
+    "url": "https://github.com/bitcoin/bitcoin",
+    "language": "C++",
+    "commit": "v0.15.0"
+  },
+  {
+    "origin": "github",
+    "name": "HHVM",
+    "url": "https://github.com/facebook/hhvm",
+    "language": "C++",
+    "commit": ""
+  },
+  {
+    "origin": "github",
+    "name": "Google Guetzli",
+    "url": "https://github.com/google/guetzli",
+    "language": "C++",
+    "commit": "v1.0.1"
+  },
+  {
+    "origin": "github",
+    "name": "V8",
+    "url": "https://github.com/v8/v8",
+    "language": "C++",
+    "commit": "6.4.47"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Linux",
+    "url": "https://github.com/torvalds/linux",
+    "language": "C",
+    "commit": "v4.13"
+  },
+  {
+    "origin": "github",
+    "name": "Redis",
+    "url": "https://github.com/antirez/redis",
+    "language": "C",
+    "commit": "v2.0.4-stable"
+  },
+  {
+    "origin": "github",
+    "name": "Git",
+    "url": "https://github.com/git/git",
+    "language": "C",
+    "commit": "v2.14.2"
+  },
+  {
+    "origin": "github",
+    "name": "Vim",
+    "url": "https://github.com/vim/vim",
+    "language": "C",
+    "commit": "master"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Oh My Zsh",
+    "url": "https://github.com/robbyrussell/oh-my-zsh",
+    "language": "Shell",
+    "commit": "master"
+  },
+  {
+    "origin": "github",
+    "name": "Rancher",
+    "url": "https://github.com/rancher/rancher",
+    "language": "Shell",
+    "commit": "v1.6.10"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "PowerShell",
+    "url": "https://github.com/PowerShell/PowerShell",
+    "language": "C#",
+    "commit": "master"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Docker",
+    "url": "https://github.com/moby/moby",
+    "language": "Go",
+    "commit": "v17.03.1-ce"
+  },
+  {
+    "origin": "github",
+    "name": "Golang",
+    "url": "https://github.com/golang/go",
+    "language": "Go",
+    "commit": "master"
+  },
+  {
+    "origin": "github",
+    "name": "Kubernetes",
+    "url": "https://github.com/kubernetes/kubernetes",
+    "language": "Go",
+    "commit": "v1.8.1"
+  },
+  {
+    "origin": "github",
+    "name": "InfluxDB",
+    "url": "https://github.com/influxdata/influxdb",
+    "language": "Go",
+    "commit": "v1.3.6"
+  },
+  {
+    "origin": "github",
+    "name": "Consul",
+    "url": "https://github.com/hashicorp/consul",
+    "language": "Go",
+    "commit": "v1.0.0"
+  },
+  {
+    "origin": "github",
+    "name": "Terraform",
+    "url": "https://github.com/hashicorp/terraform",
+    "language": "Go",
+    "commit": "v0.10.7"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Alamofire",
+    "url": "https://github.com/Alamofire/Alamofire",
+    "language": "Swift",
+    "commit": "4.5.1"
+  },
+  {
+    "origin": "github",
+    "name": "Vapor",
+    "url": "https://github.com/vapor/vapor",
+    "language": "Swift",
+    "commit": "2.2.2"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Spark",
+    "url": "https://github.com/apache/spark",
+    "language": "Scala",
+    "commit": "v2.2.0"
+  },
+  {
+    "origin": "github",
+    "name": "Play Framework",
+    "url": "https://github.com/playframework/playframework",
+    "language": "Scala",
+    "commit": "2.6.6"
+  },
+  {
+    "origin": "github",
+    "name": "Akka",
+    "url": "https://github.com/akka/akka",
+    "language": "Scala",
+    "commit": "v2.5.6"
+  },
+  {
+    "origin": "github",
+    "name": "Chronos",
+    "url": "https://github.com/mesos/chronos",
+    "language": "Scala",
+    "commit": "v3.0.2"
+  },
+  {
+    "origin": "github",
+    "name": "sbt",
+    "url": "https://github.com/sbt/sbt",
+    "language": "Scala",
+    "commit": "v1.0.2"
+  },
+  {
+    "origin": "github",
+    "name": "Finagle",
+    "url": "https://github.com/twitter/finagle",
+    "language": "Scala",
+    "commit": "master"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Pandoc",
+    "url": "https://github.com/jgm/pandoc",
+    "language": "Haskell",
+    "commit": "1.19.2"
+  },
+  {
+    "origin": "github",
+    "name": "ShellCheck",
+    "url": "https://github.com/koalaman/shellcheck",
+    "language": "Haskell",
+    "commit": "v0.4.6"
+  },
+  {
+    "origin": "github",
+    "name": "Elm",
+    "url": "https://github.com/elm-lang/elm-compiler",
+    "language": "Haskell",
+    "commit": "0.18.0"
+  },
+  {
+    "origin": "github",
+    "name": "Haxl",
+    "url": "https://github.com/facebook/Haxl",
+    "language": "Haskell",
+    "commit": "master"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Kong",
+    "url": "https://github.com/Kong/kong",
+    "language": "Lua",
+    "commit": "0.11.0"
+  },
+  {
+    "origin": "github",
+    "name": "Neural Style",
+    "url": "https://github.com/jcjohnson/neural-style",
+    "language": "Lua",
+    "commit": "master"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Clojure",
+    "url": "https://github.com/clojure/clojure",
+    "language": "Clojure",
+    "commit": "clojure-1.8.0"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "vrn",
+    "url": "https://github.com/AaronJackson/vrn",
+    "language": "Matlab",
+    "commit": "master"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "webduino",
+    "url": "https://github.com/sirleech/Webduino",
+    "language": "Arduino",
+    "commit": "master"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Jd-Gui",
+    "url": "https://github.com/java-decompiler/jd-gui",
+    "language": "Groovy",
+    "commit": "v1.4.0"
+  },
+  {
+    "origin": "github",
+    "name": "Rundeck",
+    "url": "https://github.com/rundeck/rundeck",
+    "language": "Groovy",
+    "commit": ""
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Rust",
+    "url": "https://github.com/rust-lang/rust",
+    "language": "Rust",
+    "commit": "release-0.7"
+  },
+  {
+    "origin": "github",
+    "name": "Xi editor",
+    "url": "https://github.com/google/xi-editor",
+    "language": "Rust",
+    "commit": "master"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "OTP",
+    "url": "https://github.com/erlang/otp",
+    "language": "Erlang",
+    "commit": "OTP_R16B03"
+  },
+  {
+    "origin": "github",
+    "name": "CouchDB",
+    "url": "https://github.com/apache/couchdb",
+    "language": "Erlang",
+    "commit": "2.1.0"
+  },
+  {
+    "origin": "github",
+    "name": "RabbitMQ",
+    "url": "https://github.com/rabbitmq/rabbitmq-server",
+    "language": "Erlang",
+    "commit": "rabbitmq_v3_6_12"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Apollo 11",
+    "url": "https://github.com/chrislgarry/Apollo-11",
+    "language": "Assembly",
+    "commit": "master"
+  },
+  {
+    "origin": "github",
+    "name": "Prince of Persia",
+    "url": "https://github.com/jmechner/Prince-of-Persia-Apple-II",
+    "language": "Assembly",
+    "commit": "master"
+  },
+  {
+    "origin": "github",
+    "name": "Dgraph",
+    "url": "https://github.com/dgraph-io/dgraph",
+    "language": "Assembly",
+    "commit": "v0.8.3"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Visual Studio Code",
+    "url": "https://github.com/Microsoft/vscode",
+    "language": "TypeScript",
+    "commit": "1.17.2"
+  },
+  {
+    "origin": "github",
+    "name": "Ionic",
+    "url": "https://github.com/ionic-team/ionic",
+    "language": "TypeScript",
+    "commit": "v3.7.1"
+  },
+  {
+    "origin": "github",
+    "name": "Angular",
+    "url": "https://github.com/angular/angular",
+    "language": "TypeScript",
+    "commit": "4.4.6"
+  },
+  {
+    "origin": "github",
+    "name": "TypeScript",
+    "url": "https://github.com/Microsoft/TypeScript",
+    "language": "TypeScript",
+    "commit": "v2.6.0"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Awesome emacs",
+    "url": "https://github.com/emacs-tw/awesome-emacs",
+    "language": "Lisp",
+    "commit": "master"
+  },
+  {
+    "origin": "github",
+    "name": "Mezzano OS",
+    "url": "https://github.com/froggey/Mezzano",
+    "language": "Lisp",
+    "commit": "demo3"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Julia",
+    "url": "https://github.com/JuliaLang/julia",
+    "language": "Julia",
+    "commit": "v0.6.0"
+  },
+
+
+  {
+    "origin": "github",
+    "name": "Elixir Lang",
+    "url": "https://github.com/elixir-lang/elixir",
+    "language": "Elixir",
+    "commit": "v1.5.2"
+  },
+  {
+    "origin": "github",
+    "name": "Phoenix Framework",
+    "url": "https://github.com/phoenixframework/phoenix",
+    "language": "Elixir",
+    "commit": "v1.3.0"
+  },
+  {
+    "origin": "github",
+    "name": "Credo",
+    "url": "https://github.com/",
+    "language": "Elixir",
+    "commit": "v0.8.8"
+  }
+
 ]

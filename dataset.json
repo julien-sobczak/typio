@@ -1,12 +1,503 @@
 [
 
   {
-    "origin": "gutemberg",
+    "origin": "gutenberg",
+    "title": "The Adventures of Sherlock Holmes",
+    "author": "Arthur Conan Doyle",
+    "url": "https://www.gutenberg.org/ebooks/1661",
+    "file": "http://www.gutenberg.org/cache/epub/1661/pg1661.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "url": "https://www.gutenberg.org/ebooks/1342",
+    "file": "https://www.gutenberg.org/files/1342/1342-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Romeo and Juliet",
+    "author": "William Shakespeare",
+    "url": "https://www.gutenberg.org/ebooks/1112",
+    "file": "http://www.gutenberg.org/cache/epub/1112/pg1112.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Alice's Adventures in Wonderland",
+    "author": "Lewis Carroll",
+    "url": "https://www.gutenberg.org/ebooks/11",
+    "file": "https://www.gutenberg.org/files/11/11-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Hamlet",
+    "author": "William Shakespeare",
+    "url": "https://www.gutenberg.org/ebooks/1524",
+    "file": "http://www.gutenberg.org/cache/epub/1524/pg1524.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Dracula",
+    "author": "Bram Stoker",
+    "url": "https://www.gutenberg.org/ebooks/345",
+    "file": "http://www.gutenberg.org/cache/epub/345/pg345.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Tales of Space and Time",
+    "author": "H. G. Wells",
+    "url": "https://www.gutenberg.org/ebooks/27365",
+    "file": "https://www.gutenberg.org/files/27365/27365-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Peter Pan",
+    "author": "J. M. Barrie",
+    "url": "https://www.gutenberg.org/ebooks/16",
+    "file": "https://www.gutenberg.org/files/16/16-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Twelve Years a Slave",
+    "author": "Solomon Northup",
+    "url": "https://www.gutenberg.org/ebooks/45631",
+    "file": "http://www.gutenberg.org/cache/epub/45631/pg45631.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "The Wonderful Wizard of Oz",
+    "author": "L. Frank Baum",
+    "url": "https://www.gutenberg.org/ebooks/55",
+    "file": "http://www.gutenberg.org/cache/epub/55/pg55.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Grimms' Fairy Tales",
+    "author": "Jacob Grimm and Wilhelm Grimm",
+    "url": "https://www.gutenberg.org/ebooks/2591",
+    "file": "https://www.gutenberg.org/files/2591/2591-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Treasure Island",
+    "author": "Robert Louis Stevenson",
+    "url": "https://www.gutenberg.org/ebooks/120",
+    "file": "http://www.gutenberg.org/cache/epub/120/pg120.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "The Call of the Wild",
+    "author": "Jack London",
+    "url": "https://www.gutenberg.org/ebooks/215",
+    "file": "https://www.gutenberg.org/files/215/215-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Adventures of Huckleberry Finn",
+    "author": "Mark Twain",
+    "url": "https://www.gutenberg.org/ebooks/76",
+    "file": "https://www.gutenberg.org/files/76/76-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Frankenstein",
+    "author": "Mary Wollstonecraft Shelley",
+    "url": "https://www.gutenberg.org/ebooks/84",
+    "file": "http://www.gutenberg.org/cache/epub/84/pg84.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Wuthering Heights",
+    "author": "Emily Brontë",
+    "url": "https://www.gutenberg.org/ebooks/768",
+    "file": "http://www.gutenberg.org/cache/epub/768/pg768.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Moby Dick",
+    "author": "Herman Melville",
+    "url": "https://www.gutenberg.org/ebooks/2701",
+    "file": "https://www.gutenberg.org/files/2701/2701-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Robinson Crusoe",
+    "author": "Daniel Defoe",
+    "url": "https://www.gutenberg.org/ebooks/521",
+    "file": "https://www.gutenberg.org/files/521/521-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
     "title": "The Adventures of Tom Sawyer",
     "author": "Mark Twain",
     "url": "https://www.gutenberg.org/ebooks/74",
-    "language": "english"
-  }
+    "file": "https://www.gutenberg.org/files/74/74-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Gulliver's Travels",
+    "author": "Jonathan Swift",
+    "url": "https://www.gutenberg.org/ebooks/829",
+    "file": "https://www.gutenberg.org/files/829/829-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Oliver Twist",
+    "author": "Charles Dickens",
+    "url": "https://www.gutenberg.org/ebooks/730",
+    "file": "http://www.gutenberg.org/cache/epub/730/pg730.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Autobiography of Benjamin Franklin",
+    "author": "Benjamin Franklin",
+    "url": "https://www.gutenberg.org/ebooks/20203",
+    "file": "http://www.gutenberg.org/cache/epub/20203/pg20203.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Little Women",
+    "author": "Louisa May Alcott",
+    "url": "https://www.gutenberg.org/ebooks/514",
+    "file": "http://www.gutenberg.org/cache/epub/514/pg514.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "The Jungle Book",
+    "author": "Rudyard Kipling",
+    "url": "https://www.gutenberg.org/ebooks/236",
+    "file": "https://www.gutenberg.org/files/236/236-0.txt",
+    "language": "English"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Ivanhoe",
+    "author": "Walter Scott",
+    "url": "https://www.gutenberg.org/ebooks/82",
+    "file": "https://www.gutenberg.org/files/82/82-0.txt",
+    "language": "English"
+  },
+
+  {
+    "origin": "gutenberg",
+    "title": "Voyage au Centre de la Terre",
+    "author": "Jules Verne",
+    "url": "https://www.gutenberg.org/ebooks/4791",
+    "file": "http://www.gutenberg.org/cache/epub/4791/pg4791.txt",
+    "language": "French"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Candide",
+    "author": "Voltaire",
+    "url": "https://www.gutenberg.org/ebooks/4650",
+    "file": "http://www.gutenberg.org/cache/epub/4650/pg4650.txt",
+    "language": "French"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Le rouge et le noir",
+    "author": "Stendhal",
+    "url": "https://www.gutenberg.org/ebooks/798",
+    "file": "http://www.gutenberg.org/cache/epub/798/pg798.txt",
+    "language": "French"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Vingt mille Lieues Sous Les Mers",
+    "author": "Jules Verne",
+    "url": "https://www.gutenberg.org/ebooks/5097",
+    "file": "http://www.gutenberg.org/cache/epub/5097/pg5097.txt",
+    "language": "French"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Le Tour du monde en quatre-vingts jours",
+    "author": "Jules Verne",
+    "url": "https://www.gutenberg.org/ebooks/46541",
+    "file": "https://www.gutenberg.org/files/46541/46541-0.txt",
+    "language": "French"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Le Dernier Jour d'un Condamné",
+    "author": "Victor Hugo",
+    "url": "https://www.gutenberg.org/ebooks/6838",
+    "file": "http://www.gutenberg.org/cache/epub/6838/pg6838.txt",
+    "language": "French"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Discours de la méthode",
+    "author": "René Descartes",
+    "url": "https://www.gutenberg.org/ebooks/13846",
+    "file": "https://www.gutenberg.org/files/13846/13846-0.txt",
+    "language": "French"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Germinal",
+    "author": "Émile Zola",
+    "url": "https://www.gutenberg.org/ebooks/5711",
+    "file": "http://www.gutenberg.org/cache/epub/5711/pg5711.txt",
+    "language": "French"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Arsène Lupin, gentleman-cambrioleur",
+    "author": "Maurice Leblanc",
+    "url": "https://www.gutenberg.org/ebooks/32854",
+    "file": "http://www.gutenberg.org/cache/epub/32854/pg32854.txt",
+    "language": "French"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Les trois mousquetaires",
+    "author": "Alexandre Dumas",
+    "url": "https://www.gutenberg.org/ebooks/13951",
+    "file": "http://www.gutenberg.org/cache/epub/13951/pg13951.txt",
+    "language": "French"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Madame Bovary",
+    "author": "Gustave Flaubert",
+    "url": "https://www.gutenberg.org/ebooks/14155",
+    "file": "http://www.gutenberg.org/cache/epub/14155/pg14155.txt",
+    "language": "French"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "King Solomon's Mines",
+    "author": "H. Rider Haggard",
+    "url": "https://www.gutenberg.org/ebooks/2166",
+    "file": "http://www.gutenberg.org/cache/epub/2166/pg2166.txt",
+    "language": "French"
+  },
+
+  {
+    "origin": "gutenberg",
+    "title": "Die Verwandlung",
+    "author": "Franz Kafka",
+    "url": "https://www.gutenberg.org/ebooks/22367",
+    "file": "http://www.gutenberg.org/cache/epub/22367/pg22367.txt",
+    "language": "german"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Faust",
+    "author": "Johann Wolfgang von Goethe",
+    "url": "https://www.gutenberg.org/ebooks/2229",
+    "file": "http://www.gutenberg.org/cache/epub/2229/pg2229.txt",
+    "language": "german"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Die Räuber",
+    "author": "Friedrich Schiller",
+    "url": "https://www.gutenberg.org/ebooks/47804",
+    "file": "http://www.gutenberg.org/cache/epub/47804/pg47804.txt",
+    "language": "german"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Buddenbrooks",
+    "author": "Thomas Mann",
+    "url": "https://www.gutenberg.org/ebooks/34811",
+    "file": "http://www.gutenberg.org/cache/epub/34811/pg34811.txt",
+    "language": "german"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Siddhartha",
+    "author": "Hermann Hesse",
+    "url": "https://www.gutenberg.org/ebooks/2499",
+    "file": "http://www.gutenberg.org/cache/epub/2499/pg2499.txt",
+    "language": "german",
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Der Tod in Venedig",
+    "author": "Thomas Mann",
+    "url": "https://www.gutenberg.org/ebooks/12108",
+    "file": "http://www.gutenberg.org/cache/epub/12108/pg12108.txt",
+    "language": "german"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Effi Briest",
+    "author": "Theodor Fontane",
+    "url": "https://www.gutenberg.org/ebooks/5323",
+    "file": "http://www.gutenberg.org/cache/epub/5323/pg5323.txt",
+    "language": "german"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Also sprach Zarathustra",
+    "author": "Nietzsche",
+    "url": "https://www.gutenberg.org/ebooks/7205",
+    "file": "http://www.gutenberg.org/cache/epub/7205/pg7205.txt",
+    "language": "german"
+  },
+
+  {
+    "origin": "gutenberg",
+    "title": "Don Quijote",
+    "author": "Miguel de Cervantes Saavedra",
+    "url": "https://www.gutenberg.org/ebooks/2000",
+    "file": "http://www.gutenberg.org/cache/epub/2000/pg2000.txt",
+    "language": "spanish"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Niebla",
+    "author": "Miguel de Unamuno",
+    "url": "https://www.gutenberg.org/ebooks/49836",
+    "file": "https://www.gutenberg.org/files/49836/49836-0.txt",
+    "language": "spanish"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "La Celestina",
+    "author": "Fernando de Rojas",
+    "url": "https://www.gutenberg.org/ebooks/1619",
+    "file": "http://www.gutenberg.org/cache/epub/1619/pg1619.txt",
+    "language": "spanish"
+  },
+
+  {
+    "origin": "gutenberg",
+    "title": "Os Lusíadas",
+    "author": "Luís de Camões",
+    "url": "https://www.gutenberg.org/ebooks/3333",
+    "file": "http://www.gutenberg.org/cache/epub/3333/pg3333.txt",
+    "language": "portuguese"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Four Plays of Gil Vicente",
+    "author": "Gil Vicente",
+    "url": "https://www.gutenberg.org/ebooks/28399",
+    "file": "https://www.gutenberg.org/files/28399/28399-0.txt",
+    "language": "portuguese"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "O crime do padre Amaro",
+    "author": "Eça de Queirós",
+    "url": "https://www.gutenberg.org/ebooks/31971",
+    "file": "http://www.gutenberg.org/cache/epub/31971/pg31971.txt",
+    "language": "portuguese"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Amor de Perdição",
+    "author": "Camilo Castelo Branco",
+    "url": "https://www.gutenberg.org/ebooks/16425",
+    "file": "http://www.gutenberg.org/cache/epub/16425/pg16425.txt",
+    "language": "portuguese"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "A Cidade e as Serras",
+    "author": "Eça de Queirós",
+    "url": "https://www.gutenberg.org/ebooks/18220",
+    "file": "http://www.gutenberg.org/cache/epub/18220/pg18220.txt",
+    "language": "portuguese"
+  },
+
+  {
+    "origin": "gutenberg",
+    "title": "La Divina Commedia di Dante",
+    "author": "Dante Alighieri",
+    "url": "https://www.gutenberg.org/ebooks/1012",
+    "file": "https://www.gutenberg.org/files/1012/1012-0.txt",
+    "language": "italian"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Orlando Furioso",
+    "author": "Lodovico Ariosto",
+    "url": "https://www.gutenberg.org/ebooks/3747",
+    "file": "https://www.gutenberg.org/files/3747/3747-0.txt",
+    "language": "italian"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Le vergini delle rocce",
+    "author": "Gabriele D'Annunzio",
+    "url": "https://www.gutenberg.org/ebooks/42513",
+    "file": "https://www.gutenberg.org/files/42513/42513-0.txt",
+    "language": "italian"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Sei personaggi in cerca d'autore",
+    "author": "Luigi Pirandello",
+    "url": "https://www.gutenberg.org/ebooks/18457",
+    "file": "http://www.gutenberg.org/cache/epub/18457/pg18457.txt",
+    "language": "italian"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Le avventure di Pinocchio",
+    "author": "Carlo Collodi",
+    "url": "https://www.gutenberg.org/ebooks/52484",
+    "file": "https://www.gutenberg.org/files/52484/52484-0.txt",
+    "language": "italian"
+  },
+
+  {
+    "origin": "gutenberg",
+    "title": "Pan Tadeusz",
+    "author": "Adam Mickiewicz",
+    "url": "https://www.gutenberg.org/ebooks/31536",
+    "file": "https://www.gutenberg.org/files/31536/31536-0.txt",
+    "language": "polish"
+  },
+  {
+    "origin": "gutenberg",
+    "title": "Anhelli",
+    "author": "Juliusz Słowacki",
+    "url": "https://www.gutenberg.org/ebooks/28121",
+    "file": "https://www.gutenberg.org/files/28121/28121-0.txt",
+    "language": "polish"
+  },
+
+  {
+    "origin": "gutenberg",
+    "title": "Max Havelaar",
+    "author": "Multatuli",
+    "url": "https://www.gutenberg.org/ebooks/11024",
+    "file": "http://www.gutenberg.org/cache/epub/11024/pg11024.txt",
+    "language": "dutch"
+  },
+
+
+
 
   {
     "origin": "github",

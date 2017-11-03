@@ -1,2 +1,4 @@
 .firebaserc
 /build/
+env/
+/content/

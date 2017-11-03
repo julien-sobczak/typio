@@ -304,7 +304,7 @@
     "author": "Franz Kafka",
     "url": "https://www.gutenberg.org/ebooks/22367",
     "file": "http://www.gutenberg.org/cache/epub/22367/pg22367.txt",
-    "language": "german"
+    "language": "German"
   },
   {
     "origin": "gutenberg",
@@ -312,7 +312,7 @@
     "author": "Johann Wolfgang von Goethe",
     "url": "https://www.gutenberg.org/ebooks/2229",
     "file": "http://www.gutenberg.org/cache/epub/2229/pg2229.txt",
-    "language": "german"
+    "language": "German"
   },
   {
     "origin": "gutenberg",
@@ -320,7 +320,7 @@
     "author": "Friedrich Schiller",
     "url": "https://www.gutenberg.org/ebooks/47804",
     "file": "http://www.gutenberg.org/cache/epub/47804/pg47804.txt",
-    "language": "german"
+    "language": "German"
   },
   {
     "origin": "gutenberg",
@@ -328,7 +328,7 @@
     "author": "Thomas Mann",
     "url": "https://www.gutenberg.org/ebooks/34811",
     "file": "http://www.gutenberg.org/cache/epub/34811/pg34811.txt",
-    "language": "german"
+    "language": "German"
   },
   {
     "origin": "gutenberg",
@@ -336,7 +336,7 @@
     "author": "Hermann Hesse",
     "url": "https://www.gutenberg.org/ebooks/2499",
     "file": "http://www.gutenberg.org/cache/epub/2499/pg2499.txt",
-    "language": "german",
+    "language": "German"
   },
   {
     "origin": "gutenberg",
@@ -344,7 +344,7 @@
     "author": "Thomas Mann",
     "url": "https://www.gutenberg.org/ebooks/12108",
     "file": "http://www.gutenberg.org/cache/epub/12108/pg12108.txt",
-    "language": "german"
+    "language": "German"
   },
   {
     "origin": "gutenberg",
@@ -352,7 +352,7 @@
     "author": "Theodor Fontane",
     "url": "https://www.gutenberg.org/ebooks/5323",
     "file": "http://www.gutenberg.org/cache/epub/5323/pg5323.txt",
-    "language": "german"
+    "language": "German"
   },
   {
     "origin": "gutenberg",
@@ -360,7 +360,7 @@
     "author": "Nietzsche",
     "url": "https://www.gutenberg.org/ebooks/7205",
     "file": "http://www.gutenberg.org/cache/epub/7205/pg7205.txt",
-    "language": "german"
+    "language": "German"
   },
 
   {
@@ -369,7 +369,7 @@
     "author": "Miguel de Cervantes Saavedra",
     "url": "https://www.gutenberg.org/ebooks/2000",
     "file": "http://www.gutenberg.org/cache/epub/2000/pg2000.txt",
-    "language": "spanish"
+    "language": "Spanish"
   },
   {
     "origin": "gutenberg",
@@ -377,7 +377,7 @@
     "author": "Miguel de Unamuno",
     "url": "https://www.gutenberg.org/ebooks/49836",
     "file": "https://www.gutenberg.org/files/49836/49836-0.txt",
-    "language": "spanish"
+    "language": "Spanish"
   },
   {
     "origin": "gutenberg",
@@ -385,7 +385,7 @@
     "author": "Fernando de Rojas",
     "url": "https://www.gutenberg.org/ebooks/1619",
     "file": "http://www.gutenberg.org/cache/epub/1619/pg1619.txt",
-    "language": "spanish"
+    "language": "Spanish"
   },
 
   {
@@ -394,7 +394,7 @@
     "author": "Luís de Camões",
     "url": "https://www.gutenberg.org/ebooks/3333",
     "file": "http://www.gutenberg.org/cache/epub/3333/pg3333.txt",
-    "language": "portuguese"
+    "language": "Portuguese"
   },
   {
     "origin": "gutenberg",
@@ -402,7 +402,7 @@
     "author": "Gil Vicente",
     "url": "https://www.gutenberg.org/ebooks/28399",
     "file": "https://www.gutenberg.org/files/28399/28399-0.txt",
-    "language": "portuguese"
+    "language": "Portuguese"
   },
   {
     "origin": "gutenberg",
@@ -410,7 +410,7 @@
     "author": "Eça de Queirós",
     "url": "https://www.gutenberg.org/ebooks/31971",
     "file": "http://www.gutenberg.org/cache/epub/31971/pg31971.txt",
-    "language": "portuguese"
+    "language": "Portuguese"
   },
   {
     "origin": "gutenberg",
@@ -418,7 +418,7 @@
     "author": "Camilo Castelo Branco",
     "url": "https://www.gutenberg.org/ebooks/16425",
     "file": "http://www.gutenberg.org/cache/epub/16425/pg16425.txt",
-    "language": "portuguese"
+    "language": "Portuguese"
   },
   {
     "origin": "gutenberg",
@@ -426,7 +426,7 @@
     "author": "Eça de Queirós",
     "url": "https://www.gutenberg.org/ebooks/18220",
     "file": "http://www.gutenberg.org/cache/epub/18220/pg18220.txt",
-    "language": "portuguese"
+    "language": "Portuguese"
   },
 
   {
@@ -435,7 +435,7 @@
     "author": "Dante Alighieri",
     "url": "https://www.gutenberg.org/ebooks/1012",
     "file": "https://www.gutenberg.org/files/1012/1012-0.txt",
-    "language": "italian"
+    "language": "Italian"
   },
   {
     "origin": "gutenberg",
@@ -443,7 +443,7 @@
     "author": "Lodovico Ariosto",
     "url": "https://www.gutenberg.org/ebooks/3747",
     "file": "https://www.gutenberg.org/files/3747/3747-0.txt",
-    "language": "italian"
+    "language": "Italian"
   },
   {
     "origin": "gutenberg",
@@ -451,7 +451,7 @@
     "author": "Gabriele D'Annunzio",
     "url": "https://www.gutenberg.org/ebooks/42513",
     "file": "https://www.gutenberg.org/files/42513/42513-0.txt",
-    "language": "italian"
+    "language": "Italian"
   },
   {
     "origin": "gutenberg",
@@ -459,7 +459,7 @@
     "author": "Luigi Pirandello",
     "url": "https://www.gutenberg.org/ebooks/18457",
     "file": "http://www.gutenberg.org/cache/epub/18457/pg18457.txt",
-    "language": "italian"
+    "language": "Italian"
   },
   {
     "origin": "gutenberg",
@@ -467,7 +467,7 @@
     "author": "Carlo Collodi",
     "url": "https://www.gutenberg.org/ebooks/52484",
     "file": "https://www.gutenberg.org/files/52484/52484-0.txt",
-    "language": "italian"
+    "language": "Italian"
   },
 
   {
@@ -476,7 +476,7 @@
     "author": "Adam Mickiewicz",
     "url": "https://www.gutenberg.org/ebooks/31536",
     "file": "https://www.gutenberg.org/files/31536/31536-0.txt",
-    "language": "polish"
+    "language": "Polish"
   },
   {
     "origin": "gutenberg",
@@ -484,7 +484,7 @@
     "author": "Juliusz Słowacki",
     "url": "https://www.gutenberg.org/ebooks/28121",
     "file": "https://www.gutenberg.org/files/28121/28121-0.txt",
-    "language": "polish"
+    "language": "Polish"
   },
 
   {
@@ -493,7 +493,7 @@
     "author": "Multatuli",
     "url": "https://www.gutenberg.org/ebooks/11024",
     "file": "http://www.gutenberg.org/cache/epub/11024/pg11024.txt",
-    "language": "dutch"
+    "language": "Dutch"
   },
 
 

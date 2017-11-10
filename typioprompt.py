@@ -15,10 +15,39 @@ from prompt_toolkit.token import Token
 
 from tqdm import tqdm
 
+from collections import defaultdict
+from collections import Counter
 import json
 import os
 import requests
+import shutil
 import zipfile
+
+
+def human_size(size_bytes):
+    """
+    format a size in bytes into a 'human' file size, e.g. bytes, KB, MB, GB, TB, PB
+    Note that bytes/KB will be reported in whole numbers but MB and above will have greater precision
+    e.g. 1 byte, 43 bytes, 443 KB, 4.3 MB, 4.43 GB, etc
+    """
+    if size_bytes == 1:
+        # because I really hate unnecessary plurals
+        return "1 byte"
+
+    suffixes_table = [('bytes',0),('KB',0),('MB',1),('GB',2),('TB',2), ('PB',2)]
+
+    num = float(size_bytes)
+    for suffix, precision in suffixes_table:
+        if num < 1024.0:
+            break
+        num /= 1024.0
+
+    if precision == 0:
+        formatted_size = "%d" % num
+    else:
+        formatted_size = str(round(num, ndigits=precision))
+
+    return "%s %s" % (formatted_size, suffix)
 
 
 class Dataset:
@@ -146,13 +175,33 @@ def typio_prompt(dataset):
         zip_ref.close()
         print("Extract successfully into '%s'" % local_dir)
 
+        # The archive contains a root folder we need to remove
+        root_files = os.listdir(local_dir)
+        if len(root_files) == 1:
+            root_folder = os.path.join(local_dir, root_files[0])
+            for filename in os.listdir(root_folder):
+                shutil.move(os.path.join(root_folder, filename), os.path.join(local_dir, filename))
+            os.rmdir(root_folder)
+            print("Root folder successfully updated")
+
     ##
     ## Command 'delete'
     ##
 
     def delete(entry_name):
-        # TODO
-        pass
+        entry = dataset.get_entry(entry_name)
+
+        local_file = CONTENT_DIR + '/github/' + dataset.get_description_name(entry_name) + '.zip'
+        local_dir = CONTENT_DIR + '/github/' + dataset.get_description_name(entry_name)
+
+        if os.path.isfile(local_file):
+            os.remove(local_file)
+            print("Delete successfully file '%s'." % local_file)
+
+        if os.path.isdir(local_dir):
+            shutil.rmtree(local_dir)
+            print("Delete successfully folder '%s'." % local_dir)
+
 
     ##
     ## Command 'clean'
@@ -161,6 +210,48 @@ def typio_prompt(dataset):
     def clean(entry_name):
         # TODO
         pass
+
+
+    ##
+    ## Command 'inspect'
+    ##
+
+    def inspect(entry_name):
+        entry = dataset.get_entry(entry_name)
+
+        cnt = Counter()
+        sizes_per_extension = defaultdict(lambda: 0)
+        sizes_per_folder = defaultdict(lambda: 0)
+        total_size = 0
+
+        local_dir = CONTENT_DIR + '/github/' + dataset.get_description_name(entry_name)
+        for dirName, subdirList, fileList in os.walk(local_dir):
+            for fname in fileList:
+                aname = os.path.join(dirName, fname)
+                extension = os.path.splitext(fname)[1]
+                if extension:
+                    extension = extension[1:]
+                    size = os.path.getsize(aname)
+                    root_folder = aname.replace(local_dir + '/', '').split('/')[0]
+
+                    total_size += size
+                    cnt[extension] += 1
+                    sizes_per_extension[extension] += size
+                    if fname != root_folder:
+                        sizes_per_folder[root_folder] += size
+
+        print('Total size: %s\n' % human_size(total_size))
+
+        print('By folder:')
+        for folder, size in sizes_per_folder.items():
+            print('- %s: %s' % (folder, human_size(sizes_per_folder[folder])))
+        print('')
+
+        print('By extension')
+        for extension, count in cnt.most_common(10):
+            print('- %s = %s (%s)' % (extension, count, \
+                human_size(sizes_per_extension[extension])))
+        print('')
 
 
     ##
@@ -182,6 +273,7 @@ def typio_prompt(dataset):
     commands = {
         'download': download,
         'extract':  extract,
+        'inspect':  inspect,
         'delete':   delete,
         'clean':    clean,
     }
@@ -223,7 +315,8 @@ def typio_prompt(dataset):
 
 
             else:
-                print('Invalid command\n')
+                if text.strip():
+                    print('Invalid command\n')
                 continue
 
     except (EOFError, KeyboardInterrupt):

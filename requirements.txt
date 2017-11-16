@@ -2,3 +2,4 @@ requests
 tqdm
 prompt_toolkit
 pygments
+binaryornot

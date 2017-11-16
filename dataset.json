@@ -604,7 +604,9 @@
     "name": "Mockito",
     "url": "https://github.com/mockito/mockito",
     "language": "Java",
-    "commit": "v2.11.0"
+    "commit": "v2.11.0",
+    "includes": ["/src/", "*.gradle", "*.properties"],
+    "excludes": ["/src/javadoc/", "/src/conf/"]
   },
   {
     "origin": "github",

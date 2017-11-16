@@ -3,3 +3,4 @@ tqdm
 prompt_toolkit
 pygments
 binaryornot
+awesome-slugify

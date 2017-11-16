@@ -17,17 +17,42 @@ from tqdm import tqdm
 
 from binaryornot.check import is_binary
 
+from slugify import slugify
+
 from collections import defaultdict
 from collections import Counter
 from collections import OrderedDict
 import fnmatch
 import json
 import os
+import re
 import requests
 import shutil
 import string
 import zipfile
 
+
+class Colors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+    @staticmethod
+    def file(filename):
+        return Colors.OKBLUE + filename + Colors.ENDC
+
+    @staticmethod
+    def warn(message):
+        return Colors.WARNING + message + Colors.ENDC
+
+    @staticmethod
+    def error(message):
+        return Colors.FAIL + message + Colors.ENDC
 
 
 def folder_size(path):
@@ -37,7 +62,6 @@ def folder_size(path):
         for f in files:
             size += os.path.getsize(os.path.join(root, f))
     return size
-
 
 def human_size(size_bytes):
     """
@@ -75,14 +99,24 @@ class Entry:
 
     @property
     def name(self):
-        if self['origin'] == 'gutenberg':
-            return self['title']
-        elif self['origin'] == 'github':
-            return self['name']
+        if self.data['origin'] == 'gutenberg':
+            return self.data['title']
+        elif self.data['origin'] == 'github':
+            return self.data['name']
 
     @property
     def origin(self):
-       return self['origin']
+       return self.data['origin']
+
+    @property
+    def slug(self):
+        if self.origin == 'github':
+            organization, project = self.data['url'].replace('https://github.com/', '').split('/')
+            commit = self.data['commit']
+            slug = organization + '_' + project + '_' + commit
+            return slug
+        elif self.origin == 'gutenberg':
+            return slugify(self.data['title'])
 
     @property
     def url(self):
@@ -93,12 +127,6 @@ class Entry:
 
         elif self.data['origin'] == 'gutenberg':
             return self.data['file']
-
-    @property
-    def description(self):
-        organization, project = self.data['url'].replace('https://github.com/', '').split('/')
-        commit = self.data['commit']
-        return organization + '_' + project + '_' + commit
 
     def _match_pattern(self, pattern, file, is_directory):
         test_pattern = ""
@@ -117,15 +145,29 @@ class Entry:
     def ignorable(self, file, is_directory):
         includes = ['*']
         excludes = []
+        extensions = ['']
         if 'includes' in self.data:
             includes = self.data['includes']
         if 'excludes' in self.data:
             excludes = self.data['excludes']
+        if 'extensions' in self.data:
+            extensions = self.data['extensions']
+
+        name = os.path.basename(os.path.normpath(file))
 
         # Ignore hidden files
-        name = os.path.basename(os.path.normpath(file))
         if len(name) > 2 and name.startswith('.'):  # ignore . and ..
             return True
+
+        # Ignore some extensions
+        if not is_directory:
+            match = False
+            for ext in extensions:
+                if name.endswith(ext):
+                    match = True
+                    break
+            if not match:
+                return True
 
         # Test whitelist
         match = False
@@ -190,24 +232,51 @@ class Dataset:
         return names
 
 
-def typio_prompt(dataset):
+
+class TypioPrompt:
 
     CONTENT_DIR = './content'
 
-    i = 0
-
-    typio_style = style_from_dict({
+    TYPIO_STYLE = style_from_dict({
         Token.Operator:      '#33aa33 bold',
         Token.TrailingInput: 'bg:#662222 #ffffff',
         Token.Toolbar:       '#ffffff bg:#333333',
     })
 
+    def __init__(self, dataset):
+        self.dataset = Dataset(dataset)
+
+    def showUsage(self):
+        print("""List of commands:
+  * download <entry>
+      Download the content from the Internet (GitHub, Gutenberg)
+  * inspect <entry>
+      Inspect the content to show stats (size, number of files or chapters, ...)
+  * get <entry>
+      Sane as running successively the commands `download`, `extract`, `clean`, and `metadata`
+""")
+
     ##
     ## Command 'download'
     ##
 
-    def download(entry):
-        url = dataset.get_entry_url(entry_name)
+    def download_github(self, entry):
+        local_file = self.CONTENT_DIR + '/github/' + entry.slug + '.zip'
+
+        print('Retrieving source code from Github...')
+        self._download_file(entry.url, local_file)
+
+    def download_gutenberg(self, entry):
+        local_file = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.txt'
+
+        print('Retrieving script from Gutenberg...')
+        self._download_file(entry.url, local_file)
+
+    def _download_file(self, url, to_file):
+        # Do nothing if the archive was already downloaded
+        if os.path.isfile(to_file):
+            print(("File '%s' already exists.") % Colors.file(to_file))
+            return
 
         # Streaming, so we can iterate over the response.
         r = requests.get(url, stream=True)
@@ -215,43 +284,31 @@ def typio_prompt(dataset):
         # Total size in bytes.
         total_size = int(r.headers.get('content-length', 0));
 
-        organization, project = entry['url'].replace('https://github.com/', '').split('/')
-        commit = entry['commit']
-
-        local_file = CONTENT_DIR + '/github/' + dataset.get_description_name(entry_name) + '.zip'
-
-        # Do nothing if the archive was already downloaded
-        if os.path.isfile(local_file):
-            print("File '%s' already exists." % local_file)
-            return
-
         # Download use the tqdm library to display a progress bar
-        print('Retrieving source code from Github...')
-        with open(local_file, 'wb') as f:
+        with open(to_file, 'wb') as f:
             for data in tqdm(r.iter_content(32*1024), total=total_size, unit='B', unit_scale=True):
                 f.write(data)
-        print("Download successfully into '%s'" % local_file)
+        print("Download successfully into '%s'" % to_file)
 
 
     ##
     ## Command 'extract'
     ##
 
-    def extract(entry):
-
-        local_file = CONTENT_DIR + '/github/' + dataset.get_description_name(entry.name) + '.zip'
-        local_dir = CONTENT_DIR + '/github/' + dataset.get_description_name(entry.name)
+    def extract_github(self, entry):
+        local_file = self.CONTENT_DIR + '/github/' + entry.slug + '.zip'
+        local_dir = self.CONTENT_DIR + '/github/' + entry.slug
 
         # Do nothing if the target folder is already present
         if os.path.isfile(local_dir):
-            print("Folder '%s' already exists." % local_dir)
+            print("Folder '%s' already exists." % Colors.file(local_dir))
             return
 
         # Unzip the archive
         zip_ref = zipfile.ZipFile(local_file, 'r')
         zip_ref.extractall(local_dir)
         zip_ref.close()
-        print("Extract successfully into '%s'" % local_dir)
+        print("Extract successfully into '%s'" % Colors.file(local_dir))
 
         # The archive contains a root folder we need to remove
         root_files = os.listdir(local_dir)
@@ -266,31 +323,35 @@ def typio_prompt(dataset):
     ## Command 'delete'
     ##
 
-    def delete(entry):
-        entry = dataset.get_entry(entry_name)
-
-        local_file = CONTENT_DIR + '/github/' + dataset.get_description_name(entry_name) + '.zip'
-        local_dir = CONTENT_DIR + '/github/' + dataset.get_description_name(entry_name)
+    def delete_github(self, entry):
+        local_file = self.CONTENT_DIR + '/github/' + entry.slug + '.zip'
+        local_dir = self.CONTENT_DIR + '/github/' + entry.slug
 
         if os.path.isfile(local_file):
             os.remove(local_file)
-            print("Delete successfully file '%s'." % local_file)
+            print("Delete successfully file '%s'." % Colors.file(local_file))
 
         if os.path.isdir(local_dir):
             shutil.rmtree(local_dir)
-            print("Delete successfully folder '%s'." % local_dir)
+            print("Delete successfully folder '%s'." % Colors.file(local_dir))
 
+    def delete_gutenberg(self, entry):
+        local_file = self.CONTENT_DIR + '/github/' + entry.slug + '.txt'
+
+        if os.path.isfile(local_file):
+            os.remove(local_file)
+            print("Delete successfully file '%s'." % Colors.file(local_file))
 
     ##
     ## Command 'clean'
     ##
 
-    def clean(entry):
+    def clean_github(self, entry):
         count_file = 0
         count_directory = 0
         size = 0
 
-        local_dir = CONTENT_DIR + '/github/' + entry.description + '/'
+        local_dir = self.CONTENT_DIR + '/github/' + entry.slug + '/'
         for root, dirs, files in os.walk(local_dir):
             relative_root = root.replace(local_dir, '')
             ignorable_dirs  = [d for d in dirs  if entry.ignorable(os.path.join(relative_root, d), is_directory=True)]
@@ -298,7 +359,7 @@ def typio_prompt(dataset):
             for name in ignorable_dirs:
                 aname = os.path.join(root, name)      # absolute name
                 rname = aname.replace(local_dir, '')  # relative name
-                print("rmdir %s" % rname)
+                #print("rmdir %s" % rname)
                 dirs.remove(name)
                 count_directory += 1
                 size = folder_size(aname)
@@ -307,7 +368,7 @@ def typio_prompt(dataset):
             for name in ignorable_files:
                 aname = os.path.join(root, name)      # absolute name
                 rname = aname.replace(local_dir, '')  # relative name
-                print("rm %s" % rname)
+                #print("rm %s" % rname)
                 files.remove(name)
                 count_file += 1
                 size = os.path.getsize(aname)
@@ -321,19 +382,14 @@ def typio_prompt(dataset):
     ## Command 'inspect'
     ##
 
-    def inspect(entry):
+    def inspect_github(self, entry):
         # Counter metrics
         cnt = Counter()
         sizes_per_extension = defaultdict(lambda: 0)
         sizes_per_folder = defaultdict(lambda: 0)
         total_size = 0
 
-        # We keep the file metadata
-        metadata = {
-            'files': []
-        }
-
-        local_dir = CONTENT_DIR + '/github/' + entry.description
+        local_dir = self.CONTENT_DIR + '/github/' + entry.slug
         for dirName, subdirList, fileList in os.walk(local_dir):
             for fname in fileList:
                 aname = os.path.join(dirName, fname)        # absolute name
@@ -345,14 +401,6 @@ def typio_prompt(dataset):
                     extension = extension[1:]
                     size = os.path.getsize(aname)
                     root_folder = rname.split('/')[0]
-
-                    # Update metadata
-                    metadata['files'].append({
-                        'path': rname,
-                        'extension': extension,
-                        'size': size,
-                        'lines': nb_lines,
-                    })
 
                     # Update counters
                     total_size += size
@@ -376,80 +424,136 @@ def typio_prompt(dataset):
                                 in cnt.most_common(15)]
         print('  ' + ' / '.join(extensions_sizes) + '\n')
 
+
+    def inspect_gutenberg(self, entry):
+        local_file = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.txt'
+
+        with open(local_file) as f:
+            lines = f.readlines()
+            print(len(lines))
+
+    ##
+    ## Command 'metadata'
+    ##
+
+    def metadata_github(self, entry):
+        metadata = {
+            'files': []
+        }
+
+        local_dir = self.CONTENT_DIR + '/github/' + entry.slug
+        for dirName, subdirList, fileList in os.walk(local_dir):
+            for fname in fileList:
+                aname = os.path.join(dirName, fname)        # absolute name
+                rname = aname.replace(local_dir + '/', '')  # relative name
+                extension = os.path.splitext(fname)[1]
+
+                if extension and not is_binary(aname):  # Ignore folders
+                    nb_lines = sum(1 for line in open(aname))
+                    extension = extension[1:]
+                    size = os.path.getsize(aname)
+
+                    # Update metadata
+                    metadata['files'].append({
+                        'path': rname,
+                        'extension': extension,
+                        'size': size,
+                        'lines': nb_lines,
+                    })
+
         # Save metadata
         metadata_path = local_dir + '.json'
         with open(metadata_path, 'w') as f_metadata:
             json.dump(metadata, f_metadata, sort_keys=True, indent=4, separators=(',', ': '), ensure_ascii=False)
-            print('Saved metadata to %s' % metadata_path)
+            print('Saved metadata to %s' % Colors.file(metadata_path))
+
+    ##
+    ## Command 'get'
+    ##
+
+    def get_github(self, entry):
+        self.download_github(entry)
+        self.extract_github(entry)
+        self.clean_github(entry)
+        self.metadata_github(entry)
+
+    def get_gutenberg(self, entry):
+        self.download_gutenberg(entry)
 
 
     ##
     ## Prompt
     ##
 
-    def create_grammar():
-        return compile("""
-            (\s*  (?P<operatorsCommands>[a-z]+)   \s+   (?P<entry>.*)         \s*) |
-            (\s*  (?P<operatorsCommands>help)     \s+   (?P<aCommand>[a-z]+)  \s*) |
-            (\s*  (?P<operatorsCommands>quit)     \s*)
-        """)
+    def prompt(self):
 
-    def get_bottom_toolbar_tokens(cli):
-        return [(Token.Toolbar, ' This is a toolbar.')]
+        def create_grammar():
+            return compile("""
+                (\s*  (?P<operatorsCommands>[a-z]+)   \s+   (?P<entry>.*)         \s*) |
+                (\s*  (?P<operatorsCommands>help)     \s+   (?P<aCommand>[a-z]+)? \s*) |
+                (\s*  (?P<operatorsCommands>quit)     \s*)
+            """)
 
-    commands = {
-        'download': download,
-        'extract':  extract,
-        'inspect':  inspect,
-        'delete':   delete,
-        'clean':    clean,
-    }
+        def get_bottom_toolbar_tokens(cli):
+            return [(Token.Toolbar, ' This is a toolbar.')]
 
-    operatorsCommands = commands.keys()
-    entries = ['all', 'gutenberg', 'github'] + dataset.get_entry_names()
+        operatorsCommands = ['clean', 'delete', 'download', 'extract', 'get', 'inspect', 'metadata']
+        entries = ['all', 'gutenberg', 'github'] + self.dataset.get_entry_names()
 
-    g = create_grammar()
+        g = create_grammar()
 
-    lexer = GrammarLexer(g, lexers={
-        'operatorsCommands': SimpleLexer(Token.Operator),
-        'entry':             SimpleLexer(Token.String),
-        'aCommand':          SimpleLexer(Token.Operator),
-    })
+        lexer = GrammarLexer(g, lexers={
+            'operatorsCommands': SimpleLexer(Token.Operator),
+            'entry':             SimpleLexer(Token.String),
+            'aCommand':          SimpleLexer(Token.Operator),
+        })
 
-    completer = GrammarCompleter(g, {
-        'operatorsCommands': WordCompleter(operatorsCommands),
-        'entry':             WordCompleter(entries, ignore_case=True, match_middle=True),
-        'aCommand':          WordCompleter(operatorsCommands),
-    })
+        completer = GrammarCompleter(g, {
+            'operatorsCommands': WordCompleter(operatorsCommands),
+            'entry':             WordCompleter(entries, ignore_case=True, match_middle=True),
+            'aCommand':          WordCompleter(operatorsCommands),
+        })
 
-    try:
-        # REPL loop.
-        while True:
-            # Read input and parse the result.
-            text = prompt('> ', lexer=lexer, completer=completer,
-                          style=typio_style, get_bottom_toolbar_tokens=get_bottom_toolbar_tokens)
-            m = g.match(text)
-            if m:
-                vars = m.variables()
+        try:
+            # REPL loop.
+            while True:
+                # Read input and parse the result.
+                text = prompt('> ', lexer=lexer, completer=completer,
+                              style=self.TYPIO_STYLE, get_bottom_toolbar_tokens=get_bottom_toolbar_tokens)
+                m = g.match(text)
+                if m:
+                    vars = m.variables()
 
-                command = vars['operatorsCommands']
-                if command == "quit":
-                    break
+                    command = vars['operatorsCommands']
+                    if command == "quit":
+                        break
 
-                entry = vars['entry']
-                for entry_name in dataset.resolve_name(entry):
-                    entry = dataset.get_entry(entry_name)
-                    commands[command](entry)
+                    if command == "help":
+                        self.showUsage()
+                        break
 
+                    entry = vars['entry']
+                    for entry_name in self.dataset.resolve_name(entry):
+                        entry = self.dataset.get_entry(entry_name)
+                        method = command + '_' + entry.origin
 
-            else:
-                if text.strip():
-                    print('Invalid command\n')
-                continue
+                        if command not in operatorsCommands:
+                            print(Colors.error("Command '%s' does not exists (Available commands: %s)" \
+                                % (command, ', '.join(operatorsCommands))))
+                        if hasattr(self, method):
+                            getattr(self, method)(entry)
+                        else:
+                            print(Colors.warn("Command '%s' is not supported for type '%s'") % (command, entry.origin))
 
-    except (EOFError, KeyboardInterrupt):
-        pass
+                else:
+                    if text.strip():
+                        print('Invalid command\n')
+                    continue
+
+        except (EOFError, KeyboardInterrupt):
+            pass
 
 
 if __name__ == '__main__':
-    typio_prompt(Dataset('dataset.json'))
+    p = TypioPrompt('dataset.json')
+    p.prompt()

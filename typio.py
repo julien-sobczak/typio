@@ -9,13 +9,14 @@ from prompt_toolkit import prompt
 from prompt_toolkit.contrib.regular_languages.compiler import compile
 from prompt_toolkit.contrib.regular_languages.completion import GrammarCompleter
 from prompt_toolkit.contrib.regular_languages.lexer import GrammarLexer
+from prompt_toolkit.history import FileHistory
 from prompt_toolkit.layout.lexers import SimpleLexer
 from prompt_toolkit.styles import style_from_dict
 from prompt_toolkit.token import Token
 
 from tqdm import tqdm
 
-from binaryornot.check import is_binary
+import binaryornot.check
 
 from slugify import slugify
 
@@ -33,6 +34,9 @@ import zipfile
 
 
 class Colors:
+    """Utility class to colorize some text in the terminal."""
+    # TODO see to reuse code from prompt toolkit instead
+
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -55,8 +59,27 @@ class Colors:
         return Colors.FAIL + message + Colors.ENDC
 
 
+def is_binary(path):
+    """
+    Guess if a file is a text file or a binary file.
+    The result is not always exact.
+    """
+
+    # Guard condition
+    # The below algorithm uses a ratio between ascii characters and non ascii characters
+    # to determine if a file is binary. Some file like ZIP archive contains a lot of ascii
+    # characters are not correctly detected.
+    known_binary_extensions = ['.zip', '.jar', '.tar']
+    for ext in known_binary_extensions:
+        if path.endswith(ext):
+            return True
+
+    return binaryornot.check.is_binary(path)
+
 def folder_size(path):
-    """Calculates the size in bytes of a folder by traversing all files present under it"""
+    """
+    Calculates the size in bytes of a folder by traversing all files present under it.
+    """
     size = 0
     for root, dirs, files in os.walk(path):
         for f in files:
@@ -143,6 +166,9 @@ class Entry:
         return fnmatch.fnmatch(file, test_pattern) or fnmatch.fnmatch(file, test_pattern +  '/*')  # src or src/*
 
     def ignorable(self, file, is_directory):
+        """
+        Test if a file should be ignore according various attributes present in `dataset.json`.
+        """
         includes = ['*']
         excludes = []
         extensions = ['']
@@ -190,7 +216,7 @@ class Entry:
 
 class Dataset:
     """
-    Wrapper around the `dataset.json` file.
+    Wrapper around the whole `dataset.json` file.
     """
 
     def __init__(self, filename):
@@ -228,15 +254,22 @@ class Dataset:
         elif entry_name == 'gutenberg':
             names.extend(self.get_entry_names('gutenberg'))
         else:
-            names.append(entry_name)
+            if self.get_entry(entry_name):
+                names.append(entry_name)
         return names
 
 
 
 class TypioPrompt:
+    """
+    Entry point. Use the Python Prompt Toolkit to let user choose an action
+    among the ones implemented.
+    """
 
+    # Where to save downloaded resources
     CONTENT_DIR = './content'
 
+    # Basic styles used by the prompt toolkit
     TYPIO_STYLE = style_from_dict({
         Token.Operator:      '#33aa33 bold',
         Token.TrailingInput: 'bg:#662222 #ffffff',
@@ -247,11 +280,17 @@ class TypioPrompt:
         self.dataset = Dataset(dataset)
 
     def showUsage(self):
-        print("""List of commands:
+        print("""List of commands:\n
   * download <entry>
       Download the content from the Internet (GitHub, Gutenberg)
+  * extract <entry>
+      Extract the downloaded resources (GitHub only)
   * inspect <entry>
       Inspect the content to show stats (size, number of files or chapters, ...)
+  * metadata <entry>
+      Generate a JSON file containing useful metadata (see `inspect` command)
+  * delete <entry>
+      Delete all resources (archive, file, metadata, ...)
   * get <entry>
       Sane as running successively the commands `download`, `extract`, `clean`, and `metadata`
 """)
@@ -324,23 +363,43 @@ class TypioPrompt:
     ##
 
     def delete_github(self, entry):
-        local_file = self.CONTENT_DIR + '/github/' + entry.slug + '.zip'
-        local_dir = self.CONTENT_DIR + '/github/' + entry.slug
+        archive_file = self.CONTENT_DIR + '/github/' + entry.slug + '.zip'
+        extracted_dir = self.CONTENT_DIR + '/github/' + entry.slug
+        metadata_file = self.CONTENT_DIR + '/github/' + entry.slug + '.json'
 
-        if os.path.isfile(local_file):
-            os.remove(local_file)
-            print("Delete successfully file '%s'." % Colors.file(local_file))
+        if not os.path.isfile(archive_file) and \
+           not os.path.isdir(extracted_dir) and \
+           not os.path.isfile(metadata_file):
+           print(Colors.warn("Nothing to delete"))
 
-        if os.path.isdir(local_dir):
-            shutil.rmtree(local_dir)
-            print("Delete successfully folder '%s'." % Colors.file(local_dir))
+        if os.path.isfile(archive_file):
+            os.remove(archive_file)
+            print("Delete successfully file '%s'." % Colors.file(archive_file))
+
+        if os.path.isdir(extracted_dir):
+            shutil.rmtree(extracted_dir)
+            print("Delete successfully folder '%s'." % Colors.file(extracted_dir))
+
+        if os.path.isfile(metadata_file):
+            os.remove(metadata_file)
+            print("Delete successfully file '%s'." % Colors.file(metadata_file))
+
 
     def delete_gutenberg(self, entry):
-        local_file = self.CONTENT_DIR + '/github/' + entry.slug + '.txt'
+        book_file = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.txt'
+        metadata_file = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.json'
 
-        if os.path.isfile(local_file):
-            os.remove(local_file)
-            print("Delete successfully file '%s'." % Colors.file(local_file))
+        if not os.path.isfile(book_file) and \
+           not os.path.isfile(metadata_file):
+           print(Colors.warn("Nothing to delete"))
+
+        if os.path.isfile(book_file):
+            os.remove(book_file)
+            print("Delete successfully file '%s'." % Colors.file(book_file))
+
+        if os.path.isfile(metadata_file):
+            os.remove(metadata_file)
+            print("Delete successfully file '%s'." % Colors.file(metadata_file))
 
     ##
     ## Command 'clean'
@@ -356,6 +415,7 @@ class TypioPrompt:
             relative_root = root.replace(local_dir, '')
             ignorable_dirs  = [d for d in dirs  if entry.ignorable(os.path.join(relative_root, d), is_directory=True)]
             ignorable_files = [f for f in files if entry.ignorable(os.path.join(relative_root, f), is_directory=False)]
+            binary_files =    [f for f in files if is_binary(os.path.join(root, f))]
             for name in ignorable_dirs:
                 aname = os.path.join(root, name)      # absolute name
                 rname = aname.replace(local_dir, '')  # relative name
@@ -365,7 +425,7 @@ class TypioPrompt:
                 size = folder_size(aname)
                 if local_dir in aname:  # safety condition
                     shutil.rmtree(aname)
-            for name in ignorable_files:
+            for name in set(ignorable_files + binary_files):
                 aname = os.path.join(root, name)      # absolute name
                 rname = aname.replace(local_dir, '')  # relative name
                 #print("rm %s" % rname)
@@ -396,7 +456,7 @@ class TypioPrompt:
                 rname = aname.replace(local_dir + '/', '')  # relative name
                 extension = os.path.splitext(fname)[1]
 
-                if extension and not is_binary(aname):  # Ignore folders
+                if not entry.ignorable(aname, is_directory=False) and not is_binary(aname):
                     nb_lines = sum(1 for line in open(aname))
                     extension = extension[1:]
                     size = os.path.getsize(aname)
@@ -427,10 +487,150 @@ class TypioPrompt:
 
     def inspect_gutenberg(self, entry):
         local_file = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.txt'
+        chapters = self._get_chapters(local_file)
+
+        print('Found %s chapters' % len(chapters))
+        for c in chapters:
+            print('\t- %s (paragraphs: %s, characters: %s)' % (c['title'], c['paragraphs'], c['characters']))
+
+
+    def _get_chapters(self, local_file):
+
+        # Chapters are using different notation (sometimes in the same book!).
+        CHAPTER_STYLES = {
+            'arabic_number': r'^\d+\s*$',
+            'chapter':       r'^CHAPTER [IVXLCDM]+[.]?\s.*$',
+            'roman_numeral': r'^[IVXLCDM]+[.]?\s*.*$',
+        }
+
+        def strip_book(lines):
+            """
+            Keep the content between the lines:
+
+              *** START OF THIS PROJECT ... ***
+            and
+              *** END OF THIS PROJECT ... ***
+            """
+            lines = lines[:]
+            start = 0
+            end = len(lines) - 1
+            for i, l in enumerate(lines):
+                if l.startswith('*** START OF THIS PROJECT'):
+                    start = i
+                elif l.startswith('*** END OF THIS PROJECT'):
+                    end = i
+
+            return (lines[0:start+1], lines[start+1:end-1], lines[end-1:])
+
+        def chapter_style(lines, empty_lines):
+            """Iterate over known format to detect the one to use."""
+            c = Counter()
+
+            for i, l in enumerate(lines):
+                if i == len(lines) - 1:
+                    break
+                # Chapter numbers are always surrounded by empty lines
+                if i < 3 or not empty_lines[i-1] or not empty_lines[i-2] or not empty_lines[i+1]:
+                    continue
+                for name, regex in CHAPTER_STYLES.items():
+                    if re.match(regex, l):
+                        c[name] += 1
+
+            return c.most_common(1)[0][0]
+
+        chapters = []
+
+        # Metadata about the in progress chapter
+        current_chapter_name = None
+        current_chapter_start = None
+        current_chapter_characters = 0
+        current_chapter_paragraphs = 0
 
         with open(local_file) as f:
             lines = f.readlines()
-            print(len(lines))
+
+            # Remove Gutenberg specific lines
+            leading_lines, lines, trailing_lines = strip_book(lines)
+
+            # Precalculate an array to test easily if a random line is empty
+            empty_lines = [ len(l.strip()) == 0 for l in lines ]
+
+            # Determine the style of chapter to search
+            cs = chapter_style(lines, empty_lines)
+
+            i = 0
+            while i < len(lines):
+                l = lines[i].strip()
+
+                if re.match(CHAPTER_STYLES[cs], l):
+
+                    # Check there are blank lines around to be sure
+                    if i < 3 or \
+                        not empty_lines[i-1] or not empty_lines[i-2] or \
+                        not empty_lines[i+1]:
+                        # Do not look like a chapter
+                        i += 1
+                        continue
+
+                    # Add previous chapter
+                    if current_chapter_name:
+                        chapters.append({
+                            'title': current_chapter_name,
+                            'start': current_chapter_start,
+                            'end':   i - 1,
+                            'characters': current_chapter_characters,
+                            'paragraphs': current_chapter_paragraphs,
+                        })
+
+                        # Reset counters
+                        count_empty_lines = 0
+                        current_chapter_characters = 0
+                        current_chapter_paragraphs = 0
+
+                    current_chapter_start = i + 1
+                    current_chapter_name = l
+
+                    # For arabic_number chapter style, the title could be on the next line
+                    if empty_lines[i+1] and not empty_lines[i+2] and empty_lines[i+3]:
+                        if not current_chapter_name.endswith('.'):
+                            current_chapter_name += '.'
+                        current_chapter_name += ' ' + lines[i+2].strip()
+                        current_chapter_start = i + 3
+                        i += 3
+
+                else:  # Update chapter counters
+                    if empty_lines[i]:
+                        current_chapter_paragraphs += 1
+                    else:
+                        current_chapter_characters += len(l)
+
+                i += 1
+
+            # Add the last chapter
+            chapters.append({
+                'title': current_chapter_name,
+                'start': current_chapter_start,
+                'end':   i - 1,
+                'characters': current_chapter_characters,
+                'paragraphs': current_chapter_paragraphs,
+            })
+
+            # Strip the chapter content
+            # Indeed, we did not try to ignore leading and traling blank lines previously.
+            for c in chapters:
+                while empty_lines[c['start']]:
+                    c['start'] += 1
+                while empty_lines[c['end']]:
+                    c['end'] -= 1
+
+            # We need to update the line numbers to add the leading lines
+            # and + 1 because we worked with 0-based index
+            for c in chapters:
+                c['start'] += len(leading_lines) + 1
+                c['end'] += len(leading_lines) + 1
+
+            return chapters
+
 
     ##
     ## Command 'metadata'
@@ -467,6 +667,22 @@ class TypioPrompt:
             json.dump(metadata, f_metadata, sort_keys=True, indent=4, separators=(',', ': '), ensure_ascii=False)
             print('Saved metadata to %s' % Colors.file(metadata_path))
 
+    def metadata_gutenberg(self, entry):
+        book_path = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.txt'
+        metadata_path = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.json'
+
+        # Collect metadata
+        metadata = {
+            'size': os.path.getsize(book_path),
+            'chapters': self._get_chapters(book_path),
+        }
+
+        # Save metadata
+        with open(metadata_path, 'w') as f_metadata:
+            json.dump(metadata, f_metadata, sort_keys=True, indent=4, separators=(',', ': '), ensure_ascii=False)
+            print('Saved metadata to %s' % Colors.file(metadata_path))
+
+
     ##
     ## Command 'get'
     ##
@@ -479,6 +695,7 @@ class TypioPrompt:
 
     def get_gutenberg(self, entry):
         self.download_gutenberg(entry)
+        self.metadata_gutenberg(entry)
 
 
     ##
@@ -490,7 +707,7 @@ class TypioPrompt:
         def create_grammar():
             return compile("""
                 (\s*  (?P<operatorsCommands>[a-z]+)   \s+   (?P<entry>.*)         \s*) |
-                (\s*  (?P<operatorsCommands>help)     \s+   (?P<aCommand>[a-z]+)? \s*) |
+                (\s*  (?P<operatorsCommands>help)     \s*) |
                 (\s*  (?P<operatorsCommands>quit)     \s*)
             """)
 
@@ -518,13 +735,18 @@ class TypioPrompt:
             # REPL loop.
             while True:
                 # Read input and parse the result.
+                our_history = FileHistory('.typio_history')
                 text = prompt('> ', lexer=lexer, completer=completer,
-                              style=self.TYPIO_STYLE, get_bottom_toolbar_tokens=get_bottom_toolbar_tokens)
+                               style=self.TYPIO_STYLE, get_bottom_toolbar_tokens=get_bottom_toolbar_tokens,
+                               history=our_history)
                 m = g.match(text)
                 if m:
                     vars = m.variables()
 
                     command = vars['operatorsCommands']
+
+                    # Match basic commands first
+
                     if command == "quit":
                         break
 
@@ -532,20 +754,30 @@ class TypioPrompt:
                         self.showUsage()
                         break
 
+                    # Advanced commands required an entry name.
+                    # We check this entry name is valid
                     entry = vars['entry']
-                    for entry_name in self.dataset.resolve_name(entry):
+                    entries = self.dataset.resolve_name(entry)
+                    if not entries:
+                        print(Colors.error("No entry named '%s'" % entry))
+
+                    for entry_name in entries:
                         entry = self.dataset.get_entry(entry_name)
                         method = command + '_' + entry.origin
 
+                        # Wrong command
                         if command not in operatorsCommands:
                             print(Colors.error("Command '%s' does not exists (Available commands: %s)" \
                                 % (command, ', '.join(operatorsCommands))))
+
+                        # Use introspection to determine the operation is supported for this entry
                         if hasattr(self, method):
                             getattr(self, method)(entry)
                         else:
                             print(Colors.warn("Command '%s' is not supported for type '%s'") % (command, entry.origin))
 
                 else:
+                    # Ignore blank input
                     if text.strip():
                         print('Invalid command\n')
                     continue

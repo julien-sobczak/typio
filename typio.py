@@ -30,6 +30,7 @@ import re
 import requests
 import shutil
 import string
+import tarfile
 import zipfile
 
 
@@ -389,10 +390,12 @@ class TypioPrompt:
         archive_file = self.CONTENT_DIR + '/github/' + entry.slug + '.zip'
         extracted_dir = self.CONTENT_DIR + '/github/' + entry.slug
         metadata_file = self.CONTENT_DIR + '/github/' + entry.slug + '.json'
+        archive_file2 = self.CONTENT_DIR + '/github/' + entry.slug + '.tar.gz'
 
         if not os.path.isfile(archive_file) and \
            not os.path.isdir(extracted_dir) and \
-           not os.path.isfile(metadata_file):
+           not os.path.isfile(metadata_file)and \
+           not os.path.isfile(archive_file2):
            print(Colors.warn("Nothing to delete"))
 
         if os.path.isfile(archive_file):
@@ -406,6 +409,10 @@ class TypioPrompt:
         if os.path.isfile(metadata_file):
             os.remove(metadata_file)
             print("Delete successfully file '%s'." % Colors.file(metadata_file))
+
+        if os.path.isfile(archive_file2):
+            os.remove(archive_file2)
+            print("Delete successfully file '%s'." % Colors.file(archive_file2))
 
 
     def delete_gutenberg(self, entry):
@@ -751,6 +758,64 @@ class TypioPrompt:
             print('\t- %s (%s)' % (dir, human_size(size)))
 
     ##
+    ## Command 'archive'
+    ##
+
+    def archive_github(self, entry):
+        github_dir = self.CONTENT_DIR + '/github/'
+        local_dir = github_dir + entry.slug
+        local_archive = github_dir + entry.slug + '.tar.gz'
+        relative_dir = local_dir.replace(github_dir, '')  # relative name
+
+        # Do nothing if the input folder does not exist
+        if not os.path.isdir(local_dir):
+            print("Folder '%s' does not exists." % Colors.file(local_dir))
+            return
+
+        # Do nothing if the archive folder already exist
+        if os.path.isfile(local_archive):
+            print("File '%s' already exists." % Colors.file(local_archive))
+            return
+
+        def reset(tarinfo):
+            # https://docs.python.org/3/library/tarfile.html
+            tarinfo.uid = tarinfo.gid = 0
+            tarinfo.uname = tarinfo.gname = "root"
+            return tarinfo
+        tar = tarfile.open(local_archive, "w:gz")
+        tar.add(local_dir, relative_dir, filter=reset)
+        tar.close()
+
+        print("Archive saved to '%s'" % Colors.file(local_archive))
+
+
+    ##
+    ## Command 'unarchive'
+    ##
+
+    def unarchive_github(self, entry):
+        github_dir = self.CONTENT_DIR + '/github/'
+        local_dir = github_dir + entry.slug
+        local_archive = github_dir + entry.slug + '.tar.gz'
+
+        # Do nothing if the target folder already exists
+        if os.path.isdir(local_dir):
+            print("Folder '%s' already exists." % Colors.file(local_dir))
+            return
+
+        # Do nothing if the archive folder does not exist
+        if not os.path.isfile(local_archive):
+            print("File '%s' does not exists." % Colors.file(local_archive))
+            return
+
+        tar = tarfile.open(local_archive)
+        tar.extractall(path=github_dir)
+        tar.close()
+
+        print("Archive extracted into '%s'" % Colors.file(local_dir))
+
+
+    ##
     ## Prompt
     ##
 
@@ -765,7 +830,7 @@ class TypioPrompt:
         def get_bottom_toolbar_tokens(cli):
             return [(Token.Toolbar, ' This is a toolbar.')]
 
-        operatorsCommands = ['clean', 'delete', 'download', 'extract', 'get', 'inspect', 'metadata']
+        operatorsCommands = ['archive', 'clean', 'delete', 'download', 'extract', 'get', 'inspect', 'metadata', 'unarchive']
         entries = ['all', 'gutenberg', 'github'] + self.dataset.get_entry_names()
 
         g = create_grammar()

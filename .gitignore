@@ -1,4 +1,6 @@
 .firebaserc
 /build/
 env/
-/content/
+/content/github/*.zip
+/content/github/*/
+

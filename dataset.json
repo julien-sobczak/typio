@@ -547,7 +547,8 @@
     "name": "Spring Framework",
     "url": "https://github.com/spring-projects/spring-framework",
     "language": "Java",
-    "commit": "v5.0.0.RELEASE"
+    "commit": "v5.0.0.RELEASE",
+    "includes": ["/spring-core/", "/spring-context/", "/spring-beans/", "/spring-expression/", "/spring-aop/", "/spring-tx/", "/spring-context-support/"]
   },
   {
     "origin": "github",
@@ -562,7 +563,8 @@
     "url": "https://github.com/bazelbuild/bazel",
     "language": "Java",
     "commit": "0.7.0",
-    "excludes": ["/third_party"]
+    "excludes": ["/third_party", "/src/test/", "/src/tools/", "/tools/"],
+    "max_file_size": 50
   },
   {
     "origin": "github",
@@ -577,7 +579,20 @@
     "url": "https://github.com/prestodb/presto",
     "language": "Java",
     "commit": "0.186",
-    "excludes": ["/presto-docs"]
+    "excludes": [
+      "/presto-docs/",
+      "/presto-raptor/",
+      "/presto-accumulo/",
+      "/presto-cassandra/",
+      "/presto-hive/",
+      "/presto-rcfile/",
+      "/presto-mongodb/",
+      "/presto-kafka/",
+      "/presto-redis/",
+      "/presto-product-tests/",
+      "/presto-main/src/main/resources/webapp/"
+    ],
+    "max_file_size": 50
   },
   {
     "origin": "github",
@@ -653,7 +668,8 @@
     "language": "Python",
     "commit": "v2.4.0.0-1",
     "includes": ["/test", "/examples", "/bin", "/lib"],
-    "excludes": ["/test/integration"]
+    "excludes": ["/test/integration", "/lib/ansible/modules/cloud/", "/lib/ansible/modules/network/cloudengine/"],
+    "max_file_size": 100
   },
   {
     "origin": "github",
@@ -766,7 +782,8 @@
     "url": "https://github.com/gitlabhq/gitlabhq",
     "language": "Ruby",
     "commit": "v10.0.4",
-    "excludes": ["/fixtures", "/doc", "/lib", "/vendor"]
+    "excludes": ["/fixtures", "/doc", "/lib", "/vendor", "/app/assets/images/"],
+    "max_file_size": 100
   },
   {
     "origin": "github",
@@ -800,7 +817,8 @@
     "url": "https://github.com/tensorflow/tensorflow",
     "language": "C++",
     "commit": "v1.3.1",
-    "excludes": ["/tensorflow/core/profiler/internal/testdata", "/third_party"]
+    "excludes": ["/tensorflow/core/profiler/internal/testdata", "/third_party", "/tensorflow/docs_src/", "/tensorflow/examples/", "/tensorflow/g3doc/", "/tensorflow/tools/", "/tensorflow/contrib/", "/tensorflow/python/kernel_tests"],
+    "max_file_size": 50
   },
   {
     "origin": "github",
@@ -816,14 +834,17 @@
     "url": "https://github.com/apple/swift",
     "language": "C++",
     "commit": "master",
-    "excludes": ["/test", "/validation-test", "/docs"]
+    "excludes": ["/test", "/validation-test", "/docs", "/include/"],
+    "max_file_size": 50
   },
   {
     "origin": "github",
     "name": "Protocol Buffers",
     "url": "https://github.com/google/protobuf",
     "language": "C++",
-    "commit": "v3.4.1"
+    "commit": "v3.4.1",
+    "includes": ["/src/", "/java", "/python/", "/js"],
+    "max_file_size": 100
   },
   {
     "origin": "github",
@@ -863,7 +884,9 @@
     "url": "https://github.com/v8/v8",
     "language": "C++",
     "commit": "6.4.47",
-    "excludes": ["/test/"]
+    "includes": ["/src/"],
+    "excludes": ["/test/"],
+    "max_file_size": 50
   },
 
 
@@ -873,8 +896,47 @@
     "url": "https://github.com/torvalds/linux",
     "language": "C",
     "commit": "v4.13",
-    "includes": ["/firmware", "/fs", "/init", "/kernel"],
-    "excludes": ["/Documentation", "/tools", "/kernel/events/callchain.c"]
+    "includes": ["/fs", "/init", "/kernel"],
+    "excludes": [
+      "/Documentation",
+      "/tools",
+      "/kernel/events/callchain.c",
+      "/fs/xfs/",
+      "/fs/nls/",
+      "/fs/btrfs/",
+      "/fs/ocfs2/",
+      "/fs/nfs/",
+      "/fs/cifs/",
+      "/fs/ext4/",
+      "/fs/ubifs/",
+      "/fs/nfsd/",
+      "/fs/reiserfs/",
+      "/fs/jfs/",
+      "/fs/gfs2/",
+      "/fs/f2fs/",
+      "/fs/nilfs2/",
+      "/fs/ceph/",
+      "/fs/jffs2/",
+      "/fs/afs/",
+      "/fs/hfsplus/",
+      "/fs/udf/",
+      "/fs/ecryptfs/",
+      "/fs/orangefs/",
+      "/fs/fuse/",
+      "/fs/jbd2/",
+      "/fs/ufs/",
+      "/fs/lockd/",
+      "/fs/squashfs/",
+      "/fs/hpfs/",
+      "/fs/ncpfs/",
+      "/fs/9p/",
+      "/fs/hfs/",
+      "/fs/exofs/",
+      "/fs/overlayfs/",
+      "/fs/affs/",
+      "/fs/autofs4/",
+      "/kernel/trace/"
+    ]
   },
   {
     "origin": "github",
@@ -916,7 +978,9 @@
     "name": "PowerShell",
     "url": "https://github.com/PowerShell/PowerShell",
     "language": "C#",
-    "commit": "master"
+    "commit": "master",
+    "excludes": ["/src/System.Management.Automation/engine/remoting/", "/docs/", "/tools/", "/assets/", "/demos/"],
+    "max_file_size": 100
   },
 
 
@@ -960,14 +1024,16 @@
     "name": "Consul",
     "url": "https://github.com/hashicorp/consul",
     "language": "Go",
-    "commit": "v1.0.0"
+    "commit": "v1.0.0",
+    "excludes": ["/vendor/"]
   },
   {
     "origin": "github",
     "name": "Terraform",
     "url": "https://github.com/hashicorp/terraform",
     "language": "Go",
-    "commit": "v0.10.7"
+    "commit": "v0.10.7",
+    "excludes": ["/vendor/", "test-fixtures/", "/docs/", "/contrib/"]
   },
 
 
@@ -976,7 +1042,9 @@
     "name": "Alamofire",
     "url": "https://github.com/Alamofire/Alamofire",
     "language": "Swift",
-    "commit": "4.5.1"
+    "commit": "4.5.1",
+    "includes": ["/Source/", "/Tests/"],
+    "excludes": ["/Tests/Resources/"]
   },
   {
     "origin": "github",
@@ -992,21 +1060,26 @@
     "name": "Spark",
     "url": "https://github.com/apache/spark",
     "language": "Scala",
-    "commit": "v2.2.0"
+    "commit": "v2.2.0",
+    "excludes": ["test/resources/", "/docs/", "/external/", "/sql/"],
+    "max_file_size": 50
   },
   {
     "origin": "github",
     "name": "Play Framework",
     "url": "https://github.com/playframework/playframework",
     "language": "Scala",
-    "commit": "2.6.6"
+    "commit": "2.6.6",
+    "includes": ["/framework/"]
   },
   {
     "origin": "github",
     "name": "Akka",
     "url": "https://github.com/akka/akka",
     "language": "Scala",
-    "commit": "v2.5.6"
+    "commit": "v2.5.6",
+    "excludes": ["/akka-docs/", "/akka-contrib/", "/akka*tests/"],
+    "max_file_size": 50
   },
   {
     "origin": "github",
@@ -1027,7 +1100,8 @@
     "name": "Finagle",
     "url": "https://github.com/twitter/finagle",
     "language": "Scala",
-    "commit": "master"
+    "commit": "master",
+    "includes": ["/finagle-core/", "/finagle-netty4/", "/finagle-http2/", "/finagle-memcached/", "/finagle-stats/"]
   },
 
 
@@ -1073,7 +1147,8 @@
     "name": "Neural Style",
     "url": "https://github.com/jcjohnson/neural-style",
     "language": "Lua",
-    "commit": "master"
+    "commit": "master",
+    "includes": []
   },
 
 
@@ -1116,7 +1191,10 @@
     "name": "Rundeck",
     "url": "https://github.com/rundeck/rundeck",
     "language": "Groovy",
-    "commit": ""
+    "commit": "v2.10.0",
+    "includes": ["/rundeckapp/", "/core/", "/test/"],
+    "extensions": ["java", "groovy", "gsp", "sh", "js", "template", "xml", "conf", "css"],
+    "max_file_size": 50
   },
 
 
@@ -1141,7 +1219,9 @@
     "name": "OTP",
     "url": "https://github.com/erlang/otp",
     "language": "Erlang",
-    "commit": "OTP_R16B03"
+    "commit": "OTP_R16B03",
+    "excludes": ["/lib/"],
+    "extensions": ["erl", "sh", "conf", "mk"]
   },
   {
     "origin": "github",
@@ -1171,14 +1251,8 @@
     "name": "Prince of Persia",
     "url": "https://github.com/jmechner/Prince-of-Persia-Apple-II",
     "language": "Assembly",
-    "commit": "master"
-  },
-  {
-    "origin": "github",
-    "name": "Dgraph",
-    "url": "https://github.com/dgraph-io/dgraph",
-    "language": "Assembly",
-    "commit": "v0.8.3"
+    "commit": "master",
+    "excludes": ["/04 Support/", "/01 POP Source/Images/"]
   },
 
 
@@ -1187,7 +1261,10 @@
     "name": "Visual Studio Code",
     "url": "https://github.com/Microsoft/vscode",
     "language": "TypeScript",
-    "commit": "1.17.2"
+    "commit": "1.17.2",
+    "includes": ["/src/", "/scripts/", "/resources"],
+    "excludes": ["/build/", "test/"],
+    "extensions": ["ts", "css", "js", "sh", "bat", "tmLanguage", "html", "scss", "xml", "template"]
   },
   {
     "origin": "github",
@@ -1201,21 +1278,23 @@
     "name": "Angular",
     "url": "https://github.com/angular/angular",
     "language": "TypeScript",
-    "commit": "4.4.6"
+    "commit": "4.4.6",
+    "excludes": ["/modules/", "/tools/", "/aio/"]
   },
   {
     "origin": "github",
     "name": "TypeScript",
     "url": "https://github.com/Microsoft/TypeScript",
     "language": "TypeScript",
-    "commit": "v2.6.0"
+    "commit": "v2.6.0",
+    "excludes": ["/doc/", "/tests/", "/lib/"]
   },
 
 
   {
     "origin": "github",
-    "name": "Awesome emacs",
-    "url": "https://github.com/emacs-tw/awesome-emacs",
+    "name": "MELPA",
+    "url": "https://github.com/melpa/melpa",
     "language": "Lisp",
     "commit": "master"
   },
@@ -1224,7 +1303,8 @@
     "name": "Mezzano OS",
     "url": "https://github.com/froggey/Mezzano",
     "language": "Lisp",
-    "commit": "demo3"
+    "commit": "demo3",
+    "excludes": ["/notes/"]
   },
 
 
@@ -1233,7 +1313,8 @@
     "name": "Julia",
     "url": "https://github.com/JuliaLang/julia",
     "language": "Julia",
-    "commit": "v0.6.0"
+    "commit": "v0.6.0",
+    "excludes": ["/doc/"]
   },
 
 
@@ -1254,7 +1335,7 @@
   {
     "origin": "github",
     "name": "Credo",
-    "url": "https://github.com/",
+    "url": "https://github.com/rrrene/credo",
     "language": "Elixir",
     "commit": "v0.8.8"
   }

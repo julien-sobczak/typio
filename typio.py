@@ -69,7 +69,7 @@ def is_binary(path):
     # The below algorithm uses a ratio between ascii characters and non ascii characters
     # to determine if a file is binary. Some file like ZIP archive contains a lot of ascii
     # characters are not correctly detected.
-    known_binary_extensions = ['.zip', '.jar', '.tar']
+    known_binary_extensions = ['.zip', '.jar', '.tar', '.pdf']
     for ext in known_binary_extensions:
         if path.endswith(ext):
             return True
@@ -725,6 +725,27 @@ class TypioPrompt:
         self.download_gutenberg(entry)
         self.metadata_gutenberg(entry)
 
+    ##
+    ## Command 'stats'
+    ##
+
+    def stats(self):
+        self.stats_github()
+
+    def stats_github(self):
+        github_dir = self.CONTENT_DIR + '/github/'
+        total_size = 0
+        c = Counter()
+        for d in os.listdir(github_dir):
+            dir_size = folder_size(os.path.join(github_dir, d))
+            c[d] += dir_size
+            total_size += dir_size
+
+        print('Total size: %s\n' % human_size(total_size))
+
+        print('Top 15:')
+        for dir, size in c.most_common(15):
+            print('\t- %s (%s)' % (dir, human_size(size)))
 
     ##
     ## Prompt
@@ -735,8 +756,7 @@ class TypioPrompt:
         def create_grammar():
             return compile("""
                 (\s*  (?P<operatorsCommands>[a-z]+)   \s+   (?P<entry>.*)         \s*) |
-                (\s*  (?P<operatorsCommands>help)     \s*) |
-                (\s*  (?P<operatorsCommands>quit)     \s*)
+                (\s*  (?P<operatorsCommands>help|quit|stats)     \s*)
             """)
 
         def get_bottom_toolbar_tokens(cli):
@@ -780,7 +800,11 @@ class TypioPrompt:
 
                     if command == "help":
                         self.showUsage()
-                        break
+                        continue
+
+                    if command == "stats":
+                        self.stats()
+                        continue
 
                     # Advanced commands required an entry name.
                     # We check this entry name is valid

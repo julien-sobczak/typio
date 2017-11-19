@@ -554,9 +554,9 @@ class TypioPrompt:
             start = 0
             end = len(lines) - 1
             for i, l in enumerate(lines):
-                if l.startswith('*** START OF THIS PROJECT'):
+                if l.startswith('*** START OF THIS PROJECT') or l.startswith('***START OF THIS PROJECT'):
                     start = i
-                elif l.startswith('*** END OF THIS PROJECT'):
+                elif l.startswith('*** END OF THIS PROJECT') or l.startswith('***END OF THIS PROJECT'):
                     end = i
 
             return (lines[0:start+1], lines[start+1:end-1], lines[end-1:])

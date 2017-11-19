@@ -12,7 +12,7 @@ class TestTypio(unittest.TestCase):
             "language": "Java",
             "commit": "v2.11.0",
         })
-        # Per default, everything should be included
+        # By default, everything should be included
         self.assertFalse(entry.ignorable('src/main', is_directory=True))
         self.assertFalse(entry.ignorable('src/main/java/Main.java', is_directory=False))
         self.assertFalse(entry.ignorable('src/test', is_directory=True))
@@ -39,7 +39,7 @@ class TestTypio(unittest.TestCase):
         self.assertFalse(entry.ignorable('src/main', is_directory=True))
         self.assertFalse(entry.ignorable('src/main/java/Main.java', is_directory=False))
 
-        # Everything under src/test should be ignored
+        # Everything under src/javadoc should be ignored
         self.assertTrue(entry.ignorable('src/javadoc', is_directory=True))
         self.assertTrue(entry.ignorable('src/javadoc/index.html', is_directory=False))
 
@@ -49,7 +49,6 @@ class TestTypio(unittest.TestCase):
 
         # Non specified folders should be ignored
         self.assertTrue(entry.ignorable('gradle', is_directory=True))
-        self.assertTrue(entry.ignorable('README.md', is_directory=False))
 
     def test_default_extensions(self):
         entry = Entry({
@@ -82,9 +81,26 @@ class TestTypio(unittest.TestCase):
         self.assertFalse(entry.ignorable('src/main/java/Main.java', is_directory=False))
         self.assertTrue(entry.ignorable('src/main/go/main.go', is_directory=False))
         self.assertFalse(entry.ignorable('src/main/c/main.h', is_directory=False))
-        self.assertTrue(entry.ignorable('README.md', is_directory=False))
-        self.assertFalse(entry.ignorable('README.adoc', is_directory=False))
-        self.assertTrue(entry.ignorable('README', is_directory=False))
+        self.assertTrue(entry.ignorable('src/README.md', is_directory=False))
+        self.assertFalse(entry.ignorable('src/README.adoc', is_directory=False))
+        self.assertTrue(entry.ignorable('src/README', is_directory=False))
+
+    def test_root_files(self):
+        entry = Entry({
+            "origin": "github",
+            "name": "Mockito",
+            "url": "https://github.com/mockito/mockito",
+            "language": "Java",
+            "commit": "v2.11.0",
+            "includes": ["src"]
+        })
+
+        # There is no filtering on extension by default
+        self.assertTrue(entry.ignorable('docs', is_directory=True))
+        self.assertTrue(entry.ignorable('docs/index.html', is_directory=False))
+        self.assertFalse(entry.ignorable('src/main/go/main.go', is_directory=False))
+        self.assertFalse(entry.ignorable('README.md', is_directory=False))
+        self.assertFalse(entry.ignorable('LICENSE', is_directory=False))
 
 
 if __name__ == '__main__':

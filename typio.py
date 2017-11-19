@@ -165,9 +165,19 @@ class Entry:
 
         return fnmatch.fnmatch(file, test_pattern) or fnmatch.fnmatch(file, test_pattern +  '/*')  # src or src/*
 
+    def too_large(self, file):
+        """
+        Test if a file is too big to be preserved.
+        """
+        if 'max_file_size' in self.data:
+            max_file_size = self.data['max_file_size']
+            if os.path.getsize(file) > max_file_size * 1024:  # in Kb
+                return True
+        return False
+
     def ignorable(self, file, is_directory):
         """
-        Test if a file should be ignore according various attributes present in `dataset.json`.
+        Test if a file should be ignored according various attributes present in `dataset.json`.
         """
         includes = ['*']
         excludes = []
@@ -184,6 +194,10 @@ class Entry:
         # Ignore hidden files
         if len(name) > 2 and name.startswith('.'):  # ignore . and ..
             return True
+
+        # Keep the files at the root (LICENSE, README, ...)
+        if not is_directory and  '/' not in file:
+            return False
 
         # Ignore some extensions
         if not is_directory:
@@ -220,7 +234,11 @@ class Dataset:
     """
 
     def __init__(self, filename):
-        with open(filename) as f:
+        self.filename = filename
+        self._load()
+
+    def _load(self):
+        with open(self.filename) as f:
             self.dataset = json.load(f)
 
     def get_entry_names(self, type=None):
@@ -246,6 +264,11 @@ class Dataset:
         Special values 'all', 'github', and 'gutenberg' are supported
         Glob patterns and regular expressions are not supported.
         """
+
+        # Reload because user could have updated the file
+        # between two commands
+        self._load()
+
         names = []
         if entry_name == 'all':
             names.extend(self.get_entry_names())
@@ -339,7 +362,7 @@ class TypioPrompt:
         local_dir = self.CONTENT_DIR + '/github/' + entry.slug
 
         # Do nothing if the target folder is already present
-        if os.path.isfile(local_dir):
+        if os.path.isdir(local_dir):
             print("Folder '%s' already exists." % Colors.file(local_dir))
             return
 
@@ -416,6 +439,7 @@ class TypioPrompt:
             ignorable_dirs  = [d for d in dirs  if entry.ignorable(os.path.join(relative_root, d), is_directory=True)]
             ignorable_files = [f for f in files if entry.ignorable(os.path.join(relative_root, f), is_directory=False)]
             binary_files =    [f for f in files if is_binary(os.path.join(root, f))]
+            large_files =     [f for f in files if entry.too_large(os.path.join(root, f))]
             for name in ignorable_dirs:
                 aname = os.path.join(root, name)      # absolute name
                 rname = aname.replace(local_dir, '')  # relative name
@@ -425,7 +449,7 @@ class TypioPrompt:
                 size = folder_size(aname)
                 if local_dir in aname:  # safety condition
                     shutil.rmtree(aname)
-            for name in set(ignorable_files + binary_files):
+            for name in set(ignorable_files + binary_files + large_files):
                 aname = os.path.join(root, name)      # absolute name
                 rname = aname.replace(local_dir, '')  # relative name
                 #print("rm %s" % rname)
@@ -456,8 +480,12 @@ class TypioPrompt:
                 rname = aname.replace(local_dir + '/', '')  # relative name
                 extension = os.path.splitext(fname)[1]
 
-                if not entry.ignorable(aname, is_directory=False) and not is_binary(aname):
-                    nb_lines = sum(1 for line in open(aname))
+                if not entry.ignorable(rname, is_directory=False) and not is_binary(aname):
+                    try:
+                        nb_lines = sum(1 for line in open(aname))
+                    except:
+                        print(Colors.error("'%s' is not a valid UTF-8 file" % rname))
+                        return
                     extension = extension[1:]
                     size = os.path.getsize(aname)
                     root_folder = rname.split('/')[0]

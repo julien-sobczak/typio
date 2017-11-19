@@ -526,9 +526,12 @@ class TypioPrompt:
 
         # Chapters are using different notation (sometimes in the same book!).
         CHAPTER_STYLES = {
-            'arabic_number': r'^\d+\s*$',
-            'chapter':       r'^CHAPTER [IVXLCDM]+[.]?\s.*$',
-            'roman_numeral': r'^[IVXLCDM]+[.]?\s*.*$',
+            'arabic_number':  r'^\d+\s*$',
+            'arabic_number2': r'^\d+[.]\s+.*$',
+            'chapter_roman':  r'^CHAPTER [IVXLCDM]+[.]?\s*.*$',
+            'chapter_arabic': r'^CHAPTER \d+[.]?\s*.*$',
+            'roman_numeral':  r'^[IVXLCDM]+[.]\s*.*$',
+            'theater':        r'^ACT [IVXLCDM]+[.]?\s+Scene [IVXLCDM]+[.]?\s*.*$',
         }
 
         def strip_book(lines):
@@ -561,7 +564,7 @@ class TypioPrompt:
                 if i < 3 or not empty_lines[i-1] or not empty_lines[i-2] or not empty_lines[i+1]:
                     continue
                 for name, regex in CHAPTER_STYLES.items():
-                    if re.match(regex, l):
+                    if re.match(regex, l, re.IGNORECASE):
                         c[name] += 1
 
             return c.most_common(1)[0][0]
@@ -588,9 +591,9 @@ class TypioPrompt:
 
             i = 0
             while i < len(lines):
-                l = lines[i].strip()
+                l = lines[i].rstrip()
 
-                if re.match(CHAPTER_STYLES[cs], l):
+                if re.match(CHAPTER_STYLES[cs], l, re.IGNORECASE):
 
                     # Check there are blank lines around to be sure
                     if i < 3 or \

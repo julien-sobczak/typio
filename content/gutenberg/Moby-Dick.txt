@@ -367,7 +367,7 @@ Dictionary.
 “WHALE. * * * It is more immediately from the Dut. and Ger. Wallen;
 A.S. Walwian, to roll, to wallow.” —Richardson’s Dictionary.
 
-     חן,                  Hebrew.  
+     חן,                  Hebrew.
      ϰητος,               Greek.
      CETUS,               Latin.
      WHŒL,                Anglo-Saxon.
@@ -22298,10 +22298,6 @@ orphan.
 
 
 
-
-
-End of Project Gutenberg’s Moby Dick; or The Whale, by Herman Melville
-
 *** END OF THIS PROJECT GUTENBERG EBOOK MOBY DICK; OR THE WHALE ***
 
 ***** This file should be named 2701-h.htm or 2701-h.zip ***** This and
@@ -22654,6 +22650,3 @@ This Web site includes information about Project Gutenberg-tm, including
 how to make donations to the Project Gutenberg Literary Archive
 Foundation, how to help produce our new eBooks, and how to subscribe to
 our email newsletter to hear about new eBooks.
-
-
-

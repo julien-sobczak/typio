@@ -28,8 +28,8 @@ Language: English
 Character set encoding: UTF-8
 
 
-***START OF THE PROJECT GUTENBERG EBOOK THE LIFE AND ADVENTURES OF
-ROBINSON CRUSOE***
+*** START OF THE PROJECT GUTENBERG EBOOK THE LIFE AND ADVENTURES OF
+ROBINSON CRUSOE ***
 
 
 Transcribed from the 1919 Seeley, Service & Co. edition by David Price,
@@ -9915,8 +9915,8 @@ of in the Second Part of my Story.
 
 
 
-***END OF THE PROJECT GUTENBERG EBOOK THE LIFE AND ADVENTURES OF ROBINSON
-CRUSOE***
+*** END OF THE PROJECT GUTENBERG EBOOK THE LIFE AND ADVENTURES OF ROBINSON
+CRUSOE ***
 
 
 ******* This file should be named 521-0.txt or 521-0.zip *******
@@ -10277,4 +10277,3 @@ This Web site includes information about Project Gutenberg-tm,
 including how to make donations to the Project Gutenberg Literary
 Archive Foundation, how to help produce our new eBooks, and how to
 subscribe to our email newsletter to hear about new eBooks.
-

@@ -247,7 +247,7 @@ _April_ 2, 1727
 PART I.  A VOYAGE TO LILLIPUT.
 
 
-CHAPTER I.
+PART I. CHAPTER I.
 
 
 The author gives some account of himself and family.  His first
@@ -572,7 +572,7 @@ lie at my full length in the temple.
 
 
 
-CHAPTER II.
+PART I. CHAPTER II.
 
 
 The emperor of Lilliput, attended by several of the nobility, comes to
@@ -887,7 +887,7 @@ lost or spoiled if I ventured them out of my possession.
 
 
 
-CHAPTER III.
+PART I. CHAPTER III.
 
 
 The author diverts the emperor, and his nobility of both sexes, in a very
@@ -1142,7 +1142,7 @@ economy of so great a prince.
 
 
 
-CHAPTER IV.
+PART I. CHAPTER IV.
 
 
 Mildendo, the metropolis of Lilliput, described, together with the
@@ -1304,7 +1304,7 @@ my life, to defend his person and state against all invaders.”
 
 
 
-CHAPTER V.
+PART I. CHAPTER V.
 
 
 The author, by an extraordinary stratagem, prevents an invasion.  A high
@@ -1517,7 +1517,7 @@ confidents could not forbear vowing revenge.”
 
 
 
-CHAPTER VI.
+PART I. CHAPTER VI.
 
 
 Of the inhabitants of Lilliput; their learning, laws, and customs; the
@@ -1848,7 +1848,7 @@ indeed, too much governed by that favourite.
 
 
 
-CHAPTER VII.
+PART I. CHAPTER VII.
 
 
 The author, being informed of a design to accuse him of high-treason,
@@ -2130,7 +2130,7 @@ being forced to lie on the ground, wrapped up in my coverlet.
 
 
 
-CHAPTER VIII.
+PART I. CHAPTER VIII.
 
 
 The author, by a lucky accident, finds means to leave Blefuscu; and,
@@ -2345,7 +2345,7 @@ PART II.  A VOYAGE TO BROBDINGNAG.
 
 
 
-CHAPTER I.
+PART II. CHAPTER I.
 
 
 A great storm described; the long boat sent to fetch water; the author
@@ -2739,7 +2739,7 @@ travellers are often, perhaps not without justice, accused.
 
 
 
-CHAPTER II.
+PART II. CHAPTER II.
 
 
 A description of the farmer’s daughter.  The author carried to a
@@ -2924,7 +2924,7 @@ letters, and interpreted the words.
 
 
 
-CHAPTER III.
+PART II. CHAPTER III.
 
 
 The author sent for to court.  The queen buys him of his master the
@@ -3249,7 +3249,7 @@ College, and kept the fourth for myself.
 
 
 
-CHAPTER IV.
+PART II. CHAPTER IV.
 
 
 The country described.  A proposal for correcting modern maps.  The
@@ -3409,7 +3409,7 @@ whereof I shall find another occasion to speak.
 
 
 
-CHAPTER V.
+PART II. CHAPTER V.
 
 
 Several adventurers that happened to the author.  The execution of a
@@ -3720,7 +3720,7 @@ about the court: so that all the mirth for some days was at my expense.
 
 
 
-CHAPTER VI.
+PART II. CHAPTER VI.
 
 
 Several contrivances of the author to please the king and queen.  He
@@ -4004,7 +4004,7 @@ nature ever suffered to crawl upon the surface of the earth.”
 
 
 
-CHAPTER VII.
+PART II. CHAPTER VII.
 
 
 The author’s love of his country.  He makes a proposal of much advantage
@@ -4220,7 +4220,7 @@ duty.
 
 
 
-CHAPTER VIII.
+PART II. CHAPTER VIII.
 
 
 The king and queen make a progress to the frontiers.  The author attends
@@ -4604,7 +4604,7 @@ JAPAN.
 
 
 
-CHAPTER I.
+PART III. CHAPTER I.
 
 
 The author sets out on his third voyage.  Is taken by pirates.  The
@@ -4786,7 +4786,7 @@ myself, and was drawn up by pulleys.
 
 
 
-CHAPTER II.
+PART III. CHAPTER II.
 
 
 The humours and dispositions of the Laputians described.  An account of
@@ -5064,7 +5064,7 @@ and indifference, though often roused by his flapper on each side.
 
 
 
-CHAPTER III.
+PART III. CHAPTER III.
 
 
 A phenomenon solved by modern philosophy and astronomy.  The Laputians’
@@ -5243,7 +5243,7 @@ she is past child-bearing.
 
 
 
-CHAPTER IV.
+PART III. CHAPTER IV.
 
 
 The author leaves Laputa; is conveyed to Balnibarbi; arrives at the
@@ -5442,7 +5442,7 @@ for I had myself been a sort of projector in my younger days.
 
 
 
-CHAPTER V.
+PART III. CHAPTER V.
 
 
 The author permitted to see the grand academy of Lagado.  The academy
@@ -5690,7 +5690,7 @@ abstinence, as the prescription requires.
 
 
 
-CHAPTER VI.
+PART III. CHAPTER VI.
 
 
 A further account of the academy.  The author proposes some improvements,
@@ -5885,7 +5885,7 @@ continuance, and began to think of returning home to England.
 
 
 
-CHAPTER VII.
+PART III. CHAPTER VII.
 
 
 The author leaves Lagado: arrives at Maldonada.  No ship ready.  He takes
@@ -6024,7 +6024,7 @@ reader.
 
 
 
-CHAPTER VIII.
+PART III. CHAPTER VIII.
 
 
 A further account of Glubbdubdrib.  Ancient and modern history corrected.
@@ -6213,7 +6213,7 @@ possibly be learned in a court.
 
 
 
-CHAPTER IX.
+PART III. CHAPTER IX.
 
 
 The author returns to Maldonada.  Sails to the kingdom of Luggnagg.  The
@@ -6335,7 +6335,7 @@ pass the remainder of my days with my wife and family.
 
 
 
-CHAPTER X.
+PART III. CHAPTER X.
 
 
 The Luggnaggians commended.  A particular description of the Struldbrugs,
@@ -6621,7 +6621,7 @@ manage, must end in the ruin of the public.
 
 
 
-CHAPTER XI.
+PART III. CHAPTER XI.
 
 
 The author leaves Luggnagg, and sails to Japan.  From thence he returns
@@ -6745,7 +6745,7 @@ PART IV.  A VOYAGE TO THE COUNTRY OF THE HOUYHNHNMS.
 
 
 
-CHAPTER I.
+PART IV. CHAPTER I.
 
 
 The author sets out as captain of a ship.  His men conspire against him,
@@ -6966,7 +6966,7 @@ would stand awhile to let me rest.
 
 
 
-CHAPTER II.
+PART IV. CHAPTER II.
 
 
 The author conducted by a Houyhnhnm to his house.  The house described.
@@ -7156,7 +7156,7 @@ more particularly about my way of living.
 
 
 
-CHAPTER III.
+PART IV. CHAPTER III.
 
 
 The author studies to learn the language.  The Houyhnhnm, his master,
@@ -7346,7 +7346,7 @@ the presiding creature of a nation, and a _Yahoo_ the brute.”
 
 
 
-CHAPTER IV.
+PART IV. CHAPTER IV.
 
 
 The Houyhnhnm’s notion of truth and falsehood.  The author’s discourse
@@ -7516,7 +7516,7 @@ of that land which we call Europe, but especially of my own country.
 
 
 
-CHAPTER V.
+PART IV. CHAPTER V.
 
 
 The author at his master’s command, informs him of the state of England.
@@ -7729,7 +7729,7 @@ in every other subject of discourse as in that of their own profession.”
 
 
 
-CHAPTER VI.
+PART IV. CHAPTER VI.
 
 
 A continuation of the state of England under Queen Anne.  The character
@@ -7959,7 +7959,7 @@ our possessions, without appeal.” {514}
 
 
 
-CHAPTER VII.
+PART IV. CHAPTER VII.
 
 
 The author’s great love of his native country.  His master’s observations
@@ -8214,7 +8214,7 @@ the globe.
 
 
 
-CHAPTER VIII.
+PART IV. CHAPTER VIII.
 
 
 The author relates several particulars of the _Yahoos_.  The great
@@ -8421,7 +8421,7 @@ loss.
 
 
 
-CHAPTER IX.
+PART IV. CHAPTER IX.
 
 
 A grand debate at the general assembly of the _Houyhnhnms_, and how it
@@ -8601,7 +8601,7 @@ catastrophe.
 
 
 
-CHAPTER X.
+PART IV. CHAPTER X.
 
 
 The author’s economy, and happy life, among the Houyhnhnms.  His great
@@ -8847,7 +8847,7 @@ company; then getting into my canoe, I pushed off from shore.
 
 
 
-CHAPTER XI.
+PART IV. CHAPTER XI.
 
 
 The author’s dangerous voyage.  He arrives at New Holland, hoping to
@@ -9110,7 +9110,7 @@ other.
 
 
 
-CHAPTER XII.
+PART IV. CHAPTER XII.
 
 
 The author’s veracity.  His design in publishing this work.  His censure
@@ -9321,34 +9321,6 @@ subject from the desire I have to make the society of an English _Yahoo_
 by any means not insupportable; and therefore I here entreat those who
 have any tincture of this absurd vice, that they will not presume to come
 in my sight.
-
-
-
-
-FOOTNOTES:
-
-
-{301}  A stang is a pole or perch; sixteen feet and a half.
-
-{330}  An act of parliament has been since passed by which some breaches
-of trust have been made capital.
-
-{454a}  Britannia.—_Sir W. Scott_.
-
-{454b}  London.—_Sir W. Scott_.
-
-{455}  This is the revised text adopted by Dr. Hawksworth (1766).  The
-above paragraph in the original editions (1726) takes another form,
-commencing:—“I told him that should I happen to live in a kingdom where
-lots were in vogue,” &c.  The names Tribnia and Langdon an not mentioned,
-and the “close stool” and its signification do not occur.
-
-{514}  This paragraph is not in the original editions.
-
-{546}  The original editions and Hawksworth’s have Rotherhith here,
-though earlier in the work, Redriff is said to have been Gulliver’s home
-in England.
-
 
 
 
@@ -9711,4 +9683,3 @@ This Web site includes information about Project Gutenberg-tm,
 including how to make donations to the Project Gutenberg Literary
 Archive Foundation, how to help produce our new eBooks, and how to
 subscribe to our email newsletter to hear about new eBooks.
-

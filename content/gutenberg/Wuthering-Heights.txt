@@ -25,7 +25,7 @@ Language: English
 Character set encoding: ISO-646-US (US-ASCII)
 
 
-***START OF THE PROJECT GUTENBERG EBOOK WUTHERING HEIGHTS***
+*** START OF THE PROJECT GUTENBERG EBOOK WUTHERING HEIGHTS ***
 
 
 
@@ -12125,7 +12125,7 @@ unquiet slumbers for the sleepers in that quiet earth.
 
 
 
-***END OF THE PROJECT GUTENBERG EBOOK WUTHERING HEIGHTS***
+*** END OF THE PROJECT GUTENBERG EBOOK WUTHERING HEIGHTS ***
 
 
 ******* This file should be named 768.txt or 768.zip *******

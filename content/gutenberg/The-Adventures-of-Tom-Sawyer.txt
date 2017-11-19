@@ -483,6 +483,7 @@ HARTFORD, 1876.
 
 CHAPTER I
 
+
 “TOM!”
 
 No answer.
@@ -8859,8 +8860,7 @@ story of the younger ones again and see what sort of men and women they
 turned out to be; therefore it will be wisest not to reveal any of that
 part of their lives at present.
 
-End of the Project Gutenberg Ebook of Adventures of Tom Sawyer,
-Complete, by Mark Twain (Samuel Clemens)
+
 
 *** END OF THIS PROJECT GUTENBERG EBOOK TOM SAWYER ***
 
@@ -9205,5 +9205,3 @@ This Web site includes information about Project Gutenberg-tm, including
 how to make donations to the Project Gutenberg Literary Archive
 Foundation, how to help produce our new eBooks, and how to subscribe to
 our email newsletter to hear about new eBooks.
-
-

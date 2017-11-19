@@ -535,6 +535,7 @@ class TypioPrompt:
         CHAPTER_STYLES = {
             'arabic_number':  r'^\d+\s*$',
             'arabic_number2': r'^\d+[.]\s+.*$',
+            'part_roman':  r'^PART [IVXLCDM]+[.]?\s+CHAPTER [IVXLCDM]+[.]?\s*.*$',
             'chapter_roman':  r'^CHAPTER [IVXLCDM]+[.]?\s*.*$',
             'chapter_arabic': r'^CHAPTER \d+[.]?\s*.*$',
             'roman_numeral':  r'^[IVXLCDM]+[.]\s*.*$',

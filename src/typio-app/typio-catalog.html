@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
@@ -69,22 +70,15 @@
          font-size: 2em;
          margin-bottom: 50px;
        }
-       .types {
-         display: flex;
-         flex-direction: row;
-         justify-content: center;
+       paper-tabs {
+         text-align: center;
+         width: 300px;
+         margin: 0 auto;
        }
        .type {
-         width: 45vw;
-         max-width: 1000px;
          padding: 20px 20px 40px;
          margin-left: 25px;
          margin-right: 25px;
-         background-color: rgba(0, 0, 0, 0.2);
-         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
-       }
-       .type:hover {
-         box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
        }
        .count {
          display: inline-block;
@@ -98,14 +92,18 @@
        }
 
        paper-radio-group {
-         flex-flow: row wrap;
+         display: inline;
        }
-       paper-radio-group a {
+       .type a {
          margin: 25px;
-         text-decoration: underline;
+         font-weight: bold;
+         font-size: 110%;
          color: white !important;
        }
-       paper-radio-group > paper-radio-button, paper-radio-group > a {
+       .type a iron-icon {
+         margin-right: 10px;
+       }
+       .type paper-radio-button, .type a {
          text-align: left;
          width: 115px;
          font-size: 14px;
@@ -125,10 +123,14 @@
     <section>
       <h3>Practice</h3>
 
-      <div class="types">
-        <div class="type type-code">
-          <h4>Code</h4>
+      <paper-tabs id="typeTabs" attr-for-selected="data-type" selected="[[type]]" on-iron-select="_changedType">
+        <paper-tab data-type="code">Code</paper-tab>
+        <paper-tab data-type="literature">Literature</paper-tab>
+      </paper-tabs>
 
+      <div id="typeCode" class="type type-code" data-step="1">
+
+        <div id="typeCodeStep1">
           <paper-radio-group>
           <template id="programmingLanguagesList" is="dom-repeat" items="{{programmingLanguages}}" filter="_filterProjects">
             <paper-radio-button class="catalog-entry" name="[[item.0]]">[[item.0]] <br><span class="count">[[item.1]] projects</span></paper-radio-button>
@@ -139,23 +141,24 @@
               <iron-icon icon="remove-circle"></iron-icon> Less
             </a>
           </template>
-          <template is="dom-if" if="{{!showAllProgrammingLanguages}}">
+          <template is="dom-if" id="typeLiterature" if="{{!showAllProgrammingLanguages}}">
             <a on-click="_selectAllProgrammingLanguages">
               <iron-icon icon="add-circle"></iron-icon> More
             </a>
           </template>
-
         </div>
-        <div class="type type-roman">
-          <h4>Roman</h4>
 
-          <paper-radio-group>
-          <template is="dom-repeat" items="{{spokenLanguages}}">
-            <paper-radio-button class="catalog-entry" name="[[item.0]]">[[item.0]] <br><span class="count">[[item.1]] books</span></paper-radio-button>
-          </template>
-          </paper-radio-group>
-
+        <div id="typeCodeStep2">
         </div>
+
+      </div>
+
+      <div id="typeLiterature" class="type type-roman">
+        <paper-radio-group>
+        <template is="dom-repeat" items="{{spokenLanguages}}">
+          <paper-radio-button class="catalog-entry" name="[[item.0]]">[[item.0]] <br><span class="count">[[item.1]] books</span></paper-radio-button>
+        </template>
+        </paper-radio-group>
       </div>
 
       <div class="buttons">
@@ -183,6 +186,11 @@
             observer: '_onLoadCatalog'
           },
 
+          type: {
+            type: String,
+            value: 'code'
+          },
+
           /*
            * Sorted list of programming languages present in `catalog`.
            */
@@ -205,6 +213,15 @@
           },
 
           showAllSpokenLanguages: {
+            type: Boolean,
+            value: false
+          },
+
+          showAllProjects: {
+            type: Boolean,
+            value: false
+          },
+          showAllBooks: {
             type: Boolean,
             value: false
           }
@@ -247,11 +264,15 @@
         this.$.programmingLanguagesList.render();
       }
       _unselectAllProgrammingLanguages() {
-        console.log('unselect');
         this.showAllProgrammingLanguages = false;
         this.$.programmingLanguagesList.render();
       }
 
+      _changedType(e) {
+        this.type = this.$.typeTabs.selected;
+        this.$.typeCode.style.display = this.type === 'code' ? "block" : "none";
+        this.$.typeLiterature.style.display = this.type === 'literature' ? "block" : "none";
+      }
 
     }
 

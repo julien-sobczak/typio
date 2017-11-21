@@ -1,0 +1,530 @@
+{
+    "chapters": [
+        {
+            "characters": 7211,
+            "end": 185,
+            "paragraphs": 48,
+            "start": 57,
+            "title": "CHAPITRE I."
+        },
+        {
+            "characters": 6166,
+            "end": 310,
+            "paragraphs": 23,
+            "start": 194,
+            "title": "CHAPITRE II. UN MAIRE"
+        },
+        {
+            "characters": 10540,
+            "end": 513,
+            "paragraphs": 34,
+            "start": 319,
+            "title": "CHAPITRE III. LE BIEN DES PAUVRES"
+        },
+        {
+            "characters": 7974,
+            "end": 664,
+            "paragraphs": 23,
+            "start": 522,
+            "title": "CHAPITRE IV. UN PÈRE ET UN FILS"
+        },
+        {
+            "characters": 14709,
+            "end": 977,
+            "paragraphs": 65,
+            "start": 673,
+            "title": "CHAPITRE V. UNE NÉGOCIATION"
+        },
+        {
+            "characters": 15435,
+            "end": 1306,
+            "paragraphs": 69,
+            "start": 986,
+            "title": "CHAPITRE VI. L'ENNUI"
+        },
+        {
+            "characters": 21424,
+            "end": 1713,
+            "paragraphs": 64,
+            "start": 1315,
+            "title": "CHAPITRE VII. LES AFFINITÉS ÉLECTIVES"
+        },
+        {
+            "characters": 15739,
+            "end": 2019,
+            "paragraphs": 52,
+            "start": 1722,
+            "title": "CHAPITRE VIII. PETITS ÉVÉNEMENTS"
+        },
+        {
+            "characters": 15898,
+            "end": 2354,
+            "paragraphs": 67,
+            "start": 2028,
+            "title": "CHAPITRE IX. UNE SOIRÉE A LA CAMPAGNE"
+        },
+        {
+            "characters": 6007,
+            "end": 2494,
+            "paragraphs": 34,
+            "start": 2363,
+            "title": "CHAPITRE X. UN GRAND COEUR ET UNE PETITE FORTUNE"
+        },
+        {
+            "characters": 7471,
+            "end": 2637,
+            "paragraphs": 22,
+            "start": 2503,
+            "title": "CHAPITRE XI. UNE SOIRÉE"
+        },
+        {
+            "characters": 13233,
+            "end": 2887,
+            "paragraphs": 37,
+            "start": 2646,
+            "title": "CHAPITRE XII. UN VOYAGE"
+        },
+        {
+            "characters": 10244,
+            "end": 3089,
+            "paragraphs": 34,
+            "start": 2896,
+            "title": "CHAPITRE XIII. LES BAS A JOUR"
+        },
+        {
+            "characters": 5890,
+            "end": 3222,
+            "paragraphs": 31,
+            "start": 3098,
+            "title": "CHAPITRE XIV. LES CISEAUX ANGLAIS"
+        },
+        {
+            "characters": 7002,
+            "end": 3370,
+            "paragraphs": 29,
+            "start": 3231,
+            "title": "CHAPITRE XV. LE CHANT DU COQ"
+        },
+        {
+            "characters": 9005,
+            "end": 3557,
+            "paragraphs": 37,
+            "start": 3379,
+            "title": "CHAPITRE XVI. LE LENDEMAIN"
+        },
+        {
+            "characters": 9177,
+            "end": 3736,
+            "paragraphs": 29,
+            "start": 3566,
+            "title": "CHAPITRE XVII. LE PREMIER ADJOINT"
+        },
+        {
+            "characters": 26281,
+            "end": 4247,
+            "paragraphs": 89,
+            "start": 3745,
+            "title": "CHAPITRE XVIII. UN ROI A VERRIÈRES"
+        },
+        {
+            "characters": 16281,
+            "end": 4591,
+            "paragraphs": 72,
+            "start": 4256,
+            "title": "CHAPITRE XIX. PENSER FAIT SOUFFRIR"
+        },
+        {
+            "characters": 7549,
+            "end": 4746,
+            "paragraphs": 28,
+            "start": 4600,
+            "title": "CHAPITRE XX. LES LETTRES ANONYMES"
+        },
+        {
+            "characters": 26412,
+            "end": 5289,
+            "paragraphs": 104,
+            "start": 4756,
+            "title": "CHAPITRE XXI. DIALOGUE AVEC UN MAÎTRE"
+        },
+        {
+            "characters": 25550,
+            "end": 5758,
+            "paragraphs": 66,
+            "start": 5298,
+            "title": "CHAPITRE XXII. FAÇONS D'AGIR EN 1830"
+        },
+        {
+            "characters": 26996,
+            "end": 6331,
+            "paragraphs": 123,
+            "start": 5767,
+            "title": "CHAPITRE XXIII. CHAGRINS D'UN FONCTIONNAIRE"
+        },
+        {
+            "characters": 12835,
+            "end": 6615,
+            "paragraphs": 66,
+            "start": 6340,
+            "title": "CHAPITRE XXIV. UNE CAPITALE"
+        },
+        {
+            "characters": 13971,
+            "end": 6925,
+            "paragraphs": 71,
+            "start": 6624,
+            "title": "CHAPITRE XXV. LE SÉMINAIRE"
+        },
+        {
+            "characters": 20550,
+            "end": 7341,
+            "paragraphs": 81,
+            "start": 6935,
+            "title": "CHAPITRE XXVI. LE MONDE OU CE QUI MANQUE AU RICHE"
+        },
+        {
+            "characters": 7254,
+            "end": 7484,
+            "paragraphs": 25,
+            "start": 7350,
+            "title": "CHAPITRE XXVII. PREMIÈRE EXPÉRIENCE DE LA VIE"
+        },
+        {
+            "characters": 13887,
+            "end": 7753,
+            "paragraphs": 47,
+            "start": 7493,
+            "title": "CHAPITRE XXVIII. UNE PROCESSION"
+        },
+        {
+            "characters": 29690,
+            "end": 8350,
+            "paragraphs": 115,
+            "start": 7762,
+            "title": "CHAPITRE XXIX. LE PREMIER AVANCEMENT"
+        },
+        {
+            "characters": 34243,
+            "end": 9091,
+            "paragraphs": 169,
+            "start": 8359,
+            "title": "CHAPITRE XXX. UN AMBITIEUX"
+        },
+        {
+            "characters": 21075,
+            "end": 9524,
+            "paragraphs": 88,
+            "start": 9101,
+            "title": "CHAPITRE I. LES PLAISIRS DE LA CAMPAGNE"
+        },
+        {
+            "characters": 15814,
+            "end": 9839,
+            "paragraphs": 58,
+            "start": 9533,
+            "title": "CHAPITRE II. ENTRÉE DANS LE MONDE"
+        },
+        {
+            "characters": 6388,
+            "end": 9987,
+            "paragraphs": 37,
+            "start": 9848,
+            "title": "CHAPITRE III. LES PREMIERS PAS"
+        },
+        {
+            "characters": 24297,
+            "end": 10470,
+            "paragraphs": 88,
+            "start": 9996,
+            "title": "CHAPITRE IV. L'HÔTEL DE LA MOLE"
+        },
+        {
+            "characters": 5577,
+            "end": 10577,
+            "paragraphs": 17,
+            "start": 10479,
+            "title": "CHAPITRE V. LA SENSIBILITÉ ET UNE GRANDE DAME DÉVOTE"
+        },
+        {
+            "characters": 13173,
+            "end": 10851,
+            "paragraphs": 55,
+            "start": 10586,
+            "title": "CHAPITRE VI. MANIÈRE DE PRONONCER"
+        },
+        {
+            "characters": 15488,
+            "end": 11190,
+            "paragraphs": 75,
+            "start": 10860,
+            "title": "CHAPITRE VII. UNE ATTAQUE DE GOUTTE"
+        },
+        {
+            "characters": 19170,
+            "end": 11598,
+            "paragraphs": 86,
+            "start": 11199,
+            "title": "CHAPITRE VIII. QUELLE EST LA DÉCORATION QUI DISTINGUE?"
+        },
+        {
+            "characters": 18094,
+            "end": 11971,
+            "paragraphs": 74,
+            "start": 11607,
+            "title": "CHAPITRE IX. LE BAL"
+        },
+        {
+            "characters": 16295,
+            "end": 12298,
+            "paragraphs": 60,
+            "start": 11980,
+            "title": "CHAPITRE X. LA REINE MARGUERITE"
+        },
+        {
+            "characters": 8169,
+            "end": 12456,
+            "paragraphs": 25,
+            "start": 12307,
+            "title": "CHAPITRE XI. L'EMPIRE D'UNE JEUNE FILLE!"
+        },
+        {
+            "characters": 11439,
+            "end": 12683,
+            "paragraphs": 42,
+            "start": 12465,
+            "title": "CHAPITRE XII. SERAIT-CE UN DANTON?"
+        },
+        {
+            "characters": 17543,
+            "end": 13038,
+            "paragraphs": 67,
+            "start": 12692,
+            "title": "CHAPITRE XIII. UN COMPLOT"
+        },
+        {
+            "characters": 11516,
+            "end": 13270,
+            "paragraphs": 44,
+            "start": 13047,
+            "title": "CHAPITRE XIV. PENSÉES D'UNE JEUNE FILLE"
+        },
+        {
+            "characters": 9849,
+            "end": 13471,
+            "paragraphs": 38,
+            "start": 13279,
+            "title": "CHAPITRE XV. EST-CE UN COMPLOT?"
+        },
+        {
+            "characters": 12701,
+            "end": 13741,
+            "paragraphs": 60,
+            "start": 13480,
+            "title": "CHAPITRE XVI. UNE HEURE DU MATIN"
+        },
+        {
+            "characters": 9195,
+            "end": 13949,
+            "paragraphs": 49,
+            "start": 13750,
+            "title": "CHAPITRE XVII. UNE VIEILLE ÉPÉE"
+        },
+        {
+            "characters": 10731,
+            "end": 14169,
+            "paragraphs": 43,
+            "start": 13958,
+            "title": "CHAPITRE XVIII. MOMENTS CRUELS"
+        },
+        {
+            "characters": 18596,
+            "end": 14555,
+            "paragraphs": 74,
+            "start": 14178,
+            "title": "CHAPITRE XIX. L'OPÉRA BOUFFE"
+        },
+        {
+            "characters": 11774,
+            "end": 14800,
+            "paragraphs": 48,
+            "start": 14564,
+            "title": "CHAPITRE XX. LE VASE DU JAPON"
+        },
+        {
+            "characters": 9641,
+            "end": 15013,
+            "paragraphs": 48,
+            "start": 14809,
+            "title": "CHAPITRE XXI. LA NOTE SECRÈTE"
+        },
+        {
+            "characters": 15216,
+            "end": 15340,
+            "paragraphs": 74,
+            "start": 15022,
+            "title": "CHAPITRE XXII. LA DISCUSSION"
+        },
+        {
+            "characters": 15680,
+            "end": 15701,
+            "paragraphs": 90,
+            "start": 15349,
+            "title": "CHAPITRE XXIII. LE CLERGÉ, LES BOIS, LA LIBERTÉ"
+        },
+        {
+            "characters": 11823,
+            "end": 15967,
+            "paragraphs": 62,
+            "start": 15710,
+            "title": "CHAPITRE XXIV. STRASBOURG"
+        },
+        {
+            "characters": 13040,
+            "end": 16246,
+            "paragraphs": 58,
+            "start": 15976,
+            "title": "CHAPITRE XXV. LE MINISTÈRE DE LA VERTU"
+        },
+        {
+            "characters": 6924,
+            "end": 16384,
+            "paragraphs": 23,
+            "start": 16255,
+            "title": "CHAPITRE XXVI. L'AMOUR MORAL"
+        },
+        {
+            "characters": 6518,
+            "end": 16516,
+            "paragraphs": 24,
+            "start": 16393,
+            "title": "CHAPITRE XXVII. LES PLUS BELLES PLACES DE L'ÉGLISE"
+        },
+        {
+            "characters": 7969,
+            "end": 16678,
+            "paragraphs": 30,
+            "start": 16525,
+            "title": "CHAPITRE XXVIII. MANON LESCAUT"
+        },
+        {
+            "characters": 6531,
+            "end": 16820,
+            "paragraphs": 32,
+            "start": 16687,
+            "title": "CHAPITRE XXIX. L'ENNUI"
+        },
+        {
+            "characters": 8589,
+            "end": 17014,
+            "paragraphs": 44,
+            "start": 16829,
+            "title": "CHAPITRE XXX. UNE LOGE AUX BOUFFES"
+        },
+        {
+            "characters": 8932,
+            "end": 17231,
+            "paragraphs": 57,
+            "start": 17023,
+            "title": "CHAPITRE XXXI. LUI FAIRE PEUR"
+        },
+        {
+            "characters": 9584,
+            "end": 17453,
+            "paragraphs": 56,
+            "start": 17240,
+            "title": "CHAPITRE XXXII. LE TIGRE"
+        },
+        {
+            "characters": 10068,
+            "end": 17684,
+            "paragraphs": 56,
+            "start": 17462,
+            "title": "CHAPITRE XXXIII. L'ENFER DE LA FAIBLESSE"
+        },
+        {
+            "characters": 12368,
+            "end": 17936,
+            "paragraphs": 48,
+            "start": 17693,
+            "title": "CHAPITRE XXXIV. UN HOMME D'ESPRIT"
+        },
+        {
+            "characters": 10517,
+            "end": 18154,
+            "paragraphs": 44,
+            "start": 17945,
+            "title": "CHAPITRE XXXV. UN ORAGE"
+        },
+        {
+            "characters": 13373,
+            "end": 18450,
+            "paragraphs": 68,
+            "start": 18163,
+            "title": "CHAPITRE XXXVI. DÉTAILS TRISTES"
+        },
+        {
+            "characters": 8548,
+            "end": 18637,
+            "paragraphs": 41,
+            "start": 18459,
+            "title": "CHAPITRE XXXVII. UN DONJON"
+        },
+        {
+            "characters": 11875,
+            "end": 18883,
+            "paragraphs": 49,
+            "start": 18646,
+            "title": "CHAPITRE XXXVIII. UN HOMME PUISSANT"
+        },
+        {
+            "characters": 8911,
+            "end": 19069,
+            "paragraphs": 35,
+            "start": 18892,
+            "title": "CHAPITRE XXXIX. L'INTRIGUE"
+        },
+        {
+            "characters": 7961,
+            "end": 19232,
+            "paragraphs": 33,
+            "start": 19078,
+            "title": "CHAPITRE XL. LA TRANQUILLITÉ"
+        },
+        {
+            "characters": 13518,
+            "end": 19507,
+            "paragraphs": 54,
+            "start": 19241,
+            "title": "CHAPITRE XLI. LE JUGEMENT"
+        },
+        {
+            "characters": 10164,
+            "end": 19736,
+            "paragraphs": 56,
+            "start": 19515,
+            "title": "CHAPITRE XLII"
+        },
+        {
+            "characters": 9275,
+            "end": 19962,
+            "paragraphs": 67,
+            "start": 19744,
+            "title": "CHAPITRE XLIII"
+        },
+        {
+            "characters": 14067,
+            "end": 20276,
+            "paragraphs": 75,
+            "start": 19970,
+            "title": "CHAPITRE XLIV"
+        },
+        {
+            "characters": 13076,
+            "end": 20546,
+            "paragraphs": 56,
+            "start": 20283,
+            "title": "CHAPITRE XLV"
+        }
+    ],
+    "size": 1075877
+}

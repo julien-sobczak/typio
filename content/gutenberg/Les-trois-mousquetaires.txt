@@ -203,7 +203,8 @@ son plaisir ou de son ennui.
 Cela posé, passons à notre histoire.
 
 
-CHAPITRE PREMIER
+CHAPITRE I
+
 LES TROIS PRÉSENTS DE M. D'ARTAGNAN PÈRE
 
 Le premier lundi du mois d'avril 1625, le bourg de Meung, où
@@ -906,6 +907,7 @@ d'après l'estimation paternelle.
 
 
 CHAPITRE II
+
 L'ANTICHAMBRE DE M. DE TRÉVILLE
 
 M. de Troisvilles, comme s'appelait encore sa famille en Gascogne,
@@ -1349,6 +1351,7 @@ coeur d'échapper aussi à point à la fin de cette bizarre querelle.
 
 
 CHAPITRE III
+
 L'AUDIENCE
 
 M. de Tréville était pour le moment de fort méchante humeur;
@@ -1879,6 +1882,7 @@ qu'il a manqué son coup.»
 
 
 CHAPITRE IV
+
 L'ÉPAULE D'ATHOS, LE BAUDRIER DE PORTHOS ET LE MOUCHOIR D'ARAMIS
 
 D'Artagnan, furieux, avait traversé l'antichambre en trois bonds
@@ -2263,6 +2267,7 @@ tué, je serai tué par un mousquetaire.»
 
 
 CHAPITRE V
+
 LES MOUSQUETAIRES DU ROI ET LES GARDES DE M. LE CARDINAL
 
 D'Artagnan ne connaissait personne à Paris. Il alla donc au
@@ -2781,6 +2786,7 @@ voilà reçu apprenti, n'est-ce pas?»
 
 
 CHAPITRE VI
+
 SA MAJESTÉ LE ROI LOUIS TREIZIÈME
 
 L'affaire fit grand bruit. M. de Tréville gronda beaucoup tout
@@ -3691,6 +3697,7 @@ et ce pauvre Jussac, qui sont à vous?»
 
 
 CHAPITRE VII
+
 L'INTÉRIEUR DES MOUSQUETAIRES
 
 Lorsque d'Artagnan fut hors du Louvre, et qu'il consulta ses amis
@@ -4062,6 +4069,7 @@ le jour où elle prit d'Artagnan.
 
 
 CHAPITRE VIII
+
 UNE INTRIGUE DE COEUR
 
 Cependant les quarante pistoles du roi Louis XIII, ainsi que
@@ -4503,6 +4511,7 @@ même de son caractère, jugé qu'il était prudent de décamper.
 
 
 CHAPITRE IX
+
 D'ARTAGNAN SE DESSINE
 
 Comme l'avaient prévu Athos et Porthos, au bout d'une demi-heure
@@ -4920,6 +4929,7 @@ aux prises avec le cardinal.»
 
 
 CHAPITRE X
+
 UNE SOURICIÈRE AU XVIIe SIÈCLE
 
 L'invention de la souricière ne date pas de nos jours; dès que les
@@ -5421,6 +5431,7 @@ dans la rue.
 
 
 CHAPITRE XI
+
 L'INTRIGUE SE NOUE
 
 Sa visite faite à M. de Tréville, d'Artagnan prit, tout pensif, le
@@ -6309,6 +6320,7 @@ guide.
 
 
 CHAPITRE XII
+
 GEORGES VILLIERS, DUC DE BUCKINGHAM
 
 Madame Bonacieux et le duc entrèrent au Louvre sans difficulté;
@@ -6696,6 +6708,7 @@ hors du Louvre.
 
 
 CHAPITRE XIII
+
 MONSIEUR BONACIEUX
 
 Il y avait dans tout cela, comme on a pu le remarquer, un
@@ -7140,6 +7153,7 @@ moribond, et il s'évanouit.
 
 
 CHAPITRE XIV
+
 L'HOMME DE MEUNG
 
 Ce rassemblement était produit non point par l'attente d'un homme
@@ -7731,6 +7745,7 @@ moi.»
 
 
 CHAPITRE XV
+
 GENS DE ROBE ET GENS D'ÉPÉE
 
 Le lendemain du jour où ces événements étaient arrivés, Athos
@@ -8119,8 +8134,8 @@ que ce matin.»
 
 
 CHAPITRE XVI
-OÙ M. LE GARDE DES SCEAUX SÉGUIER CHERCHA PLUS D'UNE FOIS LA
-CLOCHE POUR LA SONNER, COMME IL LE FAISAIT AUTREFOIS
+
+OÙ M. LE GARDE DES SCEAUX SÉGUIER CHERCHA PLUS D'UNE FOIS LA CLOCHE POUR LA SONNER, COMME IL LE FAISAIT AUTREFOIS
 
 Il est impossible de se faire une idée de l'impression que ces
 quelques mots produisirent sur Louis XIII. Il rougit et pâlit
@@ -8697,6 +8712,7 @@ diamants.»
 
 
 CHAPITRE XVII
+
 LE MÉNAGE BONACIEUX
 
 C'était la seconde fois que le cardinal revenait sur ce point des
@@ -9365,6 +9381,7 @@ je vais descendre près de vous.»
 
 
 CHAPITRE XVIII
+
 L'AMANT ET LE MARI
 
 «Ah! madame, dit d'Artagnan en entrant par la porte que lui
@@ -9769,6 +9786,7 @@ les mains:
 
 
 CHAPITRE XIX
+
 PLAN DE CAMPAGNE
 
 D'Artagnan se rendit droit chez M. de Tréville. Il avait réfléchi
@@ -10237,6 +10255,7 @@ pistoles et fit ses préparatifs pour partir à l'heure convenue.
 
 
 CHAPITRE XX
+
 VOYAGE
 
 À deux heures du matin, nos quatre aventuriers sortirent de Paris
@@ -10864,6 +10883,7 @@ Et tous deux reprirent au galop le chemin de la capitale.
 
 
 CHAPITRE XXI
+
 LA COMTESSE DE WINTER
 
 Tout le long de la route, le duc se fit mettre au courant par
@@ -11336,6 +11356,7 @@ de garde au Louvre et qu'il pouvait se rendre à son poste.
 
 
 CHAPITRE XXII
+
 LE BALLET DE LA MERLAISON
 
 Le lendemain, il n'était bruit dans tout Paris que du bal que
@@ -11666,6 +11687,7 @@ amoureux.
 
 
 CHAPITRE XXIII
+
 LE RENDEZ-VOUS
 
 D'Artagnan revint chez lui tout courant, et quoiqu'il fût plus de
@@ -12233,6 +12255,7 @@ avait donné un déjeuner de chocolat.
 
 
 CHAPITRE XXIV
+
 LE PAVILLON
 
 À neuf heures, d'Artagnan était à l'hôtel des Gardes; il trouva
@@ -12732,6 +12755,7 @@ d'Artagnan était passé sans même soupçonner son existence.
 
 
 CHAPITRE XXV
+
 PORTHOS
 
 Au lieu de rentrer chez lui directement, d'Artagnan mit pied à
@@ -13683,6 +13707,7 @@ chevaux de main.
 
 
 CHAPITRE XXVI
+
 LA THÈSE D'ARAMIS
 
 D'Artagnan n'avait rien dit à Porthos de sa blessure ni de sa
@@ -14504,6 +14529,7 @@ peu ce qu'on fait là-bas.»
 
 
 CHAPITRE XXVII
+
 LA FEMME D'ATHOS
 
 «Il reste maintenant à savoir des nouvelles d'Athos, dit
@@ -15470,6 +15496,7 @@ en pitié, et pourtant celui-là est des meilleurs!...»
 
 
 CHAPITRE XXVIII
+
 RETOUR
 
 D'Artagnan était resté étourdi de la terrible confidence d'Athos;
@@ -16234,6 +16261,7 @@ porte à son médius la rançon d'un roi.»
 
 
 CHAPITRE XXIX
+
 LA CHASSE À L'ÉQUIPEMENT
 
 Le plus préoccupé des quatre amis était bien certainement
@@ -16657,6 +16685,7 @@ en minaudant.
 
 
 CHAPITRE XXX
+
 MILADY
 
 D'Artagnan avait suivi Milady sans être aperçu par elle: il la vit
@@ -17036,6 +17065,7 @@ rêverie.
 
 
 CHAPITRE XXXI
+
 ANGLAIS ET FRANÇAIS
 
 L'heure venue, on se rendit avec les quatre laquais, derrière le
@@ -17413,6 +17443,7 @@ attention à cette persistance de la pauvre Ketty.
 
 
 CHAPITRE XXXII
+
 UN DÎNER DE PROCUREUR
 
 Cependant le duel dans lequel Porthos avait joué un rôle si
@@ -17870,6 +17901,7 @@ humeur.
 
 
 CHAPITRE XXXIII
+
 SOUBRETTE ET MAÎTRESSE
 
 Cependant, comme nous l'avons dit, malgré les cris de sa
@@ -18385,6 +18417,7 @@ Cette promesse acheva de consoler la pauvre Ketty.
 
 
 CHAPITRE XXXIV
+
 OÙ IL EST TRAITÉ DE L'ÉQUIPEMENT D'ARAMIS ET DE PORTHOS
 
 Depuis que les quatre amis étaient chacun à la chasse de son
@@ -18811,6 +18844,7 @@ rapproche enfin du bahut de maître Coquenard.»
 
 
 CHAPITRE XXXV
+
 LA NUIT TOUS LES CHATS SONT GRIS
 
 Ce soir, attendu si impatiemment par Porthos et par d'Artagnan,
@@ -19189,6 +19223,7 @@ Et de la main elle fit signe à Ketty de sortir.
 
 
 CHAPITRE XXXVI
+
 RÊVE DE VENGEANCE
 
 Le soir Milady donna l'ordre d'introduire M. d'Artagnan aussitôt
@@ -19607,6 +19642,7 @@ femme est une grande scélérate: prenons garde.»
 
 
 CHAPITRE XXXVII
+
 LE SECRET DE MILADY
 
 D'Artagnan était sorti de l'hôtel au lieu de monter tout de suite
@@ -19956,6 +19992,7 @@ criait par la fenêtre:
 
 
 CHAPITRE XXXVIII
+
 COMMENT, SANS SE DÉRANGER, ATHOS TROUVA SON ÉQUIPEMENT
 
 Le jeune homme s'enfuit tandis qu'elle le menaçait encore d'un
@@ -20466,6 +20503,7 @@ auxquelles il ne s'attendait pas.
 
 
 CHAPITRE XXXIX
+
 UNE VISION
 
 À quatre heures, les quatre amis étaient donc réunis chez Athos.
@@ -20905,6 +20943,7 @@ D'Artagnan reconnut le cardinal.
 
 
 CHAPITRE XL
+
 LE CARDINAL
 
 Le cardinal appuya son coude sur son manuscrit, sa joue sur sa
@@ -21282,6 +21321,7 @@ qu'un domestique sans livrée tenait en les attendant.
 
 
 CHAPITRE XLI
+
 LE SIÈGE DE LA ROCHELLE
 
 Le siège de La Rochelle fut un des grands événements politiques du
@@ -21875,6 +21915,7 @@ connaissait pas encore Milady.
 
 
 CHAPITRE XLII
+
 LE VIN D'ANJOU
 
 Après des nouvelles presque désespérées du roi, le bruit de sa
@@ -22280,6 +22321,7 @@ leur logis.
 
 
 CHAPITRE XLIII
+
 L'AUBERGE DU COLOMBIER-ROUGE
 
 À peine arrivé au camp, le roi, qui avait si grande hâte de se
@@ -22675,6 +22717,7 @@ lui indique son chemin.
 
 
 CHAPITRE XLIV
+
 DE L'UTILITÉ DES TUYAUX DE POÊLE
 
 Il était évident que, sans s'en douter, et mus seulement par leur
@@ -23086,6 +23129,7 @@ la route qui conduisait au camp.
 
 
 CHAPITRE XLV
+
 SCÈNE CONJUGALE
 
 Comme l'avait prévu Athos, le cardinal ne tarda point à descendre;
@@ -23376,6 +23420,7 @@ levait l'ancre et faisait voile pour l'Angleterre.
 
 
 CHAPITRE XLVI
+
 LE BASTION SAINT-GERVAIS
 
 En arrivant chez ses trois amis, d'Artagnan les trouva réunis dans
@@ -23739,6 +23784,7 @@ avait déjà précédés Grimaud.
 
 
 CHAPITRE XLVII
+
 LE CONSEIL DES MOUSQUETAIRES
 
 Comme l'avait prévu Athos, le bastion n'était occupé que par une
@@ -24659,6 +24705,7 @@ C'était le prix du diamant de la reine.
 
 
 CHAPITRE XLVIII
+
 AFFAIRE DE FAMILLE
 
 Athos avait trouvé le mot: affaire de famille. Une affaire de
@@ -25371,6 +25418,7 @@ aussi!» dit Athos.
 
 
 CHAPITRE XLIX
+
 FATALITÉ
 
 Cependant Milady, ivre de colère, rugissant sur le pont du
@@ -25759,6 +25807,7 @@ monsieur Felton.»
 
 
 CHAPITRE L
+
 CAUSERIE D'UN FRÈRE AVEC SA SOEUR
 
 Pendant le temps que Lord de Winter mit à fermer la porte, à
@@ -26114,6 +26163,7 @@ fauteuil, elle songea.
 
 
 CHAPITRE LI
+
 OFFICIER
 
 Cependant le cardinal attendait des nouvelles d'Angleterre, mais
@@ -26598,6 +26648,7 @@ mélancolique en murmurant entre ses moustaches:
 
 
 CHAPITRE LII
+
 PREMIERE JOURNÉE DE CAPTIVITÉ
 
 Revenons à Milady, qu'un regard jeté sur les côtes de France nous
@@ -26926,6 +26977,7 @@ prochaine fête.
 
 
 CHAPITRE LIII
+
 DEUXIÈME JOURNÉE DE CAPTIVITÉ
 
 Milady rêvait qu'elle tenait enfin d'Artagnan, qu'elle assistait à
@@ -27277,6 +27329,7 @@ est si belle!»
 
 
 CHAPITRE LIV
+
 TROISIÈME JOURNÉE DE CAPTIVITÉ
 
 Felton était venu; mais il y avait encore un pas à faire: il
@@ -27704,6 +27757,7 @@ comme à regret.
 
 
 CHAPITRE LV
+
 QUATRIÈME JOURNÉE DE CAPTIVITÉ
 
 Le lendemain, lorsque Felton entra chez Milady, il la trouva
@@ -28104,6 +28158,7 @@ et celui qui m'aidera à me venger.»
 
 
 CHAPITRE LVI
+
 CINQUIÈME JOURNÉE DE CAPTIVITÉ
 
 Cependant Milady en était arrivée à un demi-triomphe, et le succès
@@ -28809,6 +28864,7 @@ démon que la force lui manquerait peut-être avant la fin du récit.
 
 
 CHAPITRE LVII
+
 UN MOYEN DE TRAGÉDIE CLASSIQUE
 
 Après un moment de silence employé par Milady à observer le jeune
@@ -29140,6 +29196,7 @@ chercher un médecin.
 
 
 CHAPITRE LVIII
+
 ÉVASION
 
 Comme l'avait pensé Lord de Winter, la blessure de Milady n'était
@@ -29608,6 +29665,7 @@ au couvent des Carmélites de Béthune.
 
 
 CHAPITRE LIX
+
 CE QUI SE PASSAIT À PORTSMOUTH LE 23 AOÛT 1628
 
 Felton prit congé de Milady comme un frère qui va faire une simple
@@ -30159,6 +30217,7 @@ au port.
 
 
 CHAPITRE LX
+
 EN FRANCE
 
 La première crainte du roi d'Angleterre, Charles Ier, en apprenant
@@ -30413,6 +30472,7 @@ Béthune.
 
 
 CHAPITRE LXI
+
 LE COUVENT DES CARMÉLITES DE BÉTHUNE
 
 Les grands criminels portent avec eux une espèce de prédestination
@@ -31086,6 +31146,7 @@ Rochefort, l'âme damnée de Son Éminence.
 
 
 CHAPITRE LXII
+
 DEUX VARIÉTÉS DE DÉMONS
 
 «Ah! s'écrièrent ensemble Rochefort et Milady, c'est vous!
@@ -31420,6 +31481,7 @@ activité à leur voyage.
 
 
 CHAPITRE LXIII
+
 UNE GOUTTE D'EAU
 
 À peine Rochefort fut-il sorti, que Mme Bonacieux rentra. Elle
@@ -32181,6 +32243,7 @@ le nom de la ville...
 
 
 CHAPITRE LXIV
+
 L'HOMME AU MANTEAU ROUGE
 
 Le désespoir d'Athos avait fait place à une douleur concentrée,
@@ -32443,6 +32506,7 @@ sombres comme le châtiment.
 
 
 CHAPITRE LXV
+
 LE JUGEMENT
 
 C'était une nuit orageuse et sombre, de gros nuages couraient au
@@ -32845,6 +32909,7 @@ lampe fumeuse qui brûlait tristement sur la table.
 
 
 CHAPITRE LXVI
+
 L'EXÉCUTION
 
 Il était minuit à peu près; la lune, échancrée par sa décroissance
@@ -33092,6 +33157,7 @@ vous bien amusés dans votre excursion?
 
 
 CHAPITRE LXVII
+
 CONCLUSION
 
 Le 6 du mois suivant, le roi, tenant la promesse qu'il avait faite

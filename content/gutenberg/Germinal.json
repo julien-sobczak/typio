@@ -1,0 +1,278 @@
+{
+    "chapters": [
+        {
+            "characters": 21596,
+            "end": 493,
+            "paragraphs": 123,
+            "start": 84,
+            "title": "Partie I. Chapitre I."
+        },
+        {
+            "characters": 18670,
+            "end": 879,
+            "paragraphs": 76,
+            "start": 500,
+            "title": "Partie I. Chapitre II."
+        },
+        {
+            "characters": 27605,
+            "end": 1428,
+            "paragraphs": 92,
+            "start": 886,
+            "title": "Partie I. Chapitre III."
+        },
+        {
+            "characters": 44547,
+            "end": 2353,
+            "paragraphs": 176,
+            "start": 1435,
+            "title": "Partie I. Chapitre IV."
+        },
+        {
+            "characters": 19743,
+            "end": 2757,
+            "paragraphs": 77,
+            "start": 2360,
+            "title": "Partie I. Chapitre VI."
+        },
+        {
+            "characters": 20901,
+            "end": 3182,
+            "paragraphs": 77,
+            "start": 2764,
+            "title": "Partie II. Chapitre I."
+        },
+        {
+            "characters": 22658,
+            "end": 3656,
+            "paragraphs": 93,
+            "start": 3189,
+            "title": "Partie II. Chapitre II."
+        },
+        {
+            "characters": 25748,
+            "end": 4195,
+            "paragraphs": 109,
+            "start": 3663,
+            "title": "Partie II. Chapitre III."
+        },
+        {
+            "characters": 18122,
+            "end": 4571,
+            "paragraphs": 74,
+            "start": 4202,
+            "title": "Partie II. Chapitre IV."
+        },
+        {
+            "characters": 26870,
+            "end": 5092,
+            "paragraphs": 87,
+            "start": 4578,
+            "title": "Partie II. Chapitre V."
+        },
+        {
+            "characters": 25357,
+            "end": 5554,
+            "paragraphs": 61,
+            "start": 5099,
+            "title": "Partie III. Chapitre I."
+        },
+        {
+            "characters": 28729,
+            "end": 6095,
+            "paragraphs": 79,
+            "start": 5561,
+            "title": "Partie III. Chapitre II."
+        },
+        {
+            "characters": 22198,
+            "end": 6491,
+            "paragraphs": 47,
+            "start": 6102,
+            "title": "Partie III. Chapitre III."
+        },
+        {
+            "characters": 21600,
+            "end": 6952,
+            "paragraphs": 94,
+            "start": 6498,
+            "title": "Partie III. Chapitre IV."
+        },
+        {
+            "characters": 22311,
+            "end": 7401,
+            "paragraphs": 80,
+            "start": 6959,
+            "title": "Partie III. Chapitre V."
+        },
+        {
+            "characters": 29616,
+            "end": 8006,
+            "paragraphs": 112,
+            "start": 7408,
+            "title": "Partie IV. Chapitre I."
+        },
+        {
+            "characters": 18909,
+            "end": 8394,
+            "paragraphs": 72,
+            "start": 8013,
+            "title": "Partie IV. Chapitre II."
+        },
+        {
+            "characters": 22605,
+            "end": 8816,
+            "paragraphs": 59,
+            "start": 8401,
+            "title": "Partie IV. Chapitre III."
+        },
+        {
+            "characters": 31496,
+            "end": 9467,
+            "paragraphs": 126,
+            "start": 8823,
+            "title": "Partie IV. Chapitre IV."
+        },
+        {
+            "characters": 26175,
+            "end": 9989,
+            "paragraphs": 90,
+            "start": 9474,
+            "title": "Partie IV. Chapitre V."
+        },
+        {
+            "characters": 29391,
+            "end": 10537,
+            "paragraphs": 74,
+            "start": 9996,
+            "title": "Partie IV. Chapitre VI."
+        },
+        {
+            "characters": 24249,
+            "end": 11009,
+            "paragraphs": 77,
+            "start": 10544,
+            "title": "Partie IV. Chapitre VII."
+        },
+        {
+            "characters": 20332,
+            "end": 11409,
+            "paragraphs": 66,
+            "start": 11016,
+            "title": "Partie V. Chapitre I."
+        },
+        {
+            "characters": 24891,
+            "end": 11893,
+            "paragraphs": 81,
+            "start": 11416,
+            "title": "Partie V. Chapitre II."
+        },
+        {
+            "characters": 19505,
+            "end": 12281,
+            "paragraphs": 70,
+            "start": 11900,
+            "title": "Partie V. Chapitre III."
+        },
+        {
+            "characters": 22900,
+            "end": 12761,
+            "paragraphs": 97,
+            "start": 12288,
+            "title": "Partie V. Chapitre IV."
+        },
+        {
+            "characters": 30015,
+            "end": 13339,
+            "paragraphs": 88,
+            "start": 12768,
+            "title": "Partie V. Chapitre V."
+        },
+        {
+            "characters": 30288,
+            "end": 13963,
+            "paragraphs": 120,
+            "start": 13346,
+            "title": "Partie V. Chapitre VI."
+        },
+        {
+            "characters": 24456,
+            "end": 14392,
+            "paragraphs": 43,
+            "start": 13970,
+            "title": "Partie VI. Chapitre I."
+        },
+        {
+            "characters": 24942,
+            "end": 14897,
+            "paragraphs": 94,
+            "start": 14399,
+            "title": "Partie VI. Chapitre II."
+        },
+        {
+            "characters": 20080,
+            "end": 15320,
+            "paragraphs": 86,
+            "start": 14904,
+            "title": "Partie VI. Chapitre III."
+        },
+        {
+            "characters": 24205,
+            "end": 15779,
+            "paragraphs": 70,
+            "start": 15327,
+            "title": "Partie VI. Chapitre IV."
+        },
+        {
+            "characters": 27201,
+            "end": 16319,
+            "paragraphs": 93,
+            "start": 15785,
+            "title": "Partie VI. Chapitre V."
+        },
+        {
+            "characters": 25364,
+            "end": 16802,
+            "paragraphs": 69,
+            "start": 16326,
+            "title": "Partie VII. Chapitre I."
+        },
+        {
+            "characters": 21611,
+            "end": 17275,
+            "paragraphs": 98,
+            "start": 16809,
+            "title": "Partie VII. Chapitre II."
+        },
+        {
+            "characters": 32368,
+            "end": 17867,
+            "paragraphs": 75,
+            "start": 17282,
+            "title": "Partie VII. Chapitre III."
+        },
+        {
+            "characters": 31505,
+            "end": 18448,
+            "paragraphs": 78,
+            "start": 17874,
+            "title": "Partie VII. Chapitre IV."
+        },
+        {
+            "characters": 40222,
+            "end": 19266,
+            "paragraphs": 151,
+            "start": 18455,
+            "title": "Partie VII. Chapitre V."
+        },
+        {
+            "characters": 37084,
+            "end": 20058,
+            "paragraphs": 143,
+            "start": 19273,
+            "title": "Partie VII. Chapitre VI."
+        }
+    ],
+    "size": 1072848
+}

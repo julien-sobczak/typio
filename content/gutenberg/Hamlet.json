@@ -1,0 +1,145 @@
+{
+    "chapters": [
+        {
+            "characters": 8143,
+            "end": 662,
+            "paragraphs": 91,
+            "start": 333,
+            "title": "ACT I. Scene I."
+        },
+        {
+            "characters": 11262,
+            "end": 1109,
+            "paragraphs": 88,
+            "start": 669,
+            "title": "ACT I. Scene II."
+        },
+        {
+            "characters": 5871,
+            "end": 1319,
+            "paragraphs": 37,
+            "start": 1116,
+            "title": "ACT I. Scene III."
+        },
+        {
+            "characters": 4076,
+            "end": 1504,
+            "paragraphs": 45,
+            "start": 1326,
+            "title": "ACT I. Scene IV."
+        },
+        {
+            "characters": 7950,
+            "end": 1856,
+            "paragraphs": 73,
+            "start": 1511,
+            "title": "ACT I. Scene V."
+        },
+        {
+            "characters": 5045,
+            "end": 2076,
+            "paragraphs": 47,
+            "start": 1863,
+            "title": "ACT II. Scene I."
+        },
+        {
+            "characters": 26086,
+            "end": 3043,
+            "paragraphs": 198,
+            "start": 2083,
+            "title": "ACT II. Scene II."
+        },
+        {
+            "characters": 8312,
+            "end": 3352,
+            "paragraphs": 58,
+            "start": 3051,
+            "title": "ACT III. Scene I."
+        },
+        {
+            "characters": 17256,
+            "end": 4072,
+            "paragraphs": 175,
+            "start": 3359,
+            "title": "ACT III. Scene II."
+        },
+        {
+            "characters": 4328,
+            "end": 4217,
+            "paragraphs": 24,
+            "start": 4079,
+            "title": "ACT III. Scene III."
+        },
+        {
+            "characters": 9575,
+            "end": 4593,
+            "paragraphs": 71,
+            "start": 4224,
+            "title": "ACT III. Scene IV."
+        },
+        {
+            "characters": 2091,
+            "end": 4673,
+            "paragraphs": 20,
+            "start": 4600,
+            "title": "ACT IV. Scene I."
+        },
+        {
+            "characters": 1254,
+            "end": 4747,
+            "paragraphs": 25,
+            "start": 4680,
+            "title": "ACT IV. Scene II."
+        },
+        {
+            "characters": 3066,
+            "end": 4895,
+            "paragraphs": 41,
+            "start": 4754,
+            "title": "ACT IV. Scene III."
+        },
+        {
+            "characters": 2864,
+            "end": 5017,
+            "paragraphs": 29,
+            "start": 4902,
+            "title": "ACT IV. Scene IV."
+        },
+        {
+            "characters": 9134,
+            "end": 5421,
+            "paragraphs": 91,
+            "start": 5024,
+            "title": "ACT IV. Scene V."
+        },
+        {
+            "characters": 1569,
+            "end": 5480,
+            "paragraphs": 18,
+            "start": 5428,
+            "title": "ACT IV. Scene VI."
+        },
+        {
+            "characters": 8497,
+            "end": 5795,
+            "paragraphs": 55,
+            "start": 5487,
+            "title": "ACT IV. Scene VII."
+        },
+        {
+            "characters": 12913,
+            "end": 6340,
+            "paragraphs": 130,
+            "start": 5802,
+            "title": "ACT V. Scene I."
+        },
+        {
+            "characters": 17648,
+            "end": 7108,
+            "paragraphs": 179,
+            "start": 6347,
+            "title": "ACT V. Scene II."
+        }
+    ],
+    "size": 193257
+}

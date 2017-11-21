@@ -1,0 +1,334 @@
+{
+    "chapters": [
+        {
+            "characters": 16326,
+            "end": 367,
+            "paragraphs": 74,
+            "start": 115,
+            "title": "I. UN ÉCUEIL FUYANT"
+        },
+        {
+            "characters": 11960,
+            "end": 609,
+            "paragraphs": 39,
+            "start": 376,
+            "title": "II. LE POUR ET LE CONTRE"
+        },
+        {
+            "characters": 10633,
+            "end": 853,
+            "paragraphs": 60,
+            "start": 619,
+            "title": "III. COMME IL PLAIRA À MONSIEUR"
+        },
+        {
+            "characters": 14239,
+            "end": 1150,
+            "paragraphs": 59,
+            "start": 862,
+            "title": "IV. NED LAND"
+        },
+        {
+            "characters": 12643,
+            "end": 1407,
+            "paragraphs": 44,
+            "start": 1159,
+            "title": "V. À L'AVENTURE !"
+        },
+        {
+            "characters": 17034,
+            "end": 1816,
+            "paragraphs": 107,
+            "start": 1416,
+            "title": "VI. À TOUTE VAPEUR"
+        },
+        {
+            "characters": 14563,
+            "end": 2175,
+            "paragraphs": 94,
+            "start": 1825,
+            "title": "VII. UNE BALEINE D'ESPÈCE INCONNUE"
+        },
+        {
+            "characters": 16025,
+            "end": 2512,
+            "paragraphs": 69,
+            "start": 2184,
+            "title": "VIII. _MOBILIS IN MOBILE_"
+        },
+        {
+            "characters": 13718,
+            "end": 2824,
+            "paragraphs": 72,
+            "start": 2521,
+            "title": "IX. LES COLÈRES DE NED LAND"
+        },
+        {
+            "characters": 18090,
+            "end": 3221,
+            "paragraphs": 85,
+            "start": 2833,
+            "title": "X. L'HOMME DES EAUX"
+        },
+        {
+            "characters": 16666,
+            "end": 3545,
+            "paragraphs": 51,
+            "start": 3230,
+            "title": "XI. LE _NAUTILUS_"
+        },
+        {
+            "characters": 13820,
+            "end": 3845,
+            "paragraphs": 64,
+            "start": 3554,
+            "title": "XII. TOUT PAR L'ÉLECTRICITÉ"
+        },
+        {
+            "characters": 14213,
+            "end": 4146,
+            "paragraphs": 58,
+            "start": 3854,
+            "title": "XIII. QUELQUES CHIFFRES"
+        },
+        {
+            "characters": 22959,
+            "end": 4648,
+            "paragraphs": 111,
+            "start": 4155,
+            "title": "XIV. LE FLEUVE-NOIR"
+        },
+        {
+            "characters": 16110,
+            "end": 5026,
+            "paragraphs": 93,
+            "start": 4657,
+            "title": "XV. UNE INVITATION PAR LETTRE"
+        },
+        {
+            "characters": 13643,
+            "end": 5290,
+            "paragraphs": 40,
+            "start": 5035,
+            "title": "XVI. PROMENADE EN PLAINE"
+        },
+        {
+            "characters": 14878,
+            "end": 5563,
+            "paragraphs": 36,
+            "start": 5299,
+            "title": "XVII. UNE FORET SOUS-MARINE"
+        },
+        {
+            "characters": 17074,
+            "end": 5898,
+            "paragraphs": 52,
+            "start": 5572,
+            "title": "XVIII. QUATRE MILLE LIEUES SOUS LE PACIFIQUE"
+        },
+        {
+            "characters": 20579,
+            "end": 6313,
+            "paragraphs": 74,
+            "start": 5907,
+            "title": "XIX. VANIKORO"
+        },
+        {
+            "characters": 17116,
+            "end": 6677,
+            "paragraphs": 76,
+            "start": 6323,
+            "title": "XX. LE DÉTROIT DE TORRÈS"
+        },
+        {
+            "characters": 22650,
+            "end": 7189,
+            "paragraphs": 128,
+            "start": 6686,
+            "title": "XXI. QUELQUES JOURS À TERRE"
+        },
+        {
+            "characters": 22008,
+            "end": 7727,
+            "paragraphs": 140,
+            "start": 7198,
+            "title": "XXII. LA FOUDRE DU CAPITAINE NEMO"
+        },
+        {
+            "characters": 18400,
+            "end": 8103,
+            "paragraphs": 72,
+            "start": 7736,
+            "title": "XXIII. _AEGRI SOMNIA_"
+        },
+        {
+            "characters": 16773,
+            "end": 8468,
+            "paragraphs": 81,
+            "start": 8112,
+            "title": "XXIV. LE ROYAUME DU CORAIL"
+        },
+        {
+            "characters": 22257,
+            "end": 8880,
+            "paragraphs": 52,
+            "start": 8477,
+            "title": "I. L'OCÉAN INDIEN"
+        },
+        {
+            "characters": 19253,
+            "end": 9337,
+            "paragraphs": 119,
+            "start": 8889,
+            "title": "II. UNE NOUVELLE PROPOSITION DU CAPITAINE NEMO"
+        },
+        {
+            "characters": 24225,
+            "end": 9826,
+            "paragraphs": 92,
+            "start": 9346,
+            "title": "III. UNE PERLE DE DIX MILLIONS"
+        },
+        {
+            "characters": 25958,
+            "end": 10370,
+            "paragraphs": 106,
+            "start": 9835,
+            "title": "IV. LA MER ROUGE"
+        },
+        {
+            "characters": 17509,
+            "end": 10780,
+            "paragraphs": 102,
+            "start": 10379,
+            "title": "V. ARABIAN-TUNNEL"
+        },
+        {
+            "characters": 21464,
+            "end": 11285,
+            "paragraphs": 128,
+            "start": 10789,
+            "title": "VI. L'ARCHIPEL GREC"
+        },
+        {
+            "characters": 21584,
+            "end": 11677,
+            "paragraphs": 47,
+            "start": 11294,
+            "title": "VII. LA MÉDITERRANÉE EN QUARANTE-HUIT HEURES"
+        },
+        {
+            "characters": 21708,
+            "end": 12118,
+            "paragraphs": 80,
+            "start": 11686,
+            "title": "VIII. LA BAIE DE VIGO"
+        },
+        {
+            "characters": 21942,
+            "end": 12540,
+            "paragraphs": 68,
+            "start": 12127,
+            "title": "IX. UN CONTINENT DISPARU"
+        },
+        {
+            "characters": 22684,
+            "end": 12996,
+            "paragraphs": 84,
+            "start": 12549,
+            "title": "X. LES HOUILLÈRES SOUS-MARINES"
+        },
+        {
+            "characters": 19941,
+            "end": 13370,
+            "paragraphs": 53,
+            "start": 13005,
+            "title": "XI. LA MER DE SARGASSES"
+        },
+        {
+            "characters": 22594,
+            "end": 13898,
+            "paragraphs": 135,
+            "start": 13379,
+            "title": "XII. CACHALOTS ET BALEINES"
+        },
+        {
+            "characters": 24084,
+            "end": 14402,
+            "paragraphs": 103,
+            "start": 13907,
+            "title": "XIII. LA BANQUISE"
+        },
+        {
+            "characters": 26853,
+            "end": 14944,
+            "paragraphs": 98,
+            "start": 14411,
+            "title": "XIV. LE PÔLE SUD"
+        },
+        {
+            "characters": 15517,
+            "end": 15309,
+            "paragraphs": 97,
+            "start": 14953,
+            "title": "XV. ACCIDENT OU INCIDENT ?"
+        },
+        {
+            "characters": 20785,
+            "end": 15749,
+            "paragraphs": 93,
+            "start": 15318,
+            "title": "XVI. FAUTE D'AIR"
+        },
+        {
+            "characters": 21023,
+            "end": 16166,
+            "paragraphs": 74,
+            "start": 15758,
+            "title": "XVII. DU CAP HORN À L'AMAZONE"
+        },
+        {
+            "characters": 21431,
+            "end": 16657,
+            "paragraphs": 114,
+            "start": 16175,
+            "title": "XVIII. LES POULPES"
+        },
+        {
+            "characters": 23046,
+            "end": 17117,
+            "paragraphs": 82,
+            "start": 16666,
+            "title": "XIX. LE GULF-STREAM"
+        },
+        {
+            "characters": 16403,
+            "end": 17449,
+            "paragraphs": 58,
+            "start": 17126,
+            "title": "XX. PAR 47°24' DE LATITUDE ET DE 17°28' DE LONGITUDE"
+        },
+        {
+            "characters": 18026,
+            "end": 17851,
+            "paragraphs": 95,
+            "start": 17458,
+            "title": "XXI. UNE HÉCATOMBE"
+        },
+        {
+            "characters": 14321,
+            "end": 18161,
+            "paragraphs": 66,
+            "start": 17860,
+            "title": "XXII. LES DERNIÈRES PAROLES DU CAPITAINE NEMO"
+        },
+        {
+            "characters": 2655,
+            "end": 18216,
+            "paragraphs": 13,
+            "start": 18170,
+            "title": "XXIII. CONCLUSION"
+        }
+    ],
+    "size": 938079
+}

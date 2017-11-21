@@ -524,23 +524,54 @@ class TypioPrompt:
         local_file = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.txt'
         chapters = self._get_chapters(local_file)
 
-        print('Found %s chapters' % len(chapters))
-        for c in chapters:
-            print('\t- %s (paragraphs: %s, characters: %s)' % (c['title'], c['paragraphs'], c['characters']))
+        if not chapters:
+            print(Colors.error('Unable to detect the chapter style'))
+        else:
+            print('Found %s chapters' % len(chapters))
+            for c in chapters:
+                print('\t- %s (paragraphs: %s, characters: %s)' % (c['title'], c['paragraphs'], c['characters']))
 
 
     def _get_chapters(self, local_file):
 
         # Chapters are using different notation (sometimes in the same book!).
         CHAPTER_STYLES = {
-            'arabic_number':  r'^\d+\s*$',
-            'arabic_number2': r'^\d+[.]\s+.*$',
-            'part_roman':  r'^PART [IVXLCDM]+[.]?\s+CHAPTER [IVXLCDM]+[.]?\s*.*$',
-            'chapter_roman':  r'^CHAPTER [IVXLCDM]+[.]?\s*.*$',
-            'chapter_arabic': r'^CHAPTER \d+[.]?\s*.*$',
-            'roman_numeral':  r'^[IVXLCDM]+[.]\s*.*$',
-            'theater':        r'^ACT [IVXLCDM]+[.]?\s+Scene [IVXLCDM]+[.]?\s*.*$',
+            'arabic_number':    r'^\d+[.]?\s*$',
+            'arabic_number2':   r'^\d+[.]\s+.*$',
+            'part_roman':       r'^PART [IVXLCDM]+[.]?\s+CHAPTER [IVXLCDM]+[.]?\s*.*$',
+            'chapter_roman':    r'^CHAPTER [IVXLCDM]+[.]?\s*.*$', # CHAPTER I.
+            'chapter_arabic':   r'^CHAPTER \d+[.]?\s*.*$', # CHAPTER 1
+            'chapter_text':     r'^CHAPTER \w+(-\w+)?$', # CHAPTER TWENTY-ONE
+            'roman_numeral':    r'^[IVXLCDM]+[.]\s*.*$',
+            'roman_numeral2':   r'^(INTRODUCTION|[IVXLCDM]+)[.]?\s*$',
+            'theater':          r'^ACT [IVXLCDM]+[.]?\s+Scene [IVXLCDM]+[.]?\s*.*$',
+            'german1':          r'^.*\sKapitel$',
         }
+
+        # Simple multilingual dictionary
+        TRANSLATIONS = {
+            'fr': {
+                'CHAPTER': ['CHAPITRE'],
+                'PART':    ['PARTIE'],
+            }
+        }
+
+        # Complete the CHAPTER_STYLES with translations
+        # Ex:
+        # 'part_roman':  r'^PARTIE [IVXLCDM]+[.]?\s+CHAPITRE [IVXLCDM]+[.]?\s*.*$'
+
+        new_styles = {}
+        for language, translations in TRANSLATIONS.items():
+            for style_key, style_regex in CHAPTER_STYLES.items():
+                new_style_regex = style_regex
+                for en_word, fr_words in translations.items():
+                    if en_word in new_style_regex:
+                        for fr_word in fr_words:
+                            new_style_regex = new_style_regex.replace(en_word, fr_word)
+                if new_style_regex != style_regex:  # has changed
+                    new_styles[style_key + '_' + language] = new_style_regex
+        CHAPTER_STYLES.update(new_styles)
+
 
         def strip_book(lines):
             """
@@ -572,10 +603,19 @@ class TypioPrompt:
                 if i < 3 or not empty_lines[i-1] or not empty_lines[i-2] or not empty_lines[i+1]:
                     continue
                 for name, regex in CHAPTER_STYLES.items():
+
                     if re.match(regex, l, re.IGNORECASE):
                         c[name] += 1
 
+            if not c.most_common(1):
+                return None
+
+            if c.most_common(1)[0][1] < 3:
+                # Arbitrary value to detect when chapters was not found
+                return None
+
             return c.most_common(1)[0][0]
+
 
         chapters = []
 
@@ -596,6 +636,9 @@ class TypioPrompt:
 
             # Determine the style of chapter to search
             cs = chapter_style(lines, empty_lines)
+
+            if not cs:
+                return None
 
             i = 0
             while i < len(lines):

@@ -54,7 +54,7 @@ Contents
 
 
 
-Mowgli’s Brothers
+I. Mowgli’s Brothers
 
      Now Rann the Kite brings home the night
         That Mang the Bat sets free--
@@ -828,7 +828,7 @@ alone, to meet those mysterious things that are called men.
 
 
 
-Hunting-Song of the Seeonee Pack
+II. Hunting-Song of the Seeonee Pack
 
      As the dawn was breaking the Sambhur belled
         Once, twice and again!
@@ -855,7 +855,7 @@ Hunting-Song of the Seeonee Pack
 
 
 
-Kaa’s Hunting
+III. Kaa’s Hunting
 
      His spots are the joy of the Leopard: his horns are the
         Buffalo’s pride.
@@ -1802,7 +1802,7 @@ never waked when he was put down in the home-cave.
 
 
 
-Road-Song of the Bandar-Log
+IV. Road-Song of the Bandar-Log
 
      Here we go in a flung festoon,
      Half-way up to the jealous moon!
@@ -1841,7 +1841,7 @@ Road-Song of the Bandar-Log
 
 
 
-“Tiger! Tiger!”
+V. “Tiger! Tiger!”
 
      What of the hunting, hunter bold?
         Brother, the watch was long and cold.
@@ -2490,7 +2490,7 @@ But that is a story for grown-ups.
 
 
 
-Mowgli’s Song
+VI. Mowgli’s Song
 
      THAT HE SANG AT THE COUNCIL ROCK WHEN HE
      DANCED ON SHERE KHAN’S HIDE
@@ -2581,7 +2581,7 @@ Mowgli’s Song
 
 
 
-The White Seal
+VII. The White Seal
 
      Oh! hush thee, my baby, the night is behind us,
         And black are the waters that sparkled so green.
@@ -3281,7 +3281,7 @@ holluschickie play around him, in that sea where no man comes.
 
 
 
-Lukannon
+VIII. Lukannon
 
 This is the great deep-sea song that all the St. Paul seals sing when
 they are heading back to their beaches in the summer. It is a sort of
@@ -3320,7 +3320,7 @@ very sad seal National Anthem.
 
 
 
-“Rikki-Tikki-Tavi”
+IX. “Rikki-Tikki-Tavi”
 
      At the hole where he went in
      Red-Eye called to Wrinkle-Skin.
@@ -3936,7 +3936,7 @@ inside the walls.
 
 
 
-Darzee’s Chant
+X. Darzee’s Chant
 
      (Sung in honor of Rikki-tikki-tavi)
 
@@ -3974,7 +3974,7 @@ Darzee’s Chant
 
 
 
-Toomai of the Elephants
+XI. Toomai of the Elephants
 
      I will remember what I was, I am sick of rope and chain--
         I will remember my old strength and all my forest affairs.
@@ -4661,7 +4661,7 @@ the heart of the Garo hills!
 
 
 
-Shiv and the Grasshopper
+XII. Shiv and the Grasshopper
 
      (The song that Toomai’s mother sang to the baby)
 
@@ -4704,7 +4704,7 @@ Shiv and the Grasshopper
 
 
 
-Her Majesty’s Servants
+XIII. Her Majesty’s Servants
 
      You can work it out by Fractions or by simple Rule of Three,
      But the way of Tweedle-dum is not the way of Tweedle-dee.
@@ -5358,7 +5358,8 @@ Viceroy.”
 
 
 
-Parade Song of the Camp Animals
+XIV. Parade Song of the Camp Animals
+
 
      ELEPHANTS OF THE GUN TEAMS
 
@@ -5441,8 +5442,6 @@ Parade Song of the Camp Animals
 
 
 
-
-End of the Project Gutenberg EBook of The Jungle Book, by Rudyard Kipling
 
 *** END OF THIS PROJECT GUTENBERG EBOOK THE JUNGLE BOOK ***
 

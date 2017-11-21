@@ -82,7 +82,8 @@ Distributed Proofreading Team at http://www.pgdp.net
 Erster Teil
 
 
-Erstes Kapitel
+1. Erstes Kapitel
+
 
 »Was ist das. -- Was -- ist das ...«
 
@@ -351,7 +352,8 @@ Christian waren, die ankamen, zusammen mit den ersten Gästen, mit Jean
 Jacques Hoffstede, dem Dichter, und Doktor Grabow, dem Hausarzt.
 
 
-Zweites Kapitel
+2. Zweites Kapitel
+
 
 Herr Jean Jacques Hoffstede, der Poet der Stadt, der sicherlich auch für
 den heutigen Tag ein paar Reime in der Tasche hatte, war nicht viel
@@ -491,7 +493,8 @@ bewegte sich die Gesellschaft hinüber; man konnte eines nahrhaften
 Bissens gewärtig sein bei Buddenbrooks ...
 
 
-Drittes Kapitel
+3. Drittes Kapitel
+
 
 Der jüngere Hausherr hatte, als der allgemeine Aufbruch begann, mit der
 Hand nach der linken Brustseite gegriffen, wo ein Papier knisterte, das
@@ -588,7 +591,8 @@ Kopfnicken, indem sie einen schnellen Blick über die ganze Tafel bis zu
 den Kindern hinuntergleiten ließ ...
 
 
-Viertes Kapitel
+4. Viertes Kapitel
+
 
 »Wie gesagt, alle Achtung, Buddenbrook!« übertönte die wuchtige Stimme
 des Herrn Köppen das allgemeine Gespräch, als das Folgmädchen mit den
@@ -797,7 +801,8 @@ kannten wohl keinen anderen Gott, als diesen fürchterlichen kleinen
 Menschen ...«
 
 
-Fünftes Kapitel
+5. Fünftes Kapitel
+
 
 »Sie haben ihn gesehen, Herr Pastor?« --
 
@@ -975,7 +980,8 @@ Verwandten am reichen Freitische, lächelte unempfindlich und bedeckte
 ihren Teller mit guten Dingen, geduldig, zäh, hungrig und mager.
 
 
-Sechstes Kapitel
+6. Sechstes Kapitel
+
 
 Nun kam, in zwei großen Kristallschüsseln, der »Plettenpudding«, ein
 schichtweises Gemisch aus Makronen, Himbeeren, Biskuits und Eiercreme;
@@ -1083,7 +1089,8 @@ ihren zarten Teint, denn sie hatte wohl die artige Reverenz bemerkt, die
 er bei der »Venus Anadyomene« nach ihrer Seite vollführt hatte ...
 
 
-Siebentes Kapitel
+7. Siebentes Kapitel
+
 
 Die allgemeine Munterkeit hatte nun ihren Gipfel erreicht, und Herr
 Köppen verspürte das deutliche Bedürfnis, ein paar Knöpfe seiner Weste
@@ -1158,7 +1165,8 @@ Eierschaum, ja, ja ... »Strenge Diät, wie gesagt, -- Frau Konsulin? Ein
 wenig Taube, -- ein wenig Franzbrot ...«
 
 
-Achtes Kapitel
+8. Achtes Kapitel
+
 
 Drinnen im Eßsaale herrschte Aufbruch.
 
@@ -1361,7 +1369,8 @@ und wann beglückt vor sich hin:
 Das Verslein nahm sich wunderlich genug aus in seinem rauhen Baß ...
 
 
-Neuntes Kapitel
+9. Neuntes Kapitel
+
 
 Es war ziemlich spät, gegen elf Uhr, als die Gesellschaft, die sich im
 Landschaftszimmer noch einmal zusammengefunden hatte, beinahe
@@ -1426,7 +1435,9 @@ Dort hinten bei den Fenstern ging, die Hände auf dem Rücken, Johann
 Buddenbrook gemächlich auf und ab.
 
 
-Zehntes Kapitel
+
+10. Zehntes Kapitel
+
 
 »Na, min Söhn Johann! wo geiht di dat!« Er blieb stehen und streckte dem
 Sohne die Hand entgegen, die weiße, ein wenig zu kurze, aber
@@ -1649,7 +1660,8 @@ pfiff.
 Zweiter Teil
 
 
-Erstes Kapitel
+1. Erstes Kapitel
+
 
 Zweiundeinhalbes Jahr später, um die Mitte des April schon, war zeitiger
 als jemals der Frühling gekommen, und zu gleicher Zeit war ein Ereignis
@@ -1953,7 +1965,8 @@ durchdringenden Geschrei des neuen Familiengliedes, das plötzlich
 erwacht war ...
 
 
-Zweites Kapitel
+2. Zweites Kapitel
+
 
 Zum Sommer, im Mai vielleicht schon, oder im Juni, zog Tony Buddenbrook
 immer zu den Großeltern vors Burgtor hinaus, und zwar mit heller Freude.
@@ -2168,7 +2181,8 @@ Recht vorbehält, freundlich oder grausam zu sein, je nach Geschmack und
 Laune.
 
 
-Drittes Kapitel
+3. Drittes Kapitel
+
 
 Jean Jacques Hoffstede hatte, was die beiden Söhne des Konsuls
 Buddenbrook anging, sicherlich ein treffendes Urteil gefällt.
@@ -2298,7 +2312,8 @@ verbittet sich die Narrenspossen ... Allein Christian ißt wirklich
 längere Zeit keinen Pfirsich mehr. --
 
 
-Viertes Kapitel
+4. Viertes Kapitel
+
 
 Es war nicht bloß Altersschwäche, was die alte Madame Antoinette
 Buddenbrook, sechs Jahre ungefähr nachdem die Familie das Haus in der
@@ -2513,7 +2528,8 @@ hatte, ging er davon, um am nächsten »Kindertag« bei Krögers draußen im
 Gartenhause zu erscheinen ... Er begann schon zu liquidieren.
 
 
-Fünftes Kapitel
+5. Fünftes Kapitel
+
 
 Eines schmerzte den Konsul: daß nämlich der Vater nicht mehr den
 Eintritt seines ältesten Enkels ins Geschäft hatte erleben dürfen, der
@@ -2705,7 +2721,8 @@ Kontor zu Tische kam, dennoch der Beschluß gefaßt, Möllendorpfs Anton zu
 engagieren.
 
 
-Sechstes Kapitel
+6. Sechstes Kapitel
+
 
 »Tony geben wir in Pension, und zwar zu Fräulein Weichbrodt«, sagte
 Konsul Buddenbrook, und er äußerte das so bestimmt, daß es dabei blieb.
@@ -2836,7 +2853,8 @@ Obhut zu geben, in eine Pension, in diejenige von Fräulein Weichbrodt,
 am Mühlenbrink Numero 7.
 
 
-Siebentes Kapitel
+7. Siebentes Kapitel
+
 
 Therese Weichbrodt war bucklig, sie war so bucklig, daß sie nicht viel
 höher war als ein Tisch. Sie war 41 Jahre alt, aber da sie niemals
@@ -3106,7 +3124,8 @@ glückliche Jugendzeit, die Tony verlebte.
 Dritter Teil
 
 
-Erstes Kapitel
+1. Erstes Kapitel
+
 
 Kurz nach fünf Uhr, eines Juni-Nachmittages, saß man vor dem »Portale«
 im Garten, woselbst man Kaffee getrunken hatte. Drinnen in dem
@@ -3430,7 +3449,8 @@ Tony aber murmelte vor sich hin: »Ein goldgelber Backenbart!« und dabei
 zog sie die Brauen zusammen, wie sie es schon mehrere Male getan hatte.
 
 
-Zweites Kapitel
+2. Zweites Kapitel
+
 
 »Wie aufrichtig betrübt war ich, mein Fräulein, Sie zu verfehlen!«
 sprach Herr Grünlich einige Tage später, als Tony, die von einem Ausgang
@@ -3682,7 +3702,8 @@ Leibe haben ...«
 Und damit fing sie an, sich Honig auf eine Scheibe Landbrot zu träufeln.
 
 
-Drittes Kapitel
+3. Drittes Kapitel
+
 
 In diesem Jahre unternahmen Buddenbrooks auch während der Schulferien
 Christians und Klaras keine Erholungsreise. Der Konsul erklärte,
@@ -3884,7 +3905,8 @@ verschwand. Sie stand, völlig verwirrt und erschöpft, inmitten des
 Zimmers, das feuchte Taschentuch in einer ihrer hinabhängenden Hände.
 
 
-Viertes Kapitel
+4. Viertes Kapitel
+
 
 Konsul Buddenbrook sagte zu seiner Gattin:
 
@@ -4007,7 +4029,8 @@ die majestätische Krögersche Equipage, sagte in bester Laune Adieu und
 fuhr aufatmend zum Burgtor hinaus.
 
 
-Fünftes Kapitel
+5. Fünftes Kapitel
+
 
 Nach Travemünde geht es immer geradeaus, mit der Fähre übers Wasser und
 dann wieder geradeaus; der Weg war beiden wohlbekannt. Die graue
@@ -4303,7 +4326,8 @@ Ferien, Diederich!... Und soll er denn gar nichts von unserem Besuche
 haben?«
 
 
-Sechstes Kapitel
+6. Sechstes Kapitel
+
 
 In ihrem kleinen, reinlichen Zimmer, dessen Möbel mit hellgeblümtem
 Kattun überzogen waren, erwachte Tony am nächsten Morgen mit dem
@@ -4484,7 +4508,8 @@ wird es nicht mehr regnen. Ich habe die größte Lust, wieder einmal in
 die See zu springen. Wollen Sie mich hinunter begleiten?...«
 
 
-Siebentes Kapitel
+7. Siebentes Kapitel
+
 
 Sie hatte ihren großen Strohhut aufgesetzt und ihren Sonnenschirm
 aufgespannt, denn es herrschte, obgleich ein kleiner Seewind ging,
@@ -4714,7 +4739,8 @@ nämlich, daß zum Beispiel August Möllendorpf nicht hier ist ... Es muß
 doch alltags recht langweilig am Strande sein!«
 
 
-Achtes Kapitel
+8. Achtes Kapitel
+
 
 Hiermit begannen schöne Sommerwochen für Tony Buddenbrook, kurzweiligere
 und angenehmere, als sie jemals in Travemünde erlebt hatte. Sie blühte
@@ -4983,7 +5009,8 @@ in einem großen, unbestimmten, ahnungsvollen und sehnsüchtigen
 Verständnis dessen, was »Freiheit« bedeutete.
 
 
-Neuntes Kapitel
+9. Neuntes Kapitel
+
 
 »Es ist merkwürdig, daß man sich an der See nicht langweilen kann,
 Morten. Liegen Sie einmal an einem anderen Orte drei oder vier Stunden
@@ -5139,7 +5166,8 @@ nach verschiedenen Richtungen in den Sand und schämten sich über die
 Maßen.
 
 
-Zehntes Kapitel
+10. Zehntes Kapitel
+
 
 »Teuerste Demoiselle Buddenbrook!
 
@@ -5240,7 +5268,8 @@ wieder in unsere Arme schließen zu können.
                                                   =Dein Vater=.«
 
 
-Elftes Kapitel
+11. Elftes Kapitel
+
 
 Es regnete in Strömen. Himmel, Erde und Wasser verschwammen ineinander,
 während der Stoßwind in den Regen fuhr und ihn gegen die Fensterscheiben
@@ -5452,7 +5481,8 @@ Zwischen Morten und seiner Mutter hindurch ging Herr Grünlich gemessenen
 Schrittes zur Tür hinaus.
 
 
-Zwölftes Kapitel
+12. Zwölftes Kapitel
+
 
 Thomas erschien mit der Krögerschen Kalesche. Der Tag war da.
 
@@ -5556,7 +5586,8 @@ gibt sich. Man vergißt ...«
 »Vergessen ... ist das denn ein Trost?!« --
 
 
-Dreizehntes Kapitel
+13. Dreizehntes Kapitel
+
 
 Dann kam die Fähre, es kam die Israelsdorfer Allee, der Jerusalemsberg,
 das Burgfeld. Der Wagen passierte das Burgtor, neben dem zur Rechten die
@@ -5681,7 +5712,8 @@ emporfliegenden Schrift: »... Verlobte sich am 22. September 1845 mit
 Herrn Bendix Grünlich, Kaufmann zu Hamburg.«
 
 
-Vierzehntes Kapitel
+14. Vierzehntes Kapitel
+
 
 »Ich bin vollkommen Ihrer Meinung, mein werter Freund. Diese Frage ist
 von Wichtigkeit und muß erledigt werden. Kurz und gut: Die traditionelle
@@ -5902,7 +5934,8 @@ Glück, das wir auf Erden erlangen können.«
 Sie kehrten zu ihren Gästen zurück.
 
 
-Fünfzehntes Kapitel
+15. Fünfzehntes Kapitel
+
 
 Thomas Buddenbrook ging die Mengstraße hinunter bis zum »Fünfhausen«. Er
 vermied es, oben herum durch die Breitestraße zu gehen, um nicht der
@@ -6060,7 +6093,8 @@ des kleinen Blumenladens voneinander Abschied nahmen.
 Vierter Teil
 
 
-Erstes Kapitel
+1. Erstes Kapitel
+
 
                                              Den 30. April 1846.
 
@@ -6286,7 +6320,8 @@ möchte ich sie Meta nennen, aber Gr. ist für Erika.
                                                               T.
 
 
-Zweites Kapitel
+2. Zweites Kapitel
+
 
 »Was fehlt dir, Bethsy?« sagte der Konsul, als er zu Tische kam und den
 Teller erhob, mit dem man seine Suppe bedeckt hatte. »Fühlst du dich
@@ -6452,7 +6487,8 @@ indem sie mit ratlosen Seitenblicken sich im Zimmer auf und nieder
 bewegte.
 
 
-Drittes Kapitel
+3. Drittes Kapitel
+
 
 Konsul Buddenbrook durchschritt eilig sein weitläufiges Grundstück. Als
 er in die Bäckergrube hinaustrat, vernahm er hinter sich Schritte und
@@ -6920,7 +6956,8 @@ und den Lederschirm ganz tief in die Augen zog, lief Corl Smolt mit
 breitspurigen, wiegenden Schritten die Straße hinunter.
 
 
-Viertes Kapitel
+4. Viertes Kapitel
+
 
 Als Konsul Buddenbrook mit Siegismund Gosch in die Versammlung
 zurückkehrte, bot der Saal ein behaglicheres Bild als vor einer
@@ -7047,7 +7084,8 @@ verdrehten sich und brachen ...
 Lebrecht Kröger, der _à la mode_-Kavalier, war bei seinen Vätern.
 
 
-Fünftes Kapitel
+5. Fünftes Kapitel
+
 
 Ein Jahr und zwei Monate später, an einem schneedunstigen Januarmorgen
 des Jahres 1850, saßen Herr und Madame Grünlich nebst ihrem kleinen
@@ -7210,7 +7248,8 @@ In diesem Augenblicke geschah ein Klopfen, ein kurzer Trommelwirbel
 gegen die Korridortür, und Herr Kesselmeyer trat ein.
 
 
-Sechstes Kapitel
+6. Sechstes Kapitel
+
 
 Herr Kesselmeyer kam als Hausfreund unangemeldet, ohne Hut und Paletot
 in die Stube und blieb an der Türe stehen. Sein Äußeres entsprach
@@ -7539,7 +7578,8 @@ Fähigkeit, völlig bleich zu werden. Es war rot gefleckt, wie das eines
 Scharlachkranken.
 
 
-Siebentes Kapitel
+7. Siebentes Kapitel
+
 
 Der Konsul Johann Buddenbrook traf nachmittags um 2 Uhr in der Villa
 ein; im grauen Reisemantel betrat er den Salon der Grünlichs und umarmte
@@ -7915,7 +7955,8 @@ Johann Buddenbrook erhob sich mit einer Bewegung, welche ausdrückte:
 Erledigt.
 
 
-Achtes Kapitel
+8. Achtes Kapitel
+
 
 Herrn Grünlichs Gesicht war rot gefleckt, aber er war aufs sorgfältigste
 gekleidet. Er trug einen ähnlichen schwarzen, faltigen, soliden
@@ -8260,7 +8301,8 @@ alle ungemein froh, daß sie durch die Heirat sichergestellt wurden ...«
 Der Konsul schlug die Tür hinter sich zu.
 
 
-Neuntes Kapitel
+9. Neuntes Kapitel
+
 
 Im Speisezimmer hantierte Dora, die nicht ganz ehrliche Köchin.
 
@@ -8347,7 +8389,8 @@ berührte sanft seine Schulter und sprach leise und mahnend: »Fassen Sie
 sich. =Beten= Sie.«
 
 
-Zehntes Kapitel
+10. Zehntes Kapitel
+
 
 Das große Haus in der Mengstraße blieb lange Zeit von einer gedämpften
 Stimmung erfüllt, als Madame Grünlich, zusammen mit ihrer kleinen
@@ -8789,7 +8832,8 @@ Der Konsul freilich sah ernst und indigniert auf seinen Teller nieder.
 »Ein Mißverständnis ...« sagte Pastor Mathias verwirrt.
 
 
-Elftes Kapitel
+11. Elftes Kapitel
+
 
 Was folgt, geschah im Spätsommer des Jahres fünfundfünfzig, an einem
 Sonntagnachmittage. Buddenbrooks saßen im Landschaftszimmer und warteten
@@ -8990,7 +9034,8 @@ Aber Johann Buddenbrook war schon tot.
 Fünfter Teil
 
 
-Erstes Kapitel
+1. Erstes Kapitel
+
 
 »Guten Abend, Justus«, sagte die Konsulin. »Geht es dir gut? Nimm
 Platz.«
@@ -9304,7 +9349,8 @@ Konsuls Diamantknöpfe, über viele einzelne Dinge ... Justus Kröger und
 Herr Marcus blieben zum Abendbrot.
 
 
-Zweites Kapitel
+2. Zweites Kapitel
+
 
 Zu Beginn des Februar 1856, nach achtjähriger Abwesenheit, kehrte
 Christian Buddenbrook in die Vaterstadt zurück. Er kam, in einem gelben
@@ -9574,7 +9620,8 @@ Familien mehr gibt in der Stadt? Ha! ich muß lachen, weißt du, ich muß
 laut lachen ...!«
 
 
-Drittes Kapitel
+3. Drittes Kapitel
+
 
 Der Chef der Firma »Johann Buddenbrook« hatte seinen Bruder bei dessen
 Ankunft mit einem längeren, prüfenden Blick gemessen, er hatte ihm
@@ -9859,7 +9906,8 @@ vor, so schauerlich es klingt. Aber man spricht nicht davon. Man
 vertuscht es. Man braucht nichts davon zu wissen.
 
 
-Viertes Kapitel
+4. Viertes Kapitel
+
 
 Im Mai geschah es, daß Onkel Gotthold, Konsul Gotthold Buddenbrook, nun
 sechzigjährig, in einer traurigen Nacht von Herzkrämpfen befallen ward
@@ -9970,7 +10018,8 @@ Amsterdam, von der er nicht wußte, wieviel Zeit sie in Anspruch nehmen
 werde.
 
 
-Fünftes Kapitel
+5. Fünftes Kapitel
+
 
 Todesfälle pflegen eine dem Himmlischen zugewandte Stimmung
 hervorzubringen, und niemand wunderte sich, aus dem Munde der Konsulin
@@ -10169,7 +10218,8 @@ eine Fanfare, wie ein kleiner Trompetenstoß, den sie mit etwas erhobenen
 Schultern und emporgerichteten Augen in die Luft hinein ertönen ließ.
 
 
-Sechstes Kapitel
+6. Sechstes Kapitel
+
 
 Sievert Tiburtius war ein kleiner schmaler Mann mit großem Kopfe und
 trug einen dünnen, aber langen blonden Backenbart, der geteilt war und
@@ -10293,7 +10343,8 @@ die See zu begeben ... Sie werden in Bälde Nachricht von mir empfangen,
 und der Herr gebe, daß wir uns glücklich wiedersehen.«
 
 
-Siebentes Kapitel
+7. Siebentes Kapitel
+
 
                                      Amsterdam, den 20. Juli 56.
                                          Hotel »Het Haasje«
@@ -10433,7 +10484,8 @@ Unsrigen auf das Herzlichste von mir zu grüßen.
                                                      T.
 
 
-Achtes Kapitel
+8. Achtes Kapitel
+
 
 In der Tat, es gab dieses Jahr einen lebhaften und festlichen Hochsommer
 im Buddenbrookschen Hause.
@@ -10697,7 +10749,8 @@ der Glücklichen saß: »Na, Thilda, nun heiraten wir auch bald; das heißt
 ... jeder für sich!«
 
 
-Neuntes Kapitel
+9. Neuntes Kapitel
+
 
 Ungefähr sieben Monate später kehrte Konsul Buddenbrook mit seiner
 Gattin aus Italien zurück. Märzschnee lag in der Breiten Straße, als
@@ -10913,7 +10966,8 @@ Es war Gerda, die Mutter zukünftiger Buddenbrooks.
 Sechster Teil
 
 
-Erstes Kapitel
+1. Erstes Kapitel
+
 
 Thomas Buddenbrook nahm das erste Frühstück in seinem hübschen
 Speisezimmer fast immer allein, denn seine Gattin pflegte sehr spät das
@@ -11101,7 +11155,8 @@ verdient.«
 Dann las sie den Brief zu Ende ...
 
 
-Zweites Kapitel
+2. Zweites Kapitel
+
 
 Am Ende des April zog Frau Grünlich wieder im Elternhause ein, und
 obgleich nun abermals ein Stück Leben hinter ihr lag, obgleich das alte
@@ -11289,7 +11344,8 @@ und Kälte davon. Er tat, als habe er es kaum gelesen. Er überließ seinem
 Bruder, es allein zu bewundern ...
 
 
-Drittes Kapitel
+3. Drittes Kapitel
+
 
 Konsul Buddenbrook kehrte aus der »Harmonie«, dem Lesezirkel für Herren,
 in dem er nach dem zweiten Frühstück eine Stunde verbracht hatte, in die
@@ -11567,7 +11623,8 @@ herging ... und war dem scheidenden Krischan Buddenbrook für
 hervorragende Verdienste verliehen worden.
 
 
-Viertes Kapitel
+4. Viertes Kapitel
+
 
 Es klingelte am Windfang, und ihrer neuen Gewohnheit gemäß erschien Frau
 Grünlich auf dem Treppenabsatz, um über das weißlackierte Geländer
@@ -11981,7 +12038,8 @@ wollen. So, und nun gehe ich und gebe Order, daß jemand von den
 Speicherleuten den Koffer hierherbesorgt ... Auf Wiedersehn!«
 
 
-Fünftes Kapitel
+5. Fünftes Kapitel
+
 
 Herr Permaneder zog in der Mengstraße ein, er speiste am folgenden Tage
 bei Thomas Buddenbrook und seiner Gattin und machte am dritten, einem
@@ -12268,7 +12326,8 @@ da noch einmal: »Schließlich soll es ja doch so sein«, und schlummerte
 dann fünf Stunden lang sanft und tief.
 
 
-Sechstes Kapitel
+6. Sechstes Kapitel
+
 
 Dunst lag über der Stadt, aber Herr Longuet, Mietkutschenbesitzer in der
 Johannisstraße, der um acht Uhr in eigener Person einen gedeckten, aber
@@ -12798,7 +12857,8 @@ mit leicht knallendem Geräusch auf die Stirn und sagte mit ihren
 herzlichsten Vokalen: »Sei glöcklich, du =gutes= Kend!«
 
 
-Siebentes Kapitel
+7. Siebentes Kapitel
+
 
 Gleich morgens um acht Uhr, sobald er das Bett verlassen hatte, über die
 Wendeltreppe hinter der kleinen Pforte ins Souterrain hinabgestiegen
@@ -13073,7 +13133,8 @@ würde, verordnete Pyrmont und Schlangenbad ...
 Das waren drei Bedenken. Und Tony? -- Arme Tony!
 
 
-Achtes Kapitel
+8. Achtes Kapitel
+
 
 Sie schrieb: »Und wenn ich `Frikadellen´ sage, so begreift sie es nicht,
 denn es heißt hier `Pflanzerln´; und wenn sie `Karfiol´ sagt, so findet
@@ -13252,7 +13313,8 @@ noch der härteste Schlag, der sie treffen sollte ...
 Als das Jahr 1859 sich zu Ende neigte, geschah etwas Fürchterliches ...
 
 
-Neuntes Kapitel
+9. Neuntes Kapitel
+
 
 Es war ein Tag gegen Ende des Novembers, ein kalter Herbsttag mit
 dunstigem Himmel, der beinahe schon Schnee versprach, und wallendem
@@ -13550,7 +13612,7 @@ Stimme in den Eßsaal hinein. »Daß Kuverts aufgelegt werden für Madame
 Permaneder und Erika, Liebe!«
 
 
-Zehntes Kapitel
+10. Zehntes Kapitel
 
 Tony hatte sich gleich nach Tische in ihr Schlafzimmer zurückgezogen,
 denn während des Essens war ihr durch die Konsulin die Vermutung
@@ -13985,7 +14047,8 @@ Es rollten zwei Tränen, große, helle Kindertränen über ihre Wangen
 hinunter, deren Haut anfing, kleine Unebenheiten zu zeigen.
 
 
-Elftes Kapitel
+11. Elftes Kapitel
+
 
 Tony ging nicht müßig, sie nahm ihre Sache in die Hand. In der Hoffnung,
 sie möchte sich beruhigen, besänftigen, anderen Sinnes werden, hatte der
@@ -14148,7 +14211,8 @@ So schloß Tony Buddenbrooks zweite Ehe.
 Siebenter Teil
 
 
-Erstes Kapitel
+1. Erstes Kapitel
+
 
 Taufe!... Taufe in der Breiten Straße!
 
@@ -14428,7 +14492,8 @@ wieder Johann genannt haben -- jetzt ist mir, als ob noch einmal eine
 ganz neue Zeit kommen muß!«
 
 
-Zweites Kapitel
+2. Zweites Kapitel
+
 
 Christian Buddenbrook, Inhaber der Firma H. C. F. Burmeester & Comp. zu
 Hamburg, seinen modischen grauen Hut und seinen gelben Stock mit der
@@ -14576,7 +14641,8 @@ kennst du das Gefühl? Es sitzt hier, ungefähr im Magen ... ganz
 sonderbar ...«
 
 
-Drittes Kapitel
+3. Drittes Kapitel
+
 
 James Möllendorpf, der älteste kaufmännische Senator, starb auf groteske
 und schauerliche Weise. Diesem diabetischen Greise waren die
@@ -14781,7 +14847,8 @@ ihr, vielleicht, dereinst, die Übersetzung von Lope de Vegas sämtlichen
 Dramen zu widmen.
 
 
-Viertes Kapitel
+4. Viertes Kapitel
+
 
 Jede im Senate erledigte Stelle muß binnen vier Wochen wieder besetzt
 werden; so will es die Verfassung. Drei Wochen sind seit James
@@ -14976,7 +15043,8 @@ Verschwiegenheit erfordert, besonders aber will ich geheimhalten, was
 geheimzuhalten mir geboten wird. So wahr mir Gott helfe!«
 
 
-Fünftes Kapitel
+5. Fünftes Kapitel
+
 
 Unsere Wünsche und Unternehmungen gehen aus gewissen Bedürfnissen
 unserer Nerven hervor, die mit Worten schwer zu bestimmen sind. Das, was
@@ -15253,7 +15321,8 @@ Frau Iwersens blickte. Und ohne ein Wort hinzuzufügen, verabschiedete er
 sich mit einer verbindlichen Handbewegung.
 
 
-Sechstes Kapitel
+6. Sechstes Kapitel
+
 
 Eines Sonntags, zu Beginn des Juli -- Senator Buddenbrook hatte seit
 etwa vier Wochen sein neues Haus bezogen -- erschien Frau Permaneder
@@ -15465,7 +15534,8 @@ spreche. Die gute Mutter! Aber wenn es Tuberkeln sind, so muß man sich
 ergeben.«
 
 
-Siebentes Kapitel
+7. Siebentes Kapitel
+
 
 »Und du fragst mich nicht?! Du gehst über mich hinweg?!«
 
@@ -15631,7 +15701,8 @@ wäre er hier bei uns zugegen: er würde die Hände falten und uns alle der
 Gnade Gottes empfehlen.«
 
 
-Achtes Kapitel
+8. Achtes Kapitel
+
 
 Krieg und Kriegsgeschrei, Einquartierung und Geschäftigkeit: Preußische
 Offiziere bewegen sich in der parkettierten Zimmerflucht der Bel-Etage
@@ -15689,7 +15760,8 @@ Kurant.
 Achter Teil
 
 
-Erstes Kapitel
+1. Erstes Kapitel
+
 
 Wenn Herr Hugo Weinschenk, seit einiger Zeit Direktor im Dienste der
 städtischen Feuerversicherungsgesellschaft, mit seinem geschlossenen
@@ -16113,7 +16185,8 @@ seinen Stock mit der Nonnenbüste, langsam, steif und ein wenig lahmend
 ging er die Treppe hinab.
 
 
-Zweites Kapitel
+2. Zweites Kapitel
+
 
 Es war im Frühling des Jahres achtundsechzig, als Frau Permaneder eines
 Abends gegen zehn Uhr sich in der ersten Etage des Fischergrubenhauses
@@ -16470,7 +16543,8 @@ dann hier noch einmal herein ...«
 Und damit ging sie.
 
 
-Drittes Kapitel
+3. Drittes Kapitel
+
 
 Sie stieg die Treppe zur zweiten Etage hinan, ließ den »Altan« zur
 Rechten liegen, ging an dem weißgoldenen Geländer der Galerie entlang
@@ -16691,7 +16765,8 @@ daß in der ganzen Flucht Licht war und daß Thomas, die Hände auf dem
 Rücken, darin hin und wider ging.
 
 
-Viertes Kapitel
+4. Viertes Kapitel
+
 
 Allein geblieben, hatte der Senator seinen Platz am Tische wieder
 eingenommen, sein Pincenez hervorgezogen und in der Lektüre seiner
@@ -17057,7 +17132,8 @@ in allen Stücken Recht bekam und Konsul Hagenström, der ihm opponiert
 hatte, der allgemeinen Heiterkeit anheimfiel.
 
 
-Fünftes Kapitel
+5. Fünftes Kapitel
+
 
 War es Unachtsamkeit oder Absicht von des Senators Seite -- es fehlte
 nicht viel, so wäre er über eine Tatsache hinweggegangen, die nun durch
@@ -17707,7 +17783,8 @@ aufreizenden Tohuwabohu von Knarren, Schmettern und Quinquilieren,
 zerrissen von den aberwitzigen Pfiffen der Pikkoloflöte. --
 
 
-Sechstes Kapitel
+6. Sechstes Kapitel
+
 
 »O Bach! Sebastian Bach, verehrteste Frau!« rief Herr Edmund Pfühl,
 Organist von Sankt Marien, der in großer Bewegung den Salon
@@ -18165,7 +18242,8 @@ bedecken.
 setzest du ihm in den Kopf ...«
 
 
-Siebentes Kapitel
+7. Siebentes Kapitel
+
 
 Thomas Buddenbrook war in seinem Herzen nicht einverstanden mit dem
 Wesen und der Entwicklung des kleinen Johann.
@@ -18713,7 +18791,8 @@ nach seiner Wange fuhr: »Ich glaubte ... ich glaubte ... es käme nichts
 mehr ...«
 
 
-Achtes Kapitel
+8. Achtes Kapitel
+
 
 Donnerstags, wenn die Familie, umgeben von den ruhevoll lächelnden
 Götterstatuen der Tapete, beim Essen saß, gab es seit kurzem einen
@@ -19589,7 +19668,8 @@ hatte, und während mehrerer Minuten lachte er ganz ergriffen, irritiert
 und nervös belustigt, leise und unterdrückt in sein Kissen hinein.
 
 
-Neuntes Kapitel
+9. Neuntes Kapitel
+
 
 Frau Permaneder ging die Breite Straße entlang, sie ging in großer Eile.
 Etwas Aufgelöstes lag in ihrer Haltung, und nur flüchtig war mit
@@ -19790,7 +19870,8 @@ beobachten.
 Neunter Teil
 
 
-Erstes Kapitel
+1. Erstes Kapitel
+
 
 Hinter den beiden Herren, dem alten Doktor Grabow und dem jungen Doktor
 Langhals, einem Angehörigen der Familie Langhals, der etwa seit einem
@@ -20295,7 +20376,8 @@ Alle fröstelten in dem fahlen Herbstmorgen, der nun das Zimmer erfüllte.
 Schwester Leandra verkleidete den Toilettenspiegel mit einem Tuche.
 
 
-Zweites Kapitel
+2. Zweites Kapitel
+
 
 Durch die offene Tür sah man im Sterbezimmer Frau Permaneder im Gebete
 liegen. Sie befand sich allein und kniete, ihre Trauergewänder um sich
@@ -20961,7 +21043,8 @@ geschmückter Kopf, den sie unaufhörlich leise schüttelte, sank, von
 Gedanken beschwert, langsam tiefer und tiefer auf eine Schulter hinab.
 
 
-Drittes Kapitel
+3. Drittes Kapitel
+
 
 Der kleine Johann war gehalten, sich von der sterblichen Hülle seiner
 Großmutter zu verabschieden; sein Vater ordnete dies an, und er ließ
@@ -21156,7 +21239,8 @@ Augen blickten jedem Herrn, dessen Hand er während eines Augenblicks in
 der seinen hielt, mit einer matten Höflichkeit ins Gesicht.
 
 
-Viertes Kapitel
+4. Viertes Kapitel
+
 
 Acht Tage später saß in Senator Buddenbrooks Privatkontor, auf dem
 Ledersessel zur Seite des Schreibtisches, ein kleiner, glattrasierter
@@ -21763,7 +21847,8 @@ in allen Stürmen und Schiffbrüchen des Lebens treugeblieben war.
 Zehnter Teil
 
 
-Erstes Kapitel
+1. Erstes Kapitel
+
 
 Oftmals, wenn die trüben Stunden kamen, fragte sich Thomas Buddenbrook,
 was er eigentlich noch sei, was ihn eigentlich noch berechtige, sich
@@ -22061,7 +22146,8 @@ Winkeln bläuliche Schatten lagerten, fest und spähend auf ihn gerichtet
 hielt.
 
 
-Zweites Kapitel
+2. Zweites Kapitel
+
 
 Niemals vermochte Thomas Buddenbrook mit dem Blicke matten Mißmutes, mit
 dem er den Rest seines eigenen Lebens erwartete, auch in die Zukunft des
@@ -22408,7 +22494,8 @@ geringste Anzeichen dieser Lebenstüchtigkeit war, das der kleine Johann
 an den Tag legte!
 
 
-Drittes Kapitel
+3. Drittes Kapitel
+
 
 Seit manchem Jahr hatten Buddenbrooks sich der weiteren sommerlichen
 Reisen entwöhnt, die ehemals üblich gewesen waren, und selbst als im
@@ -22770,7 +22857,8 @@ doch übrigbleiben! Ja, gut ... als ich nachsah, war da ein ziemlich
 großer nasser Fleck. Es roch nur ein bißchen nach faulem Seetang ...«
 
 
-Viertes Kapitel
+4. Viertes Kapitel
+
 
 Zu Beginn des Jahres 1873 ward dem Gnadengesuch Hugo Weinschenks vom
 Senate stattgegeben und der ehemalige Direktor ein halbes Jahr vor
@@ -22864,7 +22952,8 @@ Weinschenk mit der kleinen Elisabeth nach wie vor bei ihrer Mutter in
 der hellen Etage am »Lindenplatze« verblieb.
 
 
-Fünftes Kapitel
+5. Fünftes Kapitel
+
 
 Die Ehe, aus welcher der kleine Johann hervorgegangen war, hatte, als
 Gesprächsgegenstand genommen, in der Stadt niemals an Reiz verloren. So
@@ -23555,7 +23644,8 @@ schüttelte den Kopf und sagte nach einem Augenblicke des Schweigens
 leise und fest: »Niemand darf hinein. -- Papa macht sein Testament.«
 
 
-Sechstes Kapitel
+6. Sechstes Kapitel
+
 
 Im Herbst sagte Doktor Langhals, indem er seine schönen Augen spielen
 ließ wie eine Frau: »Die Nerven, Herr Senator ... an allem sind bloß die
@@ -23922,7 +24012,8 @@ begegnen. Und um ihm in der Stille abzubitten, daß sie sich für ihn
 schämte, zog sie seinen Arm in den ihrigen.
 
 
-Siebentes Kapitel
+7. Siebentes Kapitel
+
 
 Es war Winter geworden, Weihnacht war vorüber, man schrieb Januar,
 Januar 1875. Der Schnee, der die Bürgersteige als eine festgetretene,
@@ -24223,7 +24314,8 @@ So lag er und so blieb er liegen, bis ein paar Leute herangekommen waren
 und ihn umwandten.
 
 
-Achtes Kapitel
+8. Achtes Kapitel
+
 
 Frau Permaneder kam die Haupttreppe herauf, indem sie vorn mit der Hand
 ihr Kleid emporraffte und mit der anderen die große, braune Muff gegen
@@ -24519,7 +24611,8 @@ aber es war nicht an dem. Die Erwachsenen sahen ihn ungläubig und
 fassungslos an. Dann schickte seine Mutter ihn schlafen ...
 
 
-Neuntes Kapitel
+9. Neuntes Kapitel
+
 
 An einem Zahne ... Senator Buddenbrook war an einem Zahne gestorben,
 hieß es in der Stadt. Aber, zum Donnerwetter, daran starb man doch
@@ -24693,7 +24786,8 @@ empfindlichen Grimasse schräg rückwärts gegen den Wind.
 Elfter Teil
 
 
-Erstes Kapitel
+1. Erstes Kapitel
+
 
 Man erinnert sich dieser oder jener Person, man denkt nach, wie es ihr
 gehen mag, und plötzlich fällt einem ein, daß sie nicht mehr auf den
@@ -24923,7 +25017,8 @@ Heirat verdankte, ihr früheres unabhängiges Leben ohne Rücksicht und
 Behinderung fortzuführen.
 
 
-Zweites Kapitel
+2. Zweites Kapitel
+
 
 Das Werk der Weckuhr schnappte ein und rasselte pflichttreu und grausam.
 Es war ein heiseres und geborstenes Geräusch, ein Klappern mehr als ein
@@ -26715,7 +26810,8 @@ anzufertigen.
 Dies war ein Tag aus dem Leben des kleinen Johann.
 
 
-Drittes Kapitel
+3. Drittes Kapitel
+
 
 Mit dem Typhus ist es folgendermaßen bestellt.
 
@@ -26834,7 +26930,8 @@ ihm zum Entrinnen eröffnet hat ... nein, es ist klar, dann wird er
 sterben. --
 
 
-Viertes Kapitel
+4. Viertes  Kapitel
+
 
 »Es ist nicht recht, es ist nicht recht, Gerda!« sagte das alte Fräulein
 Weichbrodt wohl zum hundertsten Male bekümmert und vorwurfsvoll. Sie
@@ -27005,277 +27102,16 @@ Zeit ihres Lebens gegen die Anfechtungen von seiten ihrer
 Lehrerinnenvernunft geführt hatte, bucklig, winzig und bebend vor
 Überzeugung, eine kleine, strafende, begeisterte Prophetin.
 
-                                 =Ende=
+  
 
 
 
 
-               Dieses Werk ist eine Veröffentlichung der
-                      Deutschen Buch-Gemeinschaft
-                Wien        Berlin SW 68        New York
-                        Alte Jakobstraße 156/157
 
-Guten und doch billigen Büchern in vorbildlicher Formgebung und bester
-Ausstattung den Weg in alle Schichten unseres Volkes zu bahnen, ist die
-Aufgabe der Deutschen Buch-Gemeinschaft. Sie erreicht dies durch
-Herstellung und Vertrieb in eigenem Wirkungsbereich
 
-Jedermann wird durch Beitritt zur Deutschen Buch-Gemeinschaft die
-vorteilhafteste Gelegenheit gegeben, sich unter neuen Bezugsformen eine
-eigene und wertvolle Hausbibliothek anzuschaffen.
 
-         Ausführliche, reich illustrierte Werbeschrift wird auf
-                       Wunsch kostenlos zugesandt
 
 
-
-
-                               Druck von
-                  A. Seydel & Cie. Aktiengesellschaft
-                             Berlin _SW_ 61
-
-
-
-
-  [ Im folgenden werden alle geänderten Textzeilen angeführt, wobei
-    jeweils zuerst die Zeile wie im Original, danach die geänderte Zeile
-    steht.
-
-  der Welt gesehen, war Anno 13 vierspännig nach Süddeutschland
-  der Welt gesehen, war _anno_ 13 vierspännig nach Süddeutschland
-
-  verzehrt hatte und, sei es plötzlich und überrascht in seinen
-  verzehrt hatte und, sei es plötzlich und überrascht in seinem
-
-  =Johann=, bei Ihnen mietweise wohnhaf ist und nach Ihrem Tode mit
-  =Johann=, bei Ihnen mietweise wohnhaft ist und nach Ihrem Tode mit
-
-  einem Töchterchen entbunden, welches in der hl. Taufe den Namen Clara
-  einem Töchterchen entbunden, welches in der hl. Taufe den Namen Klara
-
-  irdisches kleines schwaches Herz ... Nach drei Seiten schrieb der
-  irdisches kleines schwaches Herz ...« Nach drei Seiten schrieb der
-
-  nachgewiesen; daß ihm die alte, zu Wittenberg gedruckte Bibel zugehöre,
-  nachgewiesen, daß ihm die alte, zu Wittenberg gedruckte Bibel zugehöre,
-
-  denken, während in der Mengsstraße der Großvater und die Mama wohl
-  denken, während in der Mengstraße der Großvater und die Mama wohl
-
-  »Na«, sagte er, hier ist »eine Zitronensemmel mit Gänsebrust; es ist
-  »Na«, sagte er, »hier ist eine Zitronensemmel mit Gänsebrust; es ist
-
-  März, ein paar Monate nur und nach dem Tode seiner Frau, irgendein
-  März, ein paar Monate nur nach dem Tode seiner Frau, irgendein
-
-  Gerda war ein wenig appart und hatte etwas Fremdes und Ausländisches an
-  Gerda war ein wenig apart und hatte etwas Fremdes und Ausländisches an
-
-  durchaus nicht glauben, daß ich es drängen und quällen will ... Das alles
-  durchaus nicht glauben, daß ich es drängen und quälen will ... Das alles
-
-  Allein auch Herr Grünlich erhob sich. Er trat einen Schritt urück, er
-  Allein auch Herr Grünlich erhob sich. Er trat einen Schritt zurück, er
-
-  ihrem vornehmen Bereich verschwinden werden und ... man Zeit seines
-  Ihrem vornehmen Bereich verschwinden werden und ... man Zeit seines
-
-  als dächte er: Ich wäre jawohl ein Hundsfott ...!
-  als dächte er: Ich wäre ja wohl ein Hundsfott ...!
-
-  und der Rest in den »Wallfisch«, den »Löwen« oder die »Eiche« wandern ...
-  und der Rest in den »Walfisch«, den »Löwen« oder die »Eiche« wandern ...
-
-  sich empo und küßte sie mit leise knallendem Geräusch auf die Stirn. --
-  sich empor und küßte sie mit leise knallendem Geräusch auf die Stirn. --
-
-  daß er sie bekommen hat! Dann sucht er einen Zwicker hervor (er hat
-  daß er Sie bekommen hat! Dann sucht er einen Zwicker hervor (er hat
-
-  »=Wohin= willst, Jean?«
-  »=Wohin= willst du, Jean?«
-
-  hängenden und blöden Greisengrimmasse verzerrt ... Der Wagen hielt an der
-  hängenden und blöden Greisengrimasse verzerrt ... Der Wagen hielt an der
-
-  Tony. Aber nicht länger, und in der dickeren Jacke, hörst du?... Es
-  Tony. »Aber nicht länger, und in der dickeren Jacke, hörst du?... Es
-
-  dem längst vernichtet n Grünlich zwar fort und fort Kredit gewährt, ihn
-  dem längst vernichteten Grünlich zwar fort und fort Kredit gewährt, ihn
-
-  aufgekommen und fuhr lustig in den dichten Wasserschleier, zerrieß ihn
-  aufgekommen und fuhr lustig in den dichten Wasserschleier, zerriß ihn
-
-  es wird geteilt, das Haus wird abgeb rochen, ein Zaun quer
-  es wird geteilt, das Haus wird abgebrochen, ein Zaun quer
-
-  Buddenbrooks, begann er, emsig vorübergebeugt, den Baß zu bearbeiten,
-  Buddenbrooks, begann er, emsig vornübergebeugt, den Baß zu bearbeiten,
-
-  Christian jedoch, dessen Augen wanderten, überhörten dies, denn er befand
-  Christian jedoch, dessen Augen wanderten, überhörte dies, denn er befand
-
-  Dieser Klub, dem vorwiegend unverheiratete Kaufleute angegehörten, besaß
-  Dieser Klub, dem vorwiegend unverheiratete Kaufleute angehörten, besaß
-
-  es zu spät gelernt, Zugeständnisse zu machen, Rücksicht zu nehmen . .
-  es zu spät gelernt, Zugeständnisse zu machen, Rücksicht zu nehmen ...
-
-  machen. Es kamen die Damen Buddenbrooks aus der Breiten Straße, die denn
-  machen. Es kamen die Damen Buddenbrook aus der Breiten Straße, die denn
-
-  einem von Mutters Dunkelmännern, die der Witwen Häuser fressen.
-  einem von Mutters Dunkelmännern, die der Witwen Häuser fressen,
-
-  Ich bin eingeladen worden; eingeladen nach München von Eva Ewers
-  »Ich bin eingeladen worden; eingeladen nach München von Eva Ewers
-
-  sie sich wohl im Kontor Ihres Bruders, Herr Buddenbrook?´ =Das=
-  Sie sich wohl im Kontor Ihres Bruders, Herr Buddenbrook?´ =Das=
-
-  uns die Freude machen würden, solange sie in unserer Stadt sind, bei uns
-  uns die Freude machen würden, solange Sie in unserer Stadt sind, bei uns
-
-  vorlieb zu nehmen ... sie würden uns herzlich willkommen sein ...«
-  vorlieb zu nehmen ... Sie würden uns herzlich willkommen sein ...«
-
-  Er sah gut und munter aus in seinem hellbraunen, kleinkarrierten Anzug,
-  Er sah gut und munter aus in seinem hellbraunen, kleinkarierten Anzug,
-
-  »Ja, das sagte Herr Kistenmaaker vorhin auch schon.«
-  »Ja, das sagte Herr Kistenmaker vorhin auch schon.«
-
-  ... bitte, das Handtuch. Wenzel«, schloß der Konsul, und wenn dann noch
-  ... bitte, das Handtuch, Wenzel«, schloß der Konsul, und wenn dann noch
-
-  »Tony«, sagte er, »du machst mir nichts weiß. Ich habe es schon vorher
-  »Tony«, sagte er, »du machst mir nichts weis. Ich habe es schon vorher
-
-  Kurz es gab außer Tonys Scheidungswünschen der widerwärtigen Dinge
-  Kurz, es gab außer Tonys Scheidungswünschen der widerwärtigen Dinge
-
-  Nicht lange, und alle diese Herrlichkeiten reden, wenn die Herrschaften
-  Nicht lange, und alle diese Herrlichkeiten werden, wenn die Herrschaften
-
-  die Damen Buddenbrooks sind anwesend, und sie sind tief erfreut über das
-  die Damen Buddenbrook sind anwesend, und sie sind tief erfreut über das
-
-  bin, verstehst du, und dann zumachen Ich kann es nun nicht mehr. Mit
-  bin, verstehst du, und dann zumachen. Ich kann es nun nicht mehr. Mit
-
-  Abenteurer begegnen und ihr schließlich, frisch und gesund wie die Frau
-  Abenteuer begegnen und ihr schließlich, frisch und gesund wie die Frau
-
-  um dir Armgards -- also, indirekt, Rolf von Maibooms Vorschlag zu
-  um dir Armgards -- also, indirekt, Ralf von Maibooms Vorschlag zu
-
-  »Oh, du hättest natürlich hinfahren müssen!« sagte sie eifrig. Es ist
-  »Oh, du hättest natürlich hinfahren müssen!« sagte sie eifrig. »Es ist
-
-  mir -- einen Stuhl anzubieten ...«?
-  mir -- einen Stuhl anzubieten ...?«
-
-  ausgestrecktem Zeigezinger. »Ich werde es tun!«
-  ausgestrecktem Zeigefinger. »Ich werde es tun!«
-
-  folgt, worauf zunächst ein Poutpourri von Volksliedern erklingen wird
-  folgt, worauf zunächst ein Potpourri von Volksliedern erklingen wird
-
-  Am Tage, da sie ihn zum ersten Male Klavierauszüge aus »Tristan und
-  Am Tage, da sie ihm zum ersten Male Klavierauszüge aus »Tristan und
-
-  gegenüber, neben ihn an den Speisetisch setzte ... »Wie gehts! Was
-  gegenüber, neben ihn an den Speisetisch setzte ... »Wie geht's! Was
-
-  durchbohrende Blicke tauschten, selbst Rieckchen Severin am unteren
-  durchbohrende Blicke tauschten, selbst Riekchen Severin am unteren
-
-  erfüllen. Gerade der Wechsel von Gück und strenger Heimsuchung zeige,
-  erfüllen. Gerade der Wechsel von Glück und strenger Heimsuchung zeige,
-
-  ihr letztes Weihnachsfest beging, niemals verfloß dieser Abend, ohne
-  ihr letztes Weihnachtsfest beging, niemals verfloß dieser Abend, ohne
-
-  und dort, gestützt auf Ida Jungmann oder Rieckchen Severin, die
-  und dort, gestützt auf Ida Jungmann oder Riekchen Severin, die
-
-  .. und dann wird es beinahe noch schlimmer, denn wohin dann mit ihm und
-  ... und dann wird es beinahe noch schlimmer, denn wohin dann mit ihm und
-
-  Schwestern, für die Sie immer so wohlwollend eintreten .. Die Schwester
-  Schwestern, für die Sie immer so wohlwollend eintreten ... Die Schwester
-
-  dabei überhaupt gar nicht vorhanden ist?!...
-  dabei überhaupt gar nicht vorhanden ist?!...«
-
-  waren weißlich, belich, ohne Blut und Leben. Seine leicht geröteten
-  waren weißlich, bleich, ohne Blut und Leben. Seine leicht geröteten
-
-  Leben. _L'esperance toute trompeuse qu'elle est, sert au moins à nous
-  Leben. _L'espérance toute trompeuse qu'elle est, sert au moins à nous
-
-  effektiv nur di Familie nötig, Huneus', Möllendorpfs, die Angehörigen
-  effektiv nur die Familie nötig, Huneus', Möllendorpfs, die Angehörigen
-
-  erste Strophe des »O Tannenbaum« sang, durch die Zimmerflucht in den
-  erste Strophe des »O Tannebaum« sang, durch die Zimmerflucht in den
-
-  Gemütszustand äußerst traurig sein sollte, und dann wa rdie Frage
-  Gemütszustand äußerst traurig sein sollte, und dann war die Frage
-
-  rationelle Pflege und Abhärtung andererseits zu festigen und zu heben ..
-  rationelle Pflege und Abhärtung andererseits zu festigen und zu heben ...
-
-  Wagenecke lehnte, und Entsetzen im Herzen erlebte er es, daß auf der
-  Wagenecke lehnte, und mit Entsetzen im Herzen erlebte er es, daß auf der
-
-  Hamburg ihren Vater geantwortet hatte, so fing man an, mit einer nahen
-  Hamburg ihrem Vater geantwortet hatte, so fing man an, mit einer nahen
-
-  werden kann ... ich meine, wenn man es im Magen hat?... Und er gab
-  werden kann ... ich meine, wenn man es im Magen hat?...« Und er gab
-
-  wenigsten diejenigen von Iwersen, gegenüber dem Buddenbrookschen Hause.
-  wenigsten diejenige von Iwersen, gegenüber dem Buddenbrookschen Hause.
-
-  überhaupt einmal eine Ende zu machen, genötigt sah, das Haus für
-  überhaupt einmal ein Ende zu machen, genötigt sah, das Haus für
-
-  den Rücken, stützte sich auf sein eines Beines, indem er den anderen
-  den Rücken, stützte sich auf sein eines Bein, indem er den anderen
-
-  Ausdruck, aus dieser Anstalt, in der man ihn sehr str ng zu behandeln
-  Ausdruck, aus dieser Anstalt, in der man ihn sehr streng zu behandeln
-
-  Chlor oder Strontium über ihren Diensteifer aufzuweisen. Hans Hermann
-  Chlor oder Strontium über ihren Diensteifer auszuweisen. Hans Hermann
-
-  »Habe ich vorhin nicht auch gesagt, was `_patula Jovis arbore, glandos_´
-  »Habe ich vorhin nicht auch gesagt, was `_patula Jovis arbore, glandes_´
-
-
-    Folgende inkonsistente Schreibweisen wurden wie gedruckt beibehalten:
-
-    Breite Straße/Breitestraße
-    Comp./Komp.
-    gentlemanlike/gentleman like
-    Hunyadi-Janos/Hunyadi-János
-    Kotelettes/Koteletts
-    Kurantmark/Kurant-Mark
-    Oeverdieck/Överdieck
-    Portieren/Portièren
-    Regeldetri/Regeldetrie
-    Religionsstunde/Religionstunde
-    Rotspohn/Rotspon
-    Table d'hote-Glocke/Table-d'hote-Glocke
-  ]
-
-
-
-
-
-End of the Project Gutenberg EBook of Buddenbrooks, by Thomas Mann
 
 *** END OF THIS PROJECT GUTENBERG EBOOK BUDDENBROOKS ***
 

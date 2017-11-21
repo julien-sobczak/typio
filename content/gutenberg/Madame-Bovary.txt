@@ -4002,6 +4002,7 @@ mur.
 
 V
 
+
 Ce fut un dimanche de février, une après-midi qu'il neigeait.
 
 Ils étaient tous, M et madame Bovary, Homais et M. Léon, partis
@@ -15244,9 +15245,6 @@ Il vient de recevoir la croix d'honneur.
 
 
 
-
-
-End of the Project Gutenberg EBook of Madame Bovary, by Gustave Flaubert
 
 *** END OF THIS PROJECT GUTENBERG EBOOK MADAME BOVARY ***
 

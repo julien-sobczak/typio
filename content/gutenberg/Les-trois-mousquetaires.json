@@ -1,0 +1,474 @@
+{
+    "chapters": [
+        {
+            "characters": 39438,
+            "end": 906,
+            "paragraphs": 160,
+            "start": 210,
+            "title": "CHAPITRE I. LES TROIS PRÉSENTS DE M. D'ARTAGNAN PÈRE"
+        },
+        {
+            "characters": 22051,
+            "end": 1350,
+            "paragraphs": 63,
+            "start": 913,
+            "title": "CHAPITRE II. L'ANTICHAMBRE DE M. DE TRÉVILLE"
+        },
+        {
+            "characters": 23999,
+            "end": 1881,
+            "paragraphs": 99,
+            "start": 1357,
+            "title": "CHAPITRE III. L'AUDIENCE"
+        },
+        {
+            "characters": 16029,
+            "end": 2266,
+            "paragraphs": 86,
+            "start": 1888,
+            "title": "CHAPITRE IV. L'ÉPAULE D'ATHOS, LE BAUDRIER DE PORTHOS ET LE MOUCHOIR D'ARAMIS"
+        },
+        {
+            "characters": 21033,
+            "end": 2785,
+            "paragraphs": 128,
+            "start": 2273,
+            "title": "CHAPITRE V. LES MOUSQUETAIRES DU ROI ET LES GARDES DE M. LE CARDINAL"
+        },
+        {
+            "characters": 39277,
+            "end": 3696,
+            "paragraphs": 198,
+            "start": 2792,
+            "title": "CHAPITRE VI. SA MAJESTÉ LE ROI LOUIS TREIZIÈME"
+        },
+        {
+            "characters": 18756,
+            "end": 4068,
+            "paragraphs": 47,
+            "start": 3703,
+            "title": "CHAPITRE VII. L'INTÉRIEUR DES MOUSQUETAIRES"
+        },
+        {
+            "characters": 15512,
+            "end": 4510,
+            "paragraphs": 131,
+            "start": 4075,
+            "title": "CHAPITRE VIII. UNE INTRIGUE DE COEUR"
+        },
+        {
+            "characters": 14868,
+            "end": 4928,
+            "paragraphs": 122,
+            "start": 4517,
+            "title": "CHAPITRE IX. D'ARTAGNAN SE DESSINE"
+        },
+        {
+            "characters": 18915,
+            "end": 5430,
+            "paragraphs": 134,
+            "start": 4935,
+            "title": "CHAPITRE X. UNE SOURICIÈRE AU XVIIe SIÈCLE"
+        },
+        {
+            "characters": 33849,
+            "end": 6319,
+            "paragraphs": 235,
+            "start": 5437,
+            "title": "CHAPITRE XI. L'INTRIGUE SE NOUE"
+        },
+        {
+            "characters": 17161,
+            "end": 6707,
+            "paragraphs": 73,
+            "start": 6326,
+            "title": "CHAPITRE XII. GEORGES VILLIERS, DUC DE BUCKINGHAM"
+        },
+        {
+            "characters": 16702,
+            "end": 7152,
+            "paragraphs": 120,
+            "start": 6714,
+            "title": "CHAPITRE XIII. MONSIEUR BONACIEUX"
+        },
+        {
+            "characters": 18452,
+            "end": 7744,
+            "paragraphs": 197,
+            "start": 7159,
+            "title": "CHAPITRE XIV. L'HOMME DE MEUNG"
+        },
+        {
+            "characters": 15418,
+            "end": 8133,
+            "paragraphs": 95,
+            "start": 7751,
+            "title": "CHAPITRE XV. GENS DE ROBE ET GENS D'ÉPÉE"
+        },
+        {
+            "characters": 22480,
+            "end": 8711,
+            "paragraphs": 150,
+            "start": 8140,
+            "title": "CHAPITRE XVI. OÙ M. LE GARDE DES SCEAUX SÉGUIER CHERCHA PLUS D'UNE FOIS LA CLOCHE POUR LA SONNER, COMME IL LE FAISAIT AUTREFOIS"
+        },
+        {
+            "characters": 24473,
+            "end": 9380,
+            "paragraphs": 185,
+            "start": 8718,
+            "title": "CHAPITRE XVII. LE MÉNAGE BONACIEUX"
+        },
+        {
+            "characters": 11998,
+            "end": 9785,
+            "paragraphs": 141,
+            "start": 9387,
+            "title": "CHAPITRE XVIII. L'AMANT ET LE MARI"
+        },
+        {
+            "characters": 15263,
+            "end": 10254,
+            "paragraphs": 152,
+            "start": 9792,
+            "title": "CHAPITRE XIX. PLAN DE CAMPAGNE"
+        },
+        {
+            "characters": 22035,
+            "end": 10882,
+            "paragraphs": 185,
+            "start": 10261,
+            "title": "CHAPITRE XX. VOYAGE"
+        },
+        {
+            "characters": 19095,
+            "end": 11355,
+            "paragraphs": 117,
+            "start": 10889,
+            "title": "CHAPITRE XXI. LA COMTESSE DE WINTER"
+        },
+        {
+            "characters": 14130,
+            "end": 11686,
+            "paragraphs": 69,
+            "start": 11362,
+            "title": "CHAPITRE XXII. LE BALLET DE LA MERLAISON"
+        },
+        {
+            "characters": 19955,
+            "end": 12254,
+            "paragraphs": 168,
+            "start": 11693,
+            "title": "CHAPITRE XXIII. LE RENDEZ-VOUS"
+        },
+        {
+            "characters": 20469,
+            "end": 12754,
+            "paragraphs": 116,
+            "start": 12261,
+            "title": "CHAPITRE XXIV. LE PAVILLON"
+        },
+        {
+            "characters": 37626,
+            "end": 13706,
+            "paragraphs": 243,
+            "start": 12761,
+            "title": "CHAPITRE XXV. PORTHOS"
+        },
+        {
+            "characters": 31572,
+            "end": 14528,
+            "paragraphs": 214,
+            "start": 13713,
+            "title": "CHAPITRE XXVI. LA THÈSE D'ARAMIS"
+        },
+        {
+            "characters": 37314,
+            "end": 15495,
+            "paragraphs": 257,
+            "start": 14535,
+            "title": "CHAPITRE XXVII. LA FEMME D'ATHOS"
+        },
+        {
+            "characters": 25939,
+            "end": 16260,
+            "paragraphs": 235,
+            "start": 15502,
+            "title": "CHAPITRE XXVIII. RETOUR"
+        },
+        {
+            "characters": 16654,
+            "end": 16684,
+            "paragraphs": 107,
+            "start": 16267,
+            "title": "CHAPITRE XXIX. LA CHASSE À L'ÉQUIPEMENT"
+        },
+        {
+            "characters": 14764,
+            "end": 17064,
+            "paragraphs": 99,
+            "start": 16691,
+            "title": "CHAPITRE XXX. MILADY"
+        },
+        {
+            "characters": 15050,
+            "end": 17442,
+            "paragraphs": 94,
+            "start": 17071,
+            "title": "CHAPITRE XXXI. ANGLAIS ET FRANÇAIS"
+        },
+        {
+            "characters": 18425,
+            "end": 17900,
+            "paragraphs": 111,
+            "start": 17449,
+            "title": "CHAPITRE XXXII. UN DÎNER DE PROCUREUR"
+        },
+        {
+            "characters": 17699,
+            "end": 18416,
+            "paragraphs": 157,
+            "start": 17907,
+            "title": "CHAPITRE XXXIII. SOUBRETTE ET MAÎTRESSE"
+        },
+        {
+            "characters": 15950,
+            "end": 18843,
+            "paragraphs": 119,
+            "start": 18423,
+            "title": "CHAPITRE XXXIV. OÙ IL EST TRAITÉ DE L'ÉQUIPEMENT D'ARAMIS ET DE PORTHOS"
+        },
+        {
+            "characters": 14756,
+            "end": 19222,
+            "paragraphs": 100,
+            "start": 18850,
+            "title": "CHAPITRE XXXV. LA NUIT TOUS LES CHATS SONT GRIS"
+        },
+        {
+            "characters": 12707,
+            "end": 19641,
+            "paragraphs": 145,
+            "start": 19229,
+            "title": "CHAPITRE XXXVI. RÊVE DE VENGEANCE"
+        },
+        {
+            "characters": 12996,
+            "end": 19991,
+            "paragraphs": 97,
+            "start": 19648,
+            "title": "CHAPITRE XXXVII. LE SECRET DE MILADY"
+        },
+        {
+            "characters": 17392,
+            "end": 20502,
+            "paragraphs": 156,
+            "start": 19998,
+            "title": "CHAPITRE XXXVIII. COMMENT, SANS SE DÉRANGER, ATHOS TROUVA SON ÉQUIPEMENT"
+        },
+        {
+            "characters": 17098,
+            "end": 20942,
+            "paragraphs": 111,
+            "start": 20509,
+            "title": "CHAPITRE XXXIX. UNE VISION"
+        },
+        {
+            "characters": 15633,
+            "end": 21320,
+            "paragraphs": 83,
+            "start": 20949,
+            "title": "CHAPITRE XL. LE CARDINAL"
+        },
+        {
+            "characters": 25039,
+            "end": 21914,
+            "paragraphs": 133,
+            "start": 21327,
+            "title": "CHAPITRE XLI. LE SIÈGE DE LA ROCHELLE"
+        },
+        {
+            "characters": 14038,
+            "end": 22320,
+            "paragraphs": 123,
+            "start": 21921,
+            "title": "CHAPITRE XLII. LE VIN D'ANJOU"
+        },
+        {
+            "characters": 16409,
+            "end": 22716,
+            "paragraphs": 90,
+            "start": 22327,
+            "title": "CHAPITRE XLIII. L'AUBERGE DU COLOMBIER-ROUGE"
+        },
+        {
+            "characters": 15581,
+            "end": 23128,
+            "paragraphs": 110,
+            "start": 22723,
+            "title": "CHAPITRE XLIV. DE L'UTILITÉ DES TUYAUX DE POÊLE"
+        },
+        {
+            "characters": 11357,
+            "end": 23419,
+            "paragraphs": 76,
+            "start": 23135,
+            "title": "CHAPITRE XLV. SCÈNE CONJUGALE"
+        },
+        {
+            "characters": 12854,
+            "end": 23783,
+            "paragraphs": 108,
+            "start": 23426,
+            "title": "CHAPITRE XLVI. LE BASTION SAINT-GERVAIS"
+        },
+        {
+            "characters": 31529,
+            "end": 24704,
+            "paragraphs": 288,
+            "start": 23790,
+            "title": "CHAPITRE XLVII. LE CONSEIL DES MOUSQUETAIRES"
+        },
+        {
+            "characters": 26882,
+            "end": 25417,
+            "paragraphs": 192,
+            "start": 24711,
+            "title": "CHAPITRE XLVIII. AFFAIRE DE FAMILLE"
+        },
+        {
+            "characters": 16071,
+            "end": 25806,
+            "paragraphs": 91,
+            "start": 25424,
+            "title": "CHAPITRE XLIX. FATALITÉ"
+        },
+        {
+            "characters": 15225,
+            "end": 26162,
+            "paragraphs": 75,
+            "start": 25813,
+            "title": "CHAPITRE L. CAUSERIE D'UN FRÈRE AVEC SA SOEUR"
+        },
+        {
+            "characters": 22429,
+            "end": 26647,
+            "paragraphs": 89,
+            "start": 26169,
+            "title": "CHAPITRE LI. OFFICIER"
+        },
+        {
+            "characters": 14141,
+            "end": 26976,
+            "paragraphs": 67,
+            "start": 26654,
+            "title": "CHAPITRE LII. PREMIERE JOURNÉE DE CAPTIVITÉ"
+        },
+        {
+            "characters": 14080,
+            "end": 27328,
+            "paragraphs": 85,
+            "start": 26983,
+            "title": "CHAPITRE LIII. DEUXIÈME JOURNÉE DE CAPTIVITÉ"
+        },
+        {
+            "characters": 16971,
+            "end": 27756,
+            "paragraphs": 105,
+            "start": 27335,
+            "title": "CHAPITRE LIV. TROISIÈME JOURNÉE DE CAPTIVITÉ"
+        },
+        {
+            "characters": 16480,
+            "end": 28157,
+            "paragraphs": 93,
+            "start": 27763,
+            "title": "CHAPITRE LV. QUATRIÈME JOURNÉE DE CAPTIVITÉ"
+        },
+        {
+            "characters": 30199,
+            "end": 28863,
+            "paragraphs": 153,
+            "start": 28164,
+            "title": "CHAPITRE LVI. CINQUIÈME JOURNÉE DE CAPTIVITÉ"
+        },
+        {
+            "characters": 12320,
+            "end": 29195,
+            "paragraphs": 91,
+            "start": 28870,
+            "title": "CHAPITRE LVII. UN MOYEN DE TRAGÉDIE CLASSIQUE"
+        },
+        {
+            "characters": 15166,
+            "end": 29664,
+            "paragraphs": 154,
+            "start": 29202,
+            "title": "CHAPITRE LVIII. ÉVASION"
+        },
+        {
+            "characters": 19343,
+            "end": 30216,
+            "paragraphs": 162,
+            "start": 29671,
+            "title": "CHAPITRE LIX. CE QUI SE PASSAIT À PORTSMOUTH LE 23 AOÛT 1628"
+        },
+        {
+            "characters": 10663,
+            "end": 30471,
+            "paragraphs": 55,
+            "start": 30223,
+            "title": "CHAPITRE LX. EN FRANCE"
+        },
+        {
+            "characters": 24704,
+            "end": 31145,
+            "paragraphs": 188,
+            "start": 30478,
+            "title": "CHAPITRE LXI. LE COUVENT DES CARMÉLITES DE BÉTHUNE"
+        },
+        {
+            "characters": 8587,
+            "end": 31480,
+            "paragraphs": 129,
+            "start": 31152,
+            "title": "CHAPITRE LXII. DEUX VARIÉTÉS DE DÉMONS"
+        },
+        {
+            "characters": 25503,
+            "end": 32242,
+            "paragraphs": 240,
+            "start": 31487,
+            "title": "CHAPITRE LXIII. UNE GOUTTE D'EAU"
+        },
+        {
+            "characters": 11498,
+            "end": 32505,
+            "paragraphs": 53,
+            "start": 32249,
+            "title": "CHAPITRE LXIV. L'HOMME AU MANTEAU ROUGE"
+        },
+        {
+            "characters": 14590,
+            "end": 32908,
+            "paragraphs": 114,
+            "start": 32512,
+            "title": "CHAPITRE LXV. LE JUGEMENT"
+        },
+        {
+            "characters": 8770,
+            "end": 33156,
+            "paragraphs": 72,
+            "start": 32915,
+            "title": "CHAPITRE LXVI. L'EXÉCUTION"
+        },
+        {
+            "characters": 18675,
+            "end": 33696,
+            "paragraphs": 164,
+            "start": 33163,
+            "title": "CHAPITRE LXVII. CONCLUSION"
+        }
+    ],
+    "size": 1414694
+}

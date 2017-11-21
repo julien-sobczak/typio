@@ -51,7 +51,7 @@ VOLUME PREMIER
 
 
 
-CHAPITRE PREMIER
+CHAPITRE I.
 
 
 UNE PETITE VILLE
@@ -9093,7 +9093,7 @@ VOLUME SECOND
 
 
 
-CHAPITRE PREMIER
+CHAPITRE I.
 
 LES PLAISIRS DE LA CAMPAGNE
 
@@ -20546,15 +20546,8 @@ Mme de Rênal fut fidèle à sa promesse. Elle ne chercha en aucune manière
 embrassant ses enfants.
 
 
-FIN
 
 
-
-
-
-
-
-End of the Project Gutenberg EBook of Le Rouge et le noir, by Stendhal
 
 *** END OF THIS PROJECT GUTENBERG EBOOK LE ROUGE ET LE NOIR ***
 

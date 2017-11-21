@@ -1,0 +1,40 @@
+{
+    "chapters": [
+        {
+            "characters": 12760,
+            "end": 249,
+            "paragraphs": 33,
+            "start": 49,
+            "title": "Erstes Kapitel"
+        },
+        {
+            "characters": 15550,
+            "end": 508,
+            "paragraphs": 17,
+            "start": 257,
+            "title": "Zweites Kapitel"
+        },
+        {
+            "characters": 58965,
+            "end": 1514,
+            "paragraphs": 83,
+            "start": 516,
+            "title": "Drittes Kapitel"
+        },
+        {
+            "characters": 25389,
+            "end": 1929,
+            "paragraphs": 24,
+            "start": 1522,
+            "title": "Viertes Kapitel"
+        },
+        {
+            "characters": 54176,
+            "end": 2825,
+            "paragraphs": 55,
+            "start": 1937,
+            "title": "Fünftes Kapitel"
+        }
+    ],
+    "size": 196864
+}

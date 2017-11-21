@@ -1,0 +1,376 @@
+{
+    "chapters": [
+        {
+            "characters": 11619,
+            "end": 270,
+            "paragraphs": 50,
+            "start": 154,
+            "title": "CHAPTER I"
+        },
+        {
+            "characters": 21972,
+            "end": 714,
+            "paragraphs": 82,
+            "start": 277,
+            "title": "CHAPTER II"
+        },
+        {
+            "characters": 17547,
+            "end": 1084,
+            "paragraphs": 79,
+            "start": 721,
+            "title": "CHAPTER III"
+        },
+        {
+            "characters": 14372,
+            "end": 1392,
+            "paragraphs": 68,
+            "start": 1091,
+            "title": "CHAPTER IV"
+        },
+        {
+            "characters": 22593,
+            "end": 1863,
+            "paragraphs": 94,
+            "start": 1399,
+            "title": "CHAPTER V"
+        },
+        {
+            "characters": 9923,
+            "end": 2065,
+            "paragraphs": 39,
+            "start": 1870,
+            "title": "CHAPTER VI"
+        },
+        {
+            "characters": 13001,
+            "end": 2346,
+            "paragraphs": 65,
+            "start": 2072,
+            "title": "CHAPTER VII"
+        },
+        {
+            "characters": 17660,
+            "end": 2695,
+            "paragraphs": 61,
+            "start": 2353,
+            "title": "CHAPTER VIII"
+        },
+        {
+            "characters": 12768,
+            "end": 2970,
+            "paragraphs": 61,
+            "start": 2702,
+            "title": "CHAPTER IX"
+        },
+        {
+            "characters": 10152,
+            "end": 3175,
+            "paragraphs": 41,
+            "start": 2977,
+            "title": "CHAPTER X"
+        },
+        {
+            "characters": 14622,
+            "end": 3523,
+            "paragraphs": 92,
+            "start": 3182,
+            "title": "CHAPTER XI"
+        },
+        {
+            "characters": 19037,
+            "end": 3934,
+            "paragraphs": 87,
+            "start": 3530,
+            "title": "CHAPTER XII"
+        },
+        {
+            "characters": 15827,
+            "end": 4294,
+            "paragraphs": 88,
+            "start": 3941,
+            "title": "CHAPTER XIII"
+        },
+        {
+            "characters": 21554,
+            "end": 4748,
+            "paragraphs": 99,
+            "start": 4301,
+            "title": "CHAPTER XIV"
+        },
+        {
+            "characters": 13052,
+            "end": 5039,
+            "paragraphs": 69,
+            "start": 4755,
+            "title": "CHAPTER XV"
+        },
+        {
+            "characters": 19389,
+            "end": 5470,
+            "paragraphs": 101,
+            "start": 5046,
+            "title": "CHAPTER XVI"
+        },
+        {
+            "characters": 18115,
+            "end": 5890,
+            "paragraphs": 108,
+            "start": 5477,
+            "title": "CHAPTER XVII"
+        },
+        {
+            "characters": 16795,
+            "end": 6232,
+            "paragraphs": 66,
+            "start": 5897,
+            "title": "CHAPTER XVIII"
+        },
+        {
+            "characters": 18407,
+            "end": 6663,
+            "paragraphs": 113,
+            "start": 6239,
+            "title": "CHAPTER XIX"
+        },
+        {
+            "characters": 16179,
+            "end": 7018,
+            "paragraphs": 83,
+            "start": 6670,
+            "title": "CHAPTER XX"
+        },
+        {
+            "characters": 12070,
+            "end": 7268,
+            "paragraphs": 49,
+            "start": 7025,
+            "title": "CHAPTER XXI"
+        },
+        {
+            "characters": 13724,
+            "end": 7575,
+            "paragraphs": 73,
+            "start": 7275,
+            "title": "CHAPTER XXII"
+        },
+        {
+            "characters": 15338,
+            "end": 7891,
+            "paragraphs": 65,
+            "start": 7582,
+            "title": "CHAPTER XXIII"
+        },
+        {
+            "characters": 10793,
+            "end": 8135,
+            "paragraphs": 61,
+            "start": 7898,
+            "title": "CHAPTER XXIV"
+        },
+        {
+            "characters": 12483,
+            "end": 8407,
+            "paragraphs": 63,
+            "start": 8142,
+            "title": "CHAPTER XXV"
+        },
+        {
+            "characters": 24822,
+            "end": 8932,
+            "paragraphs": 111,
+            "start": 8414,
+            "title": "CHAPTER XXVI"
+        },
+        {
+            "characters": 14462,
+            "end": 9257,
+            "paragraphs": 78,
+            "start": 8939,
+            "title": "CHAPTER XXVII"
+        },
+        {
+            "characters": 19011,
+            "end": 9675,
+            "paragraphs": 95,
+            "start": 9264,
+            "title": "CHAPTER XXVIII"
+        },
+        {
+            "characters": 7635,
+            "end": 9849,
+            "paragraphs": 42,
+            "start": 9682,
+            "title": "CHAPTER XXIX"
+        },
+        {
+            "characters": 12905,
+            "end": 10132,
+            "paragraphs": 66,
+            "start": 9856,
+            "title": "CHAPTER XXX"
+        },
+        {
+            "characters": 22152,
+            "end": 10592,
+            "paragraphs": 93,
+            "start": 10139,
+            "title": "CHAPTER XXXI"
+        },
+        {
+            "characters": 18445,
+            "end": 10956,
+            "paragraphs": 65,
+            "start": 10599,
+            "title": "CHAPTER XXXII"
+        },
+        {
+            "characters": 17916,
+            "end": 11315,
+            "paragraphs": 69,
+            "start": 10963,
+            "title": "CHAPTER XXXIII"
+        },
+        {
+            "characters": 20505,
+            "end": 11721,
+            "paragraphs": 76,
+            "start": 11322,
+            "title": "CHAPTER XXXIV"
+        },
+        {
+            "characters": 15320,
+            "end": 12036,
+            "paragraphs": 63,
+            "start": 11728,
+            "title": "CHAPTER XXXV"
+        },
+        {
+            "characters": 5430,
+            "end": 12159,
+            "paragraphs": 30,
+            "start": 12043,
+            "title": "CHAPTER XXXVI"
+        },
+        {
+            "characters": 20322,
+            "end": 12607,
+            "paragraphs": 105,
+            "start": 12166,
+            "title": "CHAPTER XXXVII"
+        },
+        {
+            "characters": 20075,
+            "end": 13065,
+            "paragraphs": 114,
+            "start": 12614,
+            "title": "CHAPTER XXXVIII"
+        },
+        {
+            "characters": 29095,
+            "end": 13701,
+            "paragraphs": 141,
+            "start": 13072,
+            "title": "CHAPTER XXXIX"
+        },
+        {
+            "characters": 13427,
+            "end": 13989,
+            "paragraphs": 63,
+            "start": 13708,
+            "title": "CHAPTER XL"
+        },
+        {
+            "characters": 19872,
+            "end": 14404,
+            "paragraphs": 83,
+            "start": 13996,
+            "title": "CHAPTER XLI"
+        },
+        {
+            "characters": 20534,
+            "end": 14881,
+            "paragraphs": 125,
+            "start": 14411,
+            "title": "CHAPTER XLII"
+        },
+        {
+            "characters": 20758,
+            "end": 15341,
+            "paragraphs": 107,
+            "start": 14888,
+            "title": "CHAPTER XLIII"
+        },
+        {
+            "characters": 12916,
+            "end": 15635,
+            "paragraphs": 71,
+            "start": 15348,
+            "title": "CHAPTER XLIV"
+        },
+        {
+            "characters": 6572,
+            "end": 15807,
+            "paragraphs": 52,
+            "start": 15642,
+            "title": "CHAPTER XLV"
+        },
+        {
+            "characters": 19342,
+            "end": 16228,
+            "paragraphs": 98,
+            "start": 15814,
+            "title": "CHAPTER XLVI"
+        },
+        {
+            "characters": 13547,
+            "end": 16551,
+            "paragraphs": 84,
+            "start": 16235,
+            "title": "CHAPTER XLVII"
+        },
+        {
+            "characters": 18899,
+            "end": 16917,
+            "paragraphs": 63,
+            "start": 16558,
+            "title": "CHAPTER XLVIII"
+        },
+        {
+            "characters": 19412,
+            "end": 17331,
+            "paragraphs": 88,
+            "start": 16924,
+            "title": "CHAPTER XLIX"
+        },
+        {
+            "characters": 23110,
+            "end": 17822,
+            "paragraphs": 103,
+            "start": 17338,
+            "title": "CHAPTER L"
+        },
+        {
+            "characters": 26148,
+            "end": 18366,
+            "paragraphs": 112,
+            "start": 17829,
+            "title": "CHAPTER LI"
+        },
+        {
+            "characters": 17873,
+            "end": 18725,
+            "paragraphs": 66,
+            "start": 18373,
+            "title": "CHAPTER LII"
+        },
+        {
+            "characters": 8795,
+            "end": 18884,
+            "paragraphs": 25,
+            "start": 18732,
+            "title": "CHAPTER LIII"
+        }
+    ],
+    "size": 936281
+}

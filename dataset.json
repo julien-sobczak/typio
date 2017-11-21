@@ -251,14 +251,6 @@
   },
   {
     "origin": "gutenberg",
-    "title": "Discours de la méthode",
-    "author": "René Descartes",
-    "url": "https://www.gutenberg.org/ebooks/13846",
-    "file": "https://www.gutenberg.org/files/13846/13846-0.txt",
-    "language": "French"
-  },
-  {
-    "origin": "gutenberg",
     "title": "Germinal",
     "author": "Émile Zola",
     "url": "https://www.gutenberg.org/ebooks/5711",
@@ -316,14 +308,6 @@
   },
   {
     "origin": "gutenberg",
-    "title": "Die Räuber",
-    "author": "Friedrich Schiller",
-    "url": "https://www.gutenberg.org/ebooks/47804",
-    "file": "http://www.gutenberg.org/cache/epub/47804/pg47804.txt",
-    "language": "German"
-  },
-  {
-    "origin": "gutenberg",
     "title": "Buddenbrooks",
     "author": "Thomas Mann",
     "url": "https://www.gutenberg.org/ebooks/34811",
@@ -354,14 +338,7 @@
     "file": "http://www.gutenberg.org/cache/epub/5323/pg5323.txt",
     "language": "German"
   },
-  {
-    "origin": "gutenberg",
-    "title": "Also sprach Zarathustra",
-    "author": "Nietzsche",
-    "url": "https://www.gutenberg.org/ebooks/7205",
-    "file": "http://www.gutenberg.org/cache/epub/7205/pg7205.txt",
-    "language": "German"
-  },
+
 
   {
     "origin": "gutenberg",

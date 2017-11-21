@@ -1,0 +1,68 @@
+{
+    "chapters": [
+        {
+            "characters": 35176,
+            "end": 899,
+            "paragraphs": 251,
+            "start": 242,
+            "title": "I. L'ARRESTATION D'ARSÈNE LUPIN"
+        },
+        {
+            "characters": 35184,
+            "end": 1890,
+            "paragraphs": 318,
+            "start": 910,
+            "title": "II. ARSÈNE LUPIN EN PRISON"
+        },
+        {
+            "characters": 39360,
+            "end": 2864,
+            "paragraphs": 265,
+            "start": 1900,
+            "title": "III. L'ÉVASION D'ARSÈNE LUPIN"
+        },
+        {
+            "characters": 30755,
+            "end": 3614,
+            "paragraphs": 197,
+            "start": 2874,
+            "title": "IV. LE MYSTÉRIEUX VOYAGEUR"
+        },
+        {
+            "characters": 31183,
+            "end": 4440,
+            "paragraphs": 246,
+            "start": 3624,
+            "title": "V. LE COLLIER DE LA REINE"
+        },
+        {
+            "characters": 60735,
+            "end": 6226,
+            "paragraphs": 588,
+            "start": 4451,
+            "title": "VI. LE SEPT DE COEUR"
+        },
+        {
+            "characters": 21746,
+            "end": 6780,
+            "paragraphs": 161,
+            "start": 6236,
+            "title": "VII. LE COFFRE-FORT DE MADAME IMBERT"
+        },
+        {
+            "characters": 25787,
+            "end": 7489,
+            "paragraphs": 220,
+            "start": 6790,
+            "title": "VIII. LA PERLE NOIRE"
+        },
+        {
+            "characters": 45866,
+            "end": 8729,
+            "paragraphs": 372,
+            "start": 7498,
+            "title": "IX. HERLOCK SHOLMÈS ARRIVE TROP TARD"
+        }
+    ],
+    "size": 372341
+}

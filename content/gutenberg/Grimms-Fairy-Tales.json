@@ -1,0 +1,439 @@
+{
+    "chapters": [
+        {
+            "characters": 14281,
+            "end": 325,
+            "paragraphs": 50,
+            "start": 124,
+            "title": "1. THE GOLDEN BIRD"
+        },
+        {
+            "characters": 11549,
+            "end": 529,
+            "paragraphs": 23,
+            "start": 332,
+            "title": "2. HANS IN LUCK"
+        },
+        {
+            "characters": 5766,
+            "end": 647,
+            "paragraphs": 20,
+            "start": 536,
+            "title": "3. JORINDA AND JORINDEL"
+        },
+        {
+            "characters": 6802,
+            "end": 761,
+            "paragraphs": 12,
+            "start": 654,
+            "title": "4. THE TRAVELLING MUSICIANS"
+        },
+        {
+            "characters": 4310,
+            "end": 835,
+            "paragraphs": 9,
+            "start": 768,
+            "title": "5. OLD SULTAN"
+        },
+        {
+            "characters": 2626,
+            "end": 883,
+            "paragraphs": 8,
+            "start": 842,
+            "title": "6. THE STRAW, THE COAL, AND THE BEAN"
+        },
+        {
+            "characters": 7676,
+            "end": 1014,
+            "paragraphs": 14,
+            "start": 890,
+            "title": "7. BRIAR ROSE"
+        },
+        {
+            "characters": 6721,
+            "end": 1118,
+            "paragraphs": 6,
+            "start": 1021,
+            "title": "8. THE DOG AND THE SPARROW"
+        },
+        {
+            "characters": 8199,
+            "end": 1258,
+            "paragraphs": 16,
+            "start": 1125,
+            "title": "9. THE TWELVE DANCING PRINCESSES"
+        },
+        {
+            "characters": 10507,
+            "end": 1469,
+            "paragraphs": 29,
+            "start": 1265,
+            "title": "10. THE FISHERMAN AND HIS WIFE"
+        },
+        {
+            "characters": 4722,
+            "end": 1548,
+            "paragraphs": 8,
+            "start": 1476,
+            "title": "11. THE WILLOW-WREN AND THE BEAR"
+        },
+        {
+            "characters": 5922,
+            "end": 1663,
+            "paragraphs": 18,
+            "start": 1555,
+            "title": "12. THE FROG-PRINCE"
+        },
+        {
+            "characters": 4997,
+            "end": 1747,
+            "paragraphs": 8,
+            "start": 1670,
+            "title": "13. CAT AND MOUSE IN PARTNERSHIP"
+        },
+        {
+            "characters": 11147,
+            "end": 1982,
+            "paragraphs": 39,
+            "start": 1754,
+            "title": "14. THE GOOSE-GIRL"
+        },
+        {
+            "characters": 9501,
+            "end": 2159,
+            "paragraphs": 27,
+            "start": 1990,
+            "title": "15. THE ADVENTURES OF CHANTICLEER AND PARTLET"
+        },
+        {
+            "characters": 7143,
+            "end": 2289,
+            "paragraphs": 17,
+            "start": 2166,
+            "title": "16. RAPUNZEL"
+        },
+        {
+            "characters": 4826,
+            "end": 2371,
+            "paragraphs": 10,
+            "start": 2296,
+            "title": "17. FUNDEVOGEL"
+        },
+        {
+            "characters": 17137,
+            "end": 2639,
+            "paragraphs": 14,
+            "start": 2378,
+            "title": "18. THE VALIANT LITTLE TAILOR"
+        },
+        {
+            "characters": 15137,
+            "end": 2896,
+            "paragraphs": 25,
+            "start": 2646,
+            "title": "19. HANSEL AND GRETEL"
+        },
+        {
+            "characters": 3582,
+            "end": 2962,
+            "paragraphs": 11,
+            "start": 2903,
+            "title": "20. THE MOUSE, THE BIRD, AND THE SAUSAGE"
+        },
+        {
+            "characters": 6391,
+            "end": 3094,
+            "paragraphs": 26,
+            "start": 2969,
+            "title": "21. MOTHER HOLLE"
+        },
+        {
+            "characters": 7223,
+            "end": 3255,
+            "paragraphs": 40,
+            "start": 3101,
+            "title": "22. LITTLE RED-CAP [LITTLE RED RIDING HOOD]"
+        },
+        {
+            "characters": 7502,
+            "end": 3409,
+            "paragraphs": 30,
+            "start": 3262,
+            "title": "23. THE ROBBER BRIDEGROOM"
+        },
+        {
+            "characters": 12467,
+            "end": 3625,
+            "paragraphs": 26,
+            "start": 3416,
+            "title": "24. TOM THUMB"
+        },
+        {
+            "characters": 5725,
+            "end": 3742,
+            "paragraphs": 19,
+            "start": 3632,
+            "title": "25. RUMPELSTILTSKIN"
+        },
+        {
+            "characters": 4751,
+            "end": 3821,
+            "paragraphs": 8,
+            "start": 3749,
+            "title": "26. CLEVER GRETEL"
+        },
+        {
+            "characters": 1251,
+            "end": 3848,
+            "paragraphs": 7,
+            "start": 3828,
+            "title": "27. THE OLD MAN AND HIS GRANDSON"
+        },
+        {
+            "characters": 10609,
+            "end": 4017,
+            "paragraphs": 12,
+            "start": 3855,
+            "title": "28. THE LITTLE PEASANT"
+        },
+        {
+            "characters": 9552,
+            "end": 4181,
+            "paragraphs": 19,
+            "start": 4024,
+            "title": "29. FREDERICK AND CATHERINE"
+        },
+        {
+            "characters": 7519,
+            "end": 4305,
+            "paragraphs": 11,
+            "start": 4188,
+            "title": "30. SWEETHEART ROLAND"
+        },
+        {
+            "characters": 12060,
+            "end": 4538,
+            "paragraphs": 35,
+            "start": 4312,
+            "title": "31. SNOWDROP"
+        },
+        {
+            "characters": 8944,
+            "end": 4678,
+            "paragraphs": 9,
+            "start": 4545,
+            "title": "32. THE PINK"
+        },
+        {
+            "characters": 6664,
+            "end": 4783,
+            "paragraphs": 7,
+            "start": 4685,
+            "title": "33. CLEVER ELSIE"
+        },
+        {
+            "characters": 5876,
+            "end": 4884,
+            "paragraphs": 12,
+            "start": 4790,
+            "title": "34. THE MISER IN THE BUSH"
+        },
+        {
+            "characters": 13002,
+            "end": 5133,
+            "paragraphs": 37,
+            "start": 4891,
+            "title": "35. ASHPUTTEL"
+        },
+        {
+            "characters": 8226,
+            "end": 5275,
+            "paragraphs": 17,
+            "start": 5140,
+            "title": "36. THE WHITE SNAKE"
+        },
+        {
+            "characters": 5625,
+            "end": 5374,
+            "paragraphs": 11,
+            "start": 5282,
+            "title": "37. THE WOLF AND THE SEVEN LITTLE KIDS"
+        },
+        {
+            "characters": 4268,
+            "end": 5455,
+            "paragraphs": 15,
+            "start": 5381,
+            "title": "38. THE QUEEN BEE"
+        },
+        {
+            "characters": 3733,
+            "end": 5528,
+            "paragraphs": 14,
+            "start": 5462,
+            "title": "39. THE ELVES AND THE SHOEMAKER"
+        },
+        {
+            "characters": 15612,
+            "end": 5913,
+            "paragraphs": 100,
+            "start": 5535,
+            "title": "40. THE JUNIPER-TREE"
+        },
+        {
+            "characters": 5812,
+            "end": 6020,
+            "paragraphs": 17,
+            "start": 5920,
+            "title": "41. THE TURNIP"
+        },
+        {
+            "characters": 5062,
+            "end": 6115,
+            "paragraphs": 16,
+            "start": 6027,
+            "title": "42. CLEVER HANS"
+        },
+        {
+            "characters": 4754,
+            "end": 6193,
+            "paragraphs": 7,
+            "start": 6122,
+            "title": "43. THE THREE LANGUAGES"
+        },
+        {
+            "characters": 1452,
+            "end": 6220,
+            "paragraphs": 5,
+            "start": 6200,
+            "title": "44. THE FOX AND THE CAT"
+        },
+        {
+            "characters": 8454,
+            "end": 6364,
+            "paragraphs": 16,
+            "start": 6227,
+            "title": "45. THE FOUR CLEVER BROTHERS"
+        },
+        {
+            "characters": 11746,
+            "end": 6561,
+            "paragraphs": 20,
+            "start": 6371,
+            "title": "46. LILY AND THE LION"
+        },
+        {
+            "characters": 2421,
+            "end": 6608,
+            "paragraphs": 9,
+            "start": 6568,
+            "title": "47. THE FOX AND THE HORSE"
+        },
+        {
+            "characters": 8890,
+            "end": 6751,
+            "paragraphs": 10,
+            "start": 6615,
+            "title": "48. THE BLUE LIGHT"
+        },
+        {
+            "characters": 12163,
+            "end": 6959,
+            "paragraphs": 25,
+            "start": 6758,
+            "title": "49. THE RAVEN"
+        },
+        {
+            "characters": 7959,
+            "end": 7109,
+            "paragraphs": 25,
+            "start": 6966,
+            "title": "50. THE GOLDEN GOOSE"
+        },
+        {
+            "characters": 13965,
+            "end": 7341,
+            "paragraphs": 24,
+            "start": 7116,
+            "title": "51. THE WATER OF LIFE"
+        },
+        {
+            "characters": 5550,
+            "end": 7436,
+            "paragraphs": 11,
+            "start": 7348,
+            "title": "52. THE TWELVE HUNTSMEN"
+        },
+        {
+            "characters": 12161,
+            "end": 7641,
+            "paragraphs": 21,
+            "start": 7443,
+            "title": "53. THE KING OF THE GOLDEN MOUNTAIN"
+        },
+        {
+            "characters": 3955,
+            "end": 7705,
+            "paragraphs": 6,
+            "start": 7648,
+            "title": "54. DOCTOR KNOWALL"
+        },
+        {
+            "characters": 5029,
+            "end": 7797,
+            "paragraphs": 13,
+            "start": 7712,
+            "title": "55. THE SEVEN RAVENS"
+        },
+        {
+            "characters": 3970,
+            "end": 7918,
+            "paragraphs": 33,
+            "start": 7805,
+            "title": "56. THE WEDDING OF MRS FOX"
+        },
+        {
+            "characters": 10812,
+            "end": 8096,
+            "paragraphs": 15,
+            "start": 7925,
+            "title": "57. THE SALAD"
+        },
+        {
+            "characters": 19147,
+            "end": 8401,
+            "paragraphs": 21,
+            "start": 8103,
+            "title": "58. THE STORY OF THE YOUTH WHO WENT FORTH TO LEARN WHAT FEAR WAS"
+        },
+        {
+            "characters": 7407,
+            "end": 8530,
+            "paragraphs": 16,
+            "start": 8408,
+            "title": "59. KING GRISLY-BEARD"
+        },
+        {
+            "characters": 16157,
+            "end": 8786,
+            "paragraphs": 17,
+            "start": 8537,
+            "title": "60. IRON HANS"
+        },
+        {
+            "characters": 10422,
+            "end": 8955,
+            "paragraphs": 15,
+            "start": 8793,
+            "title": "61. CAT-SKIN"
+        },
+        {
+            "characters": 12528,
+            "end": 9178,
+            "paragraphs": 29,
+            "start": 8962,
+            "title": "62. SNOW-WHITE AND ROSE-RED"
+        }
+    ],
+    "size": 559201
+}

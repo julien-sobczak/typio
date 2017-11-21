@@ -1,0 +1,40 @@
+{
+    "chapters": [
+        {
+            "characters": 39340,
+            "end": 731,
+            "paragraphs": 104,
+            "start": 94,
+            "title": "CHAPTER I. THE CRYSTAL EGG"
+        },
+        {
+            "characters": 24847,
+            "end": 1156,
+            "paragraphs": 46,
+            "start": 739,
+            "title": "CHAPTER II. THE STAR"
+        },
+        {
+            "characters": 119618,
+            "end": 3324,
+            "paragraphs": 307,
+            "start": 1166,
+            "title": "CHAPTER III. A STORY OF THE STONE AGE"
+        },
+        {
+            "characters": 180075,
+            "end": 6938,
+            "paragraphs": 684,
+            "start": 3332,
+            "title": "CHAPTER IV. A STORY OF THE DAYS TO COME"
+        },
+        {
+            "characters": 36659,
+            "end": 7644,
+            "paragraphs": 120,
+            "start": 6946,
+            "title": "CHAPTER V. THE MAN WHO COULD WORK MIRACLES"
+        }
+    ],
+    "size": 435750
+}

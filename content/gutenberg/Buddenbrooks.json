@@ -1,0 +1,684 @@
+{
+    "chapters": [
+        {
+            "characters": 15481,
+            "end": 352,
+            "paragraphs": 82,
+            "start": 88,
+            "title": "1. Erstes Kapitel"
+        },
+        {
+            "characters": 7228,
+            "end": 493,
+            "paragraphs": 26,
+            "start": 358,
+            "title": "2. Zweites Kapitel"
+        },
+        {
+            "characters": 5159,
+            "end": 591,
+            "paragraphs": 17,
+            "start": 499,
+            "title": "3. Drittes Kapitel"
+        },
+        {
+            "characters": 11240,
+            "end": 801,
+            "paragraphs": 33,
+            "start": 597,
+            "title": "4. Viertes Kapitel"
+        },
+        {
+            "characters": 9189,
+            "end": 980,
+            "paragraphs": 31,
+            "start": 807,
+            "title": "5. Fünftes Kapitel"
+        },
+        {
+            "characters": 4692,
+            "end": 1089,
+            "paragraphs": 23,
+            "start": 986,
+            "title": "6. Sechstes Kapitel"
+        },
+        {
+            "characters": 4015,
+            "end": 1165,
+            "paragraphs": 12,
+            "start": 1095,
+            "title": "7. Siebentes Kapitel"
+        },
+        {
+            "characters": 9803,
+            "end": 1369,
+            "paragraphs": 42,
+            "start": 1171,
+            "title": "8. Achtes Kapitel"
+        },
+        {
+            "characters": 3351,
+            "end": 1435,
+            "paragraphs": 13,
+            "start": 1375,
+            "title": "9. Neuntes Kapitel"
+        },
+        {
+            "characters": 11644,
+            "end": 1660,
+            "paragraphs": 40,
+            "start": 1442,
+            "title": "10. Zehntes Kapitel"
+        },
+        {
+            "characters": 17608,
+            "end": 1965,
+            "paragraphs": 34,
+            "start": 1666,
+            "title": "1. Erstes Kapitel"
+        },
+        {
+            "characters": 11625,
+            "end": 2181,
+            "paragraphs": 30,
+            "start": 1971,
+            "title": "2. Zweites Kapitel"
+        },
+        {
+            "characters": 7196,
+            "end": 2312,
+            "paragraphs": 18,
+            "start": 2187,
+            "title": "3. Drittes Kapitel"
+        },
+        {
+            "characters": 10753,
+            "end": 2528,
+            "paragraphs": 39,
+            "start": 2318,
+            "title": "4. Viertes Kapitel"
+        },
+        {
+            "characters": 10593,
+            "end": 2721,
+            "paragraphs": 29,
+            "start": 2534,
+            "title": "5. Fünftes Kapitel"
+        },
+        {
+            "characters": 7558,
+            "end": 2853,
+            "paragraphs": 16,
+            "start": 2727,
+            "title": "6. Sechstes Kapitel"
+        },
+        {
+            "characters": 14631,
+            "end": 3124,
+            "paragraphs": 40,
+            "start": 2859,
+            "title": "7. Siebentes Kapitel"
+        },
+        {
+            "characters": 15455,
+            "end": 3449,
+            "paragraphs": 69,
+            "start": 3130,
+            "title": "1. Erstes Kapitel"
+        },
+        {
+            "characters": 13448,
+            "end": 3702,
+            "paragraphs": 39,
+            "start": 3455,
+            "title": "2. Zweites Kapitel"
+        },
+        {
+            "characters": 9834,
+            "end": 3905,
+            "paragraphs": 43,
+            "start": 3708,
+            "title": "3. Drittes Kapitel"
+        },
+        {
+            "characters": 7593,
+            "end": 4029,
+            "paragraphs": 11,
+            "start": 3911,
+            "title": "4. Viertes Kapitel"
+        },
+        {
+            "characters": 15074,
+            "end": 4326,
+            "paragraphs": 50,
+            "start": 4035,
+            "title": "5. Fünftes Kapitel"
+        },
+        {
+            "characters": 9097,
+            "end": 4508,
+            "paragraphs": 35,
+            "start": 4332,
+            "title": "6. Sechstes Kapitel"
+        },
+        {
+            "characters": 10003,
+            "end": 4739,
+            "paragraphs": 55,
+            "start": 4514,
+            "title": "7. Siebentes Kapitel"
+        },
+        {
+            "characters": 14847,
+            "end": 5009,
+            "paragraphs": 39,
+            "start": 4745,
+            "title": "8. Achtes Kapitel"
+        },
+        {
+            "characters": 7748,
+            "end": 5166,
+            "paragraphs": 32,
+            "start": 5015,
+            "title": "9. Neuntes Kapitel"
+        },
+        {
+            "characters": 5679,
+            "end": 5268,
+            "paragraphs": 14,
+            "start": 5172,
+            "title": "10. Zehntes Kapitel"
+        },
+        {
+            "characters": 10195,
+            "end": 5481,
+            "paragraphs": 45,
+            "start": 5274,
+            "title": "11. Elftes Kapitel"
+        },
+        {
+            "characters": 5239,
+            "end": 5586,
+            "paragraphs": 19,
+            "start": 5487,
+            "title": "12. Zwölftes Kapitel"
+        },
+        {
+            "characters": 6792,
+            "end": 5712,
+            "paragraphs": 19,
+            "start": 5592,
+            "title": "13. Dreizehntes Kapitel"
+        },
+        {
+            "characters": 10958,
+            "end": 5934,
+            "paragraphs": 44,
+            "start": 5718,
+            "title": "14. Vierzehntes Kapitel"
+        },
+        {
+            "characters": 6662,
+            "end": 6093,
+            "paragraphs": 42,
+            "start": 5940,
+            "title": "15. Fünfzehntes Kapitel"
+        },
+        {
+            "characters": 12624,
+            "end": 6320,
+            "paragraphs": 31,
+            "start": 6099,
+            "title": "1. Erstes Kapitel"
+        },
+        {
+            "characters": 8635,
+            "end": 6487,
+            "paragraphs": 29,
+            "start": 6326,
+            "title": "2. Zweites Kapitel"
+        },
+        {
+            "characters": 24592,
+            "end": 6956,
+            "paragraphs": 78,
+            "start": 6493,
+            "title": "3. Drittes Kapitel"
+        },
+        {
+            "characters": 6796,
+            "end": 7084,
+            "paragraphs": 20,
+            "start": 6962,
+            "title": "4. Viertes Kapitel"
+        },
+        {
+            "characters": 7972,
+            "end": 7248,
+            "paragraphs": 32,
+            "start": 7090,
+            "title": "5. Fünftes Kapitel"
+        },
+        {
+            "characters": 16735,
+            "end": 7578,
+            "paragraphs": 60,
+            "start": 7254,
+            "title": "6. Sechstes Kapitel"
+        },
+        {
+            "characters": 19488,
+            "end": 7955,
+            "paragraphs": 66,
+            "start": 7584,
+            "title": "7. Siebentes Kapitel"
+        },
+        {
+            "characters": 17794,
+            "end": 8301,
+            "paragraphs": 60,
+            "start": 7961,
+            "title": "8. Achtes Kapitel"
+        },
+        {
+            "characters": 4354,
+            "end": 8389,
+            "paragraphs": 18,
+            "start": 8307,
+            "title": "9. Neuntes Kapitel"
+        },
+        {
+            "characters": 24546,
+            "end": 8832,
+            "paragraphs": 59,
+            "start": 8395,
+            "title": "10. Zehntes Kapitel"
+        },
+        {
+            "characters": 10508,
+            "end": 9034,
+            "paragraphs": 35,
+            "start": 8838,
+            "title": "11. Elftes Kapitel"
+        },
+        {
+            "characters": 17236,
+            "end": 9349,
+            "paragraphs": 46,
+            "start": 9040,
+            "title": "1. Erstes Kapitel"
+        },
+        {
+            "characters": 15499,
+            "end": 9620,
+            "paragraphs": 31,
+            "start": 9355,
+            "title": "2. Zweites Kapitel"
+        },
+        {
+            "characters": 16747,
+            "end": 9906,
+            "paragraphs": 28,
+            "start": 9626,
+            "title": "3. Drittes Kapitel"
+        },
+        {
+            "characters": 6298,
+            "end": 10018,
+            "paragraphs": 14,
+            "start": 9912,
+            "title": "4. Viertes Kapitel"
+        },
+        {
+            "characters": 11243,
+            "end": 10218,
+            "paragraphs": 22,
+            "start": 10024,
+            "title": "5. Fünftes Kapitel"
+        },
+        {
+            "characters": 7230,
+            "end": 10343,
+            "paragraphs": 14,
+            "start": 10224,
+            "title": "6. Sechstes Kapitel"
+        },
+        {
+            "characters": 7891,
+            "end": 10484,
+            "paragraphs": 18,
+            "start": 10349,
+            "title": "7. Siebentes Kapitel"
+        },
+        {
+            "characters": 15307,
+            "end": 10749,
+            "paragraphs": 28,
+            "start": 10490,
+            "title": "8. Achtes Kapitel"
+        },
+        {
+            "characters": 11369,
+            "end": 10966,
+            "paragraphs": 37,
+            "start": 10755,
+            "title": "9. Neuntes Kapitel"
+        },
+        {
+            "characters": 10230,
+            "end": 11155,
+            "paragraphs": 28,
+            "start": 10972,
+            "title": "1. Erstes Kapitel"
+        },
+        {
+            "characters": 11519,
+            "end": 11344,
+            "paragraphs": 16,
+            "start": 11161,
+            "title": "2. Zweites Kapitel"
+        },
+        {
+            "characters": 15664,
+            "end": 11623,
+            "paragraphs": 36,
+            "start": 11350,
+            "title": "3. Drittes Kapitel"
+        },
+        {
+            "characters": 21530,
+            "end": 12038,
+            "paragraphs": 72,
+            "start": 11629,
+            "title": "4. Viertes Kapitel"
+        },
+        {
+            "characters": 15772,
+            "end": 12326,
+            "paragraphs": 40,
+            "start": 12044,
+            "title": "5. Fünftes Kapitel"
+        },
+        {
+            "characters": 29793,
+            "end": 12857,
+            "paragraphs": 66,
+            "start": 12332,
+            "title": "6. Sechstes Kapitel"
+        },
+        {
+            "characters": 15319,
+            "end": 13133,
+            "paragraphs": 35,
+            "start": 12863,
+            "title": "7. Siebentes Kapitel"
+        },
+        {
+            "characters": 10748,
+            "end": 13313,
+            "paragraphs": 18,
+            "start": 13139,
+            "title": "8. Achtes Kapitel"
+        },
+        {
+            "characters": 15527,
+            "end": 13612,
+            "paragraphs": 51,
+            "start": 13319,
+            "title": "9. Neuntes Kapitel"
+        },
+        {
+            "characters": 23601,
+            "end": 14047,
+            "paragraphs": 66,
+            "start": 13617,
+            "title": "10. Zehntes Kapitel"
+        },
+        {
+            "characters": 8544,
+            "end": 14211,
+            "paragraphs": 27,
+            "start": 14053,
+            "title": "11. Elftes Kapitel"
+        },
+        {
+            "characters": 16070,
+            "end": 14492,
+            "paragraphs": 34,
+            "start": 14217,
+            "title": "1. Erstes Kapitel"
+        },
+        {
+            "characters": 7855,
+            "end": 14641,
+            "paragraphs": 23,
+            "start": 14498,
+            "title": "2. Zweites Kapitel"
+        },
+        {
+            "characters": 12422,
+            "end": 14847,
+            "paragraphs": 17,
+            "start": 14647,
+            "title": "3. Drittes Kapitel"
+        },
+        {
+            "characters": 10153,
+            "end": 15043,
+            "paragraphs": 34,
+            "start": 14853,
+            "title": "4. Viertes Kapitel"
+        },
+        {
+            "characters": 16331,
+            "end": 15321,
+            "paragraphs": 29,
+            "start": 15049,
+            "title": "5. Fünftes Kapitel"
+        },
+        {
+            "characters": 10627,
+            "end": 15534,
+            "paragraphs": 41,
+            "start": 15327,
+            "title": "6. Sechstes Kapitel"
+        },
+        {
+            "characters": 8038,
+            "end": 15701,
+            "paragraphs": 36,
+            "start": 15540,
+            "title": "7. Siebentes Kapitel"
+        },
+        {
+            "characters": 2823,
+            "end": 15760,
+            "paragraphs": 13,
+            "start": 15707,
+            "title": "8. Achtes Kapitel"
+        },
+        {
+            "characters": 25054,
+            "end": 16185,
+            "paragraphs": 36,
+            "start": 15766,
+            "title": "1. Erstes Kapitel"
+        },
+        {
+            "characters": 18623,
+            "end": 16543,
+            "paragraphs": 59,
+            "start": 16191,
+            "title": "2. Zweites Kapitel"
+        },
+        {
+            "characters": 11076,
+            "end": 16765,
+            "paragraphs": 41,
+            "start": 16549,
+            "title": "3. Drittes Kapitel"
+        },
+        {
+            "characters": 21740,
+            "end": 17132,
+            "paragraphs": 33,
+            "start": 16771,
+            "title": "4. Viertes Kapitel"
+        },
+        {
+            "characters": 36830,
+            "end": 17783,
+            "paragraphs": 80,
+            "start": 17138,
+            "title": "5. Fünftes Kapitel"
+        },
+        {
+            "characters": 27366,
+            "end": 18242,
+            "paragraphs": 43,
+            "start": 17789,
+            "title": "6. Sechstes Kapitel"
+        },
+        {
+            "characters": 32823,
+            "end": 18791,
+            "paragraphs": 46,
+            "start": 18248,
+            "title": "7. Siebentes Kapitel"
+        },
+        {
+            "characters": 52248,
+            "end": 19668,
+            "paragraphs": 80,
+            "start": 18797,
+            "title": "8. Achtes Kapitel"
+        },
+        {
+            "characters": 10544,
+            "end": 19870,
+            "paragraphs": 35,
+            "start": 19674,
+            "title": "9. Neuntes Kapitel"
+        },
+        {
+            "characters": 28041,
+            "end": 20376,
+            "paragraphs": 69,
+            "start": 19876,
+            "title": "1. Erstes Kapitel"
+        },
+        {
+            "characters": 35206,
+            "end": 21043,
+            "paragraphs": 108,
+            "start": 20382,
+            "title": "2. Zweites Kapitel"
+        },
+        {
+            "characters": 11686,
+            "end": 21239,
+            "paragraphs": 18,
+            "start": 21049,
+            "title": "3. Drittes Kapitel"
+        },
+        {
+            "characters": 34447,
+            "end": 21847,
+            "paragraphs": 72,
+            "start": 21245,
+            "title": "4. Viertes Kapitel"
+        },
+        {
+            "characters": 17698,
+            "end": 22146,
+            "paragraphs": 28,
+            "start": 21853,
+            "title": "1. Erstes Kapitel"
+        },
+        {
+            "characters": 21468,
+            "end": 22494,
+            "paragraphs": 24,
+            "start": 22152,
+            "title": "2. Zweites Kapitel"
+        },
+        {
+            "characters": 22065,
+            "end": 22857,
+            "paragraphs": 29,
+            "start": 22500,
+            "title": "3. Drittes Kapitel"
+        },
+        {
+            "characters": 5369,
+            "end": 22952,
+            "paragraphs": 12,
+            "start": 22863,
+            "title": "4. Viertes Kapitel"
+        },
+        {
+            "characters": 40521,
+            "end": 23644,
+            "paragraphs": 70,
+            "start": 22958,
+            "title": "5. Fünftes Kapitel"
+        },
+        {
+            "characters": 20496,
+            "end": 24012,
+            "paragraphs": 47,
+            "start": 23650,
+            "title": "6. Sechstes Kapitel"
+        },
+        {
+            "characters": 15627,
+            "end": 24314,
+            "paragraphs": 47,
+            "start": 24018,
+            "title": "7. Siebentes Kapitel"
+        },
+        {
+            "characters": 16173,
+            "end": 24611,
+            "paragraphs": 41,
+            "start": 24320,
+            "title": "8. Achtes Kapitel"
+        },
+        {
+            "characters": 9748,
+            "end": 24786,
+            "paragraphs": 23,
+            "start": 24617,
+            "title": "9. Neuntes Kapitel"
+        },
+        {
+            "characters": 13642,
+            "end": 25017,
+            "paragraphs": 20,
+            "start": 24792,
+            "title": "1. Erstes Kapitel"
+        },
+        {
+            "characters": 102449,
+            "end": 26810,
+            "paragraphs": 203,
+            "start": 25023,
+            "title": "2. Zweites Kapitel"
+        },
+        {
+            "characters": 7071,
+            "end": 26930,
+            "paragraphs": 11,
+            "start": 26816,
+            "title": "3. Drittes Kapitel"
+        },
+        {
+            "characters": 8668,
+            "end": 27103,
+            "paragraphs": 41,
+            "start": 26936,
+            "title": "4. Viertes  Kapitel"
+        }
+    ],
+    "size": 1590675
+}

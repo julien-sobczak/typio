@@ -1,0 +1,26 @@
+{
+    "chapters": [
+        {
+            "characters": 38605,
+            "end": 659,
+            "paragraphs": 63,
+            "start": 60,
+            "title": "I."
+        },
+        {
+            "characters": 41236,
+            "end": 1308,
+            "paragraphs": 34,
+            "start": 667,
+            "title": "II."
+        },
+        {
+            "characters": 39874,
+            "end": 1951,
+            "paragraphs": 44,
+            "start": 1316,
+            "title": "III."
+        }
+    ],
+    "size": 145774
+}

@@ -494,7 +494,10 @@ which can be found at the web address http://gutenberg.aol.de/.
 
   FAUST: Der Tragödie erster Teil
 
-  Nacht.
+
+
+1. Nacht.
+
 
   In einem hochgewölbten, engen gotischen Zimmer Faust,
   unruhig auf seinem Sessel am Pulte.
@@ -1053,7 +1056,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Vor dem Tor
+2. Vor dem Tor
+
 
   Spaziergänger aller Art ziehen hinaus.
 
@@ -1548,7 +1552,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Studierzimmer
+3. Studierzimmer
+
 
   Faust mit dem Pudel hereintretend.
 
@@ -1980,7 +1985,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Studierzimmer
+4. Studierzimmer
+
 
   Faust.  Mephistopheles.
 
@@ -2713,7 +2719,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Auerbachs Keller in Leipzig
+5. Auerbachs Keller in Leipzig
+
 
   Zeche lustiger Gesellen.
 
@@ -3254,7 +3261,7 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Hexenküche.
+6. Hexenküche.
 
 
   Auf einem niedrigen Herd steht ein großer Kessel über dem Feuer.  In dem
@@ -3696,7 +3703,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Straße (I)
+7. Straße (I)
+
 
   Faust.  Margarete vorübergehend.
 
@@ -3827,7 +3835,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Abend.  Ein kleines reinliches Zimmer
+8. Abend.  Ein kleines reinliches Zimmer
+
 
   Margarete ihre Zöpfe flechtend und aufbindend.
 
@@ -4009,7 +4018,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Spaziergang
+9. Spaziergang
+
 
   Faust in Gedanken auf und ab gehend.  Zu ihm Mephistopheles.
 
@@ -4105,7 +4115,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Der Nachbarin Haus
+10. Der Nachbarin Haus
+
 
   Marthe allein.
 
@@ -4408,7 +4419,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Straße (II)
+11. Straße (II)
+
 
   Faust.  Mephistopheles.
 
@@ -4498,7 +4510,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Garten
+12. Garten
+
 
   Margarete an Faustens Arm, Marthe mit Mephistopheles auf und ab spazierend.
 
@@ -4762,7 +4775,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Ein Gartenhäuschen
+13. Ein Gartenhäuschen
+
 
   Margarete springt herein, steckt sich hinter die Tür, hält die Fingerspitze
   an die Lippen und guckt durch die Ritze.
@@ -4821,7 +4835,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Wald und Höhle
+14. Wald und Höhle
+
 
   Faust allein.
 
@@ -5028,7 +5043,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Gretchens Stube.
+15. Gretchens Stube.
+
 
   Gretchen (am Spinnrad, allein).
 
@@ -5086,7 +5102,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Marthens Garten
+16. Marthens Garten
+
 
   Margarete.  Faust.
 
@@ -5315,7 +5332,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Am Brunnen
+17. Am Brunnen
+
 
   Gretchen und Lieschen mit Krügen.
 
@@ -5396,7 +5414,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Zwinger
+18. Zwinger
+
 
   In der Mauerhöhle ein Andachtsbild der Mater dolorosa, Blumenkruge davor.
   Gretchen steckt frische Blumen in die Kruge.
@@ -5445,7 +5464,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Nacht.  Straße vor Gretchens Türe
+19. Nacht.  Straße vor Gretchens Türe
+
 
   Valentin, Soldat, Gretchens Bruder.
 
@@ -5693,7 +5713,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Dom
+20. Dom
+
 
   Amt, Orgel und Gesang.  Gretchen unter vielem Volke.  Böser Geist hinter
   Gretchen.
@@ -5785,7 +5806,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Walpurgisnacht
+21. Walpurgisnacht
+
 
   Harzgebirg Gegend von Schierke und Elend
 
@@ -6347,7 +6369,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Walpurgisnachtstraum
+22. Walpurgisnachtstraum
+
 
   oder Oberons und Titanias goldne Hochzeit Intermezzo
 
@@ -6618,7 +6641,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Trüber Tag.  Feld
+23. Trüber Tag.  Feld
+
 
   Faust.  Mephistopheles.
 
@@ -6699,7 +6723,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Nacht, offen Feld
+24. Nacht, offen Feld
+
 
   Faust, Mephistopheles, auf schwarzen Pferden daherbrausend.
 
@@ -6724,7 +6749,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-  Kerker
+25. Kerker
+
 
   Faust mit einem Bund Schlüssel und einer Lampe, vor einem eisernen Türchen.
 
@@ -7054,19 +7080,8 @@ which can be found at the web address http://gutenberg.aol.de/.
 
 
 
-Ende dieses Projekt Gutenberg Etextes "Faust: Teil 1" von Goethe
 
 
-
-
-
-
-
-
-
-
-End of the Project Gutenberg EBook of Faust: Der Tragödie erster Teil, by 
-Johann Wolfgang von Goethe
 
 *** END OF THIS PROJECT GUTENBERG EBOOK FAUST: DER TRAGÖDIE ERSTER TEIL ***
 

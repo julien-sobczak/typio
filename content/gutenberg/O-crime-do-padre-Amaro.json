@@ -1,0 +1,180 @@
+{
+    "chapters": [
+        {
+            "characters": 20366,
+            "end": 519,
+            "paragraphs": 151,
+            "start": 207,
+            "title": "I"
+        },
+        {
+            "characters": 15067,
+            "end": 893,
+            "paragraphs": 110,
+            "start": 527,
+            "title": "II"
+        },
+        {
+            "characters": 44190,
+            "end": 1844,
+            "paragraphs": 221,
+            "start": 901,
+            "title": "III"
+        },
+        {
+            "characters": 22945,
+            "end": 2466,
+            "paragraphs": 205,
+            "start": 1852,
+            "title": "IV"
+        },
+        {
+            "characters": 30271,
+            "end": 3213,
+            "paragraphs": 214,
+            "start": 2474,
+            "title": "V"
+        },
+        {
+            "characters": 26741,
+            "end": 3787,
+            "paragraphs": 130,
+            "start": 3221,
+            "title": "VI"
+        },
+        {
+            "characters": 29854,
+            "end": 4535,
+            "paragraphs": 218,
+            "start": 3795,
+            "title": "VII"
+        },
+        {
+            "characters": 34423,
+            "end": 5293,
+            "paragraphs": 183,
+            "start": 4543,
+            "title": "VIII"
+        },
+        {
+            "characters": 18837,
+            "end": 5704,
+            "paragraphs": 91,
+            "start": 5301,
+            "title": "IX"
+        },
+        {
+            "characters": 68889,
+            "end": 7330,
+            "paragraphs": 433,
+            "start": 5712,
+            "title": "X"
+        },
+        {
+            "characters": 36956,
+            "end": 8154,
+            "paragraphs": 195,
+            "start": 7338,
+            "title": "XII"
+        },
+        {
+            "characters": 22312,
+            "end": 8643,
+            "paragraphs": 113,
+            "start": 8162,
+            "title": "XIII"
+        },
+        {
+            "characters": 32931,
+            "end": 9368,
+            "paragraphs": 170,
+            "start": 8651,
+            "title": "XIV"
+        },
+        {
+            "characters": 62768,
+            "end": 10824,
+            "paragraphs": 377,
+            "start": 9376,
+            "title": "XV"
+        },
+        {
+            "characters": 30739,
+            "end": 11533,
+            "paragraphs": 183,
+            "start": 10832,
+            "title": "XVI"
+        },
+        {
+            "characters": 40370,
+            "end": 12387,
+            "paragraphs": 186,
+            "start": 11541,
+            "title": "XVII"
+        },
+        {
+            "characters": 10516,
+            "end": 12594,
+            "paragraphs": 38,
+            "start": 12395,
+            "title": "XVIII"
+        },
+        {
+            "characters": 43420,
+            "end": 13595,
+            "paragraphs": 252,
+            "start": 12602,
+            "title": "XIX"
+        },
+        {
+            "characters": 29531,
+            "end": 14270,
+            "paragraphs": 172,
+            "start": 13603,
+            "title": "XX"
+        },
+        {
+            "characters": 24771,
+            "end": 14807,
+            "paragraphs": 122,
+            "start": 14278,
+            "title": "XXI"
+        },
+        {
+            "characters": 32393,
+            "end": 15473,
+            "paragraphs": 129,
+            "start": 14815,
+            "title": "XXII"
+        },
+        {
+            "characters": 52160,
+            "end": 16654,
+            "paragraphs": 290,
+            "start": 15481,
+            "title": "XXIII"
+        },
+        {
+            "characters": 52132,
+            "end": 17864,
+            "paragraphs": 312,
+            "start": 16662,
+            "title": "XXIV"
+        },
+        {
+            "characters": 23069,
+            "end": 18384,
+            "paragraphs": 124,
+            "start": 17872,
+            "title": "XXV"
+        },
+        {
+            "characters": 18611,
+            "end": 18808,
+            "paragraphs": 101,
+            "start": 18392,
+            "title": "XXVI"
+        }
+    ],
+    "size": 897709
+}

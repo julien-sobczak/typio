@@ -5,35 +5,40 @@
             "end": 249,
             "paragraphs": 33,
             "start": 49,
-            "title": "Erstes Kapitel"
+            "title": "Erstes Kapitel",
+            "words": 1898
         },
         {
             "characters": 15550,
             "end": 508,
             "paragraphs": 17,
             "start": 257,
-            "title": "Zweites Kapitel"
+            "title": "Zweites Kapitel",
+            "words": 2217
         },
         {
             "characters": 58965,
             "end": 1514,
             "paragraphs": 83,
             "start": 516,
-            "title": "Drittes Kapitel"
+            "title": "Drittes Kapitel",
+            "words": 8873
         },
         {
             "characters": 25389,
             "end": 1929,
             "paragraphs": 24,
             "start": 1522,
-            "title": "Viertes Kapitel"
+            "title": "Viertes Kapitel",
+            "words": 3881
         },
         {
             "characters": 54176,
             "end": 2825,
             "paragraphs": 55,
             "start": 1937,
-            "title": "Fünftes Kapitel"
+            "title": "Fünftes Kapitel",
+            "words": 8118
         }
     ],
     "size": 196864

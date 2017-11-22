@@ -5,21 +5,24 @@
             "end": 659,
             "paragraphs": 63,
             "start": 60,
-            "title": "I."
+            "title": "I.",
+            "words": 6344
         },
         {
             "characters": 41236,
             "end": 1308,
             "paragraphs": 34,
             "start": 667,
-            "title": "II."
+            "title": "II.",
+            "words": 6690
         },
         {
             "characters": 39874,
             "end": 1951,
             "paragraphs": 44,
             "start": 1316,
-            "title": "III."
+            "title": "III.",
+            "words": 6407
         }
     ],
     "size": 145774

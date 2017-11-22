@@ -624,6 +624,7 @@ class TypioPrompt:
         current_chapter_start = None
         current_chapter_characters = 0
         current_chapter_paragraphs = 0
+        current_chapter_words = 0
 
         with open(local_file) as f:
             lines = f.readlines()
@@ -662,12 +663,14 @@ class TypioPrompt:
                             'end':   i - 1,
                             'characters': current_chapter_characters,
                             'paragraphs': current_chapter_paragraphs,
+                            'words': current_chapter_words,
                         })
 
                         # Reset counters
                         count_empty_lines = 0
                         current_chapter_characters = 0
                         current_chapter_paragraphs = 0
+                        current_chapter_words = 0
 
                     current_chapter_start = i + 1
                     current_chapter_name = l
@@ -685,6 +688,7 @@ class TypioPrompt:
                         current_chapter_paragraphs += 1
                     else:
                         current_chapter_characters += len(l)
+                        current_chapter_words += len(l.split(' '))
 
                 i += 1
 
@@ -695,6 +699,7 @@ class TypioPrompt:
                 'end':   i - 1,
                 'characters': current_chapter_characters,
                 'paragraphs': current_chapter_paragraphs,
+                'words': current_chapter_words,
             })
 
             # Strip the chapter content

@@ -5,98 +5,112 @@
             "end": 826,
             "paragraphs": 171,
             "start": 59,
-            "title": "I. Mowgli’s Brothers"
+            "title": "I. Mowgli’s Brothers",
+            "words": 7587
         },
         {
             "characters": 746,
             "end": 853,
             "paragraphs": 8,
             "start": 833,
-            "title": "II. Hunting-Song of the Seeonee Pack"
+            "title": "II. Hunting-Song of the Seeonee Pack",
+            "words": 238
         },
         {
             "characters": 47782,
             "end": 1800,
             "paragraphs": 178,
             "start": 860,
-            "title": "III. Kaa’s Hunting"
+            "title": "III. Kaa’s Hunting",
+            "words": 9133
         },
         {
             "characters": 1259,
             "end": 1839,
             "paragraphs": 9,
             "start": 1807,
-            "title": "IV. Road-Song of the Bandar-Log"
+            "title": "IV. Road-Song of the Bandar-Log",
+            "words": 372
         },
         {
             "characters": 32980,
             "end": 2488,
             "paragraphs": 120,
             "start": 1846,
-            "title": "V. “Tiger! Tiger!”"
+            "title": "V. “Tiger! Tiger!”",
+            "words": 6421
         },
         {
             "characters": 3346,
             "end": 2579,
             "paragraphs": 31,
             "start": 2495,
-            "title": "VI. Mowgli’s Song"
+            "title": "VI. Mowgli’s Song",
+            "words": 1022
         },
         {
             "characters": 37497,
             "end": 3279,
             "paragraphs": 112,
             "start": 2586,
-            "title": "VII. The White Seal"
+            "title": "VII. The White Seal",
+            "words": 7253
         },
         {
             "characters": 1633,
             "end": 3318,
             "paragraphs": 11,
             "start": 3286,
-            "title": "VIII. Lukannon"
+            "title": "VIII. Lukannon",
+            "words": 394
         },
         {
             "characters": 30270,
             "end": 3934,
             "paragraphs": 118,
             "start": 3325,
-            "title": "IX. “Rikki-Tikki-Tavi”"
+            "title": "IX. “Rikki-Tikki-Tavi”",
+            "words": 5838
         },
         {
             "characters": 992,
             "end": 3972,
             "paragraphs": 8,
             "start": 3943,
-            "title": "X. Darzee’s Chant. (Sung in honor of Rikki-tikki-tavi)"
+            "title": "X. Darzee’s Chant. (Sung in honor of Rikki-tikki-tavi)",
+            "words": 314
         },
         {
             "characters": 38591,
             "end": 4659,
             "paragraphs": 88,
             "start": 3979,
-            "title": "XI. Toomai of the Elephants"
+            "title": "XI. Toomai of the Elephants",
+            "words": 7354
         },
         {
             "characters": 1717,
             "end": 4702,
             "paragraphs": 7,
             "start": 4668,
-            "title": "XII. Shiv and the Grasshopper. (The song that Toomai’s mother sang to the baby)"
+            "title": "XII. Shiv and the Grasshopper. (The song that Toomai’s mother sang to the baby)",
+            "words": 489
         },
         {
             "characters": 30284,
             "end": 5356,
             "paragraphs": 154,
             "start": 4709,
-            "title": "XIII. Her Majesty’s Servants"
+            "title": "XIII. Her Majesty’s Servants",
+            "words": 5852
         },
         {
             "characters": 2612,
             "end": 5439,
             "paragraphs": 20,
             "start": 5364,
-            "title": "XIV. Parade Song of the Camp Animals"
+            "title": "XIV. Parade Song of the Camp Animals",
+            "words": 776
         }
     ],
     "size": 304362

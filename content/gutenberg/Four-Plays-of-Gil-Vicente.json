@@ -5,28 +5,32 @@
             "end": 1046,
             "paragraphs": 126,
             "start": 236,
-            "title": "I. LIFE AND PLAYS OF GIL VICENTE"
+            "title": "I. LIFE AND PLAYS OF GIL VICENTE",
+            "words": 11653
         },
         {
             "characters": 11618,
             "end": 1261,
             "paragraphs": 23,
             "start": 1051,
-            "title": "II. CHARACTER AND IDEAS"
+            "title": "II. CHARACTER AND IDEAS",
+            "words": 2302
         },
         {
             "characters": 10655,
             "end": 1424,
             "paragraphs": 6,
             "start": 1266,
-            "title": "III. TYPES SKETCHED IN HIS PLAYS"
+            "title": "III. TYPES SKETCHED IN HIS PLAYS",
+            "words": 1832
         },
         {
             "characters": 350225,
             "end": 12013,
             "paragraphs": 1879,
             "start": 1429,
-            "title": "IV. ORIGINALITY AND INFLUENCE"
+            "title": "IV. ORIGINALITY AND INFLUENCE",
+            "words": 111632
         }
     ],
     "size": 476621

@@ -5,252 +5,288 @@
             "end": 364,
             "paragraphs": 77,
             "start": 44,
-            "title": "Erstes Kapitel"
+            "title": "Erstes Kapitel",
+            "words": 2623
         },
         {
             "characters": 7118,
             "end": 507,
             "paragraphs": 25,
             "start": 370,
-            "title": "Zweites Kapitel"
+            "title": "Zweites Kapitel",
+            "words": 1191
         },
         {
             "characters": 11177,
             "end": 708,
             "paragraphs": 22,
             "start": 513,
-            "title": "Drittes Kapitel"
+            "title": "Drittes Kapitel",
+            "words": 1784
         },
         {
             "characters": 22272,
             "end": 1147,
             "paragraphs": 69,
             "start": 714,
-            "title": "Viertes Kapitel"
+            "title": "Viertes Kapitel",
+            "words": 3724
         },
         {
             "characters": 14705,
             "end": 1445,
             "paragraphs": 52,
             "start": 1153,
-            "title": "Fünftes Kapitel"
+            "title": "Fünftes Kapitel",
+            "words": 2421
         },
         {
             "characters": 18649,
             "end": 1825,
             "paragraphs": 69,
             "start": 1451,
-            "title": "Sechstes Kapitel"
+            "title": "Sechstes Kapitel",
+            "words": 3090
         },
         {
             "characters": 14113,
             "end": 2111,
             "paragraphs": 52,
             "start": 1831,
-            "title": "Siebentes Kapitel"
+            "title": "Siebentes Kapitel",
+            "words": 2379
         },
         {
             "characters": 12354,
             "end": 2336,
             "paragraphs": 27,
             "start": 2117,
-            "title": "Achtes Kapitel"
+            "title": "Achtes Kapitel",
+            "words": 2022
         },
         {
             "characters": 23975,
             "end": 2789,
             "paragraphs": 65,
             "start": 2342,
-            "title": "Neuntes Kapitel"
+            "title": "Neuntes Kapitel",
+            "words": 4054
         },
         {
             "characters": 20912,
             "end": 3221,
             "paragraphs": 84,
             "start": 2795,
-            "title": "Zehntes Kapitel"
+            "title": "Zehntes Kapitel",
+            "words": 3540
         },
         {
             "characters": 14210,
             "end": 3499,
             "paragraphs": 43,
             "start": 3227,
-            "title": "Elftes Kapitel"
+            "title": "Elftes Kapitel",
+            "words": 2289
         },
         {
             "characters": 14857,
             "end": 3747,
             "paragraphs": 16,
             "start": 3505,
-            "title": "Zwölftes Kapitel"
+            "title": "Zwölftes Kapitel",
+            "words": 2426
         },
         {
             "characters": 26535,
             "end": 4194,
             "paragraphs": 34,
             "start": 3753,
-            "title": "Dreizehntes Kapitel"
+            "title": "Dreizehntes Kapitel",
+            "words": 4402
         },
         {
             "characters": 7549,
             "end": 4334,
             "paragraphs": 20,
             "start": 4200,
-            "title": "Vierzehntes Kapitel"
+            "title": "Vierzehntes Kapitel",
+            "words": 1229
         },
         {
             "characters": 16875,
             "end": 4697,
             "paragraphs": 71,
             "start": 4340,
-            "title": "Fünfzehntes Kapitel"
+            "title": "Fünfzehntes Kapitel",
+            "words": 2801
         },
         {
             "characters": 14211,
             "end": 4983,
             "paragraphs": 50,
             "start": 4703,
-            "title": "Sechzehntes Kapitel"
+            "title": "Sechzehntes Kapitel",
+            "words": 2315
         },
         {
             "characters": 15899,
             "end": 5338,
             "paragraphs": 79,
             "start": 4989,
-            "title": "Siebzehntes Kapitel"
+            "title": "Siebzehntes Kapitel",
+            "words": 2610
         },
         {
             "characters": 19172,
             "end": 5718,
             "paragraphs": 64,
             "start": 5344,
-            "title": "Achtzehntes Kapitel"
+            "title": "Achtzehntes Kapitel",
+            "words": 3120
         },
         {
             "characters": 21652,
             "end": 6128,
             "paragraphs": 60,
             "start": 5724,
-            "title": "Neunzehntes Kapitel"
+            "title": "Neunzehntes Kapitel",
+            "words": 3506
         },
         {
             "characters": 20474,
             "end": 6556,
             "paragraphs": 83,
             "start": 6134,
-            "title": "Zwanzigstes Kapitel"
+            "title": "Zwanzigstes Kapitel",
+            "words": 3359
         },
         {
             "characters": 21899,
             "end": 7013,
             "paragraphs": 87,
             "start": 6562,
-            "title": "Einundzwanzigstes Kapitel"
+            "title": "Einundzwanzigstes Kapitel",
+            "words": 3805
         },
         {
             "characters": 15376,
             "end": 7325,
             "paragraphs": 58,
             "start": 7019,
-            "title": "Zweiundzwanzigstes Kapitel"
+            "title": "Zweiundzwanzigstes Kapitel",
+            "words": 2607
         },
         {
             "characters": 22062,
             "end": 7781,
             "paragraphs": 83,
             "start": 7331,
-            "title": "Dreiundzwanzigstes Kapitel"
+            "title": "Dreiundzwanzigstes Kapitel",
+            "words": 3645
         },
         {
             "characters": 34164,
             "end": 8466,
             "paragraphs": 117,
             "start": 7787,
-            "title": "Vierundzwanzigstes Kapitel"
+            "title": "Vierundzwanzigstes Kapitel",
+            "words": 5722
         },
         {
             "characters": 9389,
             "end": 8662,
             "paragraphs": 33,
             "start": 8472,
-            "title": "Fünfundzwanzigstes Kapitel"
+            "title": "Fünfundzwanzigstes Kapitel",
+            "words": 1579
         },
         {
             "characters": 11274,
             "end": 8863,
             "paragraphs": 19,
             "start": 8668,
-            "title": "Sechsundzwanzigstes Kapitel"
+            "title": "Sechsundzwanzigstes Kapitel",
+            "words": 1857
         },
         {
             "characters": 14695,
             "end": 9165,
             "paragraphs": 56,
             "start": 8869,
-            "title": "Siebenundzwanzigstes Kapitel"
+            "title": "Siebenundzwanzigstes Kapitel",
+            "words": 2443
         },
         {
             "characters": 9114,
             "end": 9354,
             "paragraphs": 38,
             "start": 9171,
-            "title": "Achtundzwanzigstes Kapitel"
+            "title": "Achtundzwanzigstes Kapitel",
+            "words": 1473
         },
         {
             "characters": 12200,
             "end": 9590,
             "paragraphs": 37,
             "start": 9360,
-            "title": "Neunundzwanzigstes Kapitel"
+            "title": "Neunundzwanzigstes Kapitel",
+            "words": 2061
         },
         {
             "characters": 11353,
             "end": 9817,
             "paragraphs": 37,
             "start": 9596,
-            "title": "Dreißigstes Kapitel"
+            "title": "Dreißigstes Kapitel",
+            "words": 1821
         },
         {
             "characters": 9039,
             "end": 10001,
             "paragraphs": 31,
             "start": 9823,
-            "title": "Einunddreißgstes Kapitel"
+            "title": "Einunddreißgstes Kapitel",
+            "words": 1480
         },
         {
             "characters": 26383,
             "end": 10504,
             "paragraphs": 72,
             "start": 10007,
-            "title": "Zweiunddreißigstes Kapitel"
+            "title": "Zweiunddreißigstes Kapitel",
+            "words": 4411
         },
         {
             "characters": 7584,
             "end": 10673,
             "paragraphs": 36,
             "start": 10510,
-            "title": "Dreiunddreißigstes Kapitel"
+            "title": "Dreiunddreißigstes Kapitel",
+            "words": 1368
         },
         {
             "characters": 12710,
             "end": 10915,
             "paragraphs": 34,
             "start": 10679,
-            "title": "Vierunddreißigstes Kapitel"
+            "title": "Vierunddreißigstes Kapitel",
+            "words": 2130
         },
         {
             "characters": 15703,
             "end": 11229,
             "paragraphs": 51,
             "start": 10921,
-            "title": "Fünfunddreißigstes Kapitel"
+            "title": "Fünfunddreißigstes Kapitel",
+            "words": 2596
         },
         {
             "characters": 12226,
             "end": 11469,
             "paragraphs": 43,
             "start": 11235,
-            "title": "Sechsunddreißigstes Kapitel"
+            "title": "Sechsunddreißigstes Kapitel",
+            "words": 2115
         }
     ],
     "size": 633635

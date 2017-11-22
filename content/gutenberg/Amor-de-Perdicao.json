@@ -5,140 +5,160 @@
             "end": 449,
             "paragraphs": 119,
             "start": 189,
-            "title": "I."
+            "title": "I.",
+            "words": 3416
         },
         {
             "characters": 10632,
             "end": 641,
             "paragraphs": 28,
             "start": 457,
-            "title": "II."
+            "title": "II.",
+            "words": 1787
         },
         {
             "characters": 12657,
             "end": 903,
             "paragraphs": 53,
             "start": 649,
-            "title": "III."
+            "title": "III.",
+            "words": 2182
         },
         {
             "characters": 11012,
             "end": 1113,
             "paragraphs": 36,
             "start": 911,
-            "title": "IV."
+            "title": "IV.",
+            "words": 1878
         },
         {
             "characters": 14240,
             "end": 1417,
             "paragraphs": 69,
             "start": 1121,
-            "title": "V"
+            "title": "V",
+            "words": 2553
         },
         {
             "characters": 17563,
             "end": 1885,
             "paragraphs": 147,
             "start": 1425,
-            "title": "VI."
+            "title": "VI.",
+            "words": 3047
         },
         {
             "characters": 19945,
             "end": 2343,
             "paragraphs": 119,
             "start": 1893,
-            "title": "VII."
+            "title": "VII.",
+            "words": 3474
         },
         {
             "characters": 17421,
             "end": 2741,
             "paragraphs": 103,
             "start": 2351,
-            "title": "VIII."
+            "title": "VIII.",
+            "words": 3143
         },
         {
             "characters": 11348,
             "end": 2989,
             "paragraphs": 58,
             "start": 2749,
-            "title": "IX."
+            "title": "IX.",
+            "words": 1977
         },
         {
             "characters": 21579,
             "end": 3568,
             "paragraphs": 189,
             "start": 2997,
-            "title": "X."
+            "title": "X.",
+            "words": 3738
         },
         {
             "characters": 11135,
             "end": 3883,
             "paragraphs": 107,
             "start": 3576,
-            "title": "I."
+            "title": "I.",
+            "words": 1937
         },
         {
             "characters": 12124,
             "end": 4152,
             "paragraphs": 65,
             "start": 3891,
-            "title": "II."
+            "title": "II.",
+            "words": 2155
         },
         {
             "characters": 13044,
             "end": 4457,
             "paragraphs": 80,
             "start": 4160,
-            "title": "III."
+            "title": "III.",
+            "words": 2277
         },
         {
             "characters": 10575,
             "end": 4710,
             "paragraphs": 70,
             "start": 4465,
-            "title": "IV."
+            "title": "IV.",
+            "words": 1804
         },
         {
             "characters": 11838,
             "end": 5000,
             "paragraphs": 81,
             "start": 4718,
-            "title": "V."
+            "title": "V.",
+            "words": 2120
         },
         {
             "characters": 10395,
             "end": 5258,
             "paragraphs": 74,
             "start": 5008,
-            "title": "VI."
+            "title": "VI.",
+            "words": 1748
         },
         {
             "characters": 7119,
             "end": 5465,
             "paragraphs": 70,
             "start": 5266,
-            "title": "VII."
+            "title": "VII.",
+            "words": 1218
         },
         {
             "characters": 10171,
             "end": 5698,
             "paragraphs": 62,
             "start": 5473,
-            "title": "VIII."
+            "title": "VIII.",
+            "words": 1803
         },
         {
             "characters": 9402,
             "end": 5911,
             "paragraphs": 52,
             "start": 5706,
-            "title": "IX."
+            "title": "IX.",
+            "words": 1664
         },
         {
             "characters": 27054,
             "end": 6563,
             "paragraphs": 178,
             "start": 5919,
-            "title": "X."
+            "title": "X.",
+            "words": 4666
         }
     ],
     "size": 316756

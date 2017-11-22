@@ -5,84 +5,96 @@
             "end": 1178,
             "paragraphs": 285,
             "start": 60,
-            "title": "I. A SCANDAL IN BOHEMIA"
+            "title": "I. A SCANDAL IN BOHEMIA",
+            "words": 8693
         },
         {
             "characters": 48240,
             "end": 2287,
             "paragraphs": 222,
             "start": 1184,
-            "title": "II. THE RED-HEADED LEAGUE"
+            "title": "II. THE RED-HEADED LEAGUE",
+            "words": 9193
         },
         {
             "characters": 37105,
             "end": 3090,
             "paragraphs": 141,
             "start": 2293,
-            "title": "III. A CASE OF IDENTITY"
+            "title": "III. A CASE OF IDENTITY",
+            "words": 6974
         },
         {
             "characters": 50201,
             "end": 4219,
             "paragraphs": 218,
             "start": 3096,
-            "title": "IV. THE BOSCOMBE VALLEY MYSTERY"
+            "title": "IV. THE BOSCOMBE VALLEY MYSTERY",
+            "words": 9615
         },
         {
             "characters": 38562,
             "end": 5114,
             "paragraphs": 182,
             "start": 4225,
-            "title": "V. THE FIVE ORANGE PIPS"
+            "title": "V. THE FIVE ORANGE PIPS",
+            "words": 7319
         },
         {
             "characters": 48071,
             "end": 6220,
             "paragraphs": 223,
             "start": 5120,
-            "title": "VI. THE MAN WITH THE TWISTED LIP"
+            "title": "VI. THE MAN WITH THE TWISTED LIP",
+            "words": 9199
         },
         {
             "characters": 41090,
             "end": 7199,
             "paragraphs": 217,
             "start": 6226,
-            "title": "VII. THE ADVENTURE OF THE BLUE CARBUNCLE"
+            "title": "VII. THE ADVENTURE OF THE BLUE CARBUNCLE",
+            "words": 7807
         },
         {
             "characters": 51739,
             "end": 8407,
             "paragraphs": 256,
             "start": 7205,
-            "title": "VIII. THE ADVENTURE OF THE SPECKLED BAND"
+            "title": "VIII. THE ADVENTURE OF THE SPECKLED BAND",
+            "words": 9805
         },
         {
             "characters": 43600,
             "end": 9374,
             "paragraphs": 179,
             "start": 8413,
-            "title": "IX. THE ADVENTURE OF THE ENGINEER'S THUMB"
+            "title": "IX. THE ADVENTURE OF THE ENGINEER'S THUMB",
+            "words": 8284
         },
         {
             "characters": 43021,
             "end": 10400,
             "paragraphs": 228,
             "start": 9380,
-            "title": "X. THE ADVENTURE OF THE NOBLE BACHELOR"
+            "title": "X. THE ADVENTURE OF THE NOBLE BACHELOR",
+            "words": 8099
         },
         {
             "characters": 49849,
             "end": 11529,
             "paragraphs": 224,
             "start": 10406,
-            "title": "XI. THE ADVENTURE OF THE BERYL CORONET"
+            "title": "XI. THE ADVENTURE OF THE BERYL CORONET",
+            "words": 9677
         },
         {
             "characters": 51948,
             "end": 12675,
             "paragraphs": 214,
             "start": 11535,
-            "title": "XII. THE ADVENTURE OF THE COPPER BEECHES"
+            "title": "XII. THE ADVENTURE OF THE COPPER BEECHES",
+            "words": 10014
         }
     ],
     "size": 594748

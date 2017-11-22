@@ -5,168 +5,192 @@
             "end": 526,
             "paragraphs": 189,
             "start": 161,
-            "title": "ACT I. Scene I."
+            "title": "ACT I. Scene I.",
+            "words": 3748
         },
         {
             "characters": 4979,
             "end": 676,
             "paragraphs": 41,
             "start": 534,
-            "title": "ACT I. Scene II."
+            "title": "ACT I. Scene II.",
+            "words": 1335
         },
         {
             "characters": 5230,
             "end": 832,
             "paragraphs": 41,
             "start": 684,
-            "title": "ACT I. Scene III."
+            "title": "ACT I. Scene III.",
+            "words": 1431
         },
         {
             "characters": 5465,
             "end": 993,
             "paragraphs": 36,
             "start": 840,
-            "title": "ACT I. Scene IV."
+            "title": "ACT I. Scene IV.",
+            "words": 1401
         },
         {
             "characters": 7922,
             "end": 1235,
             "paragraphs": 63,
             "start": 1001,
-            "title": "ACT I. Scene V."
+            "title": "ACT I. Scene V.",
+            "words": 2126
         },
         {
             "characters": 2197,
             "end": 1306,
             "paragraphs": 20,
             "start": 1243,
-            "title": "ACT II. Scene I."
+            "title": "ACT II. Scene I.",
+            "words": 635
         },
         {
             "characters": 9307,
             "end": 1587,
             "paragraphs": 69,
             "start": 1314,
-            "title": "ACT II. Scene II."
+            "title": "ACT II. Scene II.",
+            "words": 2549
         },
         {
             "characters": 4604,
             "end": 1718,
             "paragraphs": 29,
             "start": 1595,
-            "title": "ACT II. Scene III."
+            "title": "ACT II. Scene III.",
+            "words": 1215
         },
         {
             "characters": 9674,
             "end": 2021,
             "paragraphs": 106,
             "start": 1726,
-            "title": "ACT II. Scene IV."
+            "title": "ACT II. Scene IV.",
+            "words": 2588
         },
         {
             "characters": 3923,
             "end": 2135,
             "paragraphs": 29,
             "start": 2029,
-            "title": "ACT II. Scene V."
+            "title": "ACT II. Scene V.",
+            "words": 1106
         },
         {
             "characters": 1862,
             "end": 2196,
             "paragraphs": 19,
             "start": 2143,
-            "title": "ACT II. Scene VI."
+            "title": "ACT II. Scene VI.",
+            "words": 515
         },
         {
             "characters": 10092,
             "end": 2491,
             "paragraphs": 81,
             "start": 2204,
-            "title": "ACT III. Scene I."
+            "title": "ACT III. Scene I.",
+            "words": 2882
         },
         {
             "characters": 6919,
             "end": 2677,
             "paragraphs": 33,
             "start": 2499,
-            "title": "ACT III. Scene II."
+            "title": "ACT III. Scene II.",
+            "words": 1824
         },
         {
             "characters": 8511,
             "end": 2917,
             "paragraphs": 52,
             "start": 2685,
-            "title": "ACT III. Scene III."
+            "title": "ACT III. Scene III.",
+            "words": 2294
         },
         {
             "characters": 1762,
             "end": 2974,
             "paragraphs": 16,
             "start": 2925,
-            "title": "ACT III. Scene IV."
+            "title": "ACT III. Scene IV.",
+            "words": 504
         },
         {
             "characters": 11699,
             "end": 3318,
             "paragraphs": 82,
             "start": 2982,
-            "title": "ACT III. Scene V."
+            "title": "ACT III. Scene V.",
+            "words": 3183
         },
         {
             "characters": 6041,
             "end": 3493,
             "paragraphs": 43,
             "start": 3326,
-            "title": "ACT IV. Scene I."
+            "title": "ACT IV. Scene I.",
+            "words": 1605
         },
         {
             "characters": 2528,
             "end": 3578,
             "paragraphs": 28,
             "start": 3501,
-            "title": "ACT IV. Scene II."
+            "title": "ACT IV. Scene II.",
+            "words": 799
         },
         {
             "characters": 2955,
             "end": 3661,
             "paragraphs": 16,
             "start": 3586,
-            "title": "ACT IV. Scene III."
+            "title": "ACT IV. Scene III.",
+            "words": 853
         },
         {
             "characters": 1729,
             "end": 3725,
             "paragraphs": 25,
             "start": 3669,
-            "title": "ACT IV. Scene IV."
+            "title": "ACT IV. Scene IV.",
+            "words": 553
         },
         {
             "characters": 6860,
             "end": 3930,
             "paragraphs": 55,
             "start": 3733,
-            "title": "ACT IV. Scene V."
+            "title": "ACT IV. Scene V.",
+            "words": 1903
         },
         {
             "characters": 4226,
             "end": 4052,
             "paragraphs": 27,
             "start": 3938,
-            "title": "ACT V. Scene I."
+            "title": "ACT V. Scene I.",
+            "words": 1186
         },
         {
             "characters": 1440,
             "end": 4104,
             "paragraphs": 18,
             "start": 4060,
-            "title": "ACT V. Scene II."
+            "title": "ACT V. Scene II.",
+            "words": 396
         },
         {
             "characters": 15819,
             "end": 4529,
             "paragraphs": 83,
             "start": 4112,
-            "title": "ACT V. Scene III."
+            "title": "ACT V. Scene III.",
+            "words": 4480
         }
     ],
     "size": 179122

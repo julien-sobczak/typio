@@ -1,473 +1,540 @@
 {
     "chapters": [
         {
-            "characters": 39438,
+            "characters": 37056,
             "end": 906,
             "paragraphs": 160,
             "start": 210,
-            "title": "CHAPITRE I. LES TROIS PRÉSENTS DE M. D'ARTAGNAN PÈRE"
+            "title": "CHAPITRE I. LES TROIS PRÉSENTS DE M. D'ARTAGNAN PÈRE",
+            "words": 6282
         },
         {
             "characters": 22051,
             "end": 1350,
             "paragraphs": 63,
             "start": 913,
-            "title": "CHAPITRE II. L'ANTICHAMBRE DE M. DE TRÉVILLE"
+            "title": "CHAPITRE II. L'ANTICHAMBRE DE M. DE TRÉVILLE",
+            "words": 3757
         },
         {
             "characters": 23999,
             "end": 1881,
             "paragraphs": 99,
             "start": 1357,
-            "title": "CHAPITRE III. L'AUDIENCE"
+            "title": "CHAPITRE III. L'AUDIENCE",
+            "words": 4150
         },
         {
             "characters": 16029,
             "end": 2266,
             "paragraphs": 86,
             "start": 1888,
-            "title": "CHAPITRE IV. L'ÉPAULE D'ATHOS, LE BAUDRIER DE PORTHOS ET LE MOUCHOIR D'ARAMIS"
+            "title": "CHAPITRE IV. L'ÉPAULE D'ATHOS, LE BAUDRIER DE PORTHOS ET LE MOUCHOIR D'ARAMIS",
+            "words": 2789
         },
         {
             "characters": 21033,
             "end": 2785,
             "paragraphs": 128,
             "start": 2273,
-            "title": "CHAPITRE V. LES MOUSQUETAIRES DU ROI ET LES GARDES DE M. LE CARDINAL"
+            "title": "CHAPITRE V. LES MOUSQUETAIRES DU ROI ET LES GARDES DE M. LE CARDINAL",
+            "words": 3662
         },
         {
             "characters": 39277,
             "end": 3696,
             "paragraphs": 198,
             "start": 2792,
-            "title": "CHAPITRE VI. SA MAJESTÉ LE ROI LOUIS TREIZIÈME"
+            "title": "CHAPITRE VI. SA MAJESTÉ LE ROI LOUIS TREIZIÈME",
+            "words": 6952
         },
         {
             "characters": 18756,
             "end": 4068,
             "paragraphs": 47,
             "start": 3703,
-            "title": "CHAPITRE VII. L'INTÉRIEUR DES MOUSQUETAIRES"
+            "title": "CHAPITRE VII. L'INTÉRIEUR DES MOUSQUETAIRES",
+            "words": 3169
         },
         {
             "characters": 15512,
             "end": 4510,
             "paragraphs": 131,
             "start": 4075,
-            "title": "CHAPITRE VIII. UNE INTRIGUE DE COEUR"
+            "title": "CHAPITRE VIII. UNE INTRIGUE DE COEUR",
+            "words": 2742
         },
         {
             "characters": 14868,
             "end": 4928,
             "paragraphs": 122,
             "start": 4517,
-            "title": "CHAPITRE IX. D'ARTAGNAN SE DESSINE"
+            "title": "CHAPITRE IX. D'ARTAGNAN SE DESSINE",
+            "words": 2587
         },
         {
             "characters": 18915,
             "end": 5430,
             "paragraphs": 134,
             "start": 4935,
-            "title": "CHAPITRE X. UNE SOURICIÈRE AU XVIIe SIÈCLE"
+            "title": "CHAPITRE X. UNE SOURICIÈRE AU XVIIe SIÈCLE",
+            "words": 3276
         },
         {
             "characters": 33849,
             "end": 6319,
             "paragraphs": 235,
             "start": 5437,
-            "title": "CHAPITRE XI. L'INTRIGUE SE NOUE"
+            "title": "CHAPITRE XI. L'INTRIGUE SE NOUE",
+            "words": 5934
         },
         {
             "characters": 17161,
             "end": 6707,
             "paragraphs": 73,
             "start": 6326,
-            "title": "CHAPITRE XII. GEORGES VILLIERS, DUC DE BUCKINGHAM"
+            "title": "CHAPITRE XII. GEORGES VILLIERS, DUC DE BUCKINGHAM",
+            "words": 3047
         },
         {
             "characters": 16702,
             "end": 7152,
             "paragraphs": 120,
             "start": 6714,
-            "title": "CHAPITRE XIII. MONSIEUR BONACIEUX"
+            "title": "CHAPITRE XIII. MONSIEUR BONACIEUX",
+            "words": 2901
         },
         {
             "characters": 18452,
             "end": 7744,
             "paragraphs": 197,
             "start": 7159,
-            "title": "CHAPITRE XIV. L'HOMME DE MEUNG"
+            "title": "CHAPITRE XIV. L'HOMME DE MEUNG",
+            "words": 3219
         },
         {
             "characters": 15418,
             "end": 8133,
             "paragraphs": 95,
             "start": 7751,
-            "title": "CHAPITRE XV. GENS DE ROBE ET GENS D'ÉPÉE"
+            "title": "CHAPITRE XV. GENS DE ROBE ET GENS D'ÉPÉE",
+            "words": 2707
         },
         {
             "characters": 22480,
             "end": 8711,
             "paragraphs": 150,
             "start": 8140,
-            "title": "CHAPITRE XVI. OÙ M. LE GARDE DES SCEAUX SÉGUIER CHERCHA PLUS D'UNE FOIS LA CLOCHE POUR LA SONNER, COMME IL LE FAISAIT AUTREFOIS"
+            "title": "CHAPITRE XVI. OÙ M. LE GARDE DES SCEAUX SÉGUIER CHERCHA PLUS D'UNE FOIS LA CLOCHE POUR LA SONNER, COMME IL LE FAISAIT AUTREFOIS",
+            "words": 3971
         },
         {
             "characters": 24473,
             "end": 9380,
             "paragraphs": 185,
             "start": 8718,
-            "title": "CHAPITRE XVII. LE MÉNAGE BONACIEUX"
+            "title": "CHAPITRE XVII. LE MÉNAGE BONACIEUX",
+            "words": 4367
         },
         {
             "characters": 11998,
             "end": 9785,
             "paragraphs": 141,
             "start": 9387,
-            "title": "CHAPITRE XVIII. L'AMANT ET LE MARI"
+            "title": "CHAPITRE XVIII. L'AMANT ET LE MARI",
+            "words": 2106
         },
         {
             "characters": 15263,
             "end": 10254,
             "paragraphs": 152,
             "start": 9792,
-            "title": "CHAPITRE XIX. PLAN DE CAMPAGNE"
+            "title": "CHAPITRE XIX. PLAN DE CAMPAGNE",
+            "words": 2706
         },
         {
             "characters": 22035,
             "end": 10882,
             "paragraphs": 185,
             "start": 10261,
-            "title": "CHAPITRE XX. VOYAGE"
+            "title": "CHAPITRE XX. VOYAGE",
+            "words": 3831
         },
         {
             "characters": 19095,
             "end": 11355,
             "paragraphs": 117,
             "start": 10889,
-            "title": "CHAPITRE XXI. LA COMTESSE DE WINTER"
+            "title": "CHAPITRE XXI. LA COMTESSE DE WINTER",
+            "words": 3356
         },
         {
             "characters": 14130,
             "end": 11686,
             "paragraphs": 69,
             "start": 11362,
-            "title": "CHAPITRE XXII. LE BALLET DE LA MERLAISON"
+            "title": "CHAPITRE XXII. LE BALLET DE LA MERLAISON",
+            "words": 2471
         },
         {
             "characters": 19955,
             "end": 12254,
             "paragraphs": 168,
             "start": 11693,
-            "title": "CHAPITRE XXIII. LE RENDEZ-VOUS"
+            "title": "CHAPITRE XXIII. LE RENDEZ-VOUS",
+            "words": 3539
         },
         {
             "characters": 20469,
             "end": 12754,
             "paragraphs": 116,
             "start": 12261,
-            "title": "CHAPITRE XXIV. LE PAVILLON"
+            "title": "CHAPITRE XXIV. LE PAVILLON",
+            "words": 3509
         },
         {
             "characters": 37626,
             "end": 13706,
             "paragraphs": 243,
             "start": 12761,
-            "title": "CHAPITRE XXV. PORTHOS"
+            "title": "CHAPITRE XXV. PORTHOS",
+            "words": 6645
         },
         {
             "characters": 31572,
             "end": 14528,
             "paragraphs": 214,
             "start": 13713,
-            "title": "CHAPITRE XXVI. LA THÈSE D'ARAMIS"
+            "title": "CHAPITRE XXVI. LA THÈSE D'ARAMIS",
+            "words": 5464
         },
         {
             "characters": 37314,
             "end": 15495,
             "paragraphs": 257,
             "start": 14535,
-            "title": "CHAPITRE XXVII. LA FEMME D'ATHOS"
+            "title": "CHAPITRE XXVII. LA FEMME D'ATHOS",
+            "words": 6452
         },
         {
             "characters": 25939,
             "end": 16260,
             "paragraphs": 235,
             "start": 15502,
-            "title": "CHAPITRE XXVIII. RETOUR"
+            "title": "CHAPITRE XXVIII. RETOUR",
+            "words": 4600
         },
         {
             "characters": 16654,
             "end": 16684,
             "paragraphs": 107,
             "start": 16267,
-            "title": "CHAPITRE XXIX. LA CHASSE À L'ÉQUIPEMENT"
+            "title": "CHAPITRE XXIX. LA CHASSE À L'ÉQUIPEMENT",
+            "words": 2897
         },
         {
             "characters": 14764,
             "end": 17064,
             "paragraphs": 99,
             "start": 16691,
-            "title": "CHAPITRE XXX. MILADY"
+            "title": "CHAPITRE XXX. MILADY",
+            "words": 2603
         },
         {
             "characters": 15050,
             "end": 17442,
             "paragraphs": 94,
             "start": 17071,
-            "title": "CHAPITRE XXXI. ANGLAIS ET FRANÇAIS"
+            "title": "CHAPITRE XXXI. ANGLAIS ET FRANÇAIS",
+            "words": 2596
         },
         {
             "characters": 18425,
             "end": 17900,
             "paragraphs": 111,
             "start": 17449,
-            "title": "CHAPITRE XXXII. UN DÎNER DE PROCUREUR"
+            "title": "CHAPITRE XXXII. UN DÎNER DE PROCUREUR",
+            "words": 3154
         },
         {
             "characters": 17699,
             "end": 18416,
             "paragraphs": 157,
             "start": 17907,
-            "title": "CHAPITRE XXXIII. SOUBRETTE ET MAÎTRESSE"
+            "title": "CHAPITRE XXXIII. SOUBRETTE ET MAÎTRESSE",
+            "words": 3135
         },
         {
             "characters": 15950,
             "end": 18843,
             "paragraphs": 119,
             "start": 18423,
-            "title": "CHAPITRE XXXIV. OÙ IL EST TRAITÉ DE L'ÉQUIPEMENT D'ARAMIS ET DE PORTHOS"
+            "title": "CHAPITRE XXXIV. OÙ IL EST TRAITÉ DE L'ÉQUIPEMENT D'ARAMIS ET DE PORTHOS",
+            "words": 2772
         },
         {
             "characters": 14756,
             "end": 19222,
             "paragraphs": 100,
             "start": 18850,
-            "title": "CHAPITRE XXXV. LA NUIT TOUS LES CHATS SONT GRIS"
+            "title": "CHAPITRE XXXV. LA NUIT TOUS LES CHATS SONT GRIS",
+            "words": 2540
         },
         {
             "characters": 12707,
             "end": 19641,
             "paragraphs": 145,
             "start": 19229,
-            "title": "CHAPITRE XXXVI. RÊVE DE VENGEANCE"
+            "title": "CHAPITRE XXXVI. RÊVE DE VENGEANCE",
+            "words": 2169
         },
         {
             "characters": 12996,
             "end": 19991,
             "paragraphs": 97,
             "start": 19648,
-            "title": "CHAPITRE XXXVII. LE SECRET DE MILADY"
+            "title": "CHAPITRE XXXVII. LE SECRET DE MILADY",
+            "words": 2247
         },
         {
             "characters": 17392,
             "end": 20502,
             "paragraphs": 156,
             "start": 19998,
-            "title": "CHAPITRE XXXVIII. COMMENT, SANS SE DÉRANGER, ATHOS TROUVA SON ÉQUIPEMENT"
+            "title": "CHAPITRE XXXVIII. COMMENT, SANS SE DÉRANGER, ATHOS TROUVA SON ÉQUIPEMENT",
+            "words": 3015
         },
         {
             "characters": 17098,
             "end": 20942,
             "paragraphs": 111,
             "start": 20509,
-            "title": "CHAPITRE XXXIX. UNE VISION"
+            "title": "CHAPITRE XXXIX. UNE VISION",
+            "words": 2946
         },
         {
             "characters": 15633,
             "end": 21320,
             "paragraphs": 83,
             "start": 20949,
-            "title": "CHAPITRE XL. LE CARDINAL"
+            "title": "CHAPITRE XL. LE CARDINAL",
+            "words": 2679
         },
         {
             "characters": 25039,
             "end": 21914,
             "paragraphs": 133,
             "start": 21327,
-            "title": "CHAPITRE XLI. LE SIÈGE DE LA ROCHELLE"
+            "title": "CHAPITRE XLI. LE SIÈGE DE LA ROCHELLE",
+            "words": 4306
         },
         {
             "characters": 14038,
             "end": 22320,
             "paragraphs": 123,
             "start": 21921,
-            "title": "CHAPITRE XLII. LE VIN D'ANJOU"
+            "title": "CHAPITRE XLII. LE VIN D'ANJOU",
+            "words": 2448
         },
         {
             "characters": 16409,
             "end": 22716,
             "paragraphs": 90,
             "start": 22327,
-            "title": "CHAPITRE XLIII. L'AUBERGE DU COLOMBIER-ROUGE"
+            "title": "CHAPITRE XLIII. L'AUBERGE DU COLOMBIER-ROUGE",
+            "words": 2795
         },
         {
             "characters": 15581,
             "end": 23128,
             "paragraphs": 110,
             "start": 22723,
-            "title": "CHAPITRE XLIV. DE L'UTILITÉ DES TUYAUX DE POÊLE"
+            "title": "CHAPITRE XLIV. DE L'UTILITÉ DES TUYAUX DE POÊLE",
+            "words": 2743
         },
         {
             "characters": 11357,
             "end": 23419,
             "paragraphs": 76,
             "start": 23135,
-            "title": "CHAPITRE XLV. SCÈNE CONJUGALE"
+            "title": "CHAPITRE XLV. SCÈNE CONJUGALE",
+            "words": 1990
         },
         {
             "characters": 12854,
             "end": 23783,
             "paragraphs": 108,
             "start": 23426,
-            "title": "CHAPITRE XLVI. LE BASTION SAINT-GERVAIS"
+            "title": "CHAPITRE XLVI. LE BASTION SAINT-GERVAIS",
+            "words": 2245
         },
         {
             "characters": 31529,
             "end": 24704,
             "paragraphs": 288,
             "start": 23790,
-            "title": "CHAPITRE XLVII. LE CONSEIL DES MOUSQUETAIRES"
+            "title": "CHAPITRE XLVII. LE CONSEIL DES MOUSQUETAIRES",
+            "words": 5509
         },
         {
             "characters": 26882,
             "end": 25417,
             "paragraphs": 192,
             "start": 24711,
-            "title": "CHAPITRE XLVIII. AFFAIRE DE FAMILLE"
+            "title": "CHAPITRE XLVIII. AFFAIRE DE FAMILLE",
+            "words": 4686
         },
         {
             "characters": 16071,
             "end": 25806,
             "paragraphs": 91,
             "start": 25424,
-            "title": "CHAPITRE XLIX. FATALITÉ"
+            "title": "CHAPITRE XLIX. FATALITÉ",
+            "words": 2718
         },
         {
             "characters": 15225,
             "end": 26162,
             "paragraphs": 75,
             "start": 25813,
-            "title": "CHAPITRE L. CAUSERIE D'UN FRÈRE AVEC SA SOEUR"
+            "title": "CHAPITRE L. CAUSERIE D'UN FRÈRE AVEC SA SOEUR",
+            "words": 2657
         },
         {
             "characters": 22429,
             "end": 26647,
             "paragraphs": 89,
             "start": 26169,
-            "title": "CHAPITRE LI. OFFICIER"
+            "title": "CHAPITRE LI. OFFICIER",
+            "words": 3778
         },
         {
             "characters": 14141,
             "end": 26976,
             "paragraphs": 67,
             "start": 26654,
-            "title": "CHAPITRE LII. PREMIERE JOURNÉE DE CAPTIVITÉ"
+            "title": "CHAPITRE LII. PREMIERE JOURNÉE DE CAPTIVITÉ",
+            "words": 2463
         },
         {
             "characters": 14080,
             "end": 27328,
             "paragraphs": 85,
             "start": 26983,
-            "title": "CHAPITRE LIII. DEUXIÈME JOURNÉE DE CAPTIVITÉ"
+            "title": "CHAPITRE LIII. DEUXIÈME JOURNÉE DE CAPTIVITÉ",
+            "words": 2439
         },
         {
             "characters": 16971,
             "end": 27756,
             "paragraphs": 105,
             "start": 27335,
-            "title": "CHAPITRE LIV. TROISIÈME JOURNÉE DE CAPTIVITÉ"
+            "title": "CHAPITRE LIV. TROISIÈME JOURNÉE DE CAPTIVITÉ",
+            "words": 2976
         },
         {
             "characters": 16480,
             "end": 28157,
             "paragraphs": 93,
             "start": 27763,
-            "title": "CHAPITRE LV. QUATRIÈME JOURNÉE DE CAPTIVITÉ"
+            "title": "CHAPITRE LV. QUATRIÈME JOURNÉE DE CAPTIVITÉ",
+            "words": 2882
         },
         {
             "characters": 30199,
             "end": 28863,
             "paragraphs": 153,
             "start": 28164,
-            "title": "CHAPITRE LVI. CINQUIÈME JOURNÉE DE CAPTIVITÉ"
+            "title": "CHAPITRE LVI. CINQUIÈME JOURNÉE DE CAPTIVITÉ",
+            "words": 5265
         },
         {
             "characters": 12320,
             "end": 29195,
             "paragraphs": 91,
             "start": 28870,
-            "title": "CHAPITRE LVII. UN MOYEN DE TRAGÉDIE CLASSIQUE"
+            "title": "CHAPITRE LVII. UN MOYEN DE TRAGÉDIE CLASSIQUE",
+            "words": 2133
         },
         {
             "characters": 15166,
             "end": 29664,
             "paragraphs": 154,
             "start": 29202,
-            "title": "CHAPITRE LVIII. ÉVASION"
+            "title": "CHAPITRE LVIII. ÉVASION",
+            "words": 2665
         },
         {
             "characters": 19343,
             "end": 30216,
             "paragraphs": 162,
             "start": 29671,
-            "title": "CHAPITRE LIX. CE QUI SE PASSAIT À PORTSMOUTH LE 23 AOÛT 1628"
+            "title": "CHAPITRE LIX. CE QUI SE PASSAIT À PORTSMOUTH LE 23 AOÛT 1628",
+            "words": 3400
         },
         {
             "characters": 10663,
             "end": 30471,
             "paragraphs": 55,
             "start": 30223,
-            "title": "CHAPITRE LX. EN FRANCE"
+            "title": "CHAPITRE LX. EN FRANCE",
+            "words": 1845
         },
         {
             "characters": 24704,
             "end": 31145,
             "paragraphs": 188,
             "start": 30478,
-            "title": "CHAPITRE LXI. LE COUVENT DES CARMÉLITES DE BÉTHUNE"
+            "title": "CHAPITRE LXI. LE COUVENT DES CARMÉLITES DE BÉTHUNE",
+            "words": 4251
         },
         {
             "characters": 8587,
             "end": 31480,
             "paragraphs": 129,
             "start": 31152,
-            "title": "CHAPITRE LXII. DEUX VARIÉTÉS DE DÉMONS"
+            "title": "CHAPITRE LXII. DEUX VARIÉTÉS DE DÉMONS",
+            "words": 1530
         },
         {
             "characters": 25503,
             "end": 32242,
             "paragraphs": 240,
             "start": 31487,
-            "title": "CHAPITRE LXIII. UNE GOUTTE D'EAU"
+            "title": "CHAPITRE LXIII. UNE GOUTTE D'EAU",
+            "words": 4503
         },
         {
             "characters": 11498,
             "end": 32505,
             "paragraphs": 53,
             "start": 32249,
-            "title": "CHAPITRE LXIV. L'HOMME AU MANTEAU ROUGE"
+            "title": "CHAPITRE LXIV. L'HOMME AU MANTEAU ROUGE",
+            "words": 1937
         },
         {
             "characters": 14590,
             "end": 32908,
             "paragraphs": 114,
             "start": 32512,
-            "title": "CHAPITRE LXV. LE JUGEMENT"
+            "title": "CHAPITRE LXV. LE JUGEMENT",
+            "words": 2516
         },
         {
             "characters": 8770,
             "end": 33156,
             "paragraphs": 72,
             "start": 32915,
-            "title": "CHAPITRE LXVI. L'EXÉCUTION"
+            "title": "CHAPITRE LXVI. L'EXÉCUTION",
+            "words": 1535
         },
         {
             "characters": 18675,
             "end": 33696,
             "paragraphs": 164,
             "start": 33163,
-            "title": "CHAPITRE LXVII. CONCLUSION"
+            "title": "CHAPITRE LXVII. CONCLUSION",
+            "words": 3221
         }
     ],
     "size": 1414694

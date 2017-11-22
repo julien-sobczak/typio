@@ -5,84 +5,96 @@
             "end": 248,
             "paragraphs": 50,
             "start": 43,
-            "title": "CHAPTER I. Down the Rabbit-Hole"
+            "title": "CHAPTER I. Down the Rabbit-Hole",
+            "words": 2309
         },
         {
             "characters": 10766,
             "end": 449,
             "paragraphs": 30,
             "start": 255,
-            "title": "CHAPTER II. The Pool of Tears"
+            "title": "CHAPTER II. The Pool of Tears",
+            "words": 2169
         },
         {
             "characters": 9276,
             "end": 693,
             "paragraphs": 53,
             "start": 456,
-            "title": "CHAPTER III. A Caucus-Race and a Long Tale"
+            "title": "CHAPTER III. A Caucus-Race and a Long Tale",
+            "words": 2070
         },
         {
             "characters": 13572,
             "end": 954,
             "paragraphs": 46,
             "start": 700,
-            "title": "CHAPTER IV. The Rabbit Sends in a Little Bill"
+            "title": "CHAPTER IV. The Rabbit Sends in a Little Bill",
+            "words": 2606
         },
         {
             "characters": 11661,
             "end": 1250,
             "paragraphs": 84,
             "start": 961,
-            "title": "CHAPTER V. Advice from a Caterpillar"
+            "title": "CHAPTER V. Advice from a Caterpillar",
+            "words": 2351
         },
         {
             "characters": 13524,
             "end": 1567,
             "paragraphs": 85,
             "start": 1257,
-            "title": "CHAPTER VI. Pig and Pepper"
+            "title": "CHAPTER VI. Pig and Pepper",
+            "words": 2649
         },
         {
             "characters": 12328,
             "end": 1906,
             "paragraphs": 109,
             "start": 1574,
-            "title": "CHAPTER VII. A Mad Tea-Party"
+            "title": "CHAPTER VII. A Mad Tea-Party",
+            "words": 2311
         },
         {
             "characters": 13320,
             "end": 2209,
             "paragraphs": 75,
             "start": 1913,
-            "title": "CHAPTER VIII. The Queen’s Croquet-Ground"
+            "title": "CHAPTER VIII. The Queen’s Croquet-Ground",
+            "words": 2483
         },
         {
             "characters": 12273,
             "end": 2526,
             "paragraphs": 96,
             "start": 2216,
-            "title": "CHAPTER IX. The Mock Turtle’s Story"
+            "title": "CHAPTER IX. The Mock Turtle’s Story",
+            "words": 2266
         },
         {
             "characters": 11206,
             "end": 2825,
             "paragraphs": 89,
             "start": 2533,
-            "title": "CHAPTER X. The Lobster Quadrille"
+            "title": "CHAPTER X. The Lobster Quadrille",
+            "words": 2161
         },
         {
             "characters": 10097,
             "end": 3083,
             "paragraphs": 78,
             "start": 2832,
-            "title": "CHAPTER XI. Who Stole the Tarts?"
+            "title": "CHAPTER XI. Who Stole the Tarts?",
+            "words": 1891
         },
         {
             "characters": 11352,
             "end": 3368,
             "paragraphs": 73,
             "start": 3091,
-            "title": "CHAPTER XII. Alice’s Evidence"
+            "title": "CHAPTER XII. Alice’s Evidence",
+            "words": 2183
         }
     ],
     "size": 173479

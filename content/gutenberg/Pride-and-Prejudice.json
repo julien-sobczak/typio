@@ -5,427 +5,488 @@
             "end": 151,
             "paragraphs": 51,
             "start": 41,
-            "title": "Chapter 1"
+            "title": "Chapter 1",
+            "words": 857
         },
         {
             "characters": 4192,
             "end": 259,
             "paragraphs": 31,
             "start": 158,
-            "title": "Chapter 2"
+            "title": "Chapter 2",
+            "words": 796
         },
         {
             "characters": 9353,
             "end": 429,
             "paragraphs": 24,
             "start": 266,
-            "title": "Chapter 3"
+            "title": "Chapter 3",
+            "words": 1693
         },
         {
             "characters": 5831,
             "end": 545,
             "paragraphs": 20,
             "start": 436,
-            "title": "Chapter 4"
+            "title": "Chapter 4",
+            "words": 1053
         },
         {
             "characters": 5165,
             "end": 658,
             "paragraphs": 27,
             "start": 552,
-            "title": "Chapter 5"
+            "title": "Chapter 5",
+            "words": 946
         },
         {
             "characters": 12746,
             "end": 925,
             "paragraphs": 58,
             "start": 665,
-            "title": "Chapter 6"
+            "title": "Chapter 6",
+            "words": 2339
         },
         {
             "characters": 10919,
             "end": 1159,
             "paragraphs": 52,
             "start": 932,
-            "title": "Chapter 7"
+            "title": "Chapter 7",
+            "words": 1979
         },
         {
             "characters": 10750,
             "end": 1406,
             "paragraphs": 63,
             "start": 1166,
-            "title": "Chapter 8"
+            "title": "Chapter 8",
+            "words": 1927
         },
         {
             "characters": 9555,
             "end": 1600,
             "paragraphs": 43,
             "start": 1413,
-            "title": "Chapter 9"
+            "title": "Chapter 9",
+            "words": 1726
         },
         {
             "characters": 12192,
             "end": 1879,
             "paragraphs": 70,
             "start": 1607,
-            "title": "Chapter 10"
+            "title": "Chapter 10",
+            "words": 2199
         },
         {
             "characters": 8751,
             "end": 2065,
             "paragraphs": 38,
             "start": 1886,
-            "title": "Chapter 11"
+            "title": "Chapter 11",
+            "words": 1589
         },
         {
             "characters": 3867,
             "end": 2135,
             "paragraphs": 11,
             "start": 2072,
-            "title": "Chapter 12"
+            "title": "Chapter 12",
+            "words": 669
         },
         {
             "characters": 9026,
             "end": 2315,
             "paragraphs": 35,
             "start": 2142,
-            "title": "Chapter 13"
+            "title": "Chapter 13",
+            "words": 1668
         },
         {
             "characters": 6327,
             "end": 2435,
             "paragraphs": 21,
             "start": 2322,
-            "title": "Chapter 14"
+            "title": "Chapter 14",
+            "words": 1117
         },
         {
             "characters": 9634,
             "end": 2598,
             "paragraphs": 17,
             "start": 2442,
-            "title": "Chapter 15"
+            "title": "Chapter 15",
+            "words": 1690
         },
         {
             "characters": 18658,
             "end": 2958,
             "paragraphs": 62,
             "start": 2605,
-            "title": "Chapter 16"
+            "title": "Chapter 16",
+            "words": 3349
         },
         {
             "characters": 7141,
             "end": 3091,
             "paragraphs": 19,
             "start": 2965,
-            "title": "Chapter 17"
+            "title": "Chapter 17",
+            "words": 1273
         },
         {
             "characters": 28609,
             "end": 3613,
             "paragraphs": 76,
             "start": 3098,
-            "title": "Chapter 18"
+            "title": "Chapter 18",
+            "words": 5169
         },
         {
             "characters": 10477,
             "end": 3802,
             "paragraphs": 25,
             "start": 3620,
-            "title": "Chapter 19"
+            "title": "Chapter 19",
+            "words": 1910
         },
         {
             "characters": 8996,
             "end": 3979,
             "paragraphs": 34,
             "start": 3809,
-            "title": "Chapter 20"
+            "title": "Chapter 20",
+            "words": 1642
         },
         {
             "characters": 11027,
             "end": 4189,
             "paragraphs": 35,
             "start": 3986,
-            "title": "Chapter 21"
+            "title": "Chapter 21",
+            "words": 1990
         },
         {
             "characters": 9773,
             "end": 4362,
             "paragraphs": 22,
             "start": 4196,
-            "title": "Chapter 22"
+            "title": "Chapter 22",
+            "words": 1721
         },
         {
             "characters": 9145,
             "end": 4537,
             "paragraphs": 29,
             "start": 4369,
-            "title": "Chapter 23"
+            "title": "Chapter 23",
+            "words": 1611
         },
         {
             "characters": 10624,
             "end": 4741,
             "paragraphs": 35,
             "start": 4544,
-            "title": "Chapter 24"
+            "title": "Chapter 24",
+            "words": 1926
         },
         {
             "characters": 8414,
             "end": 4900,
             "paragraphs": 24,
             "start": 4748,
-            "title": "Chapter 25"
+            "title": "Chapter 25",
+            "words": 1506
         },
         {
             "characters": 12530,
             "end": 5126,
             "paragraphs": 33,
             "start": 4907,
-            "title": "Chapter 26"
+            "title": "Chapter 26",
+            "words": 2328
         },
         {
             "characters": 7082,
             "end": 5268,
             "paragraphs": 27,
             "start": 5133,
-            "title": "Chapter 27"
+            "title": "Chapter 27",
+            "words": 1255
         },
         {
             "characters": 8083,
             "end": 5420,
             "paragraphs": 24,
             "start": 5275,
-            "title": "Chapter 28"
+            "title": "Chapter 28",
+            "words": 1450
         },
         {
             "characters": 13436,
             "end": 5684,
             "paragraphs": 46,
             "start": 5427,
-            "title": "Chapter 29"
+            "title": "Chapter 29",
+            "words": 2377
         },
         {
             "characters": 6938,
             "end": 5806,
             "paragraphs": 16,
             "start": 5691,
-            "title": "Chapter 30"
+            "title": "Chapter 30",
+            "words": 1226
         },
         {
             "characters": 8491,
             "end": 5976,
             "paragraphs": 34,
             "start": 5813,
-            "title": "Chapter 31"
+            "title": "Chapter 31",
+            "words": 1534
         },
         {
             "characters": 8314,
             "end": 6148,
             "paragraphs": 36,
             "start": 5983,
-            "title": "Chapter 32"
+            "title": "Chapter 32",
+            "words": 1497
         },
         {
             "characters": 10130,
             "end": 6359,
             "paragraphs": 45,
             "start": 6155,
-            "title": "Chapter 33"
+            "title": "Chapter 33",
+            "words": 1851
         },
         {
             "characters": 11785,
             "end": 6580,
             "paragraphs": 35,
             "start": 6366,
-            "title": "Chapter 34"
+            "title": "Chapter 34",
+            "words": 2085
         },
         {
             "characters": 16721,
             "end": 6847,
             "paragraphs": 18,
             "start": 6587,
-            "title": "Chapter 35"
+            "title": "Chapter 35",
+            "words": 2986
         },
         {
             "characters": 11590,
             "end": 7039,
             "paragraphs": 17,
             "start": 6854,
-            "title": "Chapter 36"
+            "title": "Chapter 36",
+            "words": 1997
         },
         {
             "characters": 7644,
             "end": 7184,
             "paragraphs": 24,
             "start": 7046,
-            "title": "Chapter 37"
+            "title": "Chapter 37",
+            "words": 1370
         },
         {
             "characters": 5813,
             "end": 7298,
             "paragraphs": 21,
             "start": 7191,
-            "title": "Chapter 38"
+            "title": "Chapter 38",
+            "words": 1033
         },
         {
             "characters": 8584,
             "end": 7462,
             "paragraphs": 30,
             "start": 7305,
-            "title": "Chapter 39"
+            "title": "Chapter 39",
+            "words": 1623
         },
         {
             "characters": 8984,
             "end": 7647,
             "paragraphs": 39,
             "start": 7469,
-            "title": "Chapter 40"
+            "title": "Chapter 40",
+            "words": 1669
         },
         {
             "characters": 12756,
             "end": 7896,
             "paragraphs": 45,
             "start": 7654,
-            "title": "Chapter 41"
+            "title": "Chapter 41",
+            "words": 2265
         },
         {
             "characters": 10458,
             "end": 8077,
             "paragraphs": 21,
             "start": 7903,
-            "title": "Chapter 42"
+            "title": "Chapter 42",
+            "words": 1824
         },
         {
             "characters": 26964,
             "end": 8584,
             "paragraphs": 81,
             "start": 8084,
-            "title": "Chapter 43"
+            "title": "Chapter 43",
+            "words": 4831
         },
         {
             "characters": 13162,
             "end": 8803,
             "paragraphs": 22,
             "start": 8591,
-            "title": "Chapter 44"
+            "title": "Chapter 44",
+            "words": 2334
         },
         {
             "characters": 9907,
             "end": 8979,
             "paragraphs": 24,
             "start": 8810,
-            "title": "Chapter 45"
+            "title": "Chapter 45",
+            "words": 1726
         },
         {
             "characters": 16588,
             "end": 9264,
             "paragraphs": 33,
             "start": 8986,
-            "title": "Chapter 46"
+            "title": "Chapter 46",
+            "words": 2995
         },
         {
             "characters": 21942,
             "end": 9691,
             "paragraphs": 77,
             "start": 9271,
-            "title": "Chapter 47"
+            "title": "Chapter 47",
+            "words": 4104
         },
         {
             "characters": 12313,
             "end": 9923,
             "paragraphs": 38,
             "start": 9698,
-            "title": "Chapter 48"
+            "title": "Chapter 48",
+            "words": 2249
         },
         {
             "characters": 11981,
             "end": 10182,
             "paragraphs": 61,
             "start": 9930,
-            "title": "Chapter 49"
+            "title": "Chapter 49",
+            "words": 2241
         },
         {
             "characters": 12294,
             "end": 10404,
             "paragraphs": 28,
             "start": 10189,
-            "title": "Chapter 50"
+            "title": "Chapter 50",
+            "words": 2228
         },
         {
             "characters": 11016,
             "end": 10619,
             "paragraphs": 39,
             "start": 10411,
-            "title": "Chapter 51"
+            "title": "Chapter 51",
+            "words": 2074
         },
         {
             "characters": 16283,
             "end": 10940,
             "paragraphs": 57,
             "start": 10626,
-            "title": "Chapter 52"
+            "title": "Chapter 52",
+            "words": 3027
         },
         {
             "characters": 15794,
             "end": 11259,
             "paragraphs": 64,
             "start": 10947,
-            "title": "Chapter 53"
+            "title": "Chapter 53",
+            "words": 2940
         },
         {
             "characters": 8705,
             "end": 11446,
             "paragraphs": 42,
             "start": 11266,
-            "title": "Chapter 54"
+            "title": "Chapter 54",
+            "words": 1625
         },
         {
             "characters": 12724,
             "end": 11714,
             "paragraphs": 58,
             "start": 11453,
-            "title": "Chapter 55"
+            "title": "Chapter 55",
+            "words": 2331
         },
         {
             "characters": 14995,
             "end": 12044,
             "paragraphs": 79,
             "start": 11721,
-            "title": "Chapter 56"
+            "title": "Chapter 56",
+            "words": 2728
         },
         {
             "characters": 9280,
             "end": 12221,
             "paragraphs": 30,
             "start": 12051,
-            "title": "Chapter 57"
+            "title": "Chapter 57",
+            "words": 1683
         },
         {
             "characters": 13393,
             "end": 12489,
             "paragraphs": 50,
             "start": 12228,
-            "title": "Chapter 58"
+            "title": "Chapter 58",
+            "words": 2432
         },
         {
             "characters": 13374,
             "end": 12762,
             "paragraphs": 53,
             "start": 12496,
-            "title": "Chapter 59"
+            "title": "Chapter 59",
+            "words": 2529
         },
         {
             "characters": 8561,
             "end": 12934,
             "paragraphs": 33,
             "start": 12769,
-            "title": "Chapter 60"
+            "title": "Chapter 60",
+            "words": 1588
         },
         {
             "characters": 6952,
             "end": 13061,
             "paragraphs": 19,
             "start": 12941,
-            "title": "Chapter 61"
+            "title": "Chapter 61",
+            "words": 1238
         }
     ],
     "size": 726144

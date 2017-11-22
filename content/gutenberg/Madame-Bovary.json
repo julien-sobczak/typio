@@ -5,245 +5,280 @@
             "end": 497,
             "paragraphs": 83,
             "start": 108,
-            "title": "I"
+            "title": "I",
+            "words": 3448
         },
         {
             "characters": 16751,
             "end": 811,
             "paragraphs": 36,
             "start": 502,
-            "title": "II"
+            "title": "II",
+            "words": 2903
         },
         {
             "characters": 11537,
             "end": 1035,
             "paragraphs": 28,
             "start": 816,
-            "title": "III"
+            "title": "III",
+            "words": 2034
         },
         {
             "characters": 11865,
             "end": 1246,
             "paragraphs": 16,
             "start": 1040,
-            "title": "IV"
+            "title": "IV",
+            "words": 2043
         },
         {
             "characters": 7247,
             "end": 1376,
             "paragraphs": 10,
             "start": 1251,
-            "title": "V"
+            "title": "V",
+            "words": 1245
         },
         {
             "characters": 10951,
             "end": 1573,
             "paragraphs": 15,
             "start": 1381,
-            "title": "VI"
+            "title": "VI",
+            "words": 1792
         },
         {
             "characters": 13192,
             "end": 1829,
             "paragraphs": 31,
             "start": 1578,
-            "title": "VII"
+            "title": "VII",
+            "words": 2220
         },
         {
             "characters": 20387,
             "end": 2247,
             "paragraphs": 66,
             "start": 1834,
-            "title": "VIII"
+            "title": "VIII",
+            "words": 3432
         },
         {
             "characters": 24253,
             "end": 2707,
             "paragraphs": 51,
             "start": 2252,
-            "title": "IX"
+            "title": "IX",
+            "words": 4039
         },
         {
             "characters": 20160,
             "end": 3105,
             "paragraphs": 53,
             "start": 2712,
-            "title": "I"
+            "title": "I",
+            "words": 3475
         },
         {
             "characters": 13036,
             "end": 3388,
             "paragraphs": 50,
             "start": 3110,
-            "title": "II"
+            "title": "II",
+            "words": 2194
         },
         {
             "characters": 22310,
             "end": 3843,
             "paragraphs": 69,
             "start": 3393,
-            "title": "III"
+            "title": "III",
+            "words": 3771
         },
         {
             "characters": 7847,
             "end": 4000,
             "paragraphs": 20,
             "start": 3848,
-            "title": "IV"
+            "title": "IV",
+            "words": 1311
         },
         {
             "characters": 17505,
             "end": 4397,
             "paragraphs": 83,
             "start": 4006,
-            "title": "V"
+            "title": "V",
+            "words": 2953
         },
         {
             "characters": 24509,
             "end": 5018,
             "paragraphs": 156,
             "start": 4402,
-            "title": "VI"
+            "title": "VI",
+            "words": 4154
         },
         {
             "characters": 17023,
             "end": 5396,
             "paragraphs": 77,
             "start": 5023,
-            "title": "VII"
+            "title": "VII",
+            "words": 2846
         },
         {
             "characters": 44876,
             "end": 6411,
             "paragraphs": 199,
             "start": 5401,
-            "title": "VIII"
+            "title": "VIII",
+            "words": 7414
         },
         {
             "characters": 19125,
             "end": 6907,
             "paragraphs": 130,
             "start": 6416,
-            "title": "IX"
+            "title": "IX",
+            "words": 3260
         },
         {
             "characters": 17052,
             "end": 7305,
             "paragraphs": 88,
             "start": 6912,
-            "title": "X"
+            "title": "X",
+            "words": 2870
         },
         {
             "characters": 25481,
             "end": 7832,
             "paragraphs": 84,
             "start": 7310,
-            "title": "XI"
+            "title": "XI",
+            "words": 4173
         },
         {
             "characters": 26065,
             "end": 8470,
             "paragraphs": 154,
             "start": 7837,
-            "title": "XII"
+            "title": "XII",
+            "words": 4377
         },
         {
             "characters": 19133,
             "end": 8921,
             "paragraphs": 102,
             "start": 8475,
-            "title": "XIII"
+            "title": "XIII",
+            "words": 3232
         },
         {
             "characters": 21741,
             "end": 9358,
             "paragraphs": 61,
             "start": 8926,
-            "title": "XIV"
+            "title": "XIV",
+            "words": 3556
         },
         {
             "characters": 17038,
             "end": 9741,
             "paragraphs": 73,
             "start": 9363,
-            "title": "XV"
+            "title": "XV",
+            "words": 2862
         },
         {
             "characters": 27784,
             "end": 10444,
             "paragraphs": 177,
             "start": 9746,
-            "title": "I"
+            "title": "I",
+            "words": 4656
         },
         {
             "characters": 18191,
             "end": 10906,
             "paragraphs": 116,
             "start": 10449,
-            "title": "II"
+            "title": "II",
+            "words": 3046
         },
         {
             "characters": 4106,
             "end": 11009,
             "paragraphs": 25,
             "start": 10911,
-            "title": "III"
+            "title": "III",
+            "words": 697
         },
         {
             "characters": 5588,
             "end": 11153,
             "paragraphs": 39,
             "start": 11014,
-            "title": "IV"
+            "title": "IV",
+            "words": 942
         },
         {
             "characters": 31848,
             "end": 11919,
             "paragraphs": 178,
             "start": 11158,
-            "title": "V"
+            "title": "V",
+            "words": 5356
         },
         {
             "characters": 31401,
             "end": 12703,
             "paragraphs": 198,
             "start": 11924,
-            "title": "VI"
+            "title": "VI",
+            "words": 5275
         },
         {
             "characters": 24601,
             "end": 13355,
             "paragraphs": 178,
             "start": 12708,
-            "title": "VII"
+            "title": "VII",
+            "words": 4153
         },
         {
             "characters": 32745,
             "end": 14208,
             "paragraphs": 221,
             "start": 13360,
-            "title": "VIII"
+            "title": "VIII",
+            "words": 5499
         },
         {
             "characters": 14989,
             "end": 14598,
             "paragraphs": 103,
             "start": 14213,
-            "title": "IX"
+            "title": "IX",
+            "words": 2499
         },
         {
             "characters": 11263,
             "end": 14862,
             "paragraphs": 58,
             "start": 14603,
-            "title": "X"
+            "title": "X",
+            "words": 1908
         },
         {
             "characters": 17588,
             "end": 15244,
             "paragraphs": 70,
             "start": 14867,
-            "title": "XI"
+            "title": "XI",
+            "words": 2901
         }
     ],
     "size": 736055

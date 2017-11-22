@@ -15,10 +15,11 @@
 <dom-module id="typio-catalog">
   <template>
     <style include="shared-styles">
+
       :host {
         display: block;
       }
-
+      
       * {
         box-sizing: border-box;
       }
@@ -31,10 +32,17 @@
         height: 100vh;
         position: relative;
 
-        background-color: #009ee3;
         padding: 50px;
         color: white;
         text-align: center;
+        transition: background-color 1s linear;
+      }
+
+      section.type-code {
+        background-color: #009ee3;
+      }
+      section.type-literature {
+        background-color: #e3004f;
       }
 
       section .content {
@@ -43,75 +51,89 @@
       }
 
 
-       /*
-        * Buttons
-        */
 
-       .buttons {
-         position: absolute;
-         width: 100%;
-         bottom: 10vh;
-         text-align: center;
+      /*
+       * Buttons
+       */
 
-       }
-       #intro .buttons {
-         opacity: 0;
-         transition: opacity 2s linear;
-       }
-       #intro.completed .buttons {
-         opacity: 1;
-       }
-       typio-button {
-         display: inline-block;
-       }
-
-
-       h3 {
-         text-align: center;
-         font-size: 2em;
-         margin-bottom: 50px;
-       }
-       paper-tabs {
-         text-align: center;
-         width: 300px;
-         margin: 0 auto;
-       }
-
-       .type {
-         padding: 20px 20px 40px;
-         margin-left: 25px;
-         margin-right: 25px;
-       }
+      .buttons {
+        position: absolute;
+        width: 100%;
+        bottom: 10vh;
+        text-align: center;
+      }
+      #intro .buttons {
+        opacity: 0;
+        transition: opacity 2s linear;
+      }
+      #intro.completed .buttons {
+        opacity: 1;
+      }
+      typio-button {
+        display: inline-block;
+      }
 
 
-       /* Manage the workflow of the block Code */
-       #typeCode .step {
-         display: none;
-       }
-       #typeCode.step1 .step1 {
-         display: block;
-       }
-       #typeCode.step2 .step2 {
-         display: block;
-       }
+      h3 {
+        text-align: center;
+        font-size: 2em;
+        margin-bottom: 50px;
+      }
+      paper-tabs {
+        text-align: center;
+        width: 300px;
+        margin: 0 auto;
+      }
 
-       /* Manage the workflow of the block Literature */
-       #typeLiterature .step {
-         display: none;
-       }
-       #typeLiterature.step1 .step1 {
-         display: block;
-       }
-       #typeLiterature.step2 .step2 {
-         display: block;
-       }
+      .type {
+        padding: 20px 20px 40px;
+        margin-left: 25px;
+        margin-right: 25px;
+      }
 
+      /* Manage the content selection workflow */
+      .type .step {
+        display: none;
+      }
+      .type.step1 .step1 { display: block; }
+      .type.step2 .step2 { display: block; }
+      .type.step3 .step3 { display: block; }
+      .type.step4 .step4 { display: block; }
+
+
+      /* Selection */
+      .selection {
+        visibility: hidden;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+      .type.step2 .selection,
+      .type.step3 .selection,
+      .type.step4 .selection {
+        visibility: visible;
+      }
+      .selection .entry {
+        display: none;
+        position: relative;
+        font-size: 90%;
+        padding: 10px 20px;
+        padding-right: 0px;
+        background: rgba(0, 0, 0, 0.5);
+        margin-right: 20px;
+      }
+      .type.step2 .selection .entry:nth-child(1) { display: inline-block; }
+      .type.step3 .selection .entry:nth-child(1) { display: inline-block; }
+      .type.step3 .selection .entry:nth-child(2) { display: inline-block; }
+
+      .selection .entry iron-icon {
+        margin-left: 20px;
+      }
 
     </style>
 
     <iron-ajax url="/dataset.json" auto last-response="{{catalog}}"></iron-ajax>
 
-    <section>
+    <section id="catalog">
       <h3>Practice</h3>
 
       <paper-tabs id="typeTabs" attr-for-selected="data-type" selected="[[type]]" on-iron-select="_changedType">
@@ -121,18 +143,40 @@
 
       <div id="typeCode" class$="type type-code step[[stepCode]]" data-step="1">
 
+        <div class="selection">
+            <div class="entry">
+              <a on-click="_goToTypeCodeStep1">
+                [[selectedProgrammingLanguage]]
+                <iron-icon icon="backspace"></iron-icon>
+              </a>
+            </div>
+            <div class="entry">
+              <a on-click="_goToTypeCodeStep2">
+                [[selectedProject]]
+                <iron-icon icon="backspace"></iron-icon>
+              </a>
+            </div>
+        </div>
+
         <div id="typeCodeStep1" class="step step1">
-          <typio-collapsable-radio-group id="programmingLanguages" elements="{{programmingLanguages}}" on-paper-radio-group-changed="_programmingLanguageSelected" show-description="true">
+          <typio-collapsable-radio-group id="programmingLanguages"
+              elements="{{programmingLanguages}}"
+              on-paper-radio-group-changed="_programmingLanguageSelected"
+              show-description="true">
           </typio-collapsable-radio-group>
         </div>
 
         <div id="typeCodeStep2" class="step step2">
-          <typio-collapsable-radio-group id="projects" elements="{{projects}}" on-paper-radio-group-changed="_projectSelected" show-description="true">
+          <typio-collapsable-radio-group id="projects"
+              elements="{{projects}}"
+              on-paper-radio-group-changed="_projectSelected"
+              show-description="true"
+              layout="medium">
           </typio-collapsable-radio-group>
         </div>
 
         <div id="typeCodeStep3" class="step step3">
-
+          ici
         </div>
 
       </div>
@@ -140,12 +184,19 @@
       <div id="typeLiterature" class$="type type-literature step[[stepLiterature]]">
 
         <div id="typeLiteratureStep1" class="step step1">
-          <typio-collapsable-radio-group id="spokenLanguages" elements="{{spokenLanguages}}" on-paper-radio-group-changed="_spokenLanguageSelected" show-description="true">
+          <typio-collapsable-radio-group id="spokenLanguages"
+              elements="{{spokenLanguages}}"
+              on-paper-radio-group-changed="_spokenLanguageSelected"
+              show-description="true">
           </typio-collapsable-radio-group>
         </div>
 
         <div id="typeLiteratureStep2" class="step step2">
-          <typio-collapsable-radio-group id="books" elements="{{books}}" on-paper-radio-group-changed="_bookSelected" show-description="true">
+          <typio-collapsable-radio-group id="books"
+              elements="{{books}}"
+              on-paper-radio-group-changed="_bookSelected"
+              show-description="true"
+              layout="large">
           </typio-collapsable-radio-group>
         </div>
 
@@ -327,6 +378,8 @@
 
       _changedType(e) {
         this.type = this.$.typeTabs.selected;
+        this.$.catalog.classList.remove('type-code', 'type-literature');
+        this.$.catalog.classList.add('type-' + this.type);
         this.$.typeCode.style.display = this.type === 'code' ? "block" : "none";
         this.$.typeLiterature.style.display = this.type === 'literature' ? "block" : "none";
       }
@@ -390,6 +443,25 @@
         // TODO load book metadata
 
         this.stepCode = 3;
+      }
+
+      _goToTypeCodeStep1() {
+        this._resetProgrammingLanguage();
+        this._resetProject();
+        this.stepCode = 1;
+      }
+      _goToTypeCodeStep2() {
+        this._resetProject();
+        this.stepCode = 2;
+      }
+
+      _resetProgrammingLanguage() {
+        this.selectedProgrammingLanguage = null;
+        this.$.programmingLanguages.selected = null;
+      }
+      _resetProject() {
+        this.selectedProject = null;
+        this.$.projects.selected = null;
       }
 
     }

@@ -10,6 +10,7 @@
 <link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-button.html">
 <link rel="import" href="/src/typio-app/typio-code-editor.html">
+<link rel="import" href="/src/typio-app/typio-collapsable-radio-group.html">
 
 <dom-module id="typio-catalog">
   <template>
@@ -75,46 +76,36 @@
          width: 300px;
          margin: 0 auto;
        }
+
        .type {
          padding: 20px 20px 40px;
          margin-left: 25px;
          margin-right: 25px;
        }
-       .count {
-         display: inline-block;
-         text-align: center;
-         color: white;
-         background-color: rgba(0, 0, 0, 0.5);
-         border-radius: 4px;
-         font-size: 0.7em;
-         padding: 0.3em 0.4em;
-         margin-top: 5px;
+
+
+       /* Manage the workflow of the block Code */
+       #typeCode .step {
+         display: none;
+       }
+       #typeCode.step1 .step1 {
+         display: block;
+       }
+       #typeCode.step2 .step2 {
+         display: block;
        }
 
-       paper-radio-group {
-         display: inline;
+       /* Manage the workflow of the block Literature */
+       #typeLiterature .step {
+         display: none;
        }
-       .type a {
-         margin: 25px;
-         font-weight: bold;
-         font-size: 110%;
-         color: white !important;
+       #typeLiterature.step1 .step1 {
+         display: block;
        }
-       .type a iron-icon {
-         margin-right: 10px;
+       #typeLiterature.step2 .step2 {
+         display: block;
        }
-       .type paper-radio-button, .type a {
-         text-align: left;
-         width: 115px;
-         font-size: 14px;
-         margin: 10px 10px;
-       }
-       paper-radio-group paper-radio-button {
-         background-color: rgba(255, 255, 255, 0.2);
-       }
-       paper-radio-button:hover {
-         background-color: rgba(0, 0, 0, 0.2);
-       }
+
 
     </style>
 
@@ -128,37 +119,40 @@
         <paper-tab data-type="literature">Literature</paper-tab>
       </paper-tabs>
 
-      <div id="typeCode" class="type type-code" data-step="1">
+      <div id="typeCode" class$="type type-code step[[stepCode]]" data-step="1">
 
-        <div id="typeCodeStep1">
-          <paper-radio-group>
-          <template id="programmingLanguagesList" is="dom-repeat" items="{{programmingLanguages}}" filter="_filterProjects">
-            <paper-radio-button class="catalog-entry" name="[[item.0]]">[[item.0]] <br><span class="count">[[item.1]] projects</span></paper-radio-button>
-          </template>
-          </paper-radio-group>
-          <template is="dom-if" if="{{showAllProgrammingLanguages}}">
-            <a on-click="_unselectAllProgrammingLanguages">
-              <iron-icon icon="remove-circle"></iron-icon> Less
-            </a>
-          </template>
-          <template is="dom-if" id="typeLiterature" if="{{!showAllProgrammingLanguages}}">
-            <a on-click="_selectAllProgrammingLanguages">
-              <iron-icon icon="add-circle"></iron-icon> More
-            </a>
-          </template>
+        <div id="typeCodeStep1" class="step step1">
+          <typio-collapsable-radio-group id="programmingLanguages" elements="{{programmingLanguages}}" on-paper-radio-group-changed="_programmingLanguageSelected" show-description="true">
+          </typio-collapsable-radio-group>
         </div>
 
-        <div id="typeCodeStep2">
+        <div id="typeCodeStep2" class="step step2">
+          <typio-collapsable-radio-group id="projects" elements="{{projects}}" on-paper-radio-group-changed="_projectSelected" show-description="true">
+          </typio-collapsable-radio-group>
+        </div>
+
+        <div id="typeCodeStep3" class="step step3">
+
         </div>
 
       </div>
 
-      <div id="typeLiterature" class="type type-roman">
-        <paper-radio-group>
-        <template is="dom-repeat" items="{{spokenLanguages}}">
-          <paper-radio-button class="catalog-entry" name="[[item.0]]">[[item.0]] <br><span class="count">[[item.1]] books</span></paper-radio-button>
-        </template>
-        </paper-radio-group>
+      <div id="typeLiterature" class$="type type-literature step[[stepLiterature]]">
+
+        <div id="typeLiteratureStep1" class="step step1">
+          <typio-collapsable-radio-group id="spokenLanguages" elements="{{spokenLanguages}}" on-paper-radio-group-changed="_spokenLanguageSelected" show-description="true">
+          </typio-collapsable-radio-group>
+        </div>
+
+        <div id="typeLiteratureStep2" class="step step2">
+          <typio-collapsable-radio-group id="books" elements="{{books}}" on-paper-radio-group-changed="_bookSelected" show-description="true">
+          </typio-collapsable-radio-group>
+        </div>
+
+        <div id="typeLiteratureStep3" class="step step3">
+
+        </div>
+
       </div>
 
       <div class="buttons">
@@ -175,6 +169,7 @@
      * @polymer
      */
     class TypioCatalog extends Polymer.Element {
+
       static get is() { return 'typio-catalog'; }
       static get properties() {
         return {
@@ -186,9 +181,28 @@
             observer: '_onLoadCatalog'
           },
 
+          /*
+           * Which type is selected (Code, Literature, ...)
+           */
           type: {
             type: String,
             value: 'code'
+          },
+
+          /*
+           * Current step in the code selection workflow.
+           */
+          stepCode: {
+            type: Number,
+            value: 1
+          },
+
+          /*
+           * Current step in the literature selection workflow.
+           */
+          stepLiterature: {
+            type: Number,
+            value: 1
           },
 
           /*
@@ -200,6 +214,28 @@
           },
 
           /*
+           * The selected language among the 'programmingLanguages' list
+           */
+          selectedProgrammingLanguage: {
+            type: String
+          },
+
+          /*
+           * Sorted list of Github projects present in `catalog`.
+           */
+          projects: {
+            type: Array,
+            value: []
+          },
+
+          /*
+           * The selected project among the 'projects' list
+           */
+          selectedProject: {
+            type: String
+          },
+
+          /*
            * Sorted list of spoken languages present in `catalog`.
            */
           spokenLanguages: {
@@ -207,71 +243,153 @@
             value: []
           },
 
-          showAllProgrammingLanguages: {
-            type: Boolean,
-            value: false
+          /*
+           * The selected language among the 'spokenLanguages' list
+           */
+          selectedSpokenLanguage: {
+            type: String
           },
 
-          showAllSpokenLanguages: {
-            type: Boolean,
-            value: false
+          /*
+           * Sorted list of books present in `catalog`.
+           */
+          books: {
+            type: Array,
+            value: []
           },
 
-          showAllProjects: {
-            type: Boolean,
-            value: false
-          },
-          showAllBooks: {
-            type: Boolean,
-            value: false
+          /*
+           * The selected book among the 'books' list
+           */
+          selectedBook: {
+            type: String
           }
 
         };
       }
 
       _onLoadCatalog() {
-        let newProgrammingLanguages = new Map();
-        let newSpokenLanguages = new Map();
+        if (!this.catalog) return;
+
+        let newProgrammingLanguages = new Array();
+        let newSpokenLanguages = new Array();
+
         this.catalog.forEach(entry => {
+
           if (entry.origin === 'github') {
-            if (newProgrammingLanguages.has(entry.language)) {
-              newProgrammingLanguages.set(entry.language, newProgrammingLanguages.get(entry.language) + 1);
-            } else {
-              newProgrammingLanguages.set(entry.language, 1);
+            let found = false;
+            for (let i = 0; i < newProgrammingLanguages.length; i++) {
+              if (newProgrammingLanguages[i].key == entry.language) {
+                let programmingLanguage = newProgrammingLanguages[i];
+                found = true;
+                programmingLanguage.count++;
+                programmingLanguage.description = programmingLanguage.count + ' projects';
+                break;
+              }
             }
-          } else if (entry.origin === 'gutenberg') {
-            if (newSpokenLanguages.has(entry.language)) {
-              newSpokenLanguages.set(entry.language, newSpokenLanguages.get(entry.language) + 1);
-            } else {
-              newSpokenLanguages.set(entry.language, 1);
+            if (!found) {
+              newProgrammingLanguages.push({
+                'key': entry.language,
+                'name': entry.language,
+                'count': 1,
+                'description': '1 project'
+              });
+            }
+          }
+
+          if (entry.origin === 'gutenberg') {
+            let found = false;
+            for (let i = 0; i < newSpokenLanguages.length; i++) {
+              let spokenLanguage = newSpokenLanguages[i];
+              if (spokenLanguage.key == entry.language) {
+                found = true;
+                spokenLanguage.count++;
+                spokenLanguage.description = spokenLanguage.count + ' books';
+                break;
+              }
+            }
+            if (!found) {
+              newSpokenLanguages.push({
+                'key': entry.language,
+                'name': entry.language,
+                'count': 1,
+                'description': '1 book'
+              });
             }
           }
         });
-        this.programmingLanguages = Array.from(new Map([...newProgrammingLanguages.entries()].sort((a,b) => a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0)).entries());
-        this.spokenLanguages = Array.from(new Map([...newSpokenLanguages.entries()].sort((a,b) => a[1] > b[1] ? -1 : a[1] < b[1] ? 1 : 0)).entries());
+
+        this.programmingLanguages = newProgrammingLanguages.sort((a,b) => a.count > b.count ? -1 : a.count < b.count ? 1 : 0);
+        this.spokenLanguages = newSpokenLanguages.sort((a,b) => a.count > b.count ? -1 : a.count < b.count ? 1 : 0);
       }
 
-      _filterProjects(item) {
-        if (this.showAllProgrammingLanguages) {
-          return true;
-        }
-        const index = this.programmingLanguages.indexOf(item);
-        return index < 5;
-      }
-
-      _selectAllProgrammingLanguages() {
-        this.showAllProgrammingLanguages = true;
-        this.$.programmingLanguagesList.render();
-      }
-      _unselectAllProgrammingLanguages() {
-        this.showAllProgrammingLanguages = false;
-        this.$.programmingLanguagesList.render();
-      }
+      /* Tabs */
 
       _changedType(e) {
         this.type = this.$.typeTabs.selected;
         this.$.typeCode.style.display = this.type === 'code' ? "block" : "none";
         this.$.typeLiterature.style.display = this.type === 'literature' ? "block" : "none";
+      }
+
+
+      /* Tab Code */
+
+      _programmingLanguageSelected(value) {
+        this.selectedProgrammingLanguage = this.$.programmingLanguages.selected;
+
+        // Search Github projects matching the selected language
+        let newProjects = new Array();
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'github' && entry.language == this.selectedProgrammingLanguage) {
+            newProjects.push({
+              'key': entry.name,
+              'name': entry.name,
+              'description': entry.url.replace('https://github.com/', '')
+            });
+          }
+        });
+        // Sort by project name
+        this.projects = newProjects.sort((a,b) => a.name.localeCompare(b.name));
+
+        this.stepCode = 2;
+      }
+
+      _projectSelected(value) {
+        this.selectedProject = this.$.projects.selected;
+
+        // TODO load book metadata
+
+        this.stepCode = 3;
+      }
+
+      /* Tab Literature */
+
+      _spokenLanguageSelected(value) {
+        this.selectedSpokenLanguage = this.$.spokenLanguages.selected;
+
+        // Search gutenberg books matching the selected language
+        let newBooks = new Array();
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'gutenberg' && entry.language == this.selectedSpokenLanguage) {
+            newBooks.push({
+              'key': entry.title,
+              'name': entry.title,
+              'description': entry.author
+            });
+          }
+        });
+        // Sort by book title
+        this.books = newBooks.sort((a,b) => a.name.localeCompare(b.name));
+
+        this.stepLiterature = 2;
+      }
+
+      _bookSelected(value) {
+        this.selectedBook = this.$.books.selected;
+
+        // TODO load book metadata
+
+        this.stepCode = 3;
       }
 
     }

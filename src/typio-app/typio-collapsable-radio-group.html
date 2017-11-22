@@ -1,0 +1,162 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+<dom-module id="typio-collapsable-radio-group">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+     paper-radio-group {
+       display: inline;
+     }
+     a {
+       margin: 25px;
+       font-weight: bold;
+       font-size: 110%;
+       color: white !important;
+     }
+     a iron-icon {
+       margin-right: 10px;
+     }
+     paper-radio-button, a {
+       text-align: left;
+       width: 115px;
+       font-size: 14px;
+       margin: 10px 10px;
+     }
+     paper-radio-group paper-radio-button {
+       background-color: rgba(255, 255, 255, 0.2);
+     }
+     paper-radio-button:hover {
+       background-color: rgba(0, 0, 0, 0.2);
+     }
+     .description {
+       display: inline-block;
+       text-align: center;
+       color: white;
+       background-color: rgba(0, 0, 0, 0.5);
+       border-radius: 4px;
+       font-size: 0.7em;
+       padding: 0.3em 0.4em;
+       margin-top: 5px;
+     }
+
+     /* Support expand/collapse on paper-radio-group using the CSS classes 'more-true'/'more-false' */
+
+     .collapsable paper-radio-button {
+       display: none;
+     }
+     .collapsable.more-true .less {
+       display: inline-block;
+     }
+     .collapsable.more-true .more {
+       display: none;
+     }
+     .collapsable.more-false .more {
+       display: inline-block;
+     }
+     .collapsable.more-false .less {
+       display: none;
+     }
+     .collapsable.more-true paper-radio-button {
+       display: inline-block;
+     }
+     .collapsable.more-false paper-radio-group paper-radio-button:nth-child(1),
+     .collapsable.more-false paper-radio-group paper-radio-button:nth-child(2),
+     .collapsable.more-false paper-radio-group paper-radio-button:nth-child(3),
+     .collapsable.more-false paper-radio-group paper-radio-button:nth-child(4),
+     .collapsable.more-false paper-radio-group paper-radio-button:nth-child(5) {
+       display: inline-block;
+     }
+
+
+    </style>
+
+      <div class$="collapsable more-[[showAll]]">
+        <paper-radio-group id="elements" on-paper-radio-group-changed="_radioSelected">
+          <template is="dom-repeat" items="{{elements}}">
+            <paper-radio-button class$="catalog-entry" name="[[item.key]]">
+              [[item.name]]<br>
+              <template is="dom-if" if="{{showDescription}}">
+                <span class="description">[[item.description]]</span>
+              </template>
+            </paper-radio-button>
+          </template>
+        </paper-radio-group>
+        <a class="less" on-click="_unselectAll">
+          <iron-icon icon="remove-circle"></iron-icon> Less
+        </a>
+        <a class="more" on-click="_selectAll">
+          <iron-icon icon="add-circle"></iron-icon> More
+        </a>
+      </div>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioCollapsableRadioGroup extends Polymer.Element {
+
+      static get is() { return 'typio-collapsable-radio-group'; }
+      static get properties() {
+        return {
+          /*
+           * The list of elements.
+           */
+          elements: {
+            type: Array
+          },
+
+          /*
+           * Mirror of the 'selected' property of the underlying 'paper-radio-group' element.
+           */
+          selected: {
+            type: String
+          },
+
+          showDescription: {
+            type: Boolean,
+            value: false
+          },
+
+          /*
+           * Boolean to mark if the list should be expanded.
+           */
+          showAll: {
+            type: Boolean,
+            value: false
+          }
+        };
+      }
+
+      _selectAll() {
+        this.showAll = true;
+      }
+      _unselectAll() {
+        this.showAll = false;
+      }
+
+      _radioSelected(value) {
+        this.selected = this.$.elements.selected;
+      }
+
+
+    }
+
+    window.customElements.define(TypioCollapsableRadioGroup.is, TypioCollapsableRadioGroup);
+  </script>
+</dom-module>

@@ -9,8 +9,11 @@
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-button.html">
-<link rel="import" href="/src/typio-app/typio-code-editor.html">
 <link rel="import" href="/src/typio-app/typio-collapsable-radio-group.html">
+<link rel="import" href="/src/typio-app/typio-project-input.html">
+<link rel="import" href="/src/typio-app/typio-book-input.html">
+<link rel="import" href="/src/typio-app/typio-loader.html">
+<link rel="import" href="/src/typio-app/typio-code-editor.html">
 
 <dom-module id="typio-catalog">
   <template>
@@ -19,7 +22,7 @@
       :host {
         display: block;
       }
-      
+
       * {
         box-sizing: border-box;
       }
@@ -50,7 +53,21 @@
         vertical-align: middle;
       }
 
-
+      /* TODO extract into typio-notice-text */
+      .notice {
+        font-size: 2em;
+        font-weight: bold;
+        animation: blink-animation 2.4s linear infinite;
+      }
+      .notice b {
+        font-style: italic;
+        font-weight: normal;
+      }
+      @keyframes blink-animation {
+        0%, 30% { opacity: 100; }
+        50% { opacity: 0; }
+        70%, 100% { opacity: 100; }
+      }
 
       /*
        * Buttons
@@ -95,6 +112,7 @@
       .type .step {
         display: none;
       }
+      .type.step0 .step0 { display: block; }
       .type.step1 .step1 { display: block; }
       .type.step2 .step2 { display: block; }
       .type.step3 .step3 { display: block; }
@@ -107,6 +125,7 @@
         margin-top: 20px;
         margin-bottom: 20px;
       }
+
       .type.step2 .selection,
       .type.step3 .selection,
       .type.step4 .selection {
@@ -127,11 +146,13 @@
 
       .selection .entry iron-icon {
         margin-left: 20px;
+        margin-right: 20px;
       }
 
     </style>
 
     <iron-ajax url="/dataset.json" auto last-response="{{catalog}}"></iron-ajax>
+    <iron-ajax id="xhr" auto url="{{_url}}" handle-as="json" on-response="onMetadataLoaded"></iron-ajax>
 
     <section id="catalog">
       <h3>Practice</h3>
@@ -144,21 +165,21 @@
       <div id="typeCode" class$="type type-code step[[stepCode]]" data-step="1">
 
         <div class="selection">
-            <div class="entry">
-              <a on-click="_goToTypeCodeStep1">
-                [[selectedProgrammingLanguage]]
-                <iron-icon icon="backspace"></iron-icon>
-              </a>
-            </div>
-            <div class="entry">
-              <a on-click="_goToTypeCodeStep2">
-                [[selectedProject]]
-                <iron-icon icon="backspace"></iron-icon>
-              </a>
-            </div>
+          <div class="entry">
+            <a on-click="_goToTypeCodeStep1">
+              [[selectedProgrammingLanguage]]
+              <iron-icon icon="backspace"></iron-icon>
+            </a>
+          </div>
+          <div class="entry">
+            <a on-click="_goToTypeCodeStep2">
+              [[selectedProject]]
+              <iron-icon icon="backspace"></iron-icon>
+            </a>
+          </div>
         </div>
 
-        <div id="typeCodeStep1" class="step step1">
+        <div class="step step1">
           <typio-collapsable-radio-group id="programmingLanguages"
               elements="{{programmingLanguages}}"
               on-paper-radio-group-changed="_programmingLanguageSelected"
@@ -166,7 +187,7 @@
           </typio-collapsable-radio-group>
         </div>
 
-        <div id="typeCodeStep2" class="step step2">
+        <div class="step step2">
           <typio-collapsable-radio-group id="projects"
               elements="{{projects}}"
               on-paper-radio-group-changed="_projectSelected"
@@ -175,15 +196,37 @@
           </typio-collapsable-radio-group>
         </div>
 
-        <div id="typeCodeStep3" class="step step3">
-          ici
+        <div class="step step3">
+          <typio-project-input id="project"
+              metadata="{{projectMetadata}}"
+              on-file-selected="_fileSelected">
+        </div>
+
+        <div class="step step4">
+          <p class="notice">Downloading the file <b>[[selectedFile]]</b>...</p>
         </div>
 
       </div>
 
       <div id="typeLiterature" class$="type type-literature step[[stepLiterature]]">
 
-        <div id="typeLiteratureStep1" class="step step1">
+
+        <div class="selection">
+          <div class="entry">
+            <a on-click="_goToTypeLiteratureStep1">
+              [[selectedSpokenLanguage]]
+              <iron-icon icon="backspace"></iron-icon>
+            </a>
+          </div>
+          <div class="entry">
+            <a on-click="_goToTypeLiteratureStep2">
+              [[selectedBook]]
+              <iron-icon icon="backspace"></iron-icon>
+            </a>
+          </div>
+        </div>
+
+        <div class="step step1">
           <typio-collapsable-radio-group id="spokenLanguages"
               elements="{{spokenLanguages}}"
               on-paper-radio-group-changed="_spokenLanguageSelected"
@@ -191,7 +234,7 @@
           </typio-collapsable-radio-group>
         </div>
 
-        <div id="typeLiteratureStep2" class="step step2">
+        <div class="step step2">
           <typio-collapsable-radio-group id="books"
               elements="{{books}}"
               on-paper-radio-group-changed="_bookSelected"
@@ -200,15 +243,22 @@
           </typio-collapsable-radio-group>
         </div>
 
-        <div id="typeLiteratureStep3" class="step step3">
+        <div class="step step3">
+          <typio-book-input id="book"
+              metadata="{{bookMetadata}}"
+              on-chapter-selected="_chapterSelected">
+          </typio-book-input>
+        </div>
 
+        <div class="step step4">
+          <p class="notice">Downloading the book <b>[[selectedBook]]</b>...</p>
         </div>
 
       </div>
 
-      <div class="buttons">
-        <a href="/#catalog"><typio-button light>Go!</typio-button></a>
-      </div>
+      <template is="dom-if" if="{{isLoading}}">
+        <typio-loader></typio-loader>
+      </template>
 
     </section>
 
@@ -314,6 +364,32 @@
            */
           selectedBook: {
             type: String
+          },
+
+          /*
+           * URL to download the content
+           */
+          _url: {
+            type: String,
+            value: null
+          },
+
+          /*
+           * JSON descripting a Github project.
+           * See /content/github/*.json for examples.
+           */
+          projectMetadata: {
+            type: Object,
+            value: null // will be loaded once the user select a Github project
+          },
+
+          /*
+           * JSON descripting a Gutenberg book.
+           * See /content/gutenberg/*.json for examples.
+           */
+          bookMetadata: {
+            type: Object,
+            value: null // will be loaded once the user select a Gutenberg book
           }
 
         };
@@ -410,9 +486,16 @@
       _projectSelected(value) {
         this.selectedProject = this.$.projects.selected;
 
-        // TODO load book metadata
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'github' && entry.name == this.selectedProject) {
+            let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
+            let commit = entry.commit
+            let slug = organization + '_' + project + '_' + commit
+            this._url = '/content/github/' + this._slug(slug) + '.json'
+            this.isLoading = true;
+          }
+        });
 
-        this.stepCode = 3;
       }
 
       /* Tab Literature */
@@ -440,10 +523,20 @@
       _bookSelected(value) {
         this.selectedBook = this.$.books.selected;
 
-        // TODO load book metadata
-
-        this.stepCode = 3;
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
+            this._url = '/content/gutenberg/' + this._slug(entry.title) + '.json'
+            this.isLoading = true;
+          }
+        });
       }
+
+      _slug(text) {
+        // TODO insert slug into dataset.json directly!
+        let slug = text.replace(/\s/g, '-').replace(/'/g, '');
+        return slug;
+      }
+
 
       _goToTypeCodeStep1() {
         this._resetProgrammingLanguage();
@@ -454,6 +547,15 @@
         this._resetProject();
         this.stepCode = 2;
       }
+      _goToTypeLiteratureStep1() {
+        this._resetSpokenLanguage();
+        this._resetBook();
+        this.stepLiterature = 1;
+      }
+      _goToTypeLiteratureStep2() {
+        this._resetBook();
+        this.stepLiterature = 2;
+      }
 
       _resetProgrammingLanguage() {
         this.selectedProgrammingLanguage = null;
@@ -462,6 +564,41 @@
       _resetProject() {
         this.selectedProject = null;
         this.$.projects.selected = null;
+      }
+      _resetSpokenLanguage() {
+        this.selectedSpokenLanguage = null;
+        this.$.spokenLanguages.selected = null;
+      }
+      _resetBook() {
+        this.selectedBook = null;
+        this.$.books.selected = null;
+      }
+
+      /* Metadata */
+      onMetadataLoaded(e, data) {
+        const metadata = data.response;
+        setTimeout(() => {
+        this.isLoading = false;
+        if (this.type === 'code') {
+          this.projectMetadata = metadata;
+          this.stepCode = 3;
+        } else if (this.type === 'literature') {
+          this.bookMetadata = metadata;
+          this.stepLiterature = 3;
+        }
+      }, 3000);
+      }
+
+      _chapterSelected(e) {
+        console.log('on-chapter-selected', e);
+        this.stepLiterature = 4;
+        this.isLoading = true;
+      }
+
+      _fileSelected(e) {
+        console.log('on-file-selected', e);
+        this.stepCode = 4;
+        this.isLoading = true;
       }
 
     }

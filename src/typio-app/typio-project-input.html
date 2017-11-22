@@ -1,0 +1,111 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/paper-range-slider/paper-range-slider.html">
+
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+
+<dom-module id="typio-project-input">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+        display: block;
+        width: 700px;
+        padding: 20px;
+        margin: 0 auto;
+        text-align: left;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      ul {
+        list-style-type: none;
+      }
+
+      li {
+        border-top: 1px solid transparent;
+        border-bottom: 1px solid transparent;
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+
+      li .words {
+        float: right;
+        font-style: italic;
+      }
+
+      li iron-icon {
+        margin-right: 15px;
+      }
+
+      li:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-top: 1px solid white;
+        border-bottom: 1px solid white;
+      }
+
+
+    </style>
+
+    <ul id="files">
+      <template is="dom-repeat" items="{{files}}">
+        <li>
+          <a on-click="_fileSelected">[[item.path]] <span class="words">[[item.lines]] lines</span></a>
+        </li>
+      </template>
+    </ul>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioProjectInput extends Polymer.Element {
+
+      static get is() { return 'typio-project-input'; }
+      static get properties() {
+        return {
+          /*
+           * JSON representing the metadata of a given project.
+           */
+          metadata: {
+            type: Object,
+            observer: '_metadataChanged'
+          },
+
+          // TODO rework
+          files: {
+            type: Array,
+            value: []
+          }
+
+        };
+      }
+
+      _metadataChanged() {
+        if (!this.metadata) return;
+        this.files = this.metadata.files;
+      }
+
+      _fileSelected(e) {
+        let index = e.model.index;
+      }
+
+      _done() {
+        let detail = {
+          filename: this.filename
+        };
+        this.dispatchEvent(new CustomEvent('file-selected', {detail: detail, bubbles: true, composed: true}));
+      }
+
+    }
+
+    window.customElements.define(TypioProjectInput.is, TypioProjectInput);
+  </script>
+</dom-module>

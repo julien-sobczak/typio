@@ -152,7 +152,8 @@
     </style>
 
     <iron-ajax url="/dataset.json" auto last-response="{{catalog}}"></iron-ajax>
-    <iron-ajax id="xhr" auto url="{{_url}}" handle-as="json" on-response="onMetadataLoaded"></iron-ajax>
+    <iron-ajax auto url="{{_urlMetadata}}" handle-as="json" on-response="_onMetadataLoaded"></iron-ajax>
+    <iron-ajax auto url="{{_urlContent}}" handle-as="text" on-response="_onContentLoaded"></iron-ajax>
 
     <section id="catalog">
       <h3>Practice</h3>
@@ -203,7 +204,7 @@
         </div>
 
         <div class="step step4">
-          <p class="notice">Downloading the file <b>[[selectedFile]]</b>...</p>
+          <p class="notice">Downloading the file <b>[[_fileSelected]]</b>...</p>
         </div>
 
       </div>
@@ -367,9 +368,17 @@
           },
 
           /*
-           * URL to download the content
+           * URL to download the metadata
            */
-          _url: {
+          _urlMetadata: {
+            type: String,
+            value: null
+          },
+
+          /*
+           * URL to download the content.
+           */
+          _urlContent: {
             type: String,
             value: null
           },
@@ -491,7 +500,7 @@
             let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
             let commit = entry.commit
             let slug = organization + '_' + project + '_' + commit
-            this._url = '/content/github/' + this._slug(slug) + '.json'
+            this._urlMetadata = '/content/github/' + this._slug(slug) + '.json'
             this.isLoading = true;
           }
         });
@@ -525,7 +534,7 @@
 
         this.catalog.forEach(entry => {
           if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
-            this._url = '/content/gutenberg/' + this._slug(entry.title) + '.json'
+            this._urlMetadata = '/content/gutenberg/' + this._slug(entry.title) + '.json'
             this.isLoading = true;
           }
         });
@@ -575,9 +584,8 @@
       }
 
       /* Metadata */
-      onMetadataLoaded(e, data) {
+      _onMetadataLoaded(e, data) {
         const metadata = data.response;
-        setTimeout(() => {
         this.isLoading = false;
         if (this.type === 'code') {
           this.projectMetadata = metadata;
@@ -586,19 +594,47 @@
           this.bookMetadata = metadata;
           this.stepLiterature = 3;
         }
-      }, 3000);
+      }
+
+      _onContentLoaded(e, data) {
+        const content = data.response;
+        this.isLoading = false;
+        if (this.type === 'code') {
+          console.log(content.substring(0, 100) + '...');
+          this.stepCode = 5;
+        } else if (this.type === 'literature') {
+          console.log(content.substring(0, 100) + '...');
+          this.stepLiterature = 5;
+        }
       }
 
       _chapterSelected(e) {
-        console.log('on-chapter-selected', e);
-        this.stepLiterature = 4;
-        this.isLoading = true;
+        this._chapterSelected = e.detail.chapterTitle;
+
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
+            this._urlContent = '/content/gutenberg/' + this._slug(entry.title) + '.txt'
+            this.isLoading = true;
+            this.stepLiterature = 4;
+          }
+        });
+
       }
 
       _fileSelected(e) {
-        console.log('on-file-selected', e);
-        this.stepCode = 4;
-        this.isLoading = true;
+        this._fileSelected = e.detail.filename;
+
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'github' && entry.name == this.selectedProject) {
+            let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
+            let commit = entry.commit
+            let slug = organization + '_' + project + '_' + commit
+            this._urlContent = '/content/github/' + this._slug(slug) + this._fileSelected;
+            this.isLoading = true;
+            this.stepCode = 4;
+          }
+        });
+
       }
 
     }

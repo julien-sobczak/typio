@@ -15,7 +15,9 @@
     "paper-radio-button": "PolymerElements/paper-radio-button#^2.0.0",
     "iron-icons": "PolymerElements/iron-icons#^2.0.1",
     "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
-    "paper-range-slider": "IftachSadeh/paper-range-slider#^1.0.2"
+    "paper-range-slider": "IftachSadeh/paper-range-slider#^1.0.2",
+    "iron-selector": "PolymerElements/iron-selector#^2.0.1",
+    "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.1"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",

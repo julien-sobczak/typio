@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-range-slider/paper-range-slider.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
@@ -12,49 +14,125 @@
 
       :host {
         display: block;
-        width: 700px;
+        width: 800px;
         padding: 20px;
         margin: 0 auto;
-        text-align: left;
+        text-align: center;
       }
 
       * {
         box-sizing: border-box;
       }
 
-      ul {
-        list-style-type: none;
+      a {
+        cursor: pointer;
       }
 
-      li {
+      /* Filtering */
+
+      paper-checkbox {
+        --paper-checkbox-vertical-align: top;
+        --paper-checkbox-checked-color: var(--paper-orange-500);
+        --paper-checkbox-checked-ink-color: var(--paper-orange-500);
+        --paper-checkbox-unchecked-color: var(--paper-orange-900);
+        --paper-checkbox-unchecked-ink-color: var(--paper-orange-900);
+        margin-left: 15px;
+        margin-right: 15px;
+      }
+      paper-checkbox .count {
+        display: block;
+        margin-top: 2px;
+        width: 40px;
+        text-align: center;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 4px;
+        font-size: 0.7em;
+        padding: 0.3em 0.4em;
+      }
+
+      /* Traverse the file hierarchy */
+
+      ul#navigation {
+        list-style-type: none;
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      ul#navigation li {
+        display: inline-block;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        margin-right: 20px;
+      }
+      ul#navigation li:after {
+        content: '/';
+        color: white;
+        font-weight: bold;
+        font-size: 1.5em;
+        margin-left: 15px;
+      }
+
+      ul#directories, ul#files {
+        list-style-type: none;
+        margin-top: 0;
+        margin-bottom: 0;
+        text-align: left;
+      }
+
+      ul#directories li, ul#files li {
         border-top: 1px solid transparent;
         border-bottom: 1px solid transparent;
         padding-top: 15px;
         padding-bottom: 15px;
       }
 
-      li .words {
+      ul#files li .lines {
         float: right;
         font-style: italic;
       }
 
-      li iron-icon {
+      ul#directories li iron-icon,
+      ul#files li iron-icon {
         margin-right: 15px;
       }
 
-      li:hover {
+      ul#directories li:hover,
+      ul#files li:hover {
         background-color: rgba(255, 255, 255, 0.2);
         border-top: 1px solid white;
         border-bottom: 1px solid white;
       }
 
-
     </style>
 
-    <ul id="files">
-      <template is="dom-repeat" items="{{files}}">
+    <iron-selector id="extensionSelection" attr-for-selected="name" multi selected-attribute="checked">
+      <template is="dom-repeat" items="{{_extensions}}">
+        <paper-checkbox name="{{item.extension}}">*.{{item.extension}} <span class="count">({{item.count}})</span></paper-checkbox>
+      </template>
+    </iron-selector>
+
+
+    <ul id="navigation">
+      <template is="dom-repeat" items="{{_ancestors}}">
         <li>
-          <a on-click="_fileSelected">[[item.path]] <span class="words">[[item.lines]] lines</span></a>
+          <a on-click="_selectAncestor">{{item}}</a>
+        </li>
+      </template>
+    </ul>
+
+    <ul id="directories">
+      <template is="dom-repeat" items="{{_directories}}">
+        <li>
+          <iron-icon icon="folder"></iron-icon> <a on-click="_selectDirectory">{{item.name}}/</a>
+        </li>
+      </template>
+    </ul>
+
+    <ul id="files">
+      <template is="dom-repeat" items="{{_files}}">
+        <li>
+          <a on-click="_selectFile">[[item.name]] <span class="lines">[[item.lines]] lines</span></a>
         </li>
       </template>
     </ul>
@@ -73,33 +151,263 @@
         return {
           /*
            * JSON representing the metadata of a given project.
+           *
+           * All information comes from this property.
            */
           metadata: {
             type: Object,
             observer: '_metadataChanged'
           },
 
-          // TODO rework
-          files: {
+          /*
+           * Group files per directory to make traversal easy.
+           *
+           * Keys are folder directory. (Ex: /src/main/java)
+           * Values are object containing two array properties 'directories' and 'files'.
+           *
+           * Ex:
+           * {
+           *   "/": {
+           *     "directories": [
+           *       { "name": "src" }
+           *     ],
+           *     "files": [
+           *       { "name": "README.md", "extension": "md", "lines": 475 }
+           *     ]
+           *   },
+           *   "/src/": {
+           *     "directories": [
+           *       { "name": "main" }
+           *     ],
+           *     "files": []
+           *     ]
+           *   }
+           *   "/src/main/": {
+           *     "directories": [
+           *       { "name": "java" }
+           *     ],
+           *     "files": []
+           *     ]
+           *   }
+           *   "/src/main/java": {
+           *     "directories": [],
+           *     "files": [
+           *       { "name": "Main.java", "extension": "java", "lines": 787 }
+           *     ]
+           *   }
+           * }
+           */
+          _filesPerDirectory: {
+            type: Map,
+            value: new Map()
+          },
+
+          /*
+           * List of file extensions present in the project.
+           */
+          _extensions: {
+            type: Array,
+            value: []
+          },
+
+          /*
+           * List the common extensions for each language.
+           * This is used to precheck extensions according the main
+           * language of the project.
+           */
+          extensionsPerLanguage: {
+            type: Map,
+            value: new Map([
+              ["Java", ['java']],
+              ["C",    ['c', 'h']]
+            ])
+          },
+
+
+          /*
+           * The parent directories.
+           * Used to create links to jump directly to these directories.
+           *
+           * Ex: ['src', 'main', 'java']
+           */
+          _ancestors: {
+            type: Array,
+            value: []
+          },
+
+          /*
+           * The subdirectories of the current directory.
+           *
+           * The structure follows the structure of the 'directories'
+           * attribute in the property '_filesPerDirectory'.
+           */
+          _directories: {
+            type: Array,
+            value: []
+          },
+
+          /*
+           * The files of the current directory.
+           *
+           * The structure follows the structure of the 'files'
+           * attribute in the property '_filesPerDirectory'.
+           */
+          _files: {
             type: Array,
             value: []
           }
+
 
         };
       }
 
       _metadataChanged() {
         if (!this.metadata) return;
-        this.files = this.metadata.files;
+        this._refreshExtensionList();
+        this._refreshFilesPerDirectory();
+        this._setCurrentDirectory('/');
       }
 
-      _fileSelected(e) {
-        let index = e.model.index;
+      /*
+       * Traverse all files to extract the different extensions and their occurrences.
+       */
+      _refreshExtensionList() {
+        let totalCount = 0;
+        let allExtensions = [];
+        this.metadata.files.forEach(e => {
+          let found = false;
+          for (let i = 0; i < allExtensions.length; i++) {
+            if (allExtensions[i].extension === e.extension) {
+              allExtensions[i].count++;
+              totalCount++;
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            totalCount++;
+            allExtensions.push({
+              extension: e.extension,
+              count: 1
+            });
+          }
+        });
+        allExtensions.push({
+          extension: 'All',
+          count: totalCount
+        });
+        allExtensions.sort((a,b) => a.count > b.count ? -1 : a.count < b.count ? 1 : 0);
+        this._extensions = allExtensions;
+
+        let selectedExtensions = []
+        if (this.extensionsPerLanguage.has(this.metadata.language)) {
+          selectedExtensions.push(...this.extensionsPerLanguage.get(this.metadata.language));
+        }
+        this.$.extensionSelection.selectedValues = selectedExtensions;
       }
 
-      _done() {
+      _refreshFilesPerDirectory() {
+        this.metadata.files.forEach(e => {
+          let absolutePath = '/' + e.path; // Ex: /src/main/java/Main.java
+          let directoryPath = absolutePath.substring(0, absolutePath.lastIndexOf('/') + 1);
+          let filename = absolutePath.substring(absolutePath.lastIndexOf('/') + 1);
+
+          // Ex: /src/main/java/ not exists?
+          if (!this._filesPerDirectory.has(directoryPath)) {
+
+            // We need to make sure all ancestor directories was created
+
+            let ancestorsPath = directoryPath.replace(/^\/|\/+$/g, ''); // trim '/'
+            let ancestors = [];
+            if (ancestorsPath.length) {
+              ancestors.push(...ancestorsPath.split('/')); // Ex: ['src', 'main', 'java']
+            }
+
+            // Guard condition: check the root exists
+            let absoluteAncestorPath = '/';
+            if (!this._filesPerDirectory.has(absoluteAncestorPath)) {
+              this._filesPerDirectory.set(absoluteAncestorPath, {
+                  directories: [],
+                  files:       []
+              });
+            }
+
+            ancestors.forEach(ancestor => {
+              let parentAncestorPath = absoluteAncestorPath;
+              absoluteAncestorPath += ancestor + '/';
+              if (!this._filesPerDirectory.has(absoluteAncestorPath)) {
+                this._filesPerDirectory.set(absoluteAncestorPath, {
+                    directories: [],
+                    files:       []
+                });
+              }
+
+              // Append this folder to the parent's directories if not present
+              let found = false;
+              let parentAncestorEntry = this._filesPerDirectory.get(parentAncestorPath);
+              for (let i = 0; i < parentAncestorEntry.directories.length; i++) {
+                if (parentAncestorEntry.directories[i].name === ancestor) {
+                  found = true;
+                  break;
+                }
+              }
+              if (!found) {
+                parentAncestorEntry.directories.push({
+                  name: ancestor
+                });
+              }
+            });
+          }
+
+          let directoryEntry = this._filesPerDirectory.get(directoryPath);
+          directoryEntry.files.push({
+            name: filename,
+            extension: e.extension,
+            lines: e.lines
+          });
+
+          // TODO sort entry by name
+
+        });
+      }
+
+      _setCurrentDirectory(path) {
+        if (!this._filesPerDirectory.has(path)) {
+          console.log('Missing path', path);
+          return;
+        }
+        let entry = this._filesPerDirectory.get(path);
+
+        // Go deeper in there is just only directory the requested directory
+        if (entry.files.length == 0 && entry.directories.length == 1) {
+            this._setCurrentDirectory(path + entry.directories[0].name + '/');
+            return;
+        }
+
+        this._currentDirectory = path;
+
+        this._ancestors = []
+        if (path !== '/') {
+          this._ancestors.push(...path.substring(1, path.lastIndexOf('/')).split('/'));
+        }
+        this._directories = entry.directories;
+        this._files = entry.files;
+      }
+
+      _selectAncestor(e) {
+        let newDirectory = e.model.item;
+        let ancestorPath = this._currentDirectory.substring(0, this._currentDirectory.indexOf(newDirectory) + newDirectory.length);
+        this._setCurrentDirectory(ancestorPath + '/');
+      }
+
+
+      _selectDirectory(e) {
+        this._setCurrentDirectory(this._currentDirectory + e.model.item.name + '/');
+      }
+
+      _selectFile(e) {
         let detail = {
-          filename: this.filename
+          filename: this._currentDirectory + e.model.item.name
         };
         this.dispatchEvent(new CustomEvent('file-selected', {detail: detail, bubbles: true, composed: true}));
       }

@@ -724,9 +724,8 @@ class TypioPrompt:
     ##
 
     def metadata_github(self, entry):
-        metadata = {
-            'files': []
-        }
+        metadata = entry.data.copy()  # We copy all metadata found in dataset.json
+        metadata['files'] = []        # and add files metadata
 
         local_dir = self.CONTENT_DIR + '/github/' + entry.slug
         for dirName, subdirList, fileList in os.walk(local_dir):
@@ -759,10 +758,9 @@ class TypioPrompt:
         metadata_path = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.json'
 
         # Collect metadata
-        metadata = {
-            'size': os.path.getsize(book_path),
-            'chapters': self._get_chapters(book_path),
-        }
+        metadata = entry.data.copy()  # We copy all metadata found in dataset.json
+        metadata['size'] = os.path.getsize(book_path)
+        metadata['chapters'] = self._get_chapters(book_path)
 
         # Save metadata
         with open(metadata_path, 'w') as f_metadata:

@@ -3,9 +3,10 @@
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/google-chart/google-chart.html">
 
+<link rel="import" href="/src/typio-app/typio-grammars.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
-<dom-module id="typio-code-editor">
+<dom-module id="typio-editor">
   <template>
     <style include="shared-styles">
 
@@ -187,12 +188,6 @@
   </template>
 
   <script>
-    /**
-     * @customElement
-     * @polymer
-     */
-    const GRAMMARS = {};
-
 
     class Stats {
 
@@ -372,9 +367,13 @@
 
     }
 
-    class TypioCodeEditor extends Polymer.Element {
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioEditor extends Polymer.Element {
 
-      static get is() { return 'typio-code-editor'; }
+      static get is() { return 'typio-editor'; }
       static get properties() {
         return {
 
@@ -843,103 +842,7 @@
       }
 
     }
-    window.customElements.define(TypioCodeEditor.is, TypioCodeEditor);
-
-
-    // ////////////////////
-    // Language definitions
-    ///////////////////////
-
-    // See https://github.com/PrismJS/prism/blob/gh-pages/components/
-    // for examples of language definitions.
-
-    const basic = {
-      'string': /"(?:""|[!#$%&'()*,\/:;<=>?^_ +\-.A-Z\d])*"/i,
-      'comment': {
-        pattern: /(?:!|REM\b).+/i,
-        inside: {
-          'keyword': /^REM/i
-        }
-      },
-      'number': /(?:\b|\B[.-])(?:\d+\.?\d*)(?:E[+-]?\d+)?/i,
-      'keyword': /\b(?:AS|BEEP|BLOAD|BSAVE|CALL(?: ABSOLUTE)?|CASE|CHAIN|CHDIR|CLEAR|CLOSE|CLS|COM|COMMON|CONST|DATA|DECLARE|DEF(?: FN| SEG|DBL|INT|LNG|SNG|STR)|DIM|DO|DOUBLE|ELSE|ELSEIF|END|ENVIRON|ERASE|ERROR|EXIT|FIELD|FILES|FOR|FUNCTION|GET|GOSUB|GOTO|IF|INPUT|INTEGER|IOCTL|KEY|KILL|LINE INPUT|LOCATE|LOCK|LONG|LOOP|LSET|MKDIR|NAME|NEXT|OFF|ON(?: COM| ERROR| KEY| TIMER)?|OPEN|OPTION BASE|OUT|POKE|PUT|READ|REDIM|REM|RESTORE|RESUME|RETURN|RMDIR|RSET|RUN|SHARED|SINGLE|SELECT CASE|SHELL|SLEEP|STATIC|STEP|STOP|STRING|SUB|SWAP|SYSTEM|THEN|TIMER|TO|TROFF|TRON|TYPE|UNLOCK|UNTIL|USING|VIEW PRINT|WAIT|WEND|WHILE|WRITE)(?:\$|\b)/i,
-      'function': /\b(?:ABS|ACCESS|ACOS|ANGLE|AREA|ARITHMETIC|ARRAY|ASIN|ASK|AT|ATN|BASE|BEGIN|BREAK|CAUSE|CEIL|CHR|CLIP|COLLATE|COLOR|CON|COS|COSH|COT|CSC|DATE|DATUM|DEBUG|DECIMAL|DEF|DEG|DEGREES|DELETE|DET|DEVICE|DISPLAY|DOT|ELAPSED|EPS|ERASABLE|EXLINE|EXP|EXTERNAL|EXTYPE|FILETYPE|FIXED|FP|GO|GRAPH|HANDLER|IDN|IMAGE|IN|INT|INTERNAL|IP|IS|KEYED|LBOUND|LCASE|LEFT|LEN|LENGTH|LET|LINE|LINES|LOG|LOG10|LOG2|LTRIM|MARGIN|MAT|MAX|MAXNUM|MID|MIN|MISSING|MOD|NATIVE|NUL|NUMERIC|OF|OPTION|ORD|ORGANIZATION|OUTIN|OUTPUT|PI|POINT|POINTER|POINTS|POS|PRINT|PROGRAM|PROMPT|RAD|RADIANS|RANDOMIZE|RECORD|RECSIZE|RECTYPE|RELATIVE|REMAINDER|REPEAT|REST|RETRY|REWRITE|RIGHT|RND|ROUND|RTRIM|SAME|SEC|SELECT|SEQUENTIAL|SET|SETTER|SGN|SIN|SINH|SIZE|SKIP|SQR|STANDARD|STATUS|STR|STREAM|STYLE|TAB|TAN|TANH|TEMPLATE|TEXT|THERE|TIME|TIMEOUT|TRACE|TRANSFORM|TRUNCATE|UBOUND|UCASE|USE|VAL|VARIABLE|VIEWPORT|WHEN|WINDOW|WITH|ZER|ZONEWIDTH)(?:\$|\b)/i,
-      'operator': /<[=>]?|>=?|[+\-*\/^=&]|\b(?:AND|EQV|IMP|NOT|OR|XOR)\b/i,
-      'punctuation': /[,;:()]/
-    };
-
-    const clike = {
-      'comment': [
-        {
-          pattern: /(^|[^\\])\/\*[\s\S]*?\*\//,
-          lookbehind: true
-        },
-        {
-          pattern: /(^|[^\\:])\/\/.*/,
-          lookbehind: true
-        }
-      ],
-      'string': {
-        pattern: /(["'])(\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
-        greedy: true
-      },
-      'class-name': {
-        pattern: /((?:\b(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[a-z0-9_\.\\]+/i,
-        lookbehind: true,
-        inside: {
-          punctuation: /(\.|\\)/
-        }
-      },
-      'keyword': /\b(if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/,
-      'boolean': /\b(true|false)\b/,
-      'function': /[a-z0-9_]+(?=\()/i,
-      'number': /\b-?(?:0x[\da-f]+|\d*\.?\d+(?:e[+-]?\d+)?)\b/i,
-      'operator': /--?|\+\+?|!=?=?|<=?|>=?|==?=?|&&?|\|\|?|\?|\*|\/|~|\^|%/,
-      'punctuation': /[{}[\];(),.:]/
-    };
-
-    const java = Object.assign({}, basic, clike, {
-      'keyword': /\b(abstract|continue|for|new|switch|assert|default|goto|package|synchronized|boolean|do|if|private|this|break|double|implements|protected|throw|byte|else|import|public|throws|case|enum|instanceof|return|transient|catch|extends|int|short|try|char|final|interface|static|void|class|finally|long|strictfp|volatile|const|float|native|super|while)\b/,
-      'number': /\b0b[01]+\b|\b0x[\da-f]*\.?[\da-fp\-]+\b|\b\d*\.?\d+(?:e[+-]?\d+)?[df]?\b/i,
-      'operator': {
-        pattern: /(^|[^.])(?:\+[+=]?|-[-=]?|!=?|<<?=?|>>?>?=?|==?|&[&=]?|\|[|=]?|\*=?|\/=?|%=?|\^=?|[?:~])/m,
-        lookbehind: true
-      }
-    });
-
-    const python = {
-      'triple-quoted-string': {
-        pattern: /"""[\s\S]+?"""|'''[\s\S]+?'''/,
-        alias: 'string'
-      },
-      'comment': {
-        pattern: /(^|[^\\])#.*/,
-        lookbehind: true
-      },
-      'string': {
-        pattern: /("|')(?:\\\\|\\?[^\\\r\n])*?\1/,
-        greedy: true
-      },
-      'function' : {
-        pattern: /((?:^|\s)def[ \t]+)[a-zA-Z_][a-zA-Z0-9_]*(?=\()/g,
-        lookbehind: true
-      },
-      'class-name': {
-        pattern: /(\bclass\s+)[a-z0-9_]+/i,
-        lookbehind: true
-      },
-      'keyword' : /\b(?:as|assert|async|await|break|class|continue|def|del|elif|else|except|exec|finally|for|from|global|if|import|in|is|lambda|pass|print|raise|return|try|while|with|yield)\b/,
-      'boolean' : /\b(?:True|False)\b/,
-      'number' : /\b-?(?:0[bo])?(?:(?:\d|0x[\da-f])[\da-f]*\.?\d*|\.\d+)(?:e[+-]?\d+)?j?\b/i,
-      'operator' : /[-+%=]=?|!=|\*\*?=?|\/\/?=?|<[<=>]?|>[=>]?|[&|^~]|\b(?:or|and|not)\b/,
-      'punctuation' : /[{}[\];(),.:]/
-    };
-
-    // Register grammars here
-    GRAMMARS['java'] = java;
-    GRAMMARS['python'] = python;
-    // to complete...
-
+    window.customElements.define(TypioEditor.is, TypioEditor);
 
   </script>
 </dom-module>

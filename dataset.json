@@ -1124,8 +1124,7 @@
     "name": "Neural Style",
     "url": "https://github.com/jcjohnson/neural-style",
     "language": "Lua",
-    "commit": "master",
-    "includes": []
+    "commit": "master"
   },
 
 

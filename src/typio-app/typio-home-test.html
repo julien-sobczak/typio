@@ -2,7 +2,8 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
-<link rel="import" href="/src/typio-app/typio-code-editor.html">
+
+<link rel="import" href="/src/typio-app/typio-editor.html">
 
 <dom-module id="typio-home-test">
   <template>
@@ -18,9 +19,9 @@
 
     <paper-button raised class="indigo" on-click="loadContent">raised</paper-button>
 
-    <typio-code-editor id="editor" language="[[language]]" type="[[type]]">
+    <typio-editor id="editor" language="[[language]]" type="[[type]]">
       <pre id="content" name="[[type]]">[[selectionContent]]</pre>
-    </typio-code-editor>
+    </typio-editor>
 
   </template>
 

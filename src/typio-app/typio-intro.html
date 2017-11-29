@@ -9,29 +9,12 @@
 <dom-module id="typio-intro">
   <template>
     <style include="shared-styles">
-      :host {
-        display: block;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
 
       section {
-        width: 100%;
         display: table;
-        margin: 0;
-        max-width: none;
-        height: 100vh;
         position: relative;
         background-color: white;
       }
-
-      section .content {
-        display: table-cell;
-        vertical-align: middle;
-      }
-
 
       /*
        * Logo
@@ -223,12 +206,12 @@
        .buttons {
          position: absolute;
          width: 100%;
-         bottom: 10vh;
+         top: 80vh;
          text-align: center;
 
        }
        .buttons {
-         opacity: 0;
+         opacity: 1;
          transition: opacity 2s linear;
        }
        section.completed .buttons {
@@ -252,7 +235,7 @@
       <h2><span id="title" class="title"></span></h2>
 
       <div id="continue" class="buttons">
-        <a href="/#catalog"><typio-button>&#9166; Continue</typio-button></a>
+        <a href="/catalog"><typio-button>&#9166; Continue</typio-button></a>
       </div>
     </section>
 

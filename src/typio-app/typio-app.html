@@ -1,44 +1,66 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="/src/typio-app/typio-code-editor.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/async.html">
+
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="/src/typio-app/typio-intro.html">
+<link rel="import" href="/src/typio-app/typio-catalog.html">
+<link rel="import" href="/src/typio-app/typio-editor.html">
+<link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-app">
   <template>
-    <style>
+    <style include="shared-styles">
       :host {
         display: block;
       }
+
+      iron-pages > * {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      @keyframes slide-from-bottom {
+        from { opacity: 0; bottom: -50%; }
+        to   { opacity: 1; bottom: 0;    }
+      }
+
+      @keyframes slide-from-top {
+        from { opacity: 0; top: -50%; }
+        to   { opacity: 1; top: 0;    }
+      }
+
+      typio-catalog.iron-selected {
+        animation-duration: 1s;
+        animation-name: slide-from-bottom;
+      }
+      typio-code-editor.iron-selected {
+        animation-duration: 1s;
+        animation-name: slide-from-top;
+      }
+
     </style>
-    <typio-code-editor language="python">
-      <pre name="code">def timsort(the_array):
-    # Python sorting algorithm
-    runs, sorted_runs = [], []
-    l = len(the_array)
-    new_run = [the_array[0]]
-    for i in range(1, l):
-        if i == l-1:
-            new_run.append(the_array[i])
-            runs.append(new_run)
-            break
-        if the_array[i] < the_array[i-1]:
-            if not new_run:
-                runs.append([the_array[i-1]])
-                new_run.append(the_array[i])
-            else:
-                runs.append(new_run)
-                new_run = []
-        else:
-            new_run.append(the_array[i])
-    for each in runs:
-        sorted_runs.append(insertion_sort(each))
-    sorted_array = []
-    for run in sorted_runs:
-        sorted_array = merge(sorted_array, run)
-    print sorted_array
-</pre>
-    </typio-code-editor>
-    <!--
-    <typio-code-editor></typio-code-editor>
-    -->
+
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="/:view"
+        data="{{routeData}}"
+        tail="{{subroute}}">
+    </app-route>
+
+    <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
+      <typio-intro name="intro"></typio-intro>
+      <typio-catalog name="catalog" on-entry-selected="_initCodeEditor"></typio-catalog>
+      <typio-editor name="editor" language="python">
+        <pre name="code">[[content]]</pre>
+      </typio-editor>
+    </intro-pages>
+
   </template>
 
   <script>
@@ -50,11 +72,58 @@
       static get is() { return 'typio-app'; }
       static get properties() {
         return {
-          prop1: {
+          /* Routing management */
+          route: {
+            type: Object
+          },
+          routeData: {
+            type: Object,
+            // https://www.polymer-project.org/2.0/docs/devguide/observers#dynamic-observers
+            observer: '_routeDataChanged'
+          },
+          _scrollPositionMap: {
+            type: Object,
+            value: function() {
+              return {};
+            }
+          },
+
+          /* Content management */
+          content: {
             type: String,
-            value: 'typio-app'
+            value: 'print("Hello World")\n'
           }
         };
+      }
+
+      ready() {
+        super.ready();
+        if (!this.route.path || this.route.path === '/') {
+          this.set('route.path', '/intro');
+        }
+      }
+
+      /**
+       * Preserves the document scroll position, so
+       * it can be restored when returning to a page.
+       */
+      _routeDataChanged(pageData, oldPageData) {
+        var map = this._scrollPositionMap;
+        if (oldPageData != null && oldPageData.view != null) {
+          map[oldPageData.view] = window.pageYOffset;
+        }
+        this._selectedPage = pageData.view;
+        if (map[pageData.view] != null) {
+          Polymer.AppLayout.scroll({ top: map[pageData.view], behavior: 'silent' });
+        } else if (this.isAttached) {
+          Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });
+        }
+      }
+
+      _initCodeEditor(e, detail) {
+        console.log(e, detail); // TODO
+        this.content = detail.content;
+        this.set('route.path', '/editor');
       }
     }
 

@@ -13,32 +13,21 @@
 <link rel="import" href="/src/typio-app/typio-project-input.html">
 <link rel="import" href="/src/typio-app/typio-book-input.html">
 <link rel="import" href="/src/typio-app/typio-loader.html">
-<link rel="import" href="/src/typio-app/typio-code-editor.html">
 
 <dom-module id="typio-catalog">
   <template>
     <style include="shared-styles">
 
-      :host {
-        display: block;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
       section {
-        width: 100%;
-        display: table;
-        margin: 0;
-        max-width: none;
-        height: 100vh;
-        position: relative;
-
         padding: 50px;
         color: white;
         text-align: center;
         transition: background-color 1s linear;
+      }
+
+      section .content {
+        display: table-cell;
+        vertical-align: middle;
       }
 
       section.type-code {
@@ -599,12 +588,24 @@
       _onContentLoaded(e, data) {
         const content = data.response;
         this.isLoading = false;
+
         if (this.type === 'code') {
-          console.log(content.substring(0, 100) + '...');
-          this.stepCode = 5;
+          this.stepCode = 5;  // Hide all steps
+
+          let detail = {
+            type: 'code',
+            content: content
+          };
+          this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
+
         } else if (this.type === 'literature') {
-          console.log(content.substring(0, 100) + '...');
-          this.stepLiterature = 5;
+          this.stepLiterature = 5; // Hide all steps
+
+          let detail = {
+            type: 'literature',
+            content: content
+          };
+          this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
         }
       }
 
@@ -626,9 +627,9 @@
 
         this.catalog.forEach(entry => {
           if (entry.origin === 'github' && entry.name == this.selectedProject) {
-            let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
-            let commit = entry.commit
-            let slug = organization + '_' + project + '_' + commit
+            let [organization, project] = entry.url.replace('https://github.com/', '').split('/');
+            let commit = entry.commit;
+            let slug = organization + '_' + project + '_' + commit;
             this._urlContent = '/content/github/' + this._slug(slug) + this._fileSelected;
             this.isLoading = true;
             this.stepCode = 4;

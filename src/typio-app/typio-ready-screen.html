@@ -1,0 +1,218 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/flattened-nodes-observer.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+<dom-module id="typio-ready-screen">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+        display: block;
+      }
+
+      section {
+        background-color: #333;
+        z-index: 500; /* Should be more than #editor2 in typio-code-editor */
+        color: white;
+      }
+
+      #content {
+        width: 800px;
+        margin: 0 auto;
+        padding: 1cm;
+        position: fixed;
+        top: 64px;
+        bottom: 100px; /* Allow 100px above the chart (200px height) as a last resort. */
+        z-index: 100;
+        left: 50%;
+        margin-left: -400px; /* Half of the width */
+        color: white;
+      }
+
+      #content pre[data-type="text"]  {
+        font-family: 'Droid Sans Mono', monospace;
+      }
+      #content pre[data-type="code"] {
+        font-family: monospace;
+      }
+
+      #editor2 {
+        line-height: 1.5em;
+      }
+
+      /*
+       * Show/Hide effect
+       */
+      #settings {
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.5s linear;
+      }
+      #settings.hidden-false {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      #settings.hidden-true #controls {
+        display: none;
+      }
+
+      /*
+       * Click effect
+       */
+
+      .circle {
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        margin: -100px;
+        background: #fff;
+        border-radius: 50%;
+        animation: circle 0.75s ease-out forwards;
+        transform: scale(0.1);
+        opacity: 0.6;
+      }
+      @keyframes circle {
+        100% {
+          transform: scale(10);
+          opacity: 0;
+        }
+      }
+
+    </style>
+
+    <section id="settings" on-click="handleClick" class$="hidden-[[hidden]]">
+
+      <div id="controls">
+        <paper-toggle-button checked="{{ignoreComments}}">Ignore comments?</paper-toggle-button>
+        <paper-toggle-button checked="{{ignoreIndents}}">Ignore indents?</paper-toggle-button>
+        <paper-toggle-button checked="{{continueOnErrors}}">Continue on errors?</paper-toggle-button>
+      <div>
+
+      <div id="content">
+        <pre id="editor2" data-type$="[[type]]">[[content]]</pre>
+      </div>
+
+    </section>
+
+  </template>
+
+  <script>
+
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioReadyScreen extends Polymer.Element {
+
+      static get is() { return 'typio-ready-screen'; }
+      static get properties() {
+        return {
+
+          //
+          // General
+          //
+
+          /**
+           * The type of the content.
+           */
+          type: {
+            type: String,
+            value: "code"
+          },
+
+          /**
+           * Programming language of the code snippet.
+           *
+           * Note: Case is not important.
+           */
+          language: {
+            type: String,
+            value: "python"
+          },
+
+          /**
+           * The full content to touch type.
+           */
+          content: {
+            type: String,
+            value: 'print("Hello World!")'
+          },
+
+
+          //
+          // Appearance
+          //
+
+          hidden: {
+            type: Boolean,
+            value: false
+          },
+
+          //
+          // Settings
+          //
+
+          /**
+           * Should we exclude the comments present in the code snippet.
+           */
+          ignoreComments: {
+            type: Boolean,
+            value: true
+          },
+
+          /**
+           * Should user enters indentation characters.
+           */
+          ignoreIndents: {
+            type: Boolean,
+            value: true
+          },
+
+          /**
+           * Should we allow user to continue on mistyping.
+           */
+          continueOnErrors: {
+            type: Boolean,
+            value: false
+          },
+
+        };
+      }
+
+      handleClick(e) {
+        this.drawCircle(e);
+        clearTimeout(this._timeout);
+        this._timeout = setTimeout(() => this.validate(), 500);
+      }
+
+      drawCircle(e) {
+        this.circle = document.createElement('my-element');
+        this.circle.classList.add('circle');
+        this.circle.style.left = e.pageX + "px";
+        this.circle.style.top = e.pageY + "px";
+        this.$.settings.appendChild(this.circle);
+      }
+
+      validate() {
+       this.circle.remove();
+       this.hidden = true;
+
+       let detail = {
+         ready: true,
+         ignoreComments: this.ignoreComments,
+         ignoreIndents: this.ignoreIndents,
+         continueOnErrors: this.continueOnErrors
+       };
+       this.dispatchEvent(new CustomEvent('ready', {detail: detail}));
+     }
+
+
+
+    }
+    window.customElements.define(TypioReadyScreen.is, TypioReadyScreen);
+
+  </script>
+</dom-module>

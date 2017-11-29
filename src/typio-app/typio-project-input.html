@@ -229,8 +229,9 @@
               ["Shell",      ['sh']],
               ["C#",         ['cs', 'ps1']],
               ["Swift",      ['swift']],
-              ["Scala",      ['Scala']],
+              ["Scala",      ['scala']],
               ["Haskell",    ['hs']],
+              ["JavaScript", ['js']],
               ["Lua",        ['lua']],
               ["Clojure",    ['clj']],
               ["Matlab",     ['m']],
@@ -320,7 +321,7 @@
           count: totalCount
         });
         allExtensions.sort((a,b) => a.count > b.count ? -1 : a.count < b.count ? 1 : 0);
-        this._extensions = allExtensions;
+        this._extensions = allExtensions.slice(0, 6);
 
         let selectedExtensions = []
         if (this.extensionsPerLanguage.has(this.metadata.language)) {
@@ -430,7 +431,9 @@
 
       _selectFile(e) {
         let detail = {
-          filename: this._currentDirectory + e.model.item.name
+          filepath: this._currentDirectory + e.model.item.name,
+          filename: e.model.item.name,
+          extension: e.model.item.extension
         };
         this.dispatchEvent(new CustomEvent('file-selected', {detail: detail, bubbles: true, composed: true}));
       }

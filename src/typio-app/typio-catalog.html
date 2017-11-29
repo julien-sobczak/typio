@@ -193,7 +193,7 @@
         </div>
 
         <div class="step step4">
-          <p class="notice">Downloading the file <b>[[_fileSelected]]</b>...</p>
+          <p class="notice">Downloading the file <b>[[selectedFilename]]</b>...</p>
         </div>
 
       </div>
@@ -585,32 +585,8 @@
         }
       }
 
-      _onContentLoaded(e, data) {
-        const content = data.response;
-        this.isLoading = false;
-
-        if (this.type === 'code') {
-          this.stepCode = 5;  // Hide all steps
-
-          let detail = {
-            type: 'code',
-            content: content
-          };
-          this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
-
-        } else if (this.type === 'literature') {
-          this.stepLiterature = 5; // Hide all steps
-
-          let detail = {
-            type: 'literature',
-            content: content
-          };
-          this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
-        }
-      }
-
       _chapterSelected(e) {
-        this._chapterSelected = e.detail.chapterTitle;
+        this.selectedChapter = e.detail.chapterTitle;
 
         this.catalog.forEach(entry => {
           if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
@@ -623,18 +599,52 @@
       }
 
       _fileSelected(e) {
-        this._fileSelected = e.detail.filename;
+        this.selectedFile = e.detail.filepath;
+        this.selectedFilename = e.detail.filename;
+        this.selectedFileExtension = e.detail.extension;
+        this.selectedRealProgrammingLanguage = LANGUAGE_PER_EXTENSIONS[this.selectedFileExtension];
 
         this.catalog.forEach(entry => {
           if (entry.origin === 'github' && entry.name == this.selectedProject) {
             let [organization, project] = entry.url.replace('https://github.com/', '').split('/');
             let commit = entry.commit;
             let slug = organization + '_' + project + '_' + commit;
-            this._urlContent = '/content/github/' + this._slug(slug) + this._fileSelected;
+            this._urlContent = '/content/github/' + this._slug(slug) + this.selectedFile;
             this.isLoading = true;
             this.stepCode = 4;
           }
         });
+
+      }
+
+      _onContentLoaded(e, data) {
+        const content = data.response;
+        this.isLoading = false;
+
+        if (this.type === 'code') {
+          this.stepCode = 3;
+
+          let detail = {
+            type: 'code',
+            language: this.selectedRealProgrammingLanguage,
+            resource: this.selectedProject,
+            resourceItem: this.selectedFile,
+            content: content
+          };
+          this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
+
+        } else if (this.type === 'literature') {
+          this.stepLiterature = 3;
+
+          let detail = {
+            type: 'literature',
+            language: this.selectedSpokenLanguage,
+            resource: this.selectedBook,
+            resourceItem: this.selectedChapter,
+            content: content
+          };
+          this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
+        }
 
       }
 

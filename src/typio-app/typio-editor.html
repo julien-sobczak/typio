@@ -3,6 +3,10 @@
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/google-chart/google-chart.html">
 
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
+
+<link rel="import" href="/src/typio-app/typio-ready-screen.html">
 <link rel="import" href="/src/typio-app/typio-grammars.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
@@ -50,12 +54,12 @@
         color: #fff !important;
       }
 
-      #editor2.highlight-mistyping span.useless {
+      #editor.highlight-mistyping span.useless {
         background-color: #faa937;
         outline: 1px solid #faa937;
         color: #fff !important;
       }
-      #editor2.highlight-mistyping span.wrong {
+      #editor.highlight-mistyping span.wrong {
         background-color: #d51b1b;
         outline: 1px solid #d51b1b;
         color: #fff !important;
@@ -66,9 +70,9 @@
         margin: 0 auto;
         padding: 1cm;
         position: fixed;
-        top: 0;
+        top: 64px;
         bottom: 100px; /* Allow 100px above the chart (200px height) as a last resort. */
-        z-index: 100;
+        z-index: 40;
         left: 50%;
         margin-left: -400px; /* Half of the width */
       }
@@ -112,34 +116,120 @@
         right: 0;
       }
 
-      #editor2 {
+      #editor {
         line-height: 1.5em;
       }
 
-      #editor2.highlight-interval-0 span.interval-0,
-      #editor2.highlight-interval-1 span.interval-1,
-      #editor2.highlight-interval-2 span.interval-2,
-      #editor2.highlight-interval-3 span.interval-3,
-      #editor2.highlight-interval-4 span.interval-4,
-      #editor2.highlight-interval-5 span.interval-5,
-      #editor2.highlight-interval-6 span.interval-6,
-      #editor2.highlight-interval-7 span.interval-7,
-      #editor2.highlight-interval-8 span.interval-8,
-      #editor2.highlight-interval-9 span.interval-9,
-      #editor2.highlight-interval-10 span.interval-10 {
+      #editor.highlight-interval-0 span.interval-0,
+      #editor.highlight-interval-1 span.interval-1,
+      #editor.highlight-interval-2 span.interval-2,
+      #editor.highlight-interval-3 span.interval-3,
+      #editor.highlight-interval-4 span.interval-4,
+      #editor.highlight-interval-5 span.interval-5,
+      #editor.highlight-interval-6 span.interval-6,
+      #editor.highlight-interval-7 span.interval-7,
+      #editor.highlight-interval-8 span.interval-8,
+      #editor.highlight-interval-9 span.interval-9,
+      #editor.highlight-interval-10 span.interval-10 {
         background-color: Gold !important;
         outline: none !important;
         color: black !important;
       }
 
+      #resourceName {
+        position: fixed;
+        top: 17px;
+        height: 30px;
+        left: 50%;
+        width: 500px;
+        margin-left: -250px;
+        padding: 5px 25px;
+        color: white;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 150;
+        text-align: center;
+        border-radius: 15px;
+      }
+
+
+      /*
+       * Menu
+       */
+
+      app-toolbar {
+        background-color: #009ee3;
+        color: white;
+        font-family: 'Cutive', serif;
+      }
+
+      paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+
+      paper-icon-button + [main-title] {
+        margin-left: 24px;
+      }
+      app-header {
+        @apply --layout-fixed-top;
+        color: #fff;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+        --app-header-background-rear-layer: {
+          background-color: #ef6c00;
+        };
+      }
+      app-drawer {
+        z-index: 50;
+        --app-drawer-scrim-background: rgba(255, 255, 255, 0.6);
+        --app-drawer-content-container: {
+          background-color: white;
+        }
+      }
+      app-drawer nav {
+        margin-top: 100px;
+      }
+      app-drawer nav ul {
+        list-style-type: none;
+      }
+      app-drawer nav li {
+        border: none;
+      }
+      app-toolbar a {
+        text-decoration: none;
+        color: inherit;
+        margin-left: 25px;
+      }
+      app-drawer a {
+        text-decoration: none;
+        color: inherit;
+      }
+
     </style>
 
+    <typio-ready-screen id="readyScreen" on-ready="start"></typio-ready-screen>
 
-    <div id="controls">
-      <paper-toggle-button checked="{{ignoreComments}}">Ignore comments?</paper-toggle-button>
-      <paper-toggle-button checked="{{ignoreIndents}}">Ignore indents?</paper-toggle-button>
-      <paper-toggle-button checked="{{continueOnErrors}}">Continue on errors?</paper-toggle-button>
-    <div>
+    <app-header effects="waterfall">
+      <app-toolbar>
+        <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
+        <a href="/intro">TYPIO</a>
+        <div main-title></div>
+        <a href="/catalog"><paper-icon-button icon="close"></paper-icon-button></a>
+      </app-toolbar>
+    </app-header>
+    <app-drawer id="drawer" swipe-open>
+      <nav>
+        <ul>
+          <li><paper-icon-button icon="close"></paper-icon-button> <a href="/catalog">Catalog</a></li>
+        </ul>
+      </nav>
+    </app-drawer>
+
+    <template is="dom-if" if="{{resource}}">
+      <div id="resourceName">
+        <strong>[[resource]]</strong> | [[resourceItem]]
+      </div>
+    </template>
+
     <div id="stats">
       <template is="dom-if" if="{{!ended}}">
         <span class="wpm">[[_wpm]] WPM</span>
@@ -158,20 +248,7 @@
     </div>
 
     <div id="content">
-      <pre id="editor2" data-type$="[[type]]"></pre>
-    </div>
-
-    <div style="display: none">
-    <slot id="editor">
-<pre>public class HelloWorld {
-
-    public static void main(String[] args) {
-        // Prints "Hello, World" to the terminal window.
-        System.out.println("Hello, World");
-    }
-
-}</pre>
-    </slot>
+      <pre id="editor" data-type$="[[type]]">[[content]]</pre>
     </div>
 
     <!-- See https://developers.google.com/chart/interactive/docs/gallery/steppedareachart -->
@@ -377,20 +454,61 @@
       static get properties() {
         return {
 
+          route: {
+            type: Object
+          },
+
+          /**
+           * The type of content (code, literature).
+           */
           type: {
             type: String,
             value: "code"
           },
 
-          /*
-           * Programming language of the code snippet.
+          /**
+           * Language of the content.
+           *
+           * Could be a programming language (Java, Python) or a
+           * spoken language (French, English).
            *
            * Note: Case is not important.
            */
           language: {
             type: String,
-            value: "java"
+            value: "Python"
           },
+
+          /**
+           * The name of the resource where the content is extracted.
+           * Could be a book title or a Github project name.
+           */
+          resource: {
+            type: String,
+            value: null
+          },
+
+          /**
+           * A reference to idemtity the content inside the resource.
+           * Could be a chapter title, or a file path.
+           */
+          resourceItem: {
+            type: String,
+            value: null
+          },
+
+          /**
+           * The content to touch type.
+           *
+           * This property should be set in JavaScript and
+           * not through an HTML attribute to avoid HTML escaping (&lt; for <).
+           */
+          content: {
+            type: String,
+            value: 'print("Hello World")\n'
+          },
+
+
 
           /*
            * Should we exclude the comments present in the code snippet.
@@ -459,13 +577,6 @@
         };
       }
 
-      static get observers() {
-        return [
-          // Observer method name, followed by a list of dependencies, in parenthesis
-          '_refreshIgnorable(continueOnErrors, ignoreIndents)'
-        ]
-      }
-
       reset() {
         // Reset variables
         this._stats = new Stats();
@@ -474,19 +585,17 @@
         this._countValid = 0;
         this._wpm = 0;
 
+        this.refresh();
+      }
+
+      refresh() {
         // Refresh editor
         this._updateContent();
       }
 
-      ready() {
-        super.ready();
-
-        // Watch for content update
-        new Polymer.FlattenedNodesObserver(this, this._contentChanged);
-        this.start();
-      }
-
       start() {
+        this._updateContent();
+
         // We listen keyup for nonprintable characters
         document.addEventListener('keyup', (event) => {
           if (event.key === 'Backspace') {
@@ -517,26 +626,13 @@
         }, false);
       }
 
-      _contentChanged(nodes) {
-        let { addedNodes, removedNodes } = nodes;
-        this._updateContent();
-      }
-
       _updateContent() {
-        let preTags = this.$.editor.assignedNodes({ flatten: true }).filter(el => {
-          return el.nodeType === Node.ELEMENT_NODE && el.nodeName === 'PRE';
-        });
-        if (preTags.length) {
-          this._sourceTag = preTags[0];
-          this._parse();
-        }
+        this._parse();
+        this.$.readyScreen.content = this.content;
       }
 
       _parse() {
-        let newSourceCode = this._sourceTag.innerHTML;
-
-        this._sourceCode = newSourceCode;
-        this._length = this._sourceCode.length;
+        this._length = this.content.length;
         this._determineTokens();
 
         let spaces = ' \t\n\r\v';
@@ -550,11 +646,11 @@
 
         let onlyIgnorableCharacters = true; // Does the current line contains only ignorable characters?
         for (let i = 0; i < this._length; i++) {
-          let charTxt = this._sourceCode[i]; // The original character
+          let charTxt = this.content[i]; // The original character
           let charName = charTxt; // The name as returned by the keypress/keyup event (see key property)
           let charPrint = charTxt; // The character print on screen
 
-          let charCode = this._sourceCode.charCodeAt(i);
+          let charCode = this.content.charCodeAt(i);
           let classes = [];
 
           let span = document.createElement('span');
@@ -618,10 +714,10 @@
           character.classList.add(editable ? 'editable' : 'ignorable');
         }
 
-        this.$.editor2.innerHTML = '';
-        this.$.editor2.appendChild(fragment);
+        this.$.editor.innerHTML = '';
+        this.$.editor.appendChild(fragment);
 
-        this._characters = this.$.editor2.querySelectorAll('.character');
+        this._characters = this.$.editor.querySelectorAll('.character');
         this._stats.totalCharacters = this.enterableCharacters();
         this._stats.editables = editables;
         let intervals = this._stats.intervals;
@@ -631,13 +727,10 @@
         this.advance();
       }
 
-      _refreshIgnorable() {
-        // TODO When the user toggle switches, we should update the 'ignorable' CSS class
-      }
-
       _determineTokens() {
         this._tokens = new Array(this._length);
 
+        console.log('Using grammar of language', this.language.toLowerCase());
         let grammar = GRAMMARS[this.language.toLowerCase()];
         for (let token in grammar) {
           if (!grammar.hasOwnProperty(token) || !grammar[token]) {
@@ -655,7 +748,7 @@
           }
           pattern = new RegExp(pattern, flags);
           let match;
-          while (match = pattern.exec(this._sourceCode)) {
+          while (match = pattern.exec(this.content)) {
             if (lookbehind) {
               lookbehindLength = match[1].length;
             }
@@ -674,7 +767,7 @@
       }
 
       enterableCharacters() {
-        return this.$.editor2.querySelectorAll('.editable').length;
+        return this.$.editor.querySelectorAll('.editable').length;
       }
 
       resume() {
@@ -715,7 +808,7 @@
           character.classList.add('wrong');
           this._error = true;
           this._iError = this._i;
-          this.$.editor2.classList.add('error');
+          this.$.editor.classList.add('error');
           this.advance();
         }
 
@@ -739,7 +832,7 @@
 
           if (this._error && this._i === this._iError) {
             this._error = false;
-            this.$.editor2.classList.remove('error');
+            this.$.editor.classList.remove('error');
           }
         } while (this._isIgnorable());
 
@@ -770,7 +863,7 @@
 
       end() {
         this._stats.stopTimer();
-        this.$.editor2.classList.add('highlight-mistyping');
+        this.$.editor.classList.add('highlight-mistyping');
         this.ended = true;
         this.dispatchEvent(new CustomEvent('endOfInput', {detail: {length: this._length}}));
       }
@@ -827,18 +920,26 @@
       }
 
       selectInterval(column) {
-        if (this.$.editor2.classList.contains('highlight-interval-' + column)) {
+        if (this.$.editor.classList.contains('highlight-interval-' + column)) {
           // unselect
-          this.$.editor2.classList.remove('highlight-interval-' + column);
+          this.$.editor.classList.remove('highlight-interval-' + column);
         } else {
           // unselect all
           for (let i = 0; i < this._stats.INTERVAL_NUMBER; i++) {
-            this.$.editor2.classList.remove('highlight-interval-' + i);
+            this.$.editor.classList.remove('highlight-interval-' + i);
           }
           // and select the selected one
-          this.$.editor2.classList.add('highlight-interval-' + column);
+          this.$.editor.classList.add('highlight-interval-' + column);
         }
 
+      }
+
+      //
+      // Navigation
+      //
+
+      _toggleDrawer() {
+        this.$.drawer.toggle();
       }
 
     }

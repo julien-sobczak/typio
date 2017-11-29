@@ -36,7 +36,7 @@
 
       typio-catalog.iron-selected {
         animation-duration: 1s;
-        animation-name: slide-from-bottom;
+        animation-name: slide-from-top;
       }
       typio-code-editor.iron-selected {
         animation-duration: 1s;
@@ -56,9 +56,7 @@
     <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
       <typio-intro name="intro"></typio-intro>
       <typio-catalog name="catalog" on-entry-selected="_initCodeEditor"></typio-catalog>
-      <typio-editor name="editor" language="python">
-        <pre name="code">[[content]]</pre>
-      </typio-editor>
+      <typio-editor id="editor" name="editor" route="{{route}}"></typio-editor>
     </intro-pages>
 
   </template>
@@ -72,27 +70,28 @@
       static get is() { return 'typio-app'; }
       static get properties() {
         return {
-          /* Routing management */
+
+          //
+          // Routing management
+          //
+
           route: {
             type: Object
           },
+
           routeData: {
             type: Object,
             // https://www.polymer-project.org/2.0/docs/devguide/observers#dynamic-observers
             observer: '_routeDataChanged'
           },
+
           _scrollPositionMap: {
             type: Object,
             value: function() {
               return {};
             }
-          },
-
-          /* Content management */
-          content: {
-            type: String,
-            value: 'print("Hello World")\n'
           }
+
         };
       }
 
@@ -121,10 +120,15 @@
       }
 
       _initCodeEditor(e, detail) {
-        console.log(e, detail); // TODO
-        this.content = detail.content;
+        this.$.editor.content = detail.content;
+        this.$.editor.language = detail.type;
+        this.$.editor.language = detail.language;
+        this.$.editor.resource = detail.resource;
+        this.$.editor.resourceItem = detail.resourceItem;
+        this.$.editor.refresh();
         this.set('route.path', '/editor');
       }
+
     }
 
     window.customElements.define(TypioApp.is, TypioApp);

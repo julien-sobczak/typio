@@ -157,7 +157,7 @@
        */
 
       app-toolbar {
-        background-color: #009ee3;
+        background-color: var(--typio-bg-color);
         color: white;
         font-family: 'Cutive', serif;
       }
@@ -204,9 +204,11 @@
         color: inherit;
       }
 
-    </style>
+      #screen {
+        display: none;
+      }
 
-    <typio-ready-screen id="readyScreen" on-ready="start"></typio-ready-screen>
+    </style>
 
     <app-header effects="waterfall">
       <app-toolbar>
@@ -224,43 +226,49 @@
       </nav>
     </app-drawer>
 
-    <template is="dom-if" if="{{resource}}">
-      <div id="resourceName">
-        <strong>[[resource]]</strong> | [[resourceItem]]
+    <typio-ready-screen id="readyScreen" on-ready="start"></typio-ready-screen>
+
+    <div id="screen">
+
+      <template is="dom-if" if="{{resource}}">
+        <div id="resourceName">
+          <strong>[[resource]]</strong> | [[resourceItem]]
+        </div>
+      </template>
+
+      <div id="stats">
+        <template is="dom-if" if="{{!ended}}">
+          <span class="wpm">[[_wpm]] WPM</span>
+        </template>
+        <template is="dom-if" if="{{ended}}">
+          <table>
+            <tbody>
+              <tr><th>Typeable characters</th><td>[[_stats.typeableCharacters]]</td></tr>
+              <tr><th>Typed characters</th><td>[[_stats.typedCharacters]]</td></tr>
+              <tr><th>Unproductive keystroke overhead</th><td>[[_stats.unproductiveKeystrokeOverhead]]%</td></tr>
+              <tr><th>Elasped time</th><td>[[_stats.elapsedTimeInS]]s</td></tr>
+              <tr><th>WPM</th><td>[[_stats.wpm]]</td></tr>
+            </tbody>
+          </table>
+        </template>
       </div>
-    </template>
 
-    <div id="stats">
-      <template is="dom-if" if="{{!ended}}">
-        <span class="wpm">[[_wpm]] WPM</span>
-      </template>
-      <template is="dom-if" if="{{ended}}">
-        <table>
-          <tbody>
-            <tr><th>Typeable characters</th><td>[[_stats.typeableCharacters]]</td></tr>
-            <tr><th>Typed characters</th><td>[[_stats.typedCharacters]]</td></tr>
-            <tr><th>Unproductive keystroke overhead</th><td>[[_stats.unproductiveKeystrokeOverhead]]%</td></tr>
-            <tr><th>Elasped time</th><td>[[_stats.elapsedTimeInS]]s</td></tr>
-            <tr><th>WPM</th><td>[[_stats.wpm]]</td></tr>
-          </tbody>
-        </table>
-      </template>
+      <div id="content">
+        <pre id="editor" data-type$="[[type]]">[[content]]</pre>
+      </div>
+
+      <!-- See https://developers.google.com/chart/interactive/docs/gallery/steppedareachart -->
+      <google-chart id="chart"
+        type="stepped-area"
+        options='{"title": "WPM", "legend": "none", "fontName": "Cutive", "tooltip": {"trigger": "none"}, "chartArea": { "left": 0, "top": 0, "width": "100%", "height": "100%", "backgroundColor": {"strokeWidth": 0}}, "hAxis": { "textPosition": "in", "textStyle": { "color": "black", "bold": true, "auraColor": "none" } }, "vAxis": {"textPosition": "int", "minValue": 0, "maxValue": 200, "gridlines": { "count": 0 } }, "colors": ["#009ee3"], "lineWidth": 2, "annotations": {"textStyle": { "color": "orange"}}}'
+        cols='[{"label": "Progress", "type": "string"},{"label": "WPM", "type": "number"},{"type": "string", "role": "annotation"},{"type": "string", "role": "style"}]'
+        rows='[]'>
+      </google-chart>
+      <!--
+      see https://developers.google.com/chart/interactive/docs/roles?hl=en for the role property of columns
+      -->
+
     </div>
-
-    <div id="content">
-      <pre id="editor" data-type$="[[type]]">[[content]]</pre>
-    </div>
-
-    <!-- See https://developers.google.com/chart/interactive/docs/gallery/steppedareachart -->
-    <google-chart id="chart"
-      type="stepped-area"
-      options='{"title": "WPM", "legend": "none", "tooltip": {"trigger": "none"}, "chartArea": { "left": 0, "top": 0, "width": "100%", "height": "100%"}, "hAxis": { "textPosition": "in", "textStyle": { "color": "black", "auraColor": "none" }  }, "vAxis": {"textPosition": "in", "minValue": 0, "maxValue": 200, "gridlines": { "count": 0 } }, "colors": ["DodgerBlue"], "lineWidth": 2, "annotations": {"textStyle": { "color": "orange"}}}'
-      cols='[{"label": "Progress", "type": "string"},{"label": "WPM", "type": "number"},{"type": "string", "role": "annotation"},{"type": "string", "role": "style"}]'
-      rows='[]'>
-    </google-chart>
-    <!--
-    see https://developers.google.com/chart/interactive/docs/roles?hl=en for the role property of columns
-    -->
 
   </template>
 
@@ -269,7 +277,6 @@
     class Stats {
 
       constructor() {
-        // Constants TODO see if there is a better way to declare constants inside a class
         this.INTERVAL_NUMBER = 10;
         this.WPM_GREAT = 60;
         this.WPM_WOW = 80;
@@ -730,8 +737,12 @@
       _determineTokens() {
         this._tokens = new Array(this._length);
 
-        console.log('Using grammar of language', this.language.toLowerCase());
-        let grammar = GRAMMARS[this.language.toLowerCase()];
+        const languageKey = this.language.toLowerCase();
+        if (!GRAMMARS.has(languageKey)) {
+          return;
+        }
+
+        let grammar = GRAMMARS.get(languageKey);
         for (let token in grammar) {
           if (!grammar.hasOwnProperty(token) || !grammar[token]) {
             continue;

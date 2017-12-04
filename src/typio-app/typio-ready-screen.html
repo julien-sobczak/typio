@@ -1,8 +1,13 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/utils/flattened-nodes-observer.html">
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/paper-range-slider/paper-range-slider.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
+<link rel="import" href="/src/typio-app/typio-toggle-button.html">
 
 <dom-module id="typio-ready-screen">
   <template>
@@ -13,9 +18,10 @@
       }
 
       section {
-        background-color: #333;
-        z-index: 500; /* Should be more than #editor2 in typio-code-editor */
-        color: white;
+        background-color: white;
+        z-index: 90; /* Should be more than #editor in typio-code-editor */
+        color: black;
+        position: relative;
       }
 
       #content {
@@ -25,10 +31,10 @@
         position: fixed;
         top: 64px;
         bottom: 100px; /* Allow 100px above the chart (200px height) as a last resort. */
-        z-index: 100;
+        z-index: 200;
         left: 50%;
         margin-left: -400px; /* Half of the width */
-        color: white;
+        color: gray;
       }
 
       #content pre[data-type="text"]  {
@@ -38,9 +44,6 @@
         font-family: monospace;
       }
 
-      #editor2 {
-        line-height: 1.5em;
-      }
 
       /*
        * Show/Hide effect
@@ -60,40 +63,96 @@
       }
 
       /*
-       * Click effect
+       * Read only editor
        */
 
-      .circle {
+      #content, #editor {
+        line-height: 1.5em;
+        overflow: hidden;
+      }
+
+
+      #controls {
         position: absolute;
-        width: 200px;
-        height: 200px;
-        margin: -100px;
-        background: #fff;
-        border-radius: 50%;
-        animation: circle 0.75s ease-out forwards;
-        transform: scale(0.1);
-        opacity: 0.6;
+        left: 50px;
+        top: 80px;
+        padding: 20px;
       }
-      @keyframes circle {
-        100% {
-          transform: scale(10);
-          opacity: 0;
-        }
+
+      #controls .control {
+        margin-top: 25px;
+        margin-bottom: 25px;
       }
+
+      #selection {
+        position: absolute;
+        right: 50px;
+        top: 80px;
+        padding: 20px;
+        width: 400px;
+      }
+
+      paper-button#start {
+        /* Position */
+        position: fixed;
+        bottom: 0;
+        margin: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+
+        /* Font */
+        font-weight: bold;
+        font-size: 18px;
+      }
+
+
+      paper-range-slider {
+        --paper-range-slider-width: 100%;
+      }
+
 
     </style>
 
-    <section id="settings" on-click="handleClick" class$="hidden-[[hidden]]">
+    <section id="settings" class$="hidden-[[hidden]]">
 
       <div id="controls">
-        <paper-toggle-button checked="{{ignoreComments}}">Ignore comments?</paper-toggle-button>
-        <paper-toggle-button checked="{{ignoreIndents}}">Ignore indents?</paper-toggle-button>
-        <paper-toggle-button checked="{{continueOnErrors}}">Continue on errors?</paper-toggle-button>
-      <div>
+        <h2><iron-icon icon="settings"></iron-icon> Customize</h2>
+        <div class="control">
+          <typio-toggle-button icon="editor:mode-comment" checked="{{ignoreComments}}">Ignore comment</typio-toggle-button>
+        </div>
+        <div class="control">
+          <typio-toggle-button icon="editor:format-indent-increase" checked="{{ignoreIndents}}">Ignore indentation</typio-toggle-button>
+        </div>
+        <div class="control">
+          <typio-toggle-button icon="icons:redo" checked="{{continueOnErrors}}">Continue on errors</typio-toggle-button>
+        </div>
+        <div class="control">
+          <typio-toggle-button icon="menu" checked="{{scrollMode}}">Scroll Mode</typio-toggle-button>
+          <typio-toggle-button icon="content-copy" checked="{{pageMode}}">Page Mode</typio-toggle-button>
+        </div>
+        <div class="control">
+          <typio-toggle-button icon="editor:show-chart" checked="{{showChart}}">Chart</typio-toggle-button>
+        </div>
+      </div>
+
+      <div id="selection">
+        <h2><iron-icon icon="settings"></iron-icon> Filter</h2>
+
+        <span>[[_stats.lines]]</span>
+        <paper-range-slider id="slider"
+            value-min="0"
+            value-max="100"
+            min="0"
+            max="100">
+        </paper-range-slider>
+      </div>
 
       <div id="content">
-        <pre id="editor2" data-type$="[[type]]">[[content]]</pre>
+        <pre id="editor" data-type$="[[type]]">[[selection]]</pre>
       </div>
+
+      <paper-button id="start" raised>Start</paper-button>
 
     </section>
 
@@ -138,8 +197,17 @@
            */
           content: {
             type: String,
-            value: 'print("Hello World!")'
+            value: 'print("Hello World!")',
+            observer: '_contentUpdated'
           },
+
+          /**
+           * The selection to touch type.
+           */
+           selection: {
+             type: String,
+           },
+
 
 
           //
@@ -179,25 +247,91 @@
             value: false
           },
 
+          /**
+           * Display a chart on the screen to track WPM along typing.
+           */
+          showChart: {
+            type: Boolean,
+            value: true
+          },
+
+          /**
+           * Scroll mode when text overflows the screen.
+           *
+           * Allowed values: 'scroll', 'page'
+           */
+          mode: {
+            type: String,
+            value: 'scroll'
+          },
+          scrollMode: {
+            type: Boolean,
+            value: true,
+            observer: '_toggleScrollMode'
+          },
+          pageMode: {
+            type: Boolean,
+            value: false,
+            observer: '_togglePageMode'
+          },
+
+          /**
+           * Stats concerning the current selection.
+           * By default, all the content is selected.
+           */
+          _stats: {
+            type: Object,
+            value: {
+              // The number of lines
+              lines: 0,
+              // The number of characters (lines are trimmed)
+              characters: 0,
+              // The index of the first line (1-based)
+              from: 0,
+              // The index of the last line (1-based)
+              end: 0
+            }
+          }
+
+
         };
       }
 
-      handleClick(e) {
-        this.drawCircle(e);
-        clearTimeout(this._timeout);
-        this._timeout = setTimeout(() => this.validate(), 500);
-      }
+      ready() {
+        super.ready();
+        let slider = this.$.slider;
+        slider.addEventListener('updateValues', e => {
+          let content = this.content;
+          let rangeContent = parseInt(content.length * (slider.valueMax - slider.valueMin) / 100);
+          let startCharacter = parseInt(slider.valueMin * content.length / 100);
+          let endCharacter = parseInt(slider.valueMax * content.length / 100);
 
-      drawCircle(e) {
-        this.circle = document.createElement('my-element');
-        this.circle.classList.add('circle');
-        this.circle.style.left = e.pageX + "px";
-        this.circle.style.top = e.pageY + "px";
-        this.$.settings.appendChild(this.circle);
+          let startLine = content.substring(content, startCharacter).lastIndexOf('\n');
+          if (startLine === -1) startLine = 0;
+          let endLine = content.indexOf('\n', endCharacter);
+          if (endLine === -1) endLine = content.length;
+
+          console.log(slider.valueMin, startLine, slider.valueMax, endCharacter);
+          this.selection = content.substring(startLine, endLine);
+
+          // Update stats
+          const lines = this.selection.split('\n');
+          let characterCount = 0;
+          const from = content.substring(0, startLine).split('\n').length + 1;
+          lines.forEach(function(line) {
+            characterCount += line.trim().length;
+          });
+          const stats = {
+              lines: lines.length,
+              characters: characterCount,
+              from: from,
+              end: from + lines.length
+          };
+          this._stats = stats;
+        });
       }
 
       validate() {
-       this.circle.remove();
        this.hidden = true;
 
        let detail = {
@@ -210,6 +344,42 @@
      }
 
 
+     _toggleScrollMode(event) {
+       if (this.scrollMode) {
+         this.mode = 'scroll';
+         this.pageMode = false;
+       } else {
+         this.mode = 'page';
+         this.pageMode = true;
+       }
+     }
+     _togglePageMode(event) {
+       if (this.pageMode) {
+         this.mode = 'page';
+         this.scrollMode = false;
+       } else {
+         this.mode = 'scroll';
+         this.scrollMode = true;
+       }
+     }
+
+
+     _contentUpdated() {
+       this.selection = this.content;
+
+       const lines = this.selection.split('\n');
+       let characterCount = 0;
+       lines.forEach(function(line) {
+         characterCount += line.trim().length;
+       });
+       const stats = {
+           lines: lines.length,
+           characters: characterCount,
+           from: 1,
+           end: lines.length
+       };
+       this._stats = stats;
+     }
 
     }
     window.customElements.define(TypioReadyScreen.is, TypioReadyScreen);

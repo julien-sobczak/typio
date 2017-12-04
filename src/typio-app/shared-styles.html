@@ -18,10 +18,6 @@
         display: block;
       }
 
-      html, body {
-        -webkit-font-smoothing: antialiased;
-      }
-      
       * {
         box-sizing: border-box;
       }
@@ -31,7 +27,6 @@
         width: 100%;
         height: 100%;
         margin: 0;
-        overflow-y: scroll;
       }
 
 
@@ -43,6 +38,36 @@
         --paper-toggle-button-unchecked-bar-color:     var(--google-grey-300);
         --paper-toggle-button-unchecked-button-color:  var(--google-grey-300);
         --paper-toggle-button-unchecked-ink-color:     var(--google-grey-300);
+      }
+
+      paper-button {
+        /* Font */
+        -webkit-font-smoothing: antialiased;
+
+        /* Style */
+        background-color: var(--typio-bg-color);
+        color: white;
+        --paper-button-ink-color: white;
+        transition: background-color 0.2s linear;
+      }
+      paper-button:hover {
+        background-color: var(--typio-secondary-color);
+      }
+
+      paper-range-slider {
+        --paper-range-slider-width: 400px;
+        --paper-range-slider-knob-color:              #2F3238;
+        --paper-range-slider-pin-color:               #2F3238;
+        --paper-range-slider-higher-color:            #2F3238;
+        --paper-range-slider-lower-color:             #2F3238;
+        --paper-range-slider-active-color:            #F06292;
+        --paper-range-slider-knob-start-color:        #2F3238;
+        --paper-range-slider-knob-start-border-color: #2F3238;
+
+        margin: 0 auto;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        display: block;
       }
 
     </style>

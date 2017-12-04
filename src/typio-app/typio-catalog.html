@@ -602,7 +602,8 @@
         this.selectedFile = e.detail.filepath;
         this.selectedFilename = e.detail.filename;
         this.selectedFileExtension = e.detail.extension;
-        this.selectedRealProgrammingLanguage = LANGUAGE_PER_EXTENSIONS[this.selectedFileExtension];
+        this.selectedRealProgrammingLanguage = LANGUAGE_PER_EXTENSIONS.has(this.selectedFileExtension) ?
+          LANGUAGE_PER_EXTENSIONS.get(this.selectedFileExtension) : 'undefined';
 
         this.catalog.forEach(entry => {
           if (entry.origin === 'github' && entry.name == this.selectedProject) {

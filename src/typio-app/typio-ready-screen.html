@@ -152,7 +152,7 @@
         <pre id="editor" data-type$="[[type]]">[[selection]]</pre>
       </div>
 
-      <paper-button id="start" raised>Start</paper-button>
+      <paper-button id="start" on-click="start" raised>Start</paper-button>
 
     </section>
 
@@ -216,7 +216,8 @@
 
           hidden: {
             type: Boolean,
-            value: false
+            value: false,
+            observer: '_hiddenChanged'
           },
 
           //
@@ -297,8 +298,18 @@
         };
       }
 
+
+
       ready() {
         super.ready();
+        this._listenSlider();
+      }
+
+      /*
+       * Filter
+       */
+
+      _listenSlider() {
         let slider = this.$.slider;
         slider.addEventListener('updateValues', e => {
           let content = this.content;
@@ -311,7 +322,6 @@
           let endLine = content.indexOf('\n', endCharacter);
           if (endLine === -1) endLine = content.length;
 
-          console.log(slider.valueMin, startLine, slider.valueMax, endCharacter);
           this.selection = content.substring(startLine, endLine);
 
           // Update stats
@@ -331,18 +341,10 @@
         });
       }
 
-      validate() {
-       this.hidden = true;
 
-       let detail = {
-         ready: true,
-         ignoreComments: this.ignoreComments,
-         ignoreIndents: this.ignoreIndents,
-         continueOnErrors: this.continueOnErrors
-       };
-       this.dispatchEvent(new CustomEvent('ready', {detail: detail}));
-     }
-
+      /*
+       * Settings
+       */
 
      _toggleScrollMode(event) {
        if (this.scrollMode) {
@@ -364,6 +366,16 @@
      }
 
 
+     /*
+      * Observers
+      */
+
+      _hiddenChanged() {
+        let slider = this.$.slider;
+        slider.valueMin = 0;
+        slider.valueMax = 100;
+      }
+
      _contentUpdated() {
        this.selection = this.content;
 
@@ -380,6 +392,26 @@
        };
        this._stats = stats;
      }
+
+
+     /*
+      * Listeners
+      */
+
+     start() {
+      this.hidden = true;
+
+      let detail = {
+        ready: true,
+        ignoreComments: this.ignoreComments,
+        ignoreIndents: this.ignoreIndents,
+        continueOnErrors: this.continueOnErrors,
+        showChart: this.showChart,
+        mode: this.mode,
+        selection: this.selection
+      };
+      this.dispatchEvent(new CustomEvent('ready', {detail: detail}));
+    }
 
     }
     window.customElements.define(TypioReadyScreen.is, TypioReadyScreen);

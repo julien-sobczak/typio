@@ -587,6 +587,8 @@
 
       _chapterSelected(e) {
         this.selectedChapter = e.detail.chapterTitle;
+        this.startLine = e.detail.startLine;
+        this.endLine = e.detail.endLine;
 
         this.catalog.forEach(entry => {
           if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
@@ -642,7 +644,7 @@
             language: this.selectedSpokenLanguage,
             resource: this.selectedBook,
             resourceItem: this.selectedChapter,
-            content: content
+            content: content.split('\n').slice(this.startLine - 1, this.endLine).join('\n')
           };
           this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
         }

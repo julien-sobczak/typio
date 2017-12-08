@@ -1,7 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/av-icons.html">
-<link rel="import" href="../../bower_components/paper-range-slider/paper-range-slider.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
@@ -48,7 +47,7 @@
         border-bottom: 1px solid white;
       }
 
-      
+
       .selection  {
         display: none;
         text-align: center;
@@ -71,12 +70,6 @@
           <a on-click="_chapterSelected">[[item.title]] <span class="words">[[item.words]] words</span></a>
           <div class="selection">
             <span class="words">[[item.words]] words</span>
-            <paper-range-slider
-                value-min="0"
-                value-max="100"
-                min="0"
-                max="100">
-            </paper-range-slider>
             <typio-button light on-click="_done">Select</typio-button>
           </div>
         </li>
@@ -110,30 +103,22 @@
 
         this.chapterNumber = index + 1;
         this.chapter = this.metadata.chapters[index];
-        this.startCharacter = 0;
-        this.endCharacter = this.chapter.words;
         this.$.chapters.querySelectorAll('li').forEach(e => e.classList.remove('selected'));
 
         let li = this.$.chapters.querySelectorAll('li')[index];
-        let slider = li.querySelector('paper-range-slider');
         let count = li.querySelector('.selection .words');
-
+        count.innerHTML = this.chapter.words + ' words';
         li.classList.add('selected');
-        slider.addEventListener('updateValues', e => {
-          let rangeWords = parseInt(this.chapter.words * (slider.valueMax - slider.valueMin) / 100);
-          this.startCharacter = parseInt(slider.valueMin * this.chapter.words / 100);
-          this.endCharacter = parseInt(slider.valueMax * this.chapter.words / 100);
-          count.innerHTML = rangeWords + ' words';
-        });
       }
 
       _done() {
         let detail = {
           chapterNumber: this.chapterNumber,
           chapterTitle: this.chapter.title,
-          startCharacter: this.startCharacter,
-          endCharacter: this.endCharacter
+          startLine: this.chapter.start,
+          endLine: this.chapter.end
         };
+        console.log(detail);
         this.dispatchEvent(new CustomEvent('chapter-selected', {detail: detail, bubbles: true, composed: true}));
       }
 

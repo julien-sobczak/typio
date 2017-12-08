@@ -141,7 +141,7 @@
         top: 17px;
         height: 30px;
         left: 50%;
-        width: 500px;
+        width: 650px;
         margin-left: -250px;
         padding: 5px 25px;
         color: white;
@@ -149,6 +149,7 @@
         z-index: 150;
         text-align: center;
         border-radius: 15px;
+        overflow: hidden;
       }
 
 
@@ -204,8 +205,11 @@
         color: inherit;
       }
 
-      #screen {
+      #screen.initialized-false {
         display: none;
+      }
+      #screen.initialized-true {
+        display: block;
       }
 
     </style>
@@ -226,9 +230,19 @@
       </nav>
     </app-drawer>
 
-    <typio-ready-screen id="readyScreen" on-ready="start"></typio-ready-screen>
+    <typio-ready-screen id="readyScreen"
+        type="[[type]]"
+        language="[[language]]"
+        content="{{content}}"
+        ignore-comments="{{settings.ignoreComments}}"
+        ignore-indents="{{settings.ignoreIndents}}"
+        continue-on-errors="{{settings.continueOnErrors}}"
+        show-chart="{{settings.showChart}}"
+        mode="{{settings.mode}}"
+        on-ready="start">
+    </typio-ready-screen>
 
-    <div id="screen">
+    <div id="screen" class$="initialized-[[initialized]]">
 
       <template is="dom-if" if="{{resource}}">
         <div id="resourceName">
@@ -516,27 +530,26 @@
           },
 
 
-
-          /*
-           * Should we exclude the comments present in the code snippet.
+          /**
+           * Settings
            */
-          ignoreComments: {
-            type: Boolean,
-            value: true
+          settings: {
+            type: Object,
+            value: {
+              ignoreComments: true,
+              ignoreIndents: true,
+              continueOnErrors: false,
+              showChart: true,
+              mode: 'scroll'
+            }
           },
 
-          /*
-           * Should user enters indentation characters.
-           */
-          ignoreIndents: {
-            type: Boolean,
-            value: true
-          },
 
           /*
-           * Should we allow user to continue on mistyping.
+           * State management
            */
-          continueOnErrors: {
+
+          initialized: {
             type: Boolean,
             value: false
           },
@@ -550,6 +563,8 @@
             type: Boolean,
             value: false
           },
+
+
 
           // Collect statistics during edition
           _stats: {
@@ -584,27 +599,12 @@
         };
       }
 
-      reset() {
-        // Reset variables
-        this._stats = new Stats();
-        this._characters = [];
-        this._i = -1;
-        this._countValid = 0;
-        this._wpm = 0;
-
-        this.refresh();
-      }
-
-      refresh() {
-        // Refresh editor
-        this._updateContent();
-      }
-
-      start() {
-        this._updateContent();
+      ready() {
+        super.ready();
 
         // We listen keyup for nonprintable characters
         document.addEventListener('keyup', (event) => {
+          if (!this.initialized) return;
           if (event.key === 'Backspace') {
             this.backward();
           }
@@ -612,6 +612,7 @@
 
         // ... and keypress for printable ones (keypress support dead keys)
         document.addEventListener('keypress', (event) => {
+          if (!this.initialized) return;
           const keyName = event.key;
           const keyCode = event.code;
 
@@ -633,9 +634,40 @@
         }, false);
       }
 
+      reset() {
+        // Reset variables
+        this._stats = new Stats();
+        this._characters = [];
+        this._i = -1;
+        this._countValid = 0;
+        this._wpm = 0;
+
+        // reset ready-screen
+        this.initialized = false;
+        this.$.readyScreen.hidden = false;
+
+        this.refresh();
+      }
+
+      refresh() {
+        // Refresh editor
+        this._updateContent();
+      }
+
+      start(e, detail) {
+        this.content = detail.selection;
+        this.ignoreComments = detail.ignoreComments;
+        this.ignoreIndents = detail.ignoreIndents;
+        this.continueOnErrors = detail.continueOnErrors;
+        this.showChart = detail.showChart;
+        this.mode = detail.mode;
+        this.initialized = true;
+
+        this._updateContent();
+      }
+
       _updateContent() {
         this._parse();
-        this.$.readyScreen.content = this.content;
       }
 
       _parse() {

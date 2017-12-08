@@ -114,6 +114,9 @@
 
 
     <ul id="navigation">
+      <li>
+        <a on-click="_selectRoot">root</a>
+      </li>
       <template is="dom-repeat" items="{{_ancestors}}">
         <li>
           <a on-click="_selectAncestor">{{item}}</a>
@@ -424,6 +427,9 @@
         this._setCurrentDirectory(ancestorPath + '/');
       }
 
+      _selectRoot() {
+        this._setCurrentDirectory('/');
+      }
 
       _selectDirectory(e) {
         this._setCurrentDirectory(this._currentDirectory + e.model.item.name + '/');

@@ -1,0 +1,416 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/flattened-nodes-observer.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../../bower_components/google-chart/google-chart.html">
+
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
+
+<link rel="import" href="/src/typio-app/typio-ready-screen.html">
+<link rel="import" href="/src/typio-app/typio-grammars.html">
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+<dom-module id="typio-stats">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+      }
+
+      .wpm {
+        font-weight: bold;
+        font-size: 2em;
+      }
+
+    </style>
+
+    <template is="dom-if" if="{{!_ended}}">
+      <span class="wpm">[[currentWpm]] WPM</span>
+    </template>
+    <template is="dom-if" if="{{_ended}}">
+      <table>
+        <tbody>
+          <tr><th>Typeable characters</th><td>[[totalCharacters]]</td></tr>
+          <tr><th>Typed characters</th><td>[[enteredCharacters]]</td></tr>
+          <tr><th>Unproductive keystroke overhead</th><td>[[unproductiveKeystrokeOverhead]]%</td></tr>
+          <tr><th>Elasped time</th><td>[[elapsedTimeInS]]s</td></tr>
+          <tr><th>WPM</th><td>[[wpm]]</td></tr>
+        </tbody>
+      </table>
+    </template>
+
+  </template>
+
+  <script>
+
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioStats extends Polymer.Element {
+
+      static get is() { return 'typio-stats'; }
+      static get properties() {
+        return {
+
+          /**
+           * The type of content (code, literature).
+           */
+          type: {
+            type: String,
+            value: "code"
+          },
+
+          /**
+           * Language of the content.
+           *
+           * Could be a programming language (Java, Python) or a
+           * spoken language (French, English).
+           *
+           * Note: Case is not important.
+           */
+          language: {
+            type: String,
+            value: "Python"
+          },
+
+          /**
+           * The content to touch type.
+           *
+           * This property should be set in JavaScript and
+           * not through an HTML attribute to avoid HTML escaping (&lt; for <).
+           */
+          content: {
+            type: String,
+            value: 'print("Hello World")\n'
+          },
+
+
+          /**
+           * True when the timer is over.
+           */
+          _ended: {
+            type: Boolean,
+            value: false
+          },
+
+
+          //
+          // Stats
+          //
+
+          /**
+           * The total number of characters to enter
+           *(Ignorable characters are not counted.)
+           */
+          totalCharacters: {
+            type: Number,
+            readOnly: true,
+            value: 0
+          },
+
+          /**
+           * The number of entered characters since starting.
+           */
+          enteredCharacters: {
+            type: Number,
+            readOnly: true,
+            value: 0
+          },
+
+          /**
+           * The timestamp of the first entered characters.
+           */
+          _startTimestamp: {
+            type: Date,
+            value: null
+          },
+
+          /**
+           * The timestamp of the last entered characters.
+           */
+          _endTimestamp: {
+            type: Date,
+            value: null
+          },
+
+          /**
+           * The current WPM.
+           *
+           * This value is periodically refreshed and not systematically
+           * after each input.
+           */
+          currentWpm: {
+            type: Number,
+            readOnly: true,
+            value: 0
+          },
+
+
+          /**
+           * A boolean character for each charcter (from 0 to `totalCharacters`)
+           * that determines if the character should be entered.
+           */
+          _editables: {
+            type: Array,
+            value: []
+          },
+
+          /**
+          * An index number for each character (from 0 to `INTERVAL_NUMBER` - 1)
+          * that determines in which interval the character belongs.
+          *
+          * This could be used to show a progress chart.
+          */
+          intervals: {
+            type: Array,
+            //readOnly: true,
+            value: []
+          },
+
+          /**
+           * The list of entered characters (right or wrong).
+           *
+           * For each element, we keep the properties:
+           * - `index`:     the current position
+           * - `character`: the given character
+           * - `valid`:     if the character was the one expected
+           * - `accepted`:  if the character was accepted (when continue on errors)
+           * - `timestamp`: when the character was pressed
+           */
+          _inputs: {
+            type: Array,
+            value: []
+          },
+
+
+          //
+          // Summary statistics
+          //
+
+          /**
+           *
+           */
+          unproductiveKeystrokeOverhead: {
+            type: Number,
+            //readOnly: true,
+            value: 0
+          },
+
+          /**
+           *
+           */
+          elapsedTimeInS: {
+            type: Number,
+            //readOnly: true,
+            value: 0
+          },
+
+          /**
+           *
+           */
+          wpm: {
+            type: Number,
+            //readOnly: true,
+            value: 0
+          }
+
+        };
+      }
+
+      //
+      // Configuration
+      //
+
+      ready() {
+        super.ready();
+        this.INTERVAL_NUMBER = 10;
+        this.WPM_GREAT = 60;
+        this.WPM_WOW = 80;
+        this.WPM_FANTASTIC = 100;
+
+        this.reset();
+      }
+
+      configure(totalCharacters, editables) {
+        this._setTotalCharacters(totalCharacters);
+        this._editables = editables;
+        this._determineIntervals();
+      }
+
+      reset() {
+        this._setTotalCharacters(0);
+        this._setEnteredCharacters(0);
+        this._setCurrentWpm(0);
+        this._startTimestamp = null;
+        this._endTimestamp = null;
+        this._ended = false;
+
+        this._editables = [];
+        this._inputs = [];
+        this.intervals = [];
+      }
+
+
+      //
+      // Timer
+      //
+
+      startTimer() {
+        this._startTimestamp = new Date();
+      }
+
+      stopTimer() {
+        this._endTimestamp = new Date();
+        this._ended = true;
+        this._calculateSummaryStatistics();
+      }
+
+      resumeTimer() {
+        if (!this._startTimestamp) {
+          this.startTimer();
+        }
+      }
+
+
+      //
+      // Input
+      // (Accept input from the user)
+
+      newCharacter(index, character, valid, accepted) {
+        let timestamp = new Date();
+        this._inputs.push({
+          'index': index,
+          'character': character,
+          'valid': valid,
+          'accepted': accepted,
+          'timestamp': timestamp
+        });
+        this._setEnteredCharacters(this.enteredCharacters + 1);
+        this._setCurrentWpm(this._calculateCurrentWpm());
+      }
+
+
+      //
+      // Intervals
+      //
+
+      _determineIntervals() {
+        // Assign an interval number to each character
+        // Dispatch uniformly editable characters among intervals.
+        const countEditable = this.totalCharacters;
+        const charactersPerInterval = Math.ceil(countEditable / this.INTERVAL_NUMBER);
+        let iInterval = 0;
+        let countEditables = 0;
+        for (let i = 0; i < this._editables.length; i++) {
+          if (this._editables[i]) {
+            countEditables++;
+          }
+          this.intervals.push(parseInt(countEditables / charactersPerInterval));
+        }
+        console.log(this.intervals);
+      }
+
+
+      //
+      // WPM
+      //
+
+      wpmPerInterval() {
+        let result = [];
+        for (let i = 0; i < this.INTERVAL_NUMBER; i++) {
+          result.push(["", undefined, "", ""]);
+        }
+        let lastAcceptedIndex = 0;
+        for (let i = 0; i < this._inputs.length; i++) {
+          let input = this._inputs[i];
+          if (input.accepted) {
+            lastAcceptedIndex = input.index;
+          }
+        }
+        let currentInterval = this.intervals[lastAcceptedIndex];
+        console.log('currentInterval', currentInterval)
+        for (let i = 0; i <= currentInterval; i++) {
+          // we determine WPM for this range
+          let firstTimestamp = undefined;
+          let lastTimestamp = undefined;
+          let characterCount = 0;
+          for (let j = 0; j < this._inputs.length; j++) {
+            let input = this._inputs[j];
+            if (this.intervals[input.index] != i) continue; // not the same interval
+            if (input.accepted) {
+              characterCount++;
+            }
+            if (!firstTimestamp) {
+              firstTimestamp = input.timestamp;
+            } else {
+              lastTimestamp = input.timestamp;
+            }
+          }
+
+          if (characterCount > 2) {
+            // We wait at least 3 characters before displaying the WPM
+            // to avoid diplaying peaks at the start of each interval
+            let wpm = Math.round(characterCount / TypioStats.durationInS(firstTimestamp, lastTimestamp) * 60.0 / 5);
+            result[i][0] = '' + wpm;
+            result[i][1] = wpm;
+            result[i][2] = (wpm > this.WPM_FANTASTIC) ? 'fantastic!' : (wpm > this.WPM_WOW) ? 'wow' : (wpm > this.WPM_GREAT) ? 'great' : '';
+          }
+        }
+
+        if (!this._ended) {
+          result[currentInterval][3] = "color: Gold";
+        }
+        console.log(result, result.length);
+        return result;
+      }
+
+      // Current WPM value. Unlike wpm(), this method could be call anytime.
+      _calculateCurrentWpm() {
+        if (this.enteredCharacters < 10) {
+          return 0;
+        }
+        return Math.round(this.enteredCharacters / this._calculateElapsedTimeInS() * 60.0 / 5);
+      }
+
+
+      //
+      // Summary statistics
+      //
+
+      _calculateSummaryStatistics() {
+        this.unproductiveKeystrokeOverhead = this._calculateUnproductiveKeystrokeOverhead();
+        this.elapsedTimeInS = this._calculateElapsedTimeInS();
+        this.wpm = this._calculateWpm();
+      }
+
+      _calculateUnproductiveKeystrokeOverhead() {
+        return Math.round(this.enteredCharacters * 100 / this.totalCharacters - 100, "%");
+      }
+
+      _calculateElapsedTimeInS() {
+        let end = this._endTimestamp;
+        if (!end) {
+          end = new Date();
+        }
+        return TypioStats.durationInS(this._startTimestamp, end);
+      }
+
+      _calculateWpm() {
+        // see https://en.wikipedia.org/wiki/Words_per_minute for official definition
+        return Math.round(this.totalCharacters / this.elapsedTimeInS * 60.0 / 5);
+      }
+
+      //
+      // Utils
+      //
+
+      static durationInS(start, end) {
+        return Math.round((end - start) / 1000);
+      }
+
+    }
+    window.customElements.define(TypioStats.is, TypioStats);
+
+  </script>
+</dom-module>

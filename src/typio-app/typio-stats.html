@@ -352,7 +352,7 @@
             // We wait at least 3 characters before displaying the WPM
             // to avoid diplaying peaks at the start of each interval
             let wpm = Math.round(characterCount / TypioStats.durationInS(firstTimestamp, lastTimestamp) * 60.0 / 5);
-            result[i][0] = '' + wpm;
+            result[i][0] = isFinite(wpm) ? '' + wpm : '-';
             result[i][1] = wpm;
             result[i][2] = (wpm > this.WPM_FANTASTIC) ? 'fantastic!' : (wpm > this.WPM_WOW) ? 'wow' : (wpm > this.WPM_GREAT) ? 'great' : '';
           }

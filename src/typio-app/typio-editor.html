@@ -255,16 +255,12 @@
         <pre id="editor" data-type$="[[type]]">[[content]]</pre>
       </div>
 
-      <!-- See https://developers.google.com/chart/interactive/docs/gallery/steppedareachart -->
       <google-chart id="chart"
         type="stepped-area"
-        options='{"title": "WPM", "legend": "none", "fontName": "Cutive", "areaOpacity": 1, "tooltip": {"trigger": "none"}, "chartArea": { "left": 0, "top": 0, "width": "100%", "height": "100%", "backgroundColor": {"strokeWidth": 0}}, "hAxis": { "textPosition": "in", "textStyle": { "color": "black", "bold": true, "auraColor": "none" } }, "vAxis": {"textPosition": "int", "minValue": 0, "maxValue": 200, "gridlines": { "count": 0 } }, "colors": ["#009ee3"], "lineWidth": 2, "annotations": {"textStyle": { "color": "orange"}}}'
-        cols='[{"label": "Progress", "type": "string"},{"label": "WPM", "type": "number"},{"type": "string", "role": "annotation"},{"type": "string", "role": "style"}]'
+        options="[[chartOptions]]"
+        cols="[[chartCols]]"
         rows='[]'>
       </google-chart>
-      <!--
-      see https://developers.google.com/chart/interactive/docs/roles?hl=en for the role property of columns
-      -->
 
     </div>
 
@@ -393,6 +389,54 @@
             type: Number,
             value: 0
           },
+
+
+          //
+          // Google Chart Configuration
+          // See https://developers.google.com/chart/interactive/docs/gallery/steppedareachart
+          //
+
+          chartOptions: {
+            type: Object,
+            readOnly: true,
+            value: {
+              "title": "WPM",
+              "legend": "none",
+              "fontName": "Cutive",
+              "areaOpacity": 1,
+              "tooltip": {"trigger": "none"},
+              "chartArea": {
+                "left": 0,
+                "top": 0,
+                "width": "100%",
+                "height": "100%",
+                "backgroundColor": {"strokeWidth": 0}
+              },
+              "hAxis": { "textPosition": "in", "textStyle": { "color": "black", "bold": true, "auraColor": "none" } },
+              "vAxis": {
+                "textPosition": "int",
+                "minValue": 0,
+                "maxValue": 200,
+                "gridlines": { "count": 0 }
+              },
+              "colors": ["#009ee3"],
+              "lineWidth": 2,
+              "annotations": {"textStyle": { "color": "orange"} }
+            }
+          },
+
+          chartCols: {
+            type: Array,
+            readOnly: true,
+            value: [
+              {"label": "Progress", "type": "string"},
+              {"label": "WPM",      "type": "number"},
+              {"type": "string",    "role": "annotation"},
+              {"type": "string",    "role": "style"}
+              // see https://developers.google.com/chart/interactive/docs/roles?hl=en for the role property of columns
+            ]
+          },
+
 
         };
       }

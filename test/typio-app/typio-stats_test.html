@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>typio-stats test</title>
+
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../src/typio-app/typio-stats.html">
+  </head>
+  <body>
+
+    <test-fixture id="BasicTestFixture">
+      <template>
+        <typio-stats></typio-stats>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="ChangedPropertyTestFixture">
+      <template>
+        <typio-stats prop1="new-prop1"></typio-stats>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('typio-app', function() {
+
+        test('instantiating the element with default properties works', function() {
+          var element = fixture('BasicTestFixture');
+          element.configure(10, [true, true, true, true, true, true, true, true, true, true])
+
+          // Check read-only property
+          assert.equal(element.totalCharacters, 10);
+          assert.deepEqual(element.intervals, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+
+          // Simulate key press
+          element.startTimer(new Date("2017-12-19T12:42:01.000Z"));
+          element.newCharacter(0, 'a', true, true, new Date("2017-12-19T12:42:01.500Z"));
+          element.newCharacter(1, 'b', true, true, new Date("2017-12-19T12:42:02.000Z"));
+          element.newCharacter(2, 'c', true, true, new Date("2017-12-19T12:42:02.500Z"));
+          element.newCharacter(3, 'd', true, true, new Date("2017-12-19T12:42:03.500Z"));
+          element.newCharacter(4, 'e', true, true, new Date("2017-12-19T12:42:03.500Z"));
+          element.newCharacter(5, 'f', true, true, new Date("2017-12-19T12:42:04.000Z"));
+          element.newCharacter(7, 'h', true, true, new Date("2017-12-19T12:42:05.000Z"));
+          element.newCharacter(6, 'g', true, true, new Date("2017-12-19T12:42:04.500Z"));
+          element.newCharacter(8, 'i', true, true, new Date("2017-12-19T12:42:05.500Z"));
+          element.newCharacter(9, 'j', true, true, new Date("2017-12-19T12:42:06.000Z"));
+          element.stopTimer(new Date("2017-12-19T12:42:07.000Z"));
+          assert.equal(element.wpm, 20);
+        });
+
+        /*
+        test('setting a property on the element works', function() {
+          // Create a test fixture
+          var element = fixture('ChangedPropertyTestFixture');
+          assert.equal(element.prop1, 'new-prop1');
+          var elementShadowRoot = element.shadowRoot;
+          var elementHeader = elementShadowRoot.querySelector('h2');
+          assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
+        });
+        */
+
+      });
+    </script>
+
+
+  </body>
+</html>

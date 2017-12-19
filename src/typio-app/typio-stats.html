@@ -256,12 +256,12 @@
       // Timer
       //
 
-      startTimer() {
-        this._startTimestamp = new Date();
+      startTimer(timestamp = new Date()) {
+        this._startTimestamp = timestamp;
       }
 
-      stopTimer() {
-        this._endTimestamp = new Date();
+      stopTimer(timestamp = new Date()) {
+        this._endTimestamp = timestamp;
         this._ended = true;
         this._calculateSummaryStatistics();
       }
@@ -277,8 +277,7 @@
       // Input
       // (Accept input from the user)
 
-      newCharacter(index, character, valid, accepted) {
-        let timestamp = new Date();
+      newCharacter(index, character, valid, accepted, timestamp = new Date()) {
         this._inputs.push({
           'index': index,
           'character': character,
@@ -306,9 +305,8 @@
           if (this._editables[i]) {
             countEditables++;
           }
-          this.intervals.push(parseInt(countEditables / charactersPerInterval));
+          this.intervals.push(parseInt(countEditables / charactersPerInterval) - 1);
         }
-        console.log(this.intervals);
       }
 
 
@@ -398,6 +396,7 @@
 
       _calculateWpm() {
         // see https://en.wikipedia.org/wiki/Words_per_minute for official definition
+        console.log(this.totalCharacters, this._startTimestamp, this._endTimestamp, this.elapsedTimeInS);
         return Math.round(this.totalCharacters / this.elapsedTimeInS * 60.0 / 5);
       }
 

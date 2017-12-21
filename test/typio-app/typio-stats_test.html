@@ -13,27 +13,22 @@
   </head>
   <body>
 
-    <test-fixture id="BasicTestFixture">
+    <test-fixture id="DefaultFixture">
       <template>
         <typio-stats></typio-stats>
       </template>
     </test-fixture>
 
-    <test-fixture id="ChangedPropertyTestFixture">
-      <template>
-        <typio-stats prop1="new-prop1"></typio-stats>
-      </template>
-    </test-fixture>
-
     <script>
-      suite('typio-app', function() {
+      suite('typio-stats', function() {
 
-        test('instantiating the element with default properties works', function() {
-          var element = fixture('BasicTestFixture');
-          element.configure(10, [true, true, true, true, true, true, true, true, true, true])
+        test('enter a character at regular interval', function() {
+          var element = fixture('DefaultFixture');
+          element.configure("----------");
 
           // Check read-only property
           assert.equal(element.totalCharacters, 10);
+          assert.equal(element.totalEditableCharacters, 10);
           assert.deepEqual(element.intervals, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
           // Simulate key press
@@ -52,16 +47,109 @@
           assert.equal(element.wpm, 20);
         });
 
-        /*
-        test('setting a property on the element works', function() {
-          // Create a test fixture
-          var element = fixture('ChangedPropertyTestFixture');
-          assert.equal(element.prop1, 'new-prop1');
-          var elementShadowRoot = element.shadowRoot;
-          var elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
+        test('with ignorable characters', function() {
+          var element = fixture('DefaultFixture');
+          element.configure("XXX------X---X-");
+
+          // Check read-only property
+          assert.equal(element.totalCharacters, 15);
+          assert.equal(element.totalEditableCharacters, 10);
+          assert.deepEqual(element.intervals, [0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 6, 7, 8, 9, 9]);
+
+          // Simulate key press
+          element.startTimer(new Date("2017-12-19T12:42:01.000Z"));
+          element.newCharacter(0, 'a', true, true, new Date("2017-12-19T12:42:01.500Z"));
+          element.newCharacter(1, 'b', true, true, new Date("2017-12-19T12:42:02.000Z"));
+          element.newCharacter(2, 'c', true, true, new Date("2017-12-19T12:42:02.500Z"));
+          element.newCharacter(3, 'd', true, true, new Date("2017-12-19T12:42:03.500Z"));
+          element.newCharacter(4, 'e', true, true, new Date("2017-12-19T12:42:03.500Z"));
+          element.newCharacter(5, 'f', true, true, new Date("2017-12-19T12:42:04.000Z"));
+          element.newCharacter(7, 'h', true, true, new Date("2017-12-19T12:42:05.000Z"));
+          element.newCharacter(6, 'g', true, true, new Date("2017-12-19T12:42:04.500Z"));
+          element.newCharacter(8, 'i', true, true, new Date("2017-12-19T12:42:05.500Z"));
+          element.newCharacter(9, 'j', true, true, new Date("2017-12-19T12:42:06.000Z"));
+          element.stopTimer(new Date("2017-12-19T12:42:07.000Z"));
+          assert.equal(element.wpm, 20);
         });
-        */
+
+
+        test('check summary statistics', function(done) {
+          var element = fixture('DefaultFixture');
+          element.intervalNumber = 5;
+          element.configure("XX---X--");
+
+          // Check read-only property
+          assert.deepEqual(element.intervals, [0, 0, 0, 1, 2, 3, 3, 4]);
+
+          // Simulate key press
+          element.startTimer(new Date("2017-12-19T12:42:01.000Z"));
+          element.newCharacter(2, 'a', true, true, new Date("2017-12-19T12:42:01.500Z"));
+          element.newCharacter(3, 'b', true, true, new Date("2017-12-19T12:42:02.000Z"));
+          element.newCharacter(4, 'd', false, false, new Date("2017-12-19T12:42:02.500Z")); // Wrong...
+          element.newCharacter(4, 'c', true, true, new Date("2017-12-19T12:42:03.500Z"));
+          element.newCharacter(6, 'd', true, true, new Date("2017-12-19T12:42:04.500Z"));
+          element.newCharacter(7, 'e', true, true, new Date("2017-12-19T12:42:06.500Z"));
+          element.stopTimer(new Date("2017-12-19T12:42:07.000Z"));
+
+          // Check summary statistics
+          flush(function() {
+            const totalCharacters               = element.shadowRoot.querySelector('.totalCharacters td').innerHTML;
+            const totalEditableCharacters       = element.shadowRoot.querySelector('.totalEditableCharacters td').innerHTML;
+            const enteredCharacters             = element.shadowRoot.querySelector('.enteredCharacters td').innerHTML;
+            const unproductiveKeystrokeOverhead = element.shadowRoot.querySelector('.unproductiveKeystrokeOverhead td').innerHTML;
+            const elapsedTimeInS                = element.shadowRoot.querySelector('.elapsedTimeInS td').innerHTML;
+            const wpm                           = element.shadowRoot.querySelector('.wpm td').innerHTML;
+
+            assert.equal(totalCharacters, '8');
+            assert.equal(totalEditableCharacters, '5');
+            assert.equal(enteredCharacters, '6');
+            assert.equal(unproductiveKeystrokeOverhead, '20%');
+            assert.equal(elapsedTimeInS, '6s');
+            assert.equal(wpm, '10');
+
+            done();
+          });
+
+        });
+
+
+        test('WPM are available per interval', function() {
+          var element = fixture('DefaultFixture');
+          element.intervalNumber = 2;
+          element.minCharactersPerInterval = 3;
+          element.configure("XX---X-X--");
+
+          // Check read-only property
+          console.log(element.intervals);
+          assert.deepEqual(element.intervals, [0, 0, 0, 0, 0, 1, 1, 1, 1, 1]);
+
+          // Simulate key press
+          element.startTimer(new Date("2017-12-19T12:42:01.000Z"));
+
+          element.newCharacter(2, 'a', true, true, new Date("2017-12-19T12:42:01.500Z"));
+          assert.isUndefined(element.wpmPerInterval()[0][1]); // not enough entered characters
+
+          element.newCharacter(3, 'b', true, true, new Date("2017-12-19T12:42:02.000Z"));
+          assert.isUndefined(element.wpmPerInterval()[0][1]); // not enough entered characters
+
+          element.newCharacter(4, 'c', true, true, new Date("2017-12-19T12:42:03.500Z"));
+          assert.equal(element.wpmPerInterval()[0][1], '18'); // enough characters to calculate the WPM
+
+          element.newCharacter(6, 'd', true, true, new Date("2017-12-19T12:42:04.500Z"));
+          assert.equal(element.wpmPerInterval()[0][1], '18'); // previous interval is preserved
+          assert.isUndefined(element.wpmPerInterval()[1][1]); // but not enough entered characters for new interval
+
+          element.newCharacter(8, 'e', true, true, new Date("2017-12-19T12:42:06.500Z"));
+          assert.isUndefined(element.wpmPerInterval()[1][1]); // Still not enough entered characters for new interval
+
+          element.newCharacter(9, 'f', true, true, new Date("2017-12-19T12:42:07.000Z"));
+          assert.equal(element.wpmPerInterval()[0][1], '18');
+          assert.equal(element.wpmPerInterval()[1][1], '12'); // It's OK!
+
+          element.stopTimer(new Date("2017-12-19T12:42:07.000Z"));
+        });
+
+
 
       });
     </script>

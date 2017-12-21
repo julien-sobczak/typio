@@ -598,7 +598,7 @@
         this.$.editor.appendChild(fragment);
 
         this._characters = this.$.editor.querySelectorAll('.character');
-        this.$.stats.configure(this.enterableCharacters(), editables);
+        this.$.stats.configure(editables);
         let intervals = this.$.stats.intervals;
         for (let i = 0; i < this.$.stats.totalCharacters; i++) {
           this._characters[i].classList.add('interval-' + intervals[i]);

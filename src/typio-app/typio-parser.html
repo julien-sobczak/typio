@@ -1,0 +1,245 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="/src/typio-app/typio-grammars.html">
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+<dom-module id="typio-parser">
+  <script>
+
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioParser extends Polymer.Element {
+
+      static get is() { return 'typio-parser'; }
+      static get properties() {
+        return {
+
+          //
+          // Mandatory properties
+          //
+
+          /**
+           * The type of content (code, literature).
+           */
+          type: {
+            type: String,
+            value: 'code',
+            observer: '_contentChanged'
+          },
+
+          /**
+           * Language of the content.
+           *
+           * Could be a programming language (Java, Python) or a
+           * spoken language (French, English).
+           *
+           * Note: Case is not important.
+           */
+          language: {
+            type: String,
+            value: "Python",
+            observer: '_contentChanged'
+          },
+
+          /**
+           * The content to touch type.
+           *
+           * This property should be set in JavaScript and
+           * not through an HTML attribute to avoid HTML escaping (&lt; for <).
+           */
+          content: {
+            type: String,
+            value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n',
+            observer: '_contentChanged'
+          },
+
+
+          /**
+           * Output of this element.
+           *
+           * The classes are updated when the content or one of its properties is updated.
+           */
+          classes: {
+              type: Array,
+              readOnly: true,
+              value: []
+          },
+
+          //
+          // Optional properties
+          //
+
+          /**
+           * Should we exclude the comments present in the code snippet.
+           */
+          ignoreComments: {
+            type: Boolean,
+            value: true
+          },
+
+          /**
+           * Should user enters indentation characters.
+           */
+          ignoreIndents: {
+            type: Boolean,
+            value: true
+          },
+
+        };
+      }
+
+      _contentChanged() {
+        const length = this.content.length;
+        const classes = this._emptyClasses();
+
+        this._determineSpaces(classes);
+        if (this.type === 'code') {
+          this._determineTokens(classes);
+        }
+        this._determineIgnorables(classes);
+
+        this._setClasses(classes);
+      }
+
+      _emptyClasses() {
+        const length = this.content.length;
+        const result = new Array(length);
+
+        for (let i = 0; i < length; i++) {
+          result[i] = [];
+        }
+
+        return result;
+      }
+
+      _determineSpaces(classes) {
+        let ignorables = new Array(this.content.length);
+
+        const spaces = ' \t\n\r\v';
+        const length = this.content.length;
+
+        let eol = false;
+
+        for (let i = 0; i < length; i++) {
+
+          let charTxt = this.content[i];
+          let charCode = this.content.charCodeAt(i);
+
+          // All are characters and disabled by default
+          let charClasses = ['character', 'disabled']; // General classes
+
+          if (charTxt == '\n') {
+            // Put Unicode return symbol as content &#9166; (should be displayed only when actived)
+            charClasses.push('backslash');
+
+            eol = true;
+          } else {
+            let iSpace = spaces.indexOf(charTxt);
+            if (iSpace !== -1) {
+              charClasses.push('space');
+              if (eol) {
+                charClasses.push('indent');
+              }
+            } else {
+              charClasses.push('letter');
+              eol = false;
+            }
+          }
+
+          // Append to global array
+          classes[i] = classes[i].concat(charClasses);
+        }
+      }
+
+      _determineTokens(classes) {
+        const length = this.content.length;
+
+        // Intermediate array to store the result of tokenization
+        let tokens = new Array(length);
+
+        const languageKey = this.language.toLowerCase();
+        if (!GRAMMARS.has(languageKey)) {
+          return;
+        }
+
+        let grammar = GRAMMARS.get(languageKey);
+        for (let token in grammar) {
+          if (!grammar.hasOwnProperty(token) || !grammar[token]) {
+            continue;
+          }
+
+          let pattern = grammar[token];
+          let lookbehind = !!pattern.lookbehind;
+          let lookbehindLength = 0;
+
+          pattern = pattern.pattern || pattern;
+          let flags = pattern.flags || '';
+          if (flags.indexOf('g') === -1) {
+            flags += 'g';
+          }
+          pattern = new RegExp(pattern, flags);
+          let match;
+          while (match = pattern.exec(this.content)) {
+            if (lookbehind) {
+              lookbehindLength = match[1].length;
+            }
+            let start = match.index + lookbehindLength;
+            match = match[0].slice(lookbehindLength);
+            let len = match.length;
+            let end = start + len;
+
+            for (let i = start; i < start + len; i++) {
+              if (!tokens[i]) {
+                tokens[i] = token;
+              }
+            }
+          }
+        }
+
+        // Append result to global array `classes`
+        for (let i = 0; i < length; i++) {
+          if (tokens[i]) {
+            classes[i].push('token');
+            classes[i].push(tokens[i]);
+          }
+        }
+      }
+
+      _determineIgnorables(classes) {
+        // TODO
+
+        for (let i = 0; i < this.content.length; i++) {
+          classes[i].push('editable');
+        }
+
+        /*
+        // Marks editable character
+        let editables = [];
+        let characters = fragment.querySelectorAll('.character');
+        for (let i = 0; i < characters.length; i++) {
+          const character = characters[i];
+          let editable = true;
+          if (character.classList.contains('ignorable')) {
+            editable = false;
+          }
+          if (this.ignoreComments && character.classList.contains('comment')) {
+            editable = false;
+          }
+          if (this.ignoreIndents && character.classList.contains('indent')) {
+            editable = false;
+          }
+          editables[i] = editable;
+          character.classList.add(editable ? 'editable' : 'ignorable');
+        }
+
+        */
+      }
+
+
+    }
+    window.customElements.define(TypioParser.is, TypioParser);
+
+  </script>
+</dom-module>

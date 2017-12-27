@@ -1,13 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/polymer/lib/utils/flattened-nodes-observer.html">
-<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
-<link rel="import" href="../../bower_components/google-chart/google-chart.html">
 
-<link rel="import" href="../../bower_components/app-layout/app-layout.html">
-<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
-
-<link rel="import" href="/src/typio-app/typio-ready-screen.html">
-<link rel="import" href="/src/typio-app/typio-grammars.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-stats">
@@ -24,10 +16,10 @@
 
     </style>
 
-    <template is="dom-if" if="{{!_ended}}">
+    <template is="dom-if" if="[[!_ended]]">
       <span class="wpm">[[currentWpm]] WPM</span>
     </template>
-    <template is="dom-if" if="{{_ended}}">
+    <template id="table" is="dom-if" if="[[_ended]]">
       <table>
         <tbody>
           <tr class="totalCharacters"><th>Total characters</th><td>[[totalCharacters]]</td></tr>
@@ -165,7 +157,7 @@
           editableCharacters: {
             type: Object,
             value: null,
-            observer: '_parseEditableCharacters'
+            observer: '_editableCharactersChanged'
           },
 
           /**
@@ -273,8 +265,8 @@
         this.reset();
       }
 
-      configure(editables) {
-        this._editables = this._parseEditableCharacters(editables);
+      _editableCharactersChanged() {
+        this._editables = this._parseEditableCharacters(this.editableCharacters);
         this._setTotalCharacters(this._editables.length);
         this._setTotalEditableCharacters(this._countEditableCharacters());
         this._determineIntervals();
@@ -358,6 +350,8 @@
       //
 
       _determineIntervals() {
+        this.intervals = [];
+
         // Assign an interval number to each character
         // Dispatch uniformly editable characters among intervals.
         const charactersPerInterval = Math.ceil(this.totalEditableCharacters / this.intervalNumber);

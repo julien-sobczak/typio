@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>typio-parser test</title>
+
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../src/typio-app/typio-parser.html">
+  </head>
+  <body>
+
+    <test-fixture id="DefaultFixture">
+      <template>
+        <typio-parser></typio-parser>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('typio-parser', function() {
+
+        test('enter a character at regular interval', function() {
+          var parser = fixture('DefaultFixture');
+
+          // Define settings
+          parser.ignoreComments = true;
+          parser.ignoreIndents = true;
+
+          // Configure demo text
+          parser.type = "code";
+          parser.language = "Java";
+          parser.content =  `
+package test;
+
+public class Main {
+
+  public void main(String []args) {
+    System.out.println("Java");
+  }
+
+}`;
+
+          const actualClasses = parser.classes;
+          const expectedClasses = new Map(); // keys are character's index
+          expectedClasses.set(0, ['backslash', 'editable']); // \m
+          expectedClasses.set(1, ['keyword', 'editable']); // [p]ackage
+
+          for (let [index, expected] of expectedClasses.entries()) {
+            expect(actualClasses[index]).to.include.members(expected);
+          }
+        });
+
+      });
+    </script>
+
+
+  </body>
+</html>

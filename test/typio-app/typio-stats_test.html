@@ -6,6 +6,7 @@
 
     <title>typio-stats test</title>
 
+    <link rel="import" href="../../bower_components/polymer/polymer-element.html">
     <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../bower_components/web-component-tester/browser.js"></script>
 
@@ -24,7 +25,7 @@
 
         test('enter a character at regular interval', function() {
           var element = fixture('DefaultFixture');
-          element.configure("----------");
+          element.editableCharacters = "----------";
 
           // Check read-only property
           assert.equal(element.totalCharacters, 10);
@@ -49,7 +50,7 @@
 
         test('with ignorable characters', function() {
           var element = fixture('DefaultFixture');
-          element.configure("XXX------X---X-");
+          element.editableCharacters = "XXX------X---X-";
 
           // Check read-only property
           assert.equal(element.totalCharacters, 15);
@@ -76,7 +77,7 @@
         test('check summary statistics', function(done) {
           var element = fixture('DefaultFixture');
           element.intervalNumber = 5;
-          element.configure("XX---X--");
+          element.editableCharacters = "XX---X--";
 
           // Check read-only property
           assert.deepEqual(element.intervals, [0, 0, 0, 1, 2, 3, 3, 4]);
@@ -91,8 +92,9 @@
           element.newCharacter(7, 'e', true, true, new Date("2017-12-19T12:42:06.500Z"));
           element.stopTimer(new Date("2017-12-19T12:42:07.000Z"));
 
-          // Check summary statistics
           flush(function() {
+
+            // Check summary statistics
             const totalCharacters               = element.shadowRoot.querySelector('.totalCharacters td').innerHTML;
             const totalEditableCharacters       = element.shadowRoot.querySelector('.totalEditableCharacters td').innerHTML;
             const enteredCharacters             = element.shadowRoot.querySelector('.enteredCharacters td').innerHTML;
@@ -117,10 +119,9 @@
           var element = fixture('DefaultFixture');
           element.intervalNumber = 2;
           element.minCharactersPerInterval = 3;
-          element.configure("XX---X-X--");
+          element.editableCharacters = "XX---X-X--";
 
           // Check read-only property
-          console.log(element.intervals);
           assert.deepEqual(element.intervals, [0, 0, 0, 0, 0, 1, 1, 1, 1, 1]);
 
           // Simulate key press

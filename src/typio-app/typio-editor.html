@@ -8,7 +8,7 @@
 
 <link rel="import" href="/src/typio-app/typio-ready-screen.html">
 <link rel="import" href="/src/typio-app/typio-stats.html">
-<link rel="import" href="/src/typio-app/typio-grammars.html">
+<link rel="import" href="/src/typio-app/typio-parser.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-editor">
@@ -239,7 +239,13 @@
         on-ready="start">
     </typio-ready-screen>
 
-
+    <typio-parser id="parser"
+        type="[[type]]"
+        language="[[language]]"
+        content="{{content}}"
+        ignore-comments="{{settings.ignoreComments}}"
+        ignore-indents="{{settings.ignoreIndents}}">
+    </typio-parser>
 
     <div id="screen" class$="initialized-[[initialized]]">
 
@@ -513,61 +519,30 @@
 
       _parse() {
         this._length = this.content.length;
-        this._determineTokens();
 
-        let spaces = ' \t\n\r\v';
+        const classes = this.$.parser.classes;
+        const editableCharacters = this._calculateEditableCharacters(classes);
+        const intervals = this.$.stats.intervals;
 
-        let annotatedContent = '';
-
-        // Step 2: Rebuild the content adding a <span> around each character
-        // CSS classes are added to mark annotate the characters (space, variable, ...)
         let fragment = document.createDocumentFragment();
-        let eol = false;
 
-        let onlyIgnorableCharacters = true; // Does the current line contains only ignorable characters?
         for (let i = 0; i < this._length; i++) {
           let charTxt = this.content[i]; // The original character
-          let charName = charTxt; // The name as returned by the keypress/keyup event (see key property)
-          let charPrint = charTxt; // The character print on screen
+          let charName = charTxt;        // The name as returned by the keypress/keyup event (see key property)
+          let charPrint = charTxt;       // The character print on screen
 
           let charCode = this.content.charCodeAt(i);
-          let classes = [];
+          let charClasses = classes[i];
 
           let span = document.createElement('span');
-          span.classList.add('character');
-          span.classList.add('disabled');
+          span.classList.add(...charClasses);
+          span.classList.add('interval-' + intervals[i]);
 
           if (charTxt == '\n') {
             // Put Unicode return symbol as content &#9166; (should be displayed only when actived)
             charName = 'Enter';
             charPrint = ' <strong>&#9166;</strong> \n';
             span.classList.add('print-on-focus');
-            span.classList.add('backslash');
-            if (onlyIgnorableCharacters) {
-              span.classList.add('ignorable');
-            }
-            eol = true;
-            onlyIgnorableCharacters = true;
-          } else {
-
-            let iSpace = spaces.indexOf(charTxt);
-            if (iSpace !== -1) {
-              span.classList.add('space');
-              if (eol) {
-                span.classList.add('indent');
-              }
-            } else {
-              span.classList.add('letter');
-              eol = false;
-            }
-            if (this._tokens[i]) {
-              let token = this._tokens[i];
-              span.classList.add('token');
-              span.classList.add(token);
-              if (!this.ignoreComments || token != "comment") {
-                onlyIgnorableCharacters = false;
-              }
-            }
           }
 
           span.dataset.text = charName;
@@ -575,82 +550,21 @@
           fragment.appendChild(span);
         }
 
-        // Marks editable character
-        let editables = [];
-        let characters = fragment.querySelectorAll('.character');
-        for (let i = 0; i < characters.length; i++) {
-          const character = characters[i];
-          let editable = true;
-          if (character.classList.contains('ignorable')) {
-            editable = false;
-          }
-          if (this.ignoreComments && character.classList.contains('comment')) {
-            editable = false;
-          }
-          if (this.ignoreIndents && character.classList.contains('indent')) {
-            editable = false;
-          }
-          editables[i] = editable;
-          character.classList.add(editable ? 'editable' : 'ignorable');
-        }
-
         this.$.editor.innerHTML = '';
         this.$.editor.appendChild(fragment);
 
         this._characters = this.$.editor.querySelectorAll('.character');
-        this.$.stats.configure(editables);
-        let intervals = this.$.stats.intervals;
-        for (let i = 0; i < this.$.stats.totalCharacters; i++) {
-          this._characters[i].classList.add('interval-' + intervals[i]);
-        }
+        this.$.stats.editableCharacters = editableCharacters;
+
         this.advance();
       }
 
-      _determineTokens() {
-        this._tokens = new Array(this._length);
-
-        const languageKey = this.language.toLowerCase();
-        if (!GRAMMARS.has(languageKey)) {
-          return;
+      _calculateEditableCharacters(classes) {
+        let editableCharacters = new Array(this._length);
+        for (let i = 0; i < this._length; i++) {
+          editableCharacters[i] = !classes.includes('ignorable');
         }
-
-        let grammar = GRAMMARS.get(languageKey);
-        for (let token in grammar) {
-          if (!grammar.hasOwnProperty(token) || !grammar[token]) {
-            continue;
-          }
-
-          let pattern = grammar[token];
-          let lookbehind = !!pattern.lookbehind;
-          let lookbehindLength = 0;
-
-          pattern = pattern.pattern || pattern;
-          let flags = pattern.flags || '';
-          if (flags.indexOf('g') === -1) {
-            flags += 'g';
-          }
-          pattern = new RegExp(pattern, flags);
-          let match;
-          while (match = pattern.exec(this.content)) {
-            if (lookbehind) {
-              lookbehindLength = match[1].length;
-            }
-            let start = match.index + lookbehindLength;
-            match = match[0].slice(lookbehindLength);
-            let len = match.length;
-            let end = start + len;
-
-            for (let i = start; i < start + len; i++) {
-              if (!this._tokens[i]) {
-                this._tokens[i] = token;
-              }
-            }
-          }
-        }
-      }
-
-      enterableCharacters() {
-        return this.$.editor.querySelectorAll('.editable').length;
+        return editableCharacters;
       }
 
       resume() {
@@ -759,16 +673,7 @@
 
       _isIgnorable() {
         let character = this._cursor();
-        if (this.ignoreComments && character.classList.contains('comment')) {
-          return true;
-        }
-        if (this.ignoreIndents && character.classList.contains('indent')) {
-          return true;
-        }
-        if (character.classList.contains('ignorable')) { // special marker
-          return true;
-        }
-        return false;
+        return character.classList.contains('ignorable');
       }
 
       _isEndOfFile() {
@@ -807,7 +712,7 @@
           this.$.editor.classList.remove('highlight-interval-' + column);
         } else {
           // unselect all
-          for (let i = 0; i < this.$.stats.INTERVAL_NUMBER; i++) {
+          for (let i = 0; i < this.$.stats.intervalNumber; i++) {
             this.$.editor.classList.remove('highlight-interval-' + i);
           }
           // and select the selected one

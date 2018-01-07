@@ -25,8 +25,7 @@
            */
           type: {
             type: String,
-            value: 'code',
-            observer: '_contentChanged'
+            value: 'code'
           },
 
           /**
@@ -39,8 +38,7 @@
            */
           language: {
             type: String,
-            value: "Python",
-            observer: '_contentChanged'
+            value: "Python"
           },
 
           /**
@@ -51,8 +49,7 @@
            */
           content: {
             type: String,
-            value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n',
-            observer: '_contentChanged'
+            value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n'
           },
 
 
@@ -89,8 +86,8 @@
 
         };
       }
-
-      _contentChanged() {
+      
+      parse() {
         const length = this.content.length;
         const classes = this._emptyClasses();
 
@@ -170,29 +167,39 @@
             continue;
           }
 
-          let pattern = grammar[token];
-          let lookbehind = !!pattern.lookbehind;
-          let lookbehindLength = 0;
-
-          pattern = pattern.pattern || pattern;
-          let flags = pattern.flags || '';
-          if (flags.indexOf('g') === -1) {
-            flags += 'g';
+          let patterns = grammar[token];
+          if (!Array.isArray(patterns)) {
+            patterns = [patterns];
           }
-          pattern = new RegExp(pattern, flags);
-          let match;
-          while (match = pattern.exec(this.content)) {
-            if (lookbehind) {
-              lookbehindLength = match[1].length;
-            }
-            let start = match.index + lookbehindLength;
-            match = match[0].slice(lookbehindLength);
-            let len = match.length;
-            let end = start + len;
+          for (let pattern of patterns) {
 
-            for (let i = start; i < start + len; i++) {
-              if (!tokens[i]) {
-                tokens[i] = token;
+            let lookbehind = !!pattern.lookbehind;
+            let lookbehindLength = 0;
+
+            pattern = pattern.pattern || pattern;
+            let flags = pattern.flags || '';
+            if (flags.indexOf('g') === -1) {
+              flags += 'g';
+            }
+
+            pattern = new RegExp(pattern, flags);
+            let match;
+            while (match = pattern.exec(this.content)) {
+              if (lookbehind) {
+                lookbehindLength = match[1].length;
+              }
+              let start = match.index + lookbehindLength;
+              match = match[0].slice(lookbehindLength);
+              let len = match.length;
+              let end = start + len;
+
+              for (let i = start; i < start + len; i++) {
+                // Do not override previous detected token, except if it is a comment
+                // For example:
+                //   //  This a comment containing a "String" to ignore
+                if (!tokens[i] || token === 'comment') { 
+                  tokens[i] = token;
+                }
               }
             }
           }
@@ -208,33 +215,73 @@
       }
 
       _determineIgnorables(classes) {
-        // TODO
+        const len = this.content.length;
 
-        for (let i = 0; i < this.content.length; i++) {
-          classes[i].push('editable');
+        // First, ignore comments
+        if (this.ignoreComments) {
+          for (let i = 0; i < len; i++) {
+            if (classes[i].includes('comment')) {
+              classes[i].push('ignorable');
+
+              // and ignore spaces around comments
+
+              // backward
+              for (let j = i; j >= 0; j--) {
+                if (classes[j].includes('space')) {
+                  classes[j].push('ignorable');
+                }
+                if (classes[j].includes('backslash')) {
+                  classes[j].push('ignorable');
+                  break; // do not rewind more than on line
+                }
+              }
+
+              // forward
+              for (let j = i + 1; j < len; j++) {
+                if (classes[j].includes('space')) {
+                  classes[j].push('ignorable');
+                }
+                if (classes[j].includes('backslash')) {
+                  classes[j].push('ignorable');
+                  break; // do not rewind more than on line
+                }
+              }
+            }
+          }
         }
 
-        /*
-        // Marks editable character
-        let editables = [];
-        let characters = fragment.querySelectorAll('.character');
-        for (let i = 0; i < characters.length; i++) {
-          const character = characters[i];
-          let editable = true;
-          if (character.classList.contains('ignorable')) {
-            editable = false;
+        // Second, ignore indent
+        if (this.ignoreIndents) {
+          for (let i = 0; i < len; i++) {
+            if (classes[i].includes('indent')) {
+              classes[i].push('ignorable');
+            }
           }
-          if (this.ignoreComments && character.classList.contains('comment')) {
-            editable = false;
+          // Ignore blank lines
+          let countNotBlankCharacters = 0;
+          let indexStartLine = 0;
+          for (let i = 0; i < len; i++) {
+            if (classes[i].includes('backslash')) { // eof
+              if (countNotBlankCharacters == 0) { // Mark previous line as ignoreable
+                for (let j = indexStartLine; j <= i; j++) {
+                  classes[j].push('ignorable');
+                }
+              }
+              countNotBlankCharacters = 0;
+              indexStartLine = i + 1;
+            } else if (!classes[i].includes('space')) {
+              countNotBlankCharacters++;
+            }
           }
-          if (this.ignoreIndents && character.classList.contains('indent')) {
-            editable = false;
-          }
-          editables[i] = editable;
-          character.classList.add(editable ? 'editable' : 'ignorable');
         }
 
-        */
+        // Otherwise, mark as editable
+        for (let i = 0; i < len; i++) {
+          if (!classes[i].includes('ignorable')) {
+            classes[i].push('editable');
+          }
+        }
+
       }
 
 

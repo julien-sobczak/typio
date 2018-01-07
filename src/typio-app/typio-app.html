@@ -120,8 +120,9 @@
       }
 
       _initCodeEditor(e, detail) {
+        console.log('New content', detail);
         this.$.editor.content = detail.content;
-        this.$.editor.language = detail.type;
+        this.$.editor.type = detail.type;
         this.$.editor.language = detail.language;
         this.$.editor.resource = detail.resource;
         this.$.editor.resourceItem = detail.resourceItem;

@@ -242,9 +242,9 @@
     <typio-parser id="parser"
         type="[[type]]"
         language="[[language]]"
-        content="{{content}}"
-        ignore-comments="{{settings.ignoreComments}}"
-        ignore-indents="{{settings.ignoreIndents}}">
+        content="[[content]]"
+        ignore-comments="[[settings.ignoreComments]]"
+        ignore-indents="[[settings.ignoreIndents]]">
     </typio-parser>
 
     <div id="screen" class$="initialized-[[initialized]]">
@@ -518,8 +518,10 @@
       }
 
       _parse() {
+        this._i = -1;
         this._length = this.content.length;
-
+        
+        this.$.parser.parse();
         const classes = this.$.parser.classes;
         const editableCharacters = this._calculateEditableCharacters(classes);
         const intervals = this.$.stats.intervals;
@@ -638,7 +640,7 @@
       }
 
       advance() {
-        if (this._i >=0) {
+        if (this._i >= 0) {
           this._cursor().classList.remove('char-active');
         }
         if (this._isEndOfFile()) {

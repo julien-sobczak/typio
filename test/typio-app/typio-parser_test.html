@@ -20,14 +20,30 @@
     </test-fixture>
 
     <script>
+      chai.config.truncateThreshold = 0; // disable truncating
+
       suite('typio-parser', function() {
 
-        test('enter a character at regular interval', function() {
+        // Utility function to retrieve the index of a character from its line and column numbers.
+        const indexOf = function(content) {
+          return function(lineNumber, columnNumber) {
+            // lineNumber and columnNumber are zero-based
+            const lines = content.split('\n');
+            let index = 0;
+            for (let i = 0; i < lineNumber - 1; i++) {
+              index += lines[i].length + 1; // add 1 for \n
+            }
+            index += columnNumber - 1;
+            return index;
+          }
+        };
+
+        test('ignore nothing', function() {
           var parser = fixture('DefaultFixture');
 
           // Define settings
-          parser.ignoreComments = true;
-          parser.ignoreIndents = true;
+          parser.ignoreComments = false;
+          parser.ignoreIndents = false;
 
           // Configure demo text
           parser.type = "code";
@@ -42,16 +58,162 @@ public class Main {
   }
 
 }`;
+          parser.parse();
+          const index = indexOf(parser.content);
 
-          const actualClasses = parser.classes;
-          const expectedClasses = new Map(); // keys are character's index
-          expectedClasses.set(0, ['backslash', 'editable']); // \m
-          expectedClasses.set(1, ['keyword', 'editable']); // [p]ackage
-
-          for (let [index, expected] of expectedClasses.entries()) {
-            expect(actualClasses[index]).to.include.members(expected);
-          }
+          expect(parser.classes[index(1, 1)]).to.include.members(['backslash', 'editable']); // [\n]
+          expect(parser.classes[index(2, 1)]).to.include.members(['keyword', 'editable']);   // [p]ackage
+          expect(parser.classes[index(6, 1)]).to.include.members(['indent', 'editable']);    // [\t]public void main
         });
+
+
+        test('ignore comments', function() {
+          var parser = fixture('DefaultFixture');
+
+          // Define settings
+          parser.ignoreComments = true;
+          parser.ignoreIndents = false;
+
+          // Configure demo text
+          parser.type = "code";
+          parser.language = "Java";
+          parser.content =  `
+package test;
+
+/** One-line Javadoc comment */
+public class Main {
+
+  /**
+   * Multi-line Javadoc comment
+   */
+  public void main(String []args) {
+    System.out.println("Java"); // one-line comment
+  }
+
+}`;
+          parser.parse();
+          const index = indexOf(parser.content);
+
+          /*
+           * Comment should be ignorable
+           */
+
+          // One-line Javadoc comment
+          expect(parser.classes[index(4, 1)]).to.include.members(['comment', 'ignorable']); // [/]** One-line...
+          expect(parser.classes[index(4, 2)]).to.include.members(['comment', 'ignorable']); // /[*]* One-line...
+          expect(parser.classes[index(4, 9)]).to.include.members(['comment', 'ignorable']); // /** One-[l]ine...
+
+          // Multi-line Javadoc comment
+          //console.log('>', parser.content.substring(index(7, 2), index(7, 2) + 10));
+          expect(parser.classes[index(7, 3)]).to.include.members(['comment', 'ignorable']);
+          expect(parser.classes[index(8, 1)]).to.include.members(['comment', 'ignorable']);
+          expect(parser.classes[index(8, 5)]).to.include.members(['comment', 'ignorable']);
+          expect(parser.classes[index(9, 1)]).to.include.members(['comment', 'ignorable']);
+
+          // one-line comment
+          expect(parser.classes[index(11, 33)]).to.include.members(['comment', 'ignorable']);
+
+          /*
+           * Spaces around comments should be ignorable too.
+           * (like if the comment was not present)
+           */
+
+           // One-line Javadoc comment
+           expect(parser.classes[index(4, 32)]).to.include.members(['backslash', 'ignorable']); // [/]** One-line...
+
+           // Multi-line Javadoc comment
+           //console.log('>', parser.content.substring(index(7, 2), index(7, 2) + 10));
+           expect(parser.classes[index(7, 1)]).to.include.members(['indent', 'ignorable']);
+           expect(parser.classes[index(8, 1)]).to.include.members(['indent', 'ignorable']);
+           expect(parser.classes[index(9, 1)]).to.include.members(['indent', 'ignorable']);
+           expect(parser.classes[index(9, 6)]).to.include.members(['backslash', 'ignorable']);
+
+          // one-line comment
+          expect(parser.classes[index(11, 32)]).to.include.members(['space', 'ignorable']); // ;[ ]// one-line comment
+        });
+
+        test('ignore indents', function() {
+          var parser = fixture('DefaultFixture');
+
+          // Define settings
+          parser.ignoreComments = false;
+          parser.ignoreIndents = true;
+
+          // Configure demo text
+          parser.type = "code";
+          parser.language = "Java";
+          parser.content =  `
+package test;
+
+public class Main {
+
+  /**
+   * Multi-line Javadoc comment
+   */
+  public void main(String []args) {
+          
+    System.out.println("Java");
+  }
+  
+}`;
+          parser.parse();
+          const index = indexOf(parser.content);
+
+          // Ignore indents at start of the lines
+          expect(parser.classes[index(6,  1)]).to.include.members(['indent', 'ignorable']);
+          expect(parser.classes[index(7,  3)]).to.include.members(['indent', 'ignorable']);
+          expect(parser.classes[index(8,  1)]).to.include.members(['indent', 'ignorable']);
+          expect(parser.classes[index(9,  1)]).to.include.members(['indent', 'ignorable']);
+          expect(parser.classes[index(10, 4)]).to.include.members(['indent', 'ignorable']);
+
+          // Ignore blank lines
+          expect(parser.classes[index(3,  1)]).to.include.members(['backslash', 'ignorable']);
+          expect(parser.classes[index(5,  1)]).to.include.members(['backslash', 'ignorable']);
+          expect(parser.classes[index(10, 9)]).to.include.members(['indent', 'ignorable']);
+          expect(parser.classes[index(13, 1)]).to.include.members(['indent', 'ignorable']);
+          expect(parser.classes[index(13, 3)]).to.include.members(['backslash', 'ignorable']);
+
+
+          // But do not ignore backslash (on on-empty lines)
+          expect(parser.classes[index(6,  6)]).to.include.members(['backslash', 'editable']);
+          expect(parser.classes[index(7, 32)]).to.include.members(['backslash', 'editable']);
+          expect(parser.classes[index(8,  6)]).to.include.members(['backslash', 'editable']);
+        });
+        
+        test('ignore indents & comments', function() {
+          var parser = fixture('DefaultFixture');
+
+          // Define settings
+          parser.ignoreComments = true;
+          parser.ignoreIndents = true;
+
+          // Configure demo text
+          parser.type = "code";
+          parser.language = "Java";
+          parser.content =  `
+package test;
+
+public class Main {
+
+  /**
+   * Multi-line Javadoc comment
+   */
+  public void main(String []args) {
+          
+    System.out.println("Java");
+  }
+  
+}`;
+          parser.parse();
+          const index = indexOf(parser.content);
+
+          expect(parser.classes[index(5,  1)]).to.include.members(['backslash', 'ignorable']);
+          expect(parser.classes[index(6,  6)]).to.include.members(['backslash', 'ignorable']);
+          expect(parser.classes[index(7, 10)]).to.include.members(['comment', 'ignorable']);
+          expect(parser.classes[index(7, 32)]).to.include.members(['backslash', 'ignorable']);
+          expect(parser.classes[index(8,  6)]).to.include.members(['backslash', 'ignorable']);
+        });
+
 
       });
     </script>

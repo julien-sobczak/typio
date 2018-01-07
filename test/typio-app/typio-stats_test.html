@@ -95,19 +95,12 @@
           flush(function() {
 
             // Check summary statistics
-            const totalCharacters               = element.shadowRoot.querySelector('.totalCharacters td').innerHTML;
-            const totalEditableCharacters       = element.shadowRoot.querySelector('.totalEditableCharacters td').innerHTML;
-            const enteredCharacters             = element.shadowRoot.querySelector('.enteredCharacters td').innerHTML;
-            const unproductiveKeystrokeOverhead = element.shadowRoot.querySelector('.unproductiveKeystrokeOverhead td').innerHTML;
-            const elapsedTimeInS                = element.shadowRoot.querySelector('.elapsedTimeInS td').innerHTML;
-            const wpm                           = element.shadowRoot.querySelector('.wpm td').innerHTML;
-
-            assert.equal(totalCharacters, '8');
-            assert.equal(totalEditableCharacters, '5');
-            assert.equal(enteredCharacters, '6');
-            assert.equal(unproductiveKeystrokeOverhead, '20%');
-            assert.equal(elapsedTimeInS, '6s');
-            assert.equal(wpm, '10');
+            assert.equal(element.totalCharacters, 8);
+            assert.equal(element.totalEditableCharacters, 5);
+            assert.equal(element.enteredCharacters, 6);
+            assert.equal(element.unproductiveKeystrokeOverhead, 20);
+            assert.equal(element.elapsedTimeInS, 6);
+            assert.equal(element.wpm, 10);
 
             done();
           });

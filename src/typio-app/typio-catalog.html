@@ -34,7 +34,9 @@
         background-color: #009ee3;
       }
       section.type-literature {
-        background-color: #e3004f;
+        background-color: #009ee3;
+        /*background-color: #e3004f;*/ 
+        /* TODO see if pertinent */
       }
 
       section .content {
@@ -488,8 +490,8 @@
           if (entry.origin === 'github' && entry.name == this.selectedProject) {
             let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
             let commit = entry.commit
-            let slug = organization + '_' + project + '_' + commit
-            this._urlMetadata = '/content/github/' + this._slug(slug) + '.json'
+            let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
+            this._urlMetadata = '/content/github/' + slug + '.json'
             this.isLoading = true;
           }
         });
@@ -523,14 +525,15 @@
 
         this.catalog.forEach(entry => {
           if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
-            this._urlMetadata = '/content/gutenberg/' + this._slug(entry.title) + '.json'
+            let slug = entry.slug ? entry.slug : this._slug(entry.title);
+            this._urlMetadata = '/content/gutenberg/' + slug + '.json'
             this.isLoading = true;
           }
         });
       }
 
+      /* Fallback when the attribut 'slug' is not defined in 'dataset.json' */      
       _slug(text) {
-        // TODO insert slug into dataset.json directly!
         let slug = text.replace(/\s/g, '-').replace(/'/g, '');
         return slug;
       }
@@ -592,7 +595,8 @@
 
         this.catalog.forEach(entry => {
           if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
-            this._urlContent = '/content/gutenberg/' + this._slug(entry.title) + '.txt'
+            let slug = entry.slug ? entry.slug : this._slug(entry.title);
+            this._urlContent = '/content/gutenberg/' + slug + '.txt'
             this.isLoading = true;
             this.stepLiterature = 4;
           }
@@ -611,8 +615,8 @@
           if (entry.origin === 'github' && entry.name == this.selectedProject) {
             let [organization, project] = entry.url.replace('https://github.com/', '').split('/');
             let commit = entry.commit;
-            let slug = organization + '_' + project + '_' + commit;
-            this._urlContent = '/content/github/' + this._slug(slug) + this.selectedFile;
+            let slug = entyr.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
+            this._urlContent = '/content/github/' + slug + this.selectedFile;
             this.isLoading = true;
             this.stepCode = 4;
           }

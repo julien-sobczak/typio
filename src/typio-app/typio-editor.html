@@ -645,6 +645,9 @@
         if (character.dataset.text === keyName) {
           return true;
         }        
+        if (keyName === ' ' && character.classList.contains("allowSpace")) {
+          return true;
+        }
         return false;
       }
 

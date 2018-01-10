@@ -615,7 +615,7 @@
           if (entry.origin === 'github' && entry.name == this.selectedProject) {
             let [organization, project] = entry.url.replace('https://github.com/', '').split('/');
             let commit = entry.commit;
-            let slug = entyr.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
+            let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
             this._urlContent = '/content/github/' + slug + this.selectedFile;
             this.isLoading = true;
             this.stepCode = 4;

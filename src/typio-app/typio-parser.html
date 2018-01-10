@@ -124,6 +124,12 @@
           let charTxt = this.content[i];
           let charCode = this.content.charCodeAt(i);
           
+          // HACK: http://www.adamkoch.com/2009/07/25/white-space-and-character-160/
+          if (charCode === 160) {
+            charCode = 32;
+            charTxt = ' ';
+          }
+          
           // All are characters and disabled by default
           let charClasses = ['character', 'disabled']; // General classes
 
@@ -271,6 +277,21 @@
               indexStartLine = i + 1;
             } else if (!classes[i].includes('space')) {
               countNotBlankCharacters++;
+            }
+          }
+        }
+        
+        // Literature specific processing
+        if (this.type === 'literature') {
+          
+          // Allow user to press space for new line inside a paragraph
+          for (let i = 1; i < len - 1; i++) {
+            if (classes[i].includes('backslash') &&  // newline
+                !classes[i - 1].includes('space') && // following a non-empty character
+                !classes[i - 1].includes('backslash') && 
+                !classes[i + 1].includes('space') && // preceding a non-empty character
+                !classes[i + 1].includes('backslash')) { 
+              classes[i].push('allowSpace');
             }
           }
         }

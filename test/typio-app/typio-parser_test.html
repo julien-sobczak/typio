@@ -38,7 +38,7 @@
           }
         };
 
-        test('ignore nothing', function() {
+        test('[code] ignore nothing', function() {
           var parser = fixture('DefaultFixture');
 
           // Define settings
@@ -67,7 +67,7 @@ public class Main {
         });
 
 
-        test('ignore comments', function() {
+        test('[code] ignore comments', function() {
           var parser = fixture('DefaultFixture');
 
           // Define settings
@@ -132,7 +132,7 @@ public class Main {
           expect(parser.classes[index(11, 32)]).to.include.members(['space', 'ignorable']); // ;[ ]// one-line comment
         });
 
-        test('ignore indents', function() {
+        test('[code] ignore indents', function() {
           var parser = fixture('DefaultFixture');
 
           // Define settings
@@ -180,7 +180,7 @@ public class Main {
           expect(parser.classes[index(8,  6)]).to.include.members(['backslash', 'editable']);
         });
         
-        test('ignore indents & comments', function() {
+        test('[code] ignore indents & comments', function() {
           var parser = fixture('DefaultFixture');
 
           // Define settings
@@ -212,6 +212,68 @@ public class Main {
           expect(parser.classes[index(7, 10)]).to.include.members(['comment', 'ignorable']);
           expect(parser.classes[index(7, 32)]).to.include.members(['backslash', 'ignorable']);
           expect(parser.classes[index(8,  6)]).to.include.members(['backslash', 'ignorable']);
+        });
+        
+        
+        test('[literature] default settings', function() {
+          var parser = fixture('DefaultFixture');
+
+          // Define settings
+          parser.ignoreIndents = false;
+
+          // Configure demo text
+          parser.type = "literature";
+          parser.language = "French";
+          parser.content =  `
+  Condamné à mort !
+
+Voilà cinq semaines que j'habite avec cette pensée, toujours seul avec
+elle, toujours glacé de sa présence, toujours courbé sous son poids !
+
+Autrefois, car il me semble qu'il y a plutôt des années que dessemaines, 
+j'étais un homme comme un autre homme.
+`;
+          parser.parse();
+          const index = indexOf(parser.content);
+
+          // All newlines should be pressed.
+          // Newlines inside a paragraph could be replaced by a space instead.
+          expect(parser.classes[index(2,  1)]).to.include.members(['indent', 'editable']);
+          expect(parser.classes[index(2, 20)]).to.include.members(['backslash', 'editable']).to.not.include.members(['allowSpace']);
+          expect(parser.classes[index(3,  1)]).to.include.members(['backslash', 'editable']);
+          expect(parser.classes[index(4, 71)]).to.include.members(['backslash', 'editable', 'allowSpace']);
+          expect(parser.classes[index(5, 70)]).to.include.members(['backslash', 'editable']).to.not.include.members(['allowSpace']);
+          expect(parser.classes[index(6,  1)]).to.include.members(['backslash', 'editable']);
+        });
+        
+        test('[literature] ignore indents', function() {
+          var parser = fixture('DefaultFixture');
+
+          // Define settings
+          parser.ignoreIndents = true;
+
+          // Configure demo text
+          parser.type = "literature";
+          parser.language = "French";
+          parser.content =  `
+  Condamné à mort !
+
+Voilà cinq semaines que j'habite avec cette pensée, toujours seul avec
+elle, toujours glacé de sa présence, toujours courbé sous son poids !
+
+Autrefois, car il me semble qu'il y a plutôt des années que dessemaines, 
+j'étais un homme comme un autre homme.
+`;
+          parser.parse();
+          const index = indexOf(parser.content);
+
+          // Indentations and empty lines are ignored
+          expect(parser.classes[index(2,  1)]).to.include.members(['indent', 'ignorable']);
+          expect(parser.classes[index(2, 20)]).to.include.members(['backslash', 'editable']).to.not.include.members(['allowSpace']);
+          expect(parser.classes[index(3,  1)]).to.include.members(['backslash', 'ignorable']);
+          expect(parser.classes[index(4, 71)]).to.include.members(['backslash', 'editable', 'allowSpace']);
+          expect(parser.classes[index(5, 70)]).to.include.members(['backslash', 'editable']).to.not.include.members(['allowSpace']);
+          expect(parser.classes[index(6,  1)]).to.include.members(['backslash', 'ignorable']);
         });
 
 

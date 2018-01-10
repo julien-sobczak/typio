@@ -82,6 +82,22 @@
         margin-top: 25px;
         margin-bottom: 25px;
       }
+      
+      /* 
+       * Some setting are not pertinent for all content type.
+       * If a control has the class type-SOMETYPE, this control
+       * will only be displayed for the given type.
+       */
+      #controls .control.type-code,
+      #controls .control.type-literature {
+        display: none;
+      }      
+      #settings.type-code .control.type-code {
+        display: block;
+      }
+      #settings.type-literature .control.type-literature {
+        display: block;
+      }
 
       #selection {
         position: absolute;
@@ -113,11 +129,11 @@
 
     </style>
 
-    <section id="settings" class$="hidden-[[hidden]]">
+    <section id="settings" class$="hidden-[[hidden]] type-[[type]]">
 
       <div id="controls">
         <h2><iron-icon icon="settings"></iron-icon> Customize</h2>
-        <div class="control">
+        <div class="control type-code">
           <typio-toggle-button icon="editor:mode-comment" checked="{{ignoreComments}}">Ignore comment</typio-toggle-button>
         </div>
         <div class="control">

@@ -139,12 +139,27 @@
         margin-left: 20px;
         margin-right: 20px;
       }
+      
+      #surpriseMe {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        height: 100px;
+        width: 200px;
+        margin-left: -100px;
+        margin-bottom: -30px;
+        padding-top: 25px;
+        border-top-left-radius: 200px;
+        border-top-right-radius: 200px;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
 
     </style>
 
     <iron-ajax url="/dataset.json" auto last-response="{{catalog}}"></iron-ajax>
     <iron-ajax auto url="{{_urlMetadata}}" handle-as="json" on-response="_onMetadataLoaded"></iron-ajax>
     <iron-ajax auto url="{{_urlContent}}" handle-as="text" on-response="_onContentLoaded"></iron-ajax>
+    <iron-ajax auto url="{{_urlMetadataSurprise}}" handle-as="json" on-response="_onMetadataSurpriseLoaded"></iron-ajax>
 
     <section id="catalog">
       <h3>Practice</h3>
@@ -245,7 +260,11 @@
         <div class="step step4">
           <p class="notice">Downloading the book <b>[[selectedBook]]</b>...</p>
         </div>
-
+        
+      </div>
+      
+      <div id="surpriseMe">
+        <a on-click="_surpriseMe">Surprise Me!</a>
       </div>
 
       <template is="dom-if" if="{{isLoading}}">
@@ -257,6 +276,11 @@
   </template>
 
   <script>
+  
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * Math.floor(max));
+    }
+  
     /**
      * @customElement
      * @polymer
@@ -365,6 +389,15 @@
             type: String,
             value: null
           },
+          
+          /*
+           * URL to download the metadata (only when using the SurpriseMe button)
+           */
+          _urlMetadataSurprise: {
+            type: String,
+            value: null
+          },
+
 
           /*
            * URL to download the content.
@@ -465,12 +498,16 @@
 
       _programmingLanguageSelected(value) {
         this.selectedProgrammingLanguage = this.$.programmingLanguages.selected;
-
+        this.projects = this._getProjects(this.selectedProgrammingLanguage);
+        this.stepCode = 2;
+      }
+      
+      _getProjects(programmingLanguage) {
         // Search Github projects matching the selected language
-        let newProjects = new Array();
+        let projects = new Array();
         this.catalog.forEach(entry => {
-          if (entry.origin === 'github' && entry.language == this.selectedProgrammingLanguage) {
-            newProjects.push({
+          if (entry.origin === 'github' && entry.language == programmingLanguage) {
+            projects.push({
               'key': entry.name,
               'name': entry.name,
               'description': entry.url.replace('https://github.com/', '')
@@ -478,9 +515,7 @@
           }
         });
         // Sort by project name
-        this.projects = newProjects.sort((a,b) => a.name.localeCompare(b.name));
-
-        this.stepCode = 2;
+        return projects.sort((a,b) => a.name.localeCompare(b.name));
       }
 
       _projectSelected(value) {
@@ -502,12 +537,16 @@
 
       _spokenLanguageSelected(value) {
         this.selectedSpokenLanguage = this.$.spokenLanguages.selected;
-
+        this.books = this._getBooks(this.selectedSpokenLanguage);
+        this.stepLiterature = 2;
+      }
+      
+      _getBooks(spokenLanguage) {
         // Search gutenberg books matching the selected language
-        let newBooks = new Array();
+        let books = new Array();
         this.catalog.forEach(entry => {
-          if (entry.origin === 'gutenberg' && entry.language == this.selectedSpokenLanguage) {
-            newBooks.push({
+          if (entry.origin === 'gutenberg' && entry.language == spokenLanguage) {
+            books.push({
               'key': entry.title,
               'name': entry.title,
               'description': entry.author
@@ -515,9 +554,7 @@
           }
         });
         // Sort by book title
-        this.books = newBooks.sort((a,b) => a.name.localeCompare(b.name));
-
-        this.stepLiterature = 2;
+        return books.sort((a,b) => a.name.localeCompare(b.name));
       }
 
       _bookSelected(value) {
@@ -589,9 +626,14 @@
       }
 
       _chapterSelected(e) {
-        this.selectedChapter = e.detail.chapterTitle;
-        this.startLine = e.detail.startLine;
-        this.endLine = e.detail.endLine;
+        let d = e.detail;
+        this.selectChapter(d.chapterTitle, d.startLine, d.endLine);
+      }
+      
+      selectChapter(chapterTitle, startLine, endLine) {
+        this.selectedChapter = chapterTitle;
+        this.startLine = startLine;
+        this.endLine = endLine;
 
         this.catalog.forEach(entry => {
           if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
@@ -599,15 +641,20 @@
             this._urlContent = '/content/gutenberg/' + slug + '.txt'
             this.isLoading = true;
             this.stepLiterature = 4;
+            console.log('[typio-catalog] selectChapter ' + this.selectedBook + '...');
           }
         });
-
       }
 
       _fileSelected(e) {
-        this.selectedFile = e.detail.filepath;
-        this.selectedFilename = e.detail.filename;
-        this.selectedFileExtension = e.detail.extension;
+        let d = e.detail;
+        this.selectFile(d.filepath, d.filename, d.extension);
+      }
+      
+      selectFile(filepath, filename, extension) {
+        this.selectedFile = filepath;
+        this.selectedFilename = filename;
+        this.selectedFileExtension = extension;
         this.selectedRealProgrammingLanguage = LANGUAGE_PER_EXTENSIONS.has(this.selectedFileExtension) ?
           LANGUAGE_PER_EXTENSIONS.get(this.selectedFileExtension) : 'undefined';
 
@@ -616,15 +663,16 @@
             let [organization, project] = entry.url.replace('https://github.com/', '').split('/');
             let commit = entry.commit;
             let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
-            this._urlContent = '/content/github/' + slug + this.selectedFile;
+            this._urlContent = '/content/github/' + slug + '/' + this.selectedFile;
             this.isLoading = true;
             this.stepCode = 4;
+            console.log('[typio-catalog] selectFile ' + this.selectedFile + '...');
           }
         });
-
       }
 
       _onContentLoaded(e, data) {
+        console.log('[typio-catalog] _onContentLoaded');
         const content = data.response;
         this.isLoading = false;
 
@@ -653,6 +701,96 @@
           this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
         }
 
+      }
+      
+      /**
+       * Traverse the catalog matching already selected criteria to find a resource 
+       * (a file, a chapter, ...).
+       */
+      _surpriseMe() {
+        // Determine the type
+        if (!this.type) {
+          const TYPES = ['code', 'literature'];
+          this.type = TYPES[getRandomInt(TYPES.length)];
+        }
+        
+        // Resources differ along the type
+        if (this.type === 'code') {
+          
+          // We need to determine a source file
+          
+          if (!this.selectedProgrammingLanguage) {
+            this.selectedProgrammingLanguage = this.programmingLanguages[getRandomInt(this.programmingLanguages.length)].name;
+          }
+          
+          if (!this.selectedProject) {
+            let projects = this._getProjects(this.selectedProgrammingLanguage);
+            this.selectedProject = projects[getRandomInt(projects.length)].name;
+          }         
+          
+          console.log('[typio-catalog] Using randomly selected project ' + this.selectedProject + ' (' + this.selectedProgrammingLanguage + ')');           
+          
+          // Retrieve the project JSON file to select a file randomly
+          this.catalog.forEach(entry => {
+            if (entry.origin === 'github' && entry.name == this.selectedProject) {
+              let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
+              let commit = entry.commit
+              let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
+              this._urlMetadataSurprise = '/content/github/' + slug + '.json'
+              this.isLoading = true;
+            }
+          });
+          
+          
+        } else if (this.type === 'literature') {
+          
+          // We need to determine a chapter excerpt
+          
+          if (!this.selectedSpokenLanguage) {
+            this.selectedSpokenLanguage = this.spokenLanguages[getRandomInt(this.spokenLanguages.length)].name;
+          }
+          
+          if (!this.selectedBook) {
+            let books = this._getBooks(this.selectedSpokenLanguage);
+            this.selectedBook = books[getRandomInt(books.length)].name;
+          }
+          
+          console.log('[typio-catalog] Using randomly selected book ' + this.selectedBook + ' (' + this.selectedSpokenLanguage + ')');
+          
+          // Retrieve the book JSON file to select a chapter randomly
+          this.catalog.forEach(entry => {
+            if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
+              let slug = entry.slug ? entry.slug : this._slug(entry.title);
+              this._urlMetadataSurprise = '/content/gutenberg/' + slug + '.json'
+              this.isLoading = true;
+            }
+          });
+          
+        }
+        
+      }
+      
+      /**
+       * Metadata (only when using the SurpriseMe button).
+       *
+       * Select randomly an entry in the metadata file.
+       */
+      _onMetadataSurpriseLoaded(e, data) {
+        const metadata = data.response;
+        this.isLoading = false;
+        console.log('[typio-catalog] _onMetadataSurpriseLoaded');
+        if (this.type === 'code') {
+          this.projectMetadata = metadata;
+          let file = this.projectMetadata.files[getRandomInt(this.projectMetadata.files.length)];
+          let filename = file.path.split('/').reverse()[0];
+          this.selectFile(file.path, filename, file.extension);
+        } else if (this.type === 'literature') {
+          this.bookMetadata = metadata;
+          let chapter = this.bookMetadata.chapters[getRandomInt(this.bookMetadata.chapters.length)];
+          const numberLines = 100;
+          let start = Math.max(0, getRandomInt(chapter.end - numberLines));
+          this.selectChapter(chapter.title, start, start + numberLines); 
+        }
       }
 
     }

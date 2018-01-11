@@ -529,16 +529,22 @@
       }
 
       _parse() {
+        const startTime = performance.now();
+        console.log('[typio-editor] _parse');
+        
         this._i = -1;
         this._length = this.content.length;
         
         this.$.parser.parse();
-        const classes = this.$.parser.classes;
+        console.log('[typio-editor] lexical parser ... done in ' + (performance.now() - startTime) + 'ms');
+        
+        const classes = this.$.parser.classes;        
         const editableCharacters = this._calculateEditableCharacters(classes);
         const intervals = this.$.stats.intervals;
 
         let fragment = document.createDocumentFragment();
 
+        console.log('[typio-editor] Number of characters: ' + this._length);
         for (let i = 0; i < this._length; i++) {
           let charTxt = this.content[i]; // The original character
           let charName = charTxt;        // The name as returned by the keypress/keyup event (see key property)
@@ -569,12 +575,15 @@
           fragment.appendChild(span);
         }
 
+        console.log('[typio-editor] other parser ... done in ' + (performance.now() - startTime) + 'ms');
         this.$.editor.innerHTML = '';
         this.$.editor.appendChild(fragment);
 
         this._characters = this.$.editor.querySelectorAll('.character');
         this.$.stats.editableCharacters = editableCharacters;
 
+        const endTime = performance.now();
+        console.log('[typio-editor] _parse ... done in ' + (endTime - startTime) + 'ms');
         this.advance();
       }
 

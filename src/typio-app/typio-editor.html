@@ -67,56 +67,50 @@
       }
 
       #content {
-        width: 800px;
+        width: 1000px;
         margin: 0 auto;
         padding: 1cm;
         position: fixed;
         top: 64px;
-        bottom: 100px; /* Allow 100px above the chart (200px height) as a last resort. */
+        bottom: 50px;
         z-index: 40;
         left: 50%;
         margin-left: -400px; /* Half of the width */
+        
+        overflow-y: hidden;
+        overflow-x: visible;
       }
-
       #content pre[data-type="text"]  {
         font-family: 'Droid Sans Mono', monospace;
       }
       #content pre[data-type="code"] {
         font-family: monospace;
       }
-
-
-      #stats {
-        position: fixed;
-        top: 0;
-        right: 0;
-        padding: 1in;
-        transition: width 0.5s, height 0.5s;
-      }
-
-      #chart {
-        display: none;
-        /*
-          There is a bug that displays:
-            'TypeError: cannot read property 'draw' of null'
-          on load time during a short time before showing the chart correctly.
-
-          As a hack, we hide the chart until the last moment.
-          At this time, the error message was already printed
-          and we can reveal the chart.
-         */
-        height: 200px;
+      
+      /* Show a gradient at the bottom to show there is text that follows. */      
+      #screen.mode-scroll #content:after {
+        content: '';
         width: 100%;
-        position: fixed;
-        bottom: 0;
+        height: 100%;    
+        position: absolute;
+        z-index: 500;
         left: 0;
-        right: 0;
+        bottom: 0;
+        background: linear-gradient(transparent 90%, white);
+      }   
+      
+      #screen.showChart-true #content {
+        bottom: 150px; /* Reserve space to show chart. */
       }
+  
 
       #editor {
         line-height: 1.5em;
-      }
+        height: 100%;
 
+        transition: margin 300ms; /* Used in Scroll Mode */
+      }
+      
       #editor.highlight-interval-0 span.interval-0,
       #editor.highlight-interval-1 span.interval-1,
       #editor.highlight-interval-2 span.interval-2,
@@ -147,6 +141,39 @@
         text-align: center;
         border-radius: 15px;
         overflow: hidden;
+      }
+      
+      
+      #stats {
+        position: fixed;
+        top: 0;
+        right: 0;
+        padding: 1in;
+        transition: width 0.5s, height 0.5s;
+      }
+
+      #chart {
+        display: none;
+        /*
+          There is a bug that displays:
+            'TypeError: cannot read property 'draw' of null'
+          on load time during a short time before showing the chart correctly.
+
+          As a hack, we hide the chart until the last moment.
+          At this time, the error message was already printed
+          and we can reveal the chart.
+         */
+        height: 100px;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+      
+      /* Support option "Show Chart" */
+      #chart.showChart-false {
+        display: none !important;
       }
 
 
@@ -247,7 +274,7 @@
         ignore-indents="[[settings.ignoreIndents]]">
     </typio-parser>
 
-    <div id="screen" class$="initialized-[[initialized]]">
+    <div id="screen" class$="initialized-[[initialized]] showChart-{{showChart}} mode-{{mode}}">
 
       <template is="dom-if" if="{{resource}}">
         <div id="resourceName">
@@ -261,7 +288,7 @@
         <pre id="editor" data-type$="[[type]]">[[content]]</pre>
       </div>
 
-      <google-chart id="chart"
+      <google-chart id="chart" class$="showChart-{{showChart}}"
         type="stepped-area"
         options="[[chartOptions]]"
         cols="[[chartCols]]"
@@ -339,6 +366,14 @@
           },
           
           /**
+           * The number of lines in `content`.
+           */          
+          numberLines: {
+            type: Number,
+            value: 0
+          },
+          
+          /**
            * Log debug information to the console.
            */
           debug: {
@@ -395,6 +430,12 @@
           _i: {
               type: Number,
               value: -1
+          },
+          
+          // Line number containing the `_i` character.
+          _currentLine: {
+              type: Number,
+              value: 0
           },
 
           // The index of the latest valid entered character
@@ -494,6 +535,7 @@
         this.$.stats.reset();
         this._characters = [];
         this._i = -1;
+        this._currentLine = 0;
         this._countValid = 0;
 
         // reset ready-screen
@@ -510,6 +552,7 @@
 
       start(e, detail) {
         this.content = this._preprocess(detail.selection);
+        this.numberLines = this.content.split('\n').length;
         this.ignoreComments = detail.ignoreComments;
         this.ignoreIndents = detail.ignoreIndents;
         this.continueOnErrors = detail.continueOnErrors;
@@ -529,10 +572,13 @@
       }
 
       _parse() {
+        console.log('[typio-editor] Number of displayable lines: ' + countLines(this.$.editor));
+        
         const startTime = performance.now();
         console.log('[typio-editor] _parse');
         
         this._i = -1;
+        this._currentLine = 0;
         this._length = this.content.length;
         
         this.$.parser.parse();
@@ -665,7 +711,7 @@
 
         do {
           this._unhighlight();
-          this._i--;
+          this._backwardOneCharacter();
 
           if (this._error && this._i === this._iError) {
             this._error = false;
@@ -682,6 +728,7 @@
         if (this._i >= 0) {
           this._cursor().classList.remove('char-active');
         }
+        
         if (this._isEndOfFile()) {
           // Do not trigger end if there is error, except if allowed
           if (this._allowToEnd()) {
@@ -689,10 +736,71 @@
           }
           return;
         }
-        this._i++;
-        while (!this._isEndOfFile() && this._isIgnorable()) { this._i++ }
+        
+        this._advanceOneCharacter();
+        while (!this._isEndOfFile() && this._isIgnorable()) { this._advanceOneCharacter(); }
+        
         this._highlight();
       }
+      
+      _advanceOneCharacter() {
+        this._i++;
+        
+        // Check if a new line have been triggered
+        if (this._triggerNewLine) {
+          this._currentLine++;          
+          if (this.mode === 'scroll') this._scrollEditor();
+          if (this.mode === 'page') this._updatePage();
+          this._triggerNewLine = false;
+        }
+        
+        if (this._cursor().classList.contains('backslash')) {
+          // We need to wait the user press 'Enter' before advance the line number.
+          // Because if is press the wrong key, we will stay on the same line...
+          this._triggerNewLine = true;
+        } else {
+          this._triggerNewLine = false;
+        }
+      }
+      
+      _backwardOneCharacter() {
+        this._i--;
+        this._triggerNewLine = false;
+        if (this._cursor().classList.contains('backslash')) {
+          this._currentLine--;
+          if (this.mode === 'scroll') this._scrollEditor();          
+        }
+      }
+      
+      // Scroll to position the current line on screen 
+      // For performance reason, this method only need to call after each newline character.
+      _scrollEditor() {
+        console.log('[typio-editor] Scroll to show line ' + this._currentLine);
+        if (this._currentLine > 5 && this._currentLine < this.numberLines - 5) { // do not scroll too soon. Wait for some lines.
+          this._scrollToLine(this._currentLine - 5);
+        } 
+      }
+      
+      // Update the editor to display the current page.
+      _updatePage() {
+        const numberLinesPrintable = countLines(this.$.editor);
+        const numberLinesTotal = this.numberLines;
+        console.log('currentLine=', this._currentLine, ' numberLinesPrintable=', numberLinesPrintable);
+        
+        const pageNumber = parseInt(this._currentLine / numberLinesPrintable) + 
+          ((this._currentLine % numberLinesPrintable == 0) ? 0 : 1); // + 1 if remainder
+        const numberLinesToScroll = (pageNumber > 1) ? (pageNumber - 1) * numberLinesPrintable : 0;
+        
+        console.log('[typio-editor] Scroll to page ' + pageNumber + ' by shifting ' + numberLinesToScroll + ' lines');
+        this._scrollToLine(numberLinesToScroll);
+      }
+      
+      // Scroll to position the given line at the top of the editor.
+      // For performance reason, this method only need to call after each newline character.
+      _scrollToLine(lineNumber) {
+        this.$.editor.style.marginTop = lineNumber * -1.5 + 'em'; // see #editor line-height property
+      }
+      
 
       _allowToEnd() {
         return this._error == false || this.continueOnErrors;
@@ -772,6 +880,15 @@
 
     }
     window.customElements.define(TypioEditor.is, TypioEditor);
+
+    /* Determine the number of text lines inside an HTML element. */
+    function countLines(element) {
+      // see https://stackoverflow.com/questions/8606588/how-to-get-the-line-height-of-a-span?rq=1
+      let style = window.getComputedStyle(element);
+      let divHeight = element.offsetHeight;
+      let lineHeight = parseInt(style.lineHeight);
+      return parseInt(divHeight / lineHeight);
+    }
 
   </script>
 </dom-module>

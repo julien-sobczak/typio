@@ -122,6 +122,13 @@
       }
 
 
+      .lines {
+        text-align: center;
+      }
+      .lineCount {
+        display: block;
+        margin-bottom: -20px;
+      }
       paper-range-slider {
         --paper-range-slider-width: 100%;
       }
@@ -154,13 +161,15 @@
       <div id="selection">
         <h2><iron-icon icon="settings"></iron-icon> Filter</h2>
 
-        <span>[[_stats.lines]]</span>
-        <paper-range-slider id="slider"
-            value-min="0"
-            value-max="100"
-            min="0"
-            max="100">
-        </paper-range-slider>
+        <div class="lines">
+          <span class="lineCount">[[_stats.lines]] lines</span>
+          <paper-range-slider id="slider"
+              value-min="0"
+              value-max="100"
+              min="0"
+              max="100">
+          </paper-range-slider>
+        </div>
       </div>
 
       <div id="content">

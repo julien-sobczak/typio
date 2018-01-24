@@ -185,6 +185,9 @@
   <script>
 
     /**
+     * Preview screen to customize the editor (i.e. ignore comments).
+     *
+     * @event ready fired when the user is ready to touch type.
      * @customElement
      * @polymer
      */
@@ -322,10 +325,9 @@
         };
       }
 
-
-
       ready() {
         super.ready();
+        // Unable to find a way to attach the listener using a DOM attribute...
         this._listenSlider();
       }
 
@@ -394,35 +396,38 @@
       * Observers
       */
 
-      _hiddenChanged() {
-        let slider = this.$.slider;
-        slider.valueMin = 0;
-        slider.valueMax = 100;
-      }
+    _hiddenChanged() {
+      let slider = this.$.slider;
+      slider.valueMin = 0;
+      slider.valueMax = 100;
+    }
 
-     _contentUpdated() {
-       this.selection = this.content;
+    _contentUpdated() {
+      this.selection = this.content;
 
-       const lines = this.selection.split('\n');
-       let characterCount = 0;
-       lines.forEach(function(line) {
-         characterCount += line.trim().length;
-       });
-       const stats = {
-           lines: lines.length,
-           characters: characterCount,
-           from: 1,
-           end: lines.length
-       };
-       this._stats = stats;
-     }
+      const lines = this.selection.split('\n');
+      let characterCount = 0;
+      lines.forEach(function(line) {
+        characterCount += line.trim().length;
+      });
+      const stats = {
+        lines: lines.length,
+        characters: characterCount,
+        from: 1,
+        end: lines.length
+      };
+      this._stats = stats;
+    }
 
 
-     /*
-      * Listeners
-      */
+    /*
+     * Listeners
+     */
 
-     start() {
+    /**
+     * Called when the user is ready to start touch typing.
+     */
+    start() {
       this.hidden = true;
 
       let detail = {
@@ -437,8 +442,8 @@
       this.dispatchEvent(new CustomEvent('ready', {detail: detail}));
     }
 
-    }
-    window.customElements.define(TypioReadyScreen.is, TypioReadyScreen);
+  }
+  window.customElements.define(TypioReadyScreen.is, TypioReadyScreen);
 
   </script>
 </dom-module>

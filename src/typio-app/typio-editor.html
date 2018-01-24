@@ -19,6 +19,29 @@
         display: block;
       }
 
+      /* Editor container element */
+      #content {
+        width: 1000px;
+        margin: 0 auto;
+        padding: 1cm;
+        position: fixed;
+        top: 64px;
+        bottom: 50px;
+        z-index: 40;
+        left: 50%;
+        margin-left: -400px; /* Half of the width */
+        
+        overflow-y: hidden;
+        overflow-x: visible;
+      }
+      #content pre[data-type="text"]  {
+        font-family: 'Droid Sans Mono', monospace;
+      }
+      #content pre[data-type="code"] {
+        font-family: monospace;
+      }
+      
+      
       /* Following style was inspired by https://typing.io/ */
 
       span {
@@ -66,26 +89,6 @@
         color: #fff !important;
       }
 
-      #content {
-        width: 1000px;
-        margin: 0 auto;
-        padding: 1cm;
-        position: fixed;
-        top: 64px;
-        bottom: 50px;
-        z-index: 40;
-        left: 50%;
-        margin-left: -400px; /* Half of the width */
-        
-        overflow-y: hidden;
-        overflow-x: visible;
-      }
-      #content pre[data-type="text"]  {
-        font-family: 'Droid Sans Mono', monospace;
-      }
-      #content pre[data-type="code"] {
-        font-family: monospace;
-      }
       
       /* Show a gradient at the bottom to show there is text that follows. */      
       #screen.mode-scroll #content:after {
@@ -111,6 +114,9 @@
         transition: margin 300ms; /* Used in Scroll Mode */
       }
       
+      
+      /* Highlight intervals using a CSS class. */
+      
       #editor.highlight-interval-0 span.interval-0,
       #editor.highlight-interval-1 span.interval-1,
       #editor.highlight-interval-2 span.interval-2,
@@ -127,22 +133,10 @@
         color: black !important;
       }
 
-      #resourceName {
-        position: fixed;
-        top: 17px;
-        height: 30px;
-        left: 50%;
-        width: 650px;
-        margin-left: -250px;
-        padding: 5px 25px;
-        color: white;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 150;
-        text-align: center;
-        border-radius: 15px;
-        overflow: hidden;
-      }
-      
+
+      /*
+       * Statistics panel
+       */
       
       #stats {
         position: fixed;
@@ -153,7 +147,7 @@
       }
 
       #chart {
-        display: none;
+        display: block;
         /*
           There is a bug that displays:
             'TypeError: cannot read property 'draw' of null'
@@ -163,7 +157,7 @@
           At this time, the error message was already printed
           and we can reveal the chart.
          */
-        height: 100px;
+        height: 100px; 
         width: 100%;
         position: fixed;
         bottom: 0;
@@ -172,10 +166,12 @@
       }
       
       /* Support option "Show Chart" */
-      #chart.showChart-false {
+      #screen.showChart-false #chart {
         display: none !important;
       }
-
+      #screen.showChart-true #chart {
+        display: block !important;
+      }
 
       /*
        * Menu
@@ -184,7 +180,7 @@
       app-toolbar {
         background-color: var(--typio-bg-color);
         color: white;
-        font-family: 'Cutive', serif;
+        font-family: var(--logo-font-family);
       }
 
       paper-icon-button {
@@ -228,6 +224,24 @@
         text-decoration: none;
         color: inherit;
       }
+      
+      #resourceName {
+        position: fixed;
+        top: 17px;
+        height: 30px;
+        left: 50%;
+        width: 650px;
+        margin-left: -250px;
+        padding: 5px 25px;
+        color: white;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 150;
+        text-align: center;
+        border-radius: 15px;
+        overflow: hidden;
+      }
+      
+      
 
       #screen.initialized-false {
         display: none;
@@ -302,6 +316,8 @@
   <script>
 
     /**
+     * Editor screen (main screen of the application).
+     *
      * @customElement
      * @polymer
      */
@@ -310,10 +326,6 @@
       static get is() { return 'typio-editor'; }
       static get properties() {
         return {
-
-          route: {
-            type: Object
-          },
 
           /**
            * The type of content (code, literature).
@@ -522,7 +534,7 @@
             // event.ctrlKey may be true if Ctrl key is pressed at the time.
             ;
           } else {
-            this.checkInput(event, keyName);
+            this._checkInput(event, keyName);
             event.preventDefault();
             return false;
           }
@@ -530,6 +542,9 @@
         }, false);
       }
 
+      /**
+       * Called this method to reset the editor (ex: retry).
+       */
       reset() {
         // Reset variables
         this.$.stats.reset();
@@ -547,11 +562,17 @@
 
       refresh() {
         // Refresh editor
-        this._updateContent();
+        this._parse();
       }
 
+      /**
+       * Called when the user has validated the ready screen.
+       */
       start(e, detail) {
+        // Collect selected content
         this.content = this._preprocess(detail.selection);
+        
+        // Determine settings
         this.numberLines = this.content.split('\n').length;
         this.ignoreComments = detail.ignoreComments;
         this.ignoreIndents = detail.ignoreIndents;
@@ -560,17 +581,18 @@
         this.mode = detail.mode;
         this.initialized = true;
 
-        this._updateContent();
+        // refresh the editor
+        this.refresh();
       }
 
-      _updateContent() {
-        this._parse();
-      }
-      
       _preprocess(txt) {
-        return txt.replace(/\r\n/g, '\n');
+        // Add all hacks
+        return txt.replace(/\r\n/g, '\n'); // Standardize on \n
       }
 
+      /**
+       * Parse the selected content to determine tokens.
+       */
       _parse() {
         console.log('[typio-editor] Number of displayable lines: ' + countLines(this.$.editor));
         
@@ -646,7 +668,10 @@
         this.$.stats.resumeTimer();
       }
 
-      checkInput(event, keyName) {
+      /**
+       * Called after each key press.
+       */
+      _checkInput(event, keyName) {
         if (this.paused) {
           this.resume();
         }
@@ -690,7 +715,7 @@
         let accepted = valid || this.continueOnErrors;
         this.$.stats.newCharacter(iCharacter, keyName, valid, accepted);
 
-        this.$.chart.style.display = 'block';
+        this.$.chart.style.display = 'block !important';
         this.$.chart.rows = this.$.stats.wpmPerInterval();
         this.$.chart.redraw();
         this.listenChartEvents();
@@ -706,6 +731,9 @@
         return false;
       }
 
+      /**
+       * Move backward to the previous editable character.
+       */
       backward() {
         if (this._i == 0) return; // Do nothing if at start
 
@@ -724,6 +752,9 @@
         }
       }
 
+      /**
+       * Move forward to the next editable character.
+       */
       advance() {
         if (this._i >= 0) {
           this._cursor().classList.remove('char-active');
@@ -743,6 +774,9 @@
         this._highlight();
       }
       
+      /**
+       * Move backward to the previous character (editable or not editable.)
+       */
       _advanceOneCharacter() {
         this._i++;
         
@@ -763,6 +797,9 @@
         }
       }
       
+      /**
+       * Move forward to the next character (editable or not editable.)
+       */
       _backwardOneCharacter() {
         this._i--;
         this._triggerNewLine = false;
@@ -772,8 +809,10 @@
         }
       }
       
-      // Scroll to position the current line on screen 
-      // For performance reason, this method only need to call after each newline character.
+      /**
+       * Scroll to position the current line on screen 
+       * For performance reason, this method only need to call after each newline character.
+       */
       _scrollEditor() {
         console.log('[typio-editor] Scroll to show line ' + this._currentLine);
         if (this._currentLine > 5 && this._currentLine < this.numberLines - 5) { // do not scroll too soon. Wait for some lines.
@@ -781,7 +820,9 @@
         } 
       }
       
-      // Update the editor to display the current page.
+      /**
+       * Update the editor to display the current page.
+       */
       _updatePage() {
         const numberLinesPrintable = countLines(this.$.editor);
         const numberLinesTotal = this.numberLines;
@@ -795,17 +836,24 @@
         this._scrollToLine(numberLinesToScroll);
       }
       
-      // Scroll to position the given line at the top of the editor.
-      // For performance reason, this method only need to call after each newline character.
+      /**
+       * Scroll to position the given line at the top of the editor.
+       * For performance reason, this method only need to call after each newline character.
+       */
       _scrollToLine(lineNumber) {
         this.$.editor.style.marginTop = lineNumber * -1.5 + 'em'; // see #editor line-height property
       }
       
-
+      /** 
+       * Have we reached the end of text?
+       */
       _allowToEnd() {
         return this._error == false || this.continueOnErrors;
       }
 
+      /**
+       * Marks the end of the typing session.
+       */
       end() {
         this.$.stats.stopTimer();
         this.$.editor.classList.add('highlight-mistyping');
@@ -843,6 +891,10 @@
         character.classList.add('disabled');
       }
 
+      /**
+       * Let user click on the histogram to select a bar 
+       * and focus the corresponding text.
+       */
       listenChartEvents() {
         if (!this._chartEventsListened) {
           google.visualization.events.addListener(this.$.chart._chart, 'select', () => {
@@ -881,7 +933,11 @@
     }
     window.customElements.define(TypioEditor.is, TypioEditor);
 
-    /* Determine the number of text lines inside an HTML element. */
+    /**
+     * Determine the number of text lines inside an HTML element. 
+     *
+     * @param {HTMLElement} element the element to evaluate.
+     */
     function countLines(element) {
       // see https://stackoverflow.com/questions/8606588/how-to-get-the-line-height-of-a-span?rq=1
       let style = window.getComputedStyle(element);

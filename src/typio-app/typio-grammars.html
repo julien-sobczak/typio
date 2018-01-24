@@ -1,5 +1,16 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<!--
+Not a true element. Used to isolate inside the same file the grammars 
+for the supported programming languages.
+
+The grammars are based on Prism.css. Minor adjustements are necessary to use them:
+
+- Use the syntax 'Object.assign({}, basic, clike, {...});' 
+  to inherit from other grammars defined above.
+
+-->
+
 <dom-module id="typio-grammars">
   <template>
     <style>
@@ -11,6 +22,7 @@
 // ////////////////////
 // Language definitions
 ///////////////////////
+
 const GRAMMARS = new Map();
 const LANGUAGE_PER_EXTENSIONS = new Map();
 

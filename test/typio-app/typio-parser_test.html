@@ -173,7 +173,6 @@ public class Main {
           expect(parser.classes[index(13, 1)]).to.include.members(['indent', 'ignorable']);
           expect(parser.classes[index(13, 3)]).to.include.members(['backslash', 'ignorable']);
 
-
           // But do not ignore backslash (on on-empty lines)
           expect(parser.classes[index(6,  6)]).to.include.members(['backslash', 'editable']);
           expect(parser.classes[index(7, 32)]).to.include.members(['backslash', 'editable']);

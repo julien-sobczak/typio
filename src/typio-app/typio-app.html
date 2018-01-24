@@ -13,9 +13,15 @@
 <dom-module id="typio-app">
   <template>
     <style include="shared-styles">
+    
       :host {
         display: block;
       }
+      
+      /*
+       * All sections of the website are displayed full-screen.
+       * We use sliding animations to pass from one screen to another one.
+       */
 
       iron-pages > * {
         position: fixed;
@@ -63,6 +69,8 @@
 
   <script>
     /**
+     * Top-level element.
+     *
      * @customElement
      * @polymer
      */
@@ -97,6 +105,8 @@
 
       ready() {
         super.ready();
+        
+        // Force homepage if no page is defined
         if (!this.route.path || this.route.path === '/') {
           this.set('route.path', '/intro');
         }
@@ -119,6 +129,10 @@
         }
       }
 
+      /**
+      * Called when the user select a content inside the catalog.
+      * Initialise the edttor with the resource metadata.
+       */
       _initCodeEditor(e, detail) {
         this.$.editor.content = detail.content;
         this.$.editor.type = detail.type;

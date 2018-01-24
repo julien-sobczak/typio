@@ -20,14 +20,6 @@
         text-align: center;
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
-      a {
-        cursor: pointer;
-      }
-
       /* Filtering */
 
       paper-checkbox {
@@ -151,6 +143,9 @@
 
   <script>
     /**
+     * Let the user select a source file inside a repository.
+     *
+     * @event file-selected fired when the user selects a source file
      * @customElement
      * @polymer
      */
@@ -160,17 +155,19 @@
       static get properties() {
         return {
           
-          /*
-           * JSON representing the metadata of a given project.
+          /**
+           * Metadata of a given project in JSON.
            *
            * All information comes from this property.
+           *
+           * @type see folder /content/gutenberg/*.json for examples
            */
           metadata: {
             type: Object,
             observer: '_metadataChanged'
           },
 
-          /*
+          /**
            * Group files per directory to make traversal easy.
            *
            * Keys are folder directory. (Ex: /src/main/java)
@@ -419,6 +416,11 @@
         this._setCurrentDirectory(this._currentDirectory);
       }
 
+      /**
+       * Moves into the given directory.
+       *
+       * @param {String} path the absolute path of the folder to move
+       */
       _setCurrentDirectory(path) {
         if (!this._filesPerDirectory.has(path)) {
           console.log('Missing path', path);
@@ -444,8 +446,12 @@
         this._directories = entry.directories;
         this._files = entry.files;
       }
-      
+
+      /**
+       * Called when the user clicks on one the extension.
+       */
       _extensionsChanged(e, detail) {
+        // Force dom-repeat's filter to execute
         this.$.listFiles.render();
       }
       
@@ -455,6 +461,10 @@
           return selectedExtensions.includes(file.extension);
         }
       }
+      
+      /*
+       * Utility methods to move around the file tree
+       */
 
       _selectAncestor(e) {
         let newDirectory = e.model.item;
@@ -470,6 +480,9 @@
         this._setCurrentDirectory(this._currentDirectory + e.model.item.name + '/');
       }
 
+      /**
+       * Called when the user chooses a file.
+       */
       _selectFile(e) {
         let detail = {
           filepath: this._currentDirectory + e.model.item.name,

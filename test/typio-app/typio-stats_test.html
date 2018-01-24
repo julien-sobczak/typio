@@ -23,7 +23,7 @@
     <script>
       suite('typio-stats', function() {
 
-        test('enter a character at regular interval', function() {
+        test('[_stats] enter a character at regular interval', function() {
           var element = fixture('DefaultFixture');
           element.editableCharacters = "----------";
 
@@ -48,7 +48,7 @@
           assert.equal(element.wpm, 20);
         });
 
-        test('with ignorable characters', function() {
+        test('[_stats] with ignorable characters', function() {
           var element = fixture('DefaultFixture');
           element.editableCharacters = "XXX------X---X-";
 
@@ -74,7 +74,7 @@
         });
 
 
-        test('check summary statistics', function(done) {
+        test('[_stats] check summary statistics', function(done) {
           var element = fixture('DefaultFixture');
           element.intervalNumber = 5;
           element.editableCharacters = "XX---X--";
@@ -108,7 +108,7 @@
         });
 
 
-        test('WPM are available per interval', function() {
+        test('[wpmPerInterval] WPM are available per interval', function() {
           var element = fixture('DefaultFixture');
           element.intervalNumber = 2;
           element.minCharactersPerInterval = 3;
@@ -142,7 +142,107 @@
 
           element.stopTimer(new Date("2017-12-19T12:42:07.000Z"));
         });
+        
+        test('[mostDifficultKeys] return the characters from most difficult to the easiest', function(done) {
+          var element = fixture('DefaultFixture');
+          element.editableCharacters = "----------";
 
+          // Simulate key press
+          let timer = new Date("2017-12-19T12:42:01.000Z")
+          element.startTimer(timer);
+          element.newCharacter(0, 'a', true, true, timer = new Date(timer.getTime() + 10));
+          element.newCharacter(1, 'b', true, true, timer = new Date(timer.getTime() + 5));
+          element.newCharacter(2, 'a', true, true, timer = new Date(timer.getTime() + 10));
+          element.newCharacter(3, 'b', true, true, timer = new Date(timer.getTime() + 5));
+          element.newCharacter(4, ' ', true, true, timer = new Date(timer.getTime() + 4));
+          element.newCharacter(5, 'b', true, true, timer = new Date(timer.getTime() + 5));
+          element.newCharacter(6, 'b', true, true, timer = new Date(timer.getTime() + 10));
+          element.newCharacter(7, 'a', true, true, timer = new Date(timer.getTime() + 20));
+          element.newCharacter(8, ' ', true, true, timer = new Date(timer.getTime() + 2));
+          element.newCharacter(9, 'a', true, true, timer = new Date(timer.getTime() + 5));
+          element.stopTimer(timer);
+          
+          flush(function() {
+
+            const characters = element._mostDifficultKeys(3);
+            const first = characters[0];
+            const second = characters[1];
+            const third = characters[2];
+
+            assert.equal(first.character, 'a');
+            assert.equal(first.minInMs, 5);
+            assert.equal(first.maxInMs, 20);
+            assert.equal(first.occurrences, 4);
+            assert.equal(first.averageInMs, 11);
+            
+            assert.equal(second.character, 'b');
+            assert.equal(second.minInMs, 5);
+            assert.equal(second.maxInMs, 10);
+            assert.equal(second.occurrences, 4);
+            assert.equal(second.averageInMs, 6);
+
+            assert.equal(third.character, ' ');
+            assert.equal(third.minInMs, 2);
+            assert.equal(third.maxInMs, 4);
+            assert.equal(third.occurrences, 2);
+            assert.equal(third.averageInMs, 3);
+
+            done();
+          });
+          
+        });
+        
+        test('[mostDifficultKeyCombinations] return the combinations of character from most difficult to the easiest', function(done) {
+          var element = fixture('DefaultFixture');
+          element.editableCharacters = "----------";
+
+          // Simulate key press
+          let timer = new Date("2017-12-19T12:42:01.000Z")
+          element.startTimer(timer);
+          element.newCharacter(0, '[', true, true, timer = new Date(timer.getTime() + 10));
+          element.newCharacter(1, '{', true, true, timer = new Date(timer.getTime() + 15));
+          element.newCharacter(2, 'k', true, true, timer = new Date(timer.getTime() + 10));
+          element.newCharacter(3, ':', true, true, timer = new Date(timer.getTime() + 10));
+          element.newCharacter(4, '[', true, true, timer = new Date(timer.getTime() + 2));
+          element.newCharacter(5, '{', true, true, timer = new Date(timer.getTime() + 25));
+          element.newCharacter(6, '{', true, true, timer = new Date(timer.getTime() + 5));
+          element.newCharacter(7, 'k', true, true, timer = new Date(timer.getTime() + 20));
+          element.newCharacter(8, ':', true, true, timer = new Date(timer.getTime() + 15));
+          element.newCharacter(9, ']', true, true, timer = new Date(timer.getTime() + 5));
+          element.stopTimer(timer);
+          
+          flush(function() {
+
+            const characters = element._mostDifficultKeyCombinations(3);
+            const first = characters[0];
+            const second = characters[1];
+            const third = characters[2];
+
+            assert.equal(first.fromCharacter, '[');
+            assert.equal(first.toCharacter, '{');
+            assert.equal(first.minInMs, 15);
+            assert.equal(first.maxInMs, 25);
+            assert.equal(first.occurrences, 2);
+            assert.equal(first.averageInMs, 20);
+            
+            assert.equal(second.fromCharacter, '{');
+            assert.equal(second.toCharacter, 'k');
+            assert.equal(second.minInMs, 10);
+            assert.equal(second.maxInMs, 20);
+            assert.equal(second.occurrences, 2);
+            assert.equal(second.averageInMs, 15);
+
+            assert.equal(third.fromCharacter, 'k');
+            assert.equal(third.toCharacter, ':');
+            assert.equal(third.minInMs, 10);
+            assert.equal(third.maxInMs, 15);
+            assert.equal(third.occurrences, 2);
+            assert.equal(third.averageInMs, 12);
+
+            done();
+          });
+          
+        });
 
 
       });

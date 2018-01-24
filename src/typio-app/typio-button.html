@@ -126,7 +126,10 @@
 
   <script>
     /**
+     * Styled button.
+     *
      * Inspired from https://codepen.io/giana/pen/yYBpVY
+     *
      * @customElement
      * @polymer
      */
@@ -134,6 +137,9 @@
       static get is() { return 'typio-button'; }
       static get properties() {
         return {
+          /**
+           * Does the button is displayed on a dark background?
+           */
           light: {
             type: Boolean,
             value: false

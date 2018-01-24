@@ -13,13 +13,10 @@
         display: block;
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
        paper-radio-group {
          display: inline;
        }
+       
        a {
          margin: 25px;
          font-weight: bold;
@@ -29,6 +26,7 @@
        a iron-icon {
          margin-right: 10px;
        }
+       
        paper-radio-button, a {
          text-align: left;
          font-size: 14px;
@@ -111,6 +109,8 @@
 
   <script>
     /**
+     * Wrapper around `paper-radio-group` to make it collapsable.
+     *
      * @customElement
      * @polymer
      */
@@ -119,7 +119,7 @@
       static get is() { return 'typio-collapsable-radio-group'; }
       static get properties() {
         return {
-          /*
+          /**
            * The list of elements.
            */
           elements: {
@@ -127,7 +127,7 @@
             observer: '_elementsChanged'
           },
 
-          /*
+          /**
            * Mirror of the 'selected' property of the underlying 'paper-radio-group' element.
            */
           selected: {
@@ -135,7 +135,7 @@
             observer: '_selectedChanged'
           },
 
-          /*
+          /**
            * Display the subtitle property if true.
            */
           showDescription: {
@@ -143,7 +143,7 @@
             value: false
           },
 
-          /*
+          /**
            * Layout.
            * Possible values: small, medium, large.
            */
@@ -152,7 +152,7 @@
             value: 'small'
            },
 
-          /*
+          /**
            * Boolean to mark if the list should be expanded.
            */
           showAll: {
@@ -160,7 +160,7 @@
             value: false
           },
 
-          /*
+          /**
            * Hide more/less buttons if there are not enough options.
            */
           _expandable: {

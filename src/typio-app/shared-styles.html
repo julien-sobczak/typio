@@ -1,11 +1,21 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<!-- 
+  Common element used to share styles between sevaral elements.
+  See https://www.polymer-project.org/2.0/docs/devguide/style-shadow-dom#share-styles-between-elements 
+-->
 <dom-module id="shared-styles">
   <link rel="import" type="css" href="/src/typio-app/prism.css">
   <template>
     <style>
 
+      :host {
+        display: block;
+      }
+
       * {
+        /* Declare global CSS variables here */
+        --logo-font-family: 'Cutive', serif;
         --typio-bg-color: #009ee3;
         --typio-secondary-color: var(--paper-orange-500);
         /*
@@ -14,25 +24,29 @@
          */
       }
 
-      :host {
-        display: block;
-      }
-
       * {
         box-sizing: border-box;
       }
+
+      /* 
+       * Basic elements 
+       */
 
       a {
         cursor: pointer;
       }
 
       section {
-        position: fixed;
         width: 100%;
         height: 100%;
         margin: 0;
         overflow-y: scroll;
       }
+      
+      
+      /*
+       * Form elements
+       */
 
       paper-button {
         /* Font */

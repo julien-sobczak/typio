@@ -144,10 +144,9 @@
         position: absolute;
         bottom: 0;
         left: 50%;
-        height: 100px;
+        height: 70px;
         width: 200px;
         margin-left: -100px;
-        margin-bottom: -30px;
         padding-top: 25px;
         border-top-left-radius: 200px;
         border-top-right-radius: 200px;
@@ -282,6 +281,12 @@
     }
   
     /**
+     * Catalog screen. 
+     * 
+     * Let the user select the text to touch type from a list of ressources.
+     *
+     * @event entry-selected fired after the user has made his choice and 
+     *                       the content to touch type is loaded.
      * @customElement
      * @polymer
      */
@@ -290,7 +295,7 @@
       static get is() { return 'typio-catalog'; }
       static get properties() {
         return {
-          /*
+          /**
            * JSON representing the file `/dataset.json`.
            */
           catalog: {
@@ -298,7 +303,7 @@
             observer: '_onLoadCatalog'
           },
 
-          /*
+          /**
            * Which type is selected (Code, Literature, ...)
            */
           type: {
@@ -306,7 +311,7 @@
             value: 'code'
           },
 
-          /*
+          /**
            * Current step in the code selection workflow.
            */
           stepCode: {
@@ -314,7 +319,7 @@
             value: 1
           },
 
-          /*
+          /**
            * Current step in the literature selection workflow.
            */
           stepLiterature: {
@@ -322,7 +327,7 @@
             value: 1
           },
 
-          /*
+          /**
            * Sorted list of programming languages present in `catalog`.
            */
           programmingLanguages: {
@@ -330,14 +335,14 @@
             value: []
           },
 
-          /*
+          /**
            * The selected language among the 'programmingLanguages' list
            */
           selectedProgrammingLanguage: {
             type: String
           },
 
-          /*
+          /**
            * Sorted list of Github projects present in `catalog`.
            */
           projects: {
@@ -345,14 +350,14 @@
             value: []
           },
 
-          /*
+          /**
            * The selected project among the 'projects' list
            */
           selectedProject: {
             type: String
           },
 
-          /*
+          /**
            * Sorted list of spoken languages present in `catalog`.
            */
           spokenLanguages: {
@@ -360,14 +365,14 @@
             value: []
           },
 
-          /*
+          /**
            * The selected language among the 'spokenLanguages' list
            */
           selectedSpokenLanguage: {
             type: String
           },
 
-          /*
+          /**
            * Sorted list of books present in `catalog`.
            */
           books: {
@@ -375,50 +380,51 @@
             value: []
           },
 
-          /*
+          /**
            * The selected book among the 'books' list
            */
           selectedBook: {
             type: String
           },
 
-          /*
-           * URL to download the metadata
+          /**
+           * URL to download the metadata of a given ressource.
            */
           _urlMetadata: {
             type: String,
             value: null
           },
           
-          /*
-           * URL to download the metadata (only when using the SurpriseMe button)
+          /**
+           * URL to download the metadata when using the "Surprise Me".
            */
           _urlMetadataSurprise: {
             type: String,
             value: null
           },
 
-
-          /*
-           * URL to download the content.
+          /**
+           * URL to download the content of a given ressource.
            */
           _urlContent: {
             type: String,
             value: null
           },
 
-          /*
-           * JSON descripting a Github project.
-           * See /content/github/*.json for examples.
+          /**
+           * JSON describing a Github project.
+           *
+           * @see /content/github/*.json for examples.
            */
           projectMetadata: {
             type: Object,
             value: null // will be loaded once the user select a Github project
           },
 
-          /*
-           * JSON descripting a Gutenberg book.
-           * See /content/gutenberg/*.json for examples.
+          /**
+           * JSON describing a Gutenberg book.
+           *
+           * @see /content/gutenberg/*.json for examples.
            */
           bookMetadata: {
             type: Object,
@@ -428,12 +434,16 @@
         };
       }
 
+      /** 
+       * Called when the `dataset.json` has finished loaded.
+       */
       _onLoadCatalog() {
         if (!this.catalog) return;
 
         let newProgrammingLanguages = new Array();
         let newSpokenLanguages = new Array();
 
+        // Traverse the catalog to populate lists.
         this.catalog.forEach(entry => {
 
           if (entry.origin === 'github') {
@@ -485,6 +495,9 @@
 
       /* Tabs */
 
+      /**
+       * Called when the user changed the type of ressource.
+       */
       _changedType(e) {
         this.type = this.$.typeTabs.selected;
         this.$.catalog.classList.remove('type-code', 'type-literature');
@@ -496,6 +509,9 @@
 
       /* Tab Code */
 
+      /**
+       * Called when the user selects a programming language.
+       */
       _programmingLanguageSelected(value) {
         this.selectedProgrammingLanguage = this.$.programmingLanguages.selected;
         this.projects = this._getProjects(this.selectedProgrammingLanguage);
@@ -518,6 +534,9 @@
         return projects.sort((a,b) => a.name.localeCompare(b.name));
       }
 
+      /**
+       * Called when the user selects a project.
+       */
       _projectSelected(value) {
         this.selectedProject = this.$.projects.selected;
 
@@ -535,6 +554,9 @@
 
       /* Tab Literature */
 
+      /**
+       * Called when the user select a spoken language.
+       */
       _spokenLanguageSelected(value) {
         this.selectedSpokenLanguage = this.$.spokenLanguages.selected;
         this.books = this._getBooks(this.selectedSpokenLanguage);
@@ -557,6 +579,9 @@
         return books.sort((a,b) => a.name.localeCompare(b.name));
       }
 
+      /**
+       * Called when the user selects a book.
+       */
       _bookSelected(value) {
         this.selectedBook = this.$.books.selected;
 
@@ -575,6 +600,9 @@
         return slug;
       }
 
+      /*
+       * Move between the workflow.
+       */
 
       _goToTypeCodeStep1() {
         this._resetProgrammingLanguage();
@@ -671,8 +699,10 @@
         });
       }
 
+      /**
+       * Called when the selected content has finished loaded.
+       */
       _onContentLoaded(e, data) {
-        console.log('[typio-catalog] _onContentLoaded');
         const content = data.response;
         this.isLoading = false;
 

@@ -1,4 +1,12 @@
-/* https://github.com/PrismJS/prism/blob/gh-pages/themes/prism.css */
+/* 
+ * Grammars used to parse source code are based on the code of Prism.css 
+ * We reuse one of the theme of this library to stylize the code.
+ *
+ * See https://github.com/PrismJS/prism/blob/gh-pages/themes/prism.css 
+ *
+ * Important: this file should not be edited directly to make easy to update
+ * with the latest Prism.css version.
+ */
 code[class*="language-"],
 pre[class*="language-"] {
 	color: black;

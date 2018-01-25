@@ -30,7 +30,7 @@
         z-index: 40;
         left: 50%;
         margin-left: -400px; /* Half of the width */
-        
+
         overflow-y: hidden;
         overflow-x: visible;
       }
@@ -40,8 +40,8 @@
       #content pre[data-type="code"] {
         font-family: monospace;
       }
-      
-      
+
+
       /* Following style was inspired by https://typing.io/ */
 
       span {
@@ -89,23 +89,23 @@
         color: #fff !important;
       }
 
-      
-      /* Show a gradient at the bottom to show there is text that follows. */      
+
+      /* Show a gradient at the bottom to show there is text that follows. */
       #screen.mode-scroll #content:after {
         content: '';
         width: 100%;
-        height: 100%;    
+        height: 100%;
         position: absolute;
         z-index: 500;
         left: 0;
         bottom: 0;
         background: linear-gradient(transparent 90%, white);
-      }   
-      
+      }
+
       #screen.showChart-true #content {
         bottom: 150px; /* Reserve space to show chart. */
       }
-  
+
 
       #editor {
         line-height: 1.5em;
@@ -113,10 +113,10 @@
 
         transition: margin 300ms; /* Used in Scroll Mode */
       }
-      
-      
+
+
       /* Highlight intervals using a CSS class. */
-      
+
       #editor.highlight-interval-0 span.interval-0,
       #editor.highlight-interval-1 span.interval-1,
       #editor.highlight-interval-2 span.interval-2,
@@ -137,7 +137,7 @@
       /*
        * Statistics panel
        */
-      
+
       #stats {
         position: fixed;
         top: 0;
@@ -157,14 +157,14 @@
           At this time, the error message was already printed
           and we can reveal the chart.
          */
-        height: 100px; 
+        height: 200px;
         width: 100%;
         position: fixed;
         bottom: 0;
         left: 0;
         right: 0;
       }
-      
+
       /* Support option "Show Chart" */
       #screen.showChart-false #chart {
         display: none !important;
@@ -224,7 +224,7 @@
         text-decoration: none;
         color: inherit;
       }
-      
+
       #resourceName {
         position: fixed;
         top: 17px;
@@ -240,8 +240,8 @@
         border-radius: 15px;
         overflow: hidden;
       }
-      
-      
+
+
 
       #screen.initialized-false {
         display: none;
@@ -376,15 +376,15 @@
             type: String,
             value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n'
           },
-          
+
           /**
            * The number of lines in `content`.
-           */          
+           */
           numberLines: {
             type: Number,
             value: 0
           },
-          
+
           /**
            * Log debug information to the console.
            */
@@ -443,7 +443,7 @@
               type: Number,
               value: -1
           },
-          
+
           // Line number containing the `_i` character.
           _currentLine: {
               type: Number,
@@ -571,7 +571,7 @@
       start(e, detail) {
         // Collect selected content
         this.content = this._preprocess(detail.selection);
-        
+
         // Determine settings
         this.numberLines = this.content.split('\n').length;
         this.ignoreComments = detail.ignoreComments;
@@ -595,20 +595,21 @@
        */
       _parse() {
         console.log('[typio-editor] Number of displayable lines: ' + countLines(this.$.editor));
-        
+
         const startTime = performance.now();
         console.log('[typio-editor] _parse');
-        
+
         this._i = -1;
         this._currentLine = 0;
         this._length = this.content.length;
-        
+
         this.$.parser.parse();
         console.log('[typio-editor] lexical parser ... done in ' + (performance.now() - startTime) + 'ms');
-        
-        const classes = this.$.parser.classes;        
-        const editableCharacters = this._calculateEditableCharacters(classes);
+
+        const classes = this.$.parser.classes;
+        this.$.stats.editableCharacters = this._calculateEditableCharacters(classes);
         const intervals = this.$.stats.intervals;
+        console.log('ici', intervals, classes);
 
         let fragment = document.createDocumentFragment();
 
@@ -620,7 +621,7 @@
 
           let charCode = this.content.charCodeAt(i);
           let charClasses = classes[i];
-          
+
           // HACK: http://www.adamkoch.com/2009/07/25/white-space-and-character-160/
           if (charCode === 160) {
             charName = ' ';
@@ -648,7 +649,6 @@
         this.$.editor.appendChild(fragment);
 
         this._characters = this.$.editor.querySelectorAll('.character');
-        this.$.stats.editableCharacters = editableCharacters;
 
         const endTime = performance.now();
         console.log('[typio-editor] _parse ... done in ' + (endTime - startTime) + 'ms');
@@ -720,11 +720,11 @@
         this.$.chart.redraw();
         this.listenChartEvents();
       }
-      
+
       _isValid(character, keyName) {
         if (character.dataset.text === keyName) {
           return true;
-        }        
+        }
         if (keyName === ' ' && character.classList.contains("allowSpace")) {
           return true;
         }
@@ -759,7 +759,7 @@
         if (this._i >= 0) {
           this._cursor().classList.remove('char-active');
         }
-        
+
         if (this._isEndOfFile()) {
           // Do not trigger end if there is error, except if allowed
           if (this._allowToEnd()) {
@@ -767,27 +767,27 @@
           }
           return;
         }
-        
+
         this._advanceOneCharacter();
         while (!this._isEndOfFile() && this._isIgnorable()) { this._advanceOneCharacter(); }
-        
+
         this._highlight();
       }
-      
+
       /**
        * Move backward to the previous character (editable or not editable.)
        */
       _advanceOneCharacter() {
         this._i++;
-        
+
         // Check if a new line have been triggered
         if (this._triggerNewLine) {
-          this._currentLine++;          
+          this._currentLine++;
           if (this.mode === 'scroll') this._scrollEditor();
           if (this.mode === 'page') this._updatePage();
           this._triggerNewLine = false;
         }
-        
+
         if (this._cursor().classList.contains('backslash')) {
           // We need to wait the user press 'Enter' before advance the line number.
           // Because if is press the wrong key, we will stay on the same line...
@@ -796,7 +796,7 @@
           this._triggerNewLine = false;
         }
       }
-      
+
       /**
        * Move forward to the next character (editable or not editable.)
        */
@@ -805,21 +805,21 @@
         this._triggerNewLine = false;
         if (this._cursor().classList.contains('backslash')) {
           this._currentLine--;
-          if (this.mode === 'scroll') this._scrollEditor();          
+          if (this.mode === 'scroll') this._scrollEditor();
         }
       }
-      
+
       /**
-       * Scroll to position the current line on screen 
+       * Scroll to position the current line on screen
        * For performance reason, this method only need to call after each newline character.
        */
       _scrollEditor() {
         console.log('[typio-editor] Scroll to show line ' + this._currentLine);
         if (this._currentLine > 5 && this._currentLine < this.numberLines - 5) { // do not scroll too soon. Wait for some lines.
           this._scrollToLine(this._currentLine - 5);
-        } 
+        }
       }
-      
+
       /**
        * Update the editor to display the current page.
        */
@@ -827,15 +827,15 @@
         const numberLinesPrintable = countLines(this.$.editor);
         const numberLinesTotal = this.numberLines;
         console.log('currentLine=', this._currentLine, ' numberLinesPrintable=', numberLinesPrintable);
-        
-        const pageNumber = parseInt(this._currentLine / numberLinesPrintable) + 
+
+        const pageNumber = parseInt(this._currentLine / numberLinesPrintable) +
           ((this._currentLine % numberLinesPrintable == 0) ? 0 : 1); // + 1 if remainder
         const numberLinesToScroll = (pageNumber > 1) ? (pageNumber - 1) * numberLinesPrintable : 0;
-        
+
         console.log('[typio-editor] Scroll to page ' + pageNumber + ' by shifting ' + numberLinesToScroll + ' lines');
         this._scrollToLine(numberLinesToScroll);
       }
-      
+
       /**
        * Scroll to position the given line at the top of the editor.
        * For performance reason, this method only need to call after each newline character.
@@ -843,8 +843,8 @@
       _scrollToLine(lineNumber) {
         this.$.editor.style.marginTop = lineNumber * -1.5 + 'em'; // see #editor line-height property
       }
-      
-      /** 
+
+      /**
        * Have we reached the end of text?
        */
       _allowToEnd() {
@@ -892,7 +892,7 @@
       }
 
       /**
-       * Let user click on the histogram to select a bar 
+       * Let user click on the histogram to select a bar
        * and focus the corresponding text.
        */
       listenChartEvents() {
@@ -934,7 +934,7 @@
     window.customElements.define(TypioEditor.is, TypioEditor);
 
     /**
-     * Determine the number of text lines inside an HTML element. 
+     * Determine the number of text lines inside an HTML element.
      *
      * @param {HTMLElement} element the element to evaluate.
      */

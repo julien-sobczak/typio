@@ -446,6 +446,8 @@
         // Traverse the catalog to populate lists.
         this.catalog.forEach(entry => {
 
+          if (entry.active === false) return;
+
           if (entry.origin === 'github') {
             let found = false;
             for (let i = 0; i < newProgrammingLanguages.length; i++) {
@@ -522,6 +524,9 @@
         // Search Github projects matching the selected language
         let projects = new Array();
         this.catalog.forEach(entry => {
+          
+          if (entry.active === false) return;
+          
           if (entry.origin === 'github' && entry.language == programmingLanguage) {
             projects.push({
               'key': entry.name,
@@ -567,6 +572,9 @@
         // Search gutenberg books matching the selected language
         let books = new Array();
         this.catalog.forEach(entry => {
+          
+          if (entry.active === false) return;
+          
           if (entry.origin === 'gutenberg' && entry.language == spokenLanguage) {
             books.push({
               'key': entry.title,

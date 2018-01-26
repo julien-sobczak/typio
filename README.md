@@ -2,6 +2,8 @@
 
 Practice deliberately touch typing.
 
+![Logo](images/typio-logo.png)
+
 **Important**: This project is under development. You could access the latest version at: [https://typio-59500.firebaseapp.com/](https://typio-59500.firebaseapp.com/)
 
 
@@ -11,13 +13,13 @@ Practice deliberately touch typing.
 
 * Source code using famous projects hosted by GitHub (Docker, Linux, Git, Hadoop, etc.). All major programming languages are represented: JavaScript, Java, C, C++, Python, PHP, Ruby, Shell, C#, Go, Swift, Scala, Haskell, Lua, Clojure, Rust, Erlang, and many others.
 
-* Classic literature using Public Domain books hosted by Project Gutenberg. For now, only languages based on latin script are supported: English, French, German, Spanish, Italian, Portuguese, and others.
+* Classic literature using Public Domain books hosted by Project Gutenberg. For now, only latin-based languages are supported: English, French, German, Spanish, Italian, Portuguese, and many others.
 
-* Other sources are planned: lyrics, quotations, etc.
+* Other sources are planned in a new future: lyrics, quotations, etc.
 
 Here is a preview of the editor:
 
-![Preview](/images/preview.png)
+![Preview](images/typio-editor.png)
 
 
 ## Motivations
@@ -40,7 +42,11 @@ Then, follow the URL displayed on the output.
 $ polymer build
 ```
 
-This will create builds of your application in the `build/` directory, optimized to be served in production. You can then serve the built versions by giving `polymer serve` a folder to serve from:
+This will create builds of your application in the `build/` directory, optimized to be served in production. 
+
+By default, GitHub project resources (under `/content/github/`) are not copied. You need to run the scripts `python link-content.py`. This script only copies enabled projects (useful to limit the space consumption on Firebase Hosting.)
+
+You can then serve the built versions by giving `polymer serve` a folder to serve from:
 
 ```
 $ polymer serve build/default

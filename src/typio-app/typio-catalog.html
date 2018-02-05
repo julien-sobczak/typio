@@ -155,7 +155,7 @@
 
     </style>
 
-    <iron-ajax url="/dataset.json" auto last-response="{{catalog}}"></iron-ajax>
+    <iron-ajax url="/catalog.json" auto last-response="{{catalog}}"></iron-ajax>
     <iron-ajax auto url="{{_urlMetadata}}" handle-as="json" on-response="_onMetadataLoaded"></iron-ajax>
     <iron-ajax auto url="{{_urlContent}}" handle-as="text" on-response="_onContentLoaded"></iron-ajax>
     <iron-ajax auto url="{{_urlMetadataSurprise}}" handle-as="json" on-response="_onMetadataSurpriseLoaded"></iron-ajax>
@@ -296,7 +296,7 @@
       static get properties() {
         return {
           /**
-           * JSON representing the file `/dataset.json`.
+           * JSON representing the file `/catalog.json`.
            */
           catalog: {
             type: Object,
@@ -435,7 +435,7 @@
       }
 
       /** 
-       * Called when the `dataset.json` has finished loaded.
+       * Called when the `catalog.json` has finished loaded.
        */
       _onLoadCatalog() {
         if (!this.catalog) return;
@@ -602,7 +602,7 @@
         });
       }
 
-      /* Fallback when the attribut 'slug' is not defined in 'dataset.json' */      
+      /* Fallback when the attribut 'slug' is not defined in 'catalog.json' */      
       _slug(text) {
         let slug = text.replace(/\s/g, '-').replace(/'/g, '');
         return slug;
@@ -696,10 +696,18 @@
 
         this.catalog.forEach(entry => {
           if (entry.origin === 'github' && entry.name == this.selectedProject) {
+            let organizationProject = entry.url.replace('https://github.com/', '');
             let [organization, project] = entry.url.replace('https://github.com/', '').split('/');
             let commit = entry.commit;
             let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
-            this._urlContent = '/content/github/' + slug + '/' + this.selectedFile;
+            let url = '/content/github/' + slug + '/' + this.selectedFile;
+            
+            // To retrieve from GitHub
+            // Ex: https://raw.githubusercontent.com/apache/flume/trunk/flume-ng-clients/pom.xml
+            //let url = 'https://raw.githubusercontent.com/' + organizationProject + '/' + entry.commit + '/' + this.selectedFile;
+            
+            console.log('[typio-catalog] loading ' + url);
+            this._urlContent = url;
             this.isLoading = true;
             this.stepCode = 4;
             console.log('[typio-catalog] selectFile ' + this.selectedFile + '...');

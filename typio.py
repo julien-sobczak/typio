@@ -115,7 +115,7 @@ def human_size(size_bytes):
 
 class Entry:
     """
-    Wrapper around a single entry in the file `dataset.json`.
+    Wrapper around a single entry in the file `catalog.json`.
     """
 
     def __init__(self, data):
@@ -178,7 +178,7 @@ class Entry:
 
     def ignorable(self, file, is_directory):
         """
-        Test if a file should be ignored according various attributes present in `dataset.json`.
+        Test if a file should be ignored according various attributes present in `catalog.json`.
         """
         includes = ['*']
         excludes = []
@@ -229,9 +229,9 @@ class Entry:
 
 
 
-class Dataset:
+class Catalog:
     """
-    Wrapper around the whole `dataset.json` file.
+    Wrapper around the whole `catalog.json` file.
     """
 
     def __init__(self, filename):
@@ -240,18 +240,18 @@ class Dataset:
 
     def _load(self):
         with open(self.filename) as f:
-            self.dataset = json.load(f)
+            self.catalog = json.load(f)
 
     def get_entry_names(self, type=None):
         results = []
         if not type or type == 'gutenberg':
-            results.extend([ entry['title'] for entry in self.dataset if entry['origin'] == 'gutenberg'])
+            results.extend([ entry['title'] for entry in self.catalog if entry['origin'] == 'gutenberg'])
         if not type or type == 'github':
-            results.extend([ entry['name'] for entry in self.dataset if entry['origin'] == 'github'])
+            results.extend([ entry['name'] for entry in self.catalog if entry['origin'] == 'github'])
         return results
 
     def get_entry(self, entry_name):
-        for entry in self.dataset:
+        for entry in self.catalog:
             if entry['origin'] == 'github' and entry['name'] == entry_name:
                 return Entry(entry)
             elif entry['origin'] == 'gutenberg' and entry['title'] == entry_name:
@@ -300,8 +300,8 @@ class TypioPrompt:
         Token.Toolbar:       '#ffffff bg:#333333',
     })
 
-    def __init__(self, dataset):
-        self.dataset = Dataset(dataset)
+    def __init__(self, catalog):
+        self.catalog = Catalog(catalog)
 
     def showUsage(self):
         print("""List of commands:\n
@@ -724,7 +724,7 @@ class TypioPrompt:
     ##
 
     def metadata_github(self, entry):
-        metadata = entry.data.copy()  # We copy all metadata found in dataset.json
+        metadata = entry.data.copy()  # We copy all metadata found in catalog.json
         metadata['files'] = []        # and add files metadata
 
         local_dir = self.CONTENT_DIR + '/github/' + entry.slug
@@ -758,7 +758,7 @@ class TypioPrompt:
         metadata_path = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.json'
 
         # Collect metadata
-        metadata = entry.data.copy()  # We copy all metadata found in dataset.json
+        metadata = entry.data.copy()  # We copy all metadata found in catalog.json
         metadata['size'] = os.path.getsize(book_path)
         metadata['chapters'] = self._get_chapters(book_path)
 
@@ -878,7 +878,7 @@ class TypioPrompt:
             return [(Token.Toolbar, ' This is a toolbar.')]
 
         operatorsCommands = ['archive', 'clean', 'delete', 'download', 'extract', 'get', 'inspect', 'metadata', 'unarchive']
-        entries = ['all', 'gutenberg', 'github'] + self.dataset.get_entry_names()
+        entries = ['all', 'gutenberg', 'github'] + self.catalog.get_entry_names()
 
         g = create_grammar()
 
@@ -924,12 +924,12 @@ class TypioPrompt:
                     # Advanced commands required an entry name.
                     # We check this entry name is valid
                     entry = vars['entry']
-                    entries = self.dataset.resolve_name(entry)
+                    entries = self.catalog.resolve_name(entry)
                     if not entries:
                         print(Colors.error("No entry named '%s'" % entry))
 
                     for entry_name in entries:
-                        entry = self.dataset.get_entry(entry_name)
+                        entry = self.catalog.get_entry(entry_name)
                         method = command + '_' + entry.origin
 
                         # Wrong command
@@ -954,5 +954,5 @@ class TypioPrompt:
 
 
 if __name__ == '__main__':
-    p = TypioPrompt('dataset.json')
+    p = TypioPrompt('catalog.json')
     p.prompt()

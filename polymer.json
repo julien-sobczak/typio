@@ -4,7 +4,7 @@
    "images/**/*",
    "content/github/*.json",
    "content/gutenberg/**",
-   "dataset.json",
+   "catalog.json",
    "bower.json"
   ],
   "lint": {

@@ -3,16 +3,16 @@
 import os
 import json
 
-# Read the dataset to filter on active projects
-with open('dataset.json') as f:
-    dataset = json.load(f)
+# Read the catalog to filter on active projects
+with open('catalog.json') as f:
+    catalog = json.load(f)
 
 # Traverse avaiable projects
 for root, dirs, files in os.walk("content/github/"):
     for name in dirs:
 
-        # Search the directory into the dataset
-        for p in dataset:
+        # Search the directory into the catalog
+        for p in catalog:
             if not p['origin'] == 'github':
                 continue
             if "active" in p and not p['active']:

@@ -35,7 +35,7 @@
       }
       section.type-literature {
         background-color: #009ee3;
-        /*background-color: #e3004f;*/ 
+        /*background-color: #e3004f;*/
         /* TODO see if pertinent */
       }
 
@@ -139,7 +139,7 @@
         margin-left: 20px;
         margin-right: 20px;
       }
-      
+
       #surpriseMe {
         position: absolute;
         bottom: 0;
@@ -259,9 +259,9 @@
         <div class="step step4">
           <p class="notice">Downloading the book <b>[[selectedBook]]</b>...</p>
         </div>
-        
+
       </div>
-      
+
       <div id="surpriseMe">
         <a on-click="_surpriseMe">Surprise Me!</a>
       </div>
@@ -275,17 +275,17 @@
   </template>
 
   <script>
-  
+
     function getRandomInt(max) {
       return Math.floor(Math.random() * Math.floor(max));
     }
-  
+
     /**
-     * Catalog screen. 
-     * 
+     * Catalog screen.
+     *
      * Let the user select the text to touch type from a list of ressources.
      *
-     * @event entry-selected fired after the user has made his choice and 
+     * @event entry-selected fired after the user has made his choice and
      *                       the content to touch type is loaded.
      * @customElement
      * @polymer
@@ -394,7 +394,7 @@
             type: String,
             value: null
           },
-          
+
           /**
            * URL to download the metadata when using the "Surprise Me".
            */
@@ -434,7 +434,7 @@
         };
       }
 
-      /** 
+      /**
        * Called when the `catalog.json` has finished loaded.
        */
       _onLoadCatalog() {
@@ -519,14 +519,14 @@
         this.projects = this._getProjects(this.selectedProgrammingLanguage);
         this.stepCode = 2;
       }
-      
+
       _getProjects(programmingLanguage) {
         // Search Github projects matching the selected language
         let projects = new Array();
         this.catalog.forEach(entry => {
-          
+
           if (entry.active === false) return;
-          
+
           if (entry.origin === 'github' && entry.language == programmingLanguage) {
             projects.push({
               'key': entry.name,
@@ -550,7 +550,8 @@
             let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
             let commit = entry.commit
             let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
-            this._urlMetadata = '/content/github/' + slug + '.json'
+            this._urlMetadata = null; // force change
+            this._urlMetadata = '/content/github/' + slug + '.json';
             this.isLoading = true;
           }
         });
@@ -567,14 +568,14 @@
         this.books = this._getBooks(this.selectedSpokenLanguage);
         this.stepLiterature = 2;
       }
-      
+
       _getBooks(spokenLanguage) {
         // Search gutenberg books matching the selected language
         let books = new Array();
         this.catalog.forEach(entry => {
-          
+
           if (entry.active === false) return;
-          
+
           if (entry.origin === 'gutenberg' && entry.language == spokenLanguage) {
             books.push({
               'key': entry.title,
@@ -596,13 +597,14 @@
         this.catalog.forEach(entry => {
           if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
             let slug = entry.slug ? entry.slug : this._slug(entry.title);
-            this._urlMetadata = '/content/gutenberg/' + slug + '.json'
+            this._urlMetadata = null; // force change
+            this._urlMetadata = '/content/gutenberg/' + slug + '.json';
             this.isLoading = true;
           }
         });
       }
 
-      /* Fallback when the attribut 'slug' is not defined in 'catalog.json' */      
+      /* Fallback when the attribut 'slug' is not defined in 'catalog.json' */
       _slug(text) {
         let slug = text.replace(/\s/g, '-').replace(/'/g, '');
         return slug;
@@ -665,7 +667,7 @@
         let d = e.detail;
         this.selectChapter(d.chapterTitle, d.startLine, d.endLine);
       }
-      
+
       selectChapter(chapterTitle, startLine, endLine) {
         this.selectedChapter = chapterTitle;
         this.startLine = startLine;
@@ -674,7 +676,8 @@
         this.catalog.forEach(entry => {
           if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
             let slug = entry.slug ? entry.slug : this._slug(entry.title);
-            this._urlContent = '/content/gutenberg/' + slug + '.txt'
+            this._urlContent = null; // force change
+            this._urlContent = '/content/gutenberg/' + slug + '.txt';
             this.isLoading = true;
             this.stepLiterature = 4;
             console.log('[typio-catalog] selectChapter ' + this.selectedBook + '...');
@@ -686,7 +689,7 @@
         let d = e.detail;
         this.selectFile(d.filepath, d.filename, d.extension);
       }
-      
+
       selectFile(filepath, filename, extension) {
         this.selectedFile = filepath;
         this.selectedFilename = filename;
@@ -700,13 +703,18 @@
             let [organization, project] = entry.url.replace('https://github.com/', '').split('/');
             let commit = entry.commit;
             let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
-            let url = '/content/github/' + slug + '/' + this.selectedFile;
-            
-            // To retrieve from GitHub
+
+            // Load fron GitHub (CORS is supported)
             // Ex: https://raw.githubusercontent.com/apache/flume/trunk/flume-ng-clients/pom.xml
-            //let url = 'https://raw.githubusercontent.com/' + organizationProject + '/' + entry.commit + '/' + this.selectedFile;
-            
+            let url = 'https://raw.githubusercontent.com/' + organizationProject + '/' + entry.commit + '/' + this.selectedFile;
+
+            if (entry.offline) {
+              // Load from local instead
+              url = '/content/github/' + slug + '/' + this.selectedFile;
+            }
+
             console.log('[typio-catalog] loading ' + url);
+            this._urlContent = null; // force change
             this._urlContent = url;
             this.isLoading = true;
             this.stepCode = 4;
@@ -748,9 +756,9 @@
         }
 
       }
-      
+
       /**
-       * Traverse the catalog matching already selected criteria to find a resource 
+       * Traverse the catalog matching already selected criteria to find a resource
        * (a file, a chapter, ...).
        */
       _surpriseMe() {
@@ -759,63 +767,65 @@
           const TYPES = ['code', 'literature'];
           this.type = TYPES[getRandomInt(TYPES.length)];
         }
-        
+
         // Resources differ along the type
         if (this.type === 'code') {
-          
+
           // We need to determine a source file
-          
+
           if (!this.selectedProgrammingLanguage) {
             this.selectedProgrammingLanguage = this.programmingLanguages[getRandomInt(this.programmingLanguages.length)].name;
           }
-          
+
           if (!this.selectedProject) {
             let projects = this._getProjects(this.selectedProgrammingLanguage);
             this.selectedProject = projects[getRandomInt(projects.length)].name;
-          }         
-          
-          console.log('[typio-catalog] Using randomly selected project ' + this.selectedProject + ' (' + this.selectedProgrammingLanguage + ')');           
-          
+          }
+
+          console.log('[typio-catalog] Using randomly selected project ' + this.selectedProject + ' (' + this.selectedProgrammingLanguage + ')');
+
           // Retrieve the project JSON file to select a file randomly
           this.catalog.forEach(entry => {
             if (entry.origin === 'github' && entry.name == this.selectedProject) {
               let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
               let commit = entry.commit
               let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
-              this._urlMetadataSurprise = '/content/github/' + slug + '.json'
+              this._urlMetadataSurprise = null; // force change
+              this._urlMetadataSurprise = '/content/github/' + slug + '.json';
               this.isLoading = true;
             }
           });
-          
-          
+
+
         } else if (this.type === 'literature') {
-          
+
           // We need to determine a chapter excerpt
-          
+
           if (!this.selectedSpokenLanguage) {
             this.selectedSpokenLanguage = this.spokenLanguages[getRandomInt(this.spokenLanguages.length)].name;
           }
-          
+
           if (!this.selectedBook) {
             let books = this._getBooks(this.selectedSpokenLanguage);
             this.selectedBook = books[getRandomInt(books.length)].name;
           }
-          
+
           console.log('[typio-catalog] Using randomly selected book ' + this.selectedBook + ' (' + this.selectedSpokenLanguage + ')');
-          
+
           // Retrieve the book JSON file to select a chapter randomly
           this.catalog.forEach(entry => {
             if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
               let slug = entry.slug ? entry.slug : this._slug(entry.title);
-              this._urlMetadataSurprise = '/content/gutenberg/' + slug + '.json'
+              this._urlMetadataSurprise = null; // force change
+              this._urlMetadataSurprise = '/content/gutenberg/' + slug + '.json';
               this.isLoading = true;
             }
           });
-          
+
         }
-        
+
       }
-      
+
       /**
        * Metadata (only when using the SurpriseMe button).
        *
@@ -835,7 +845,7 @@
           let chapter = this.bookMetadata.chapters[getRandomInt(this.bookMetadata.chapters.length)];
           const numberLines = 100;
           let start = Math.max(0, getRandomInt(chapter.end - numberLines));
-          this.selectChapter(chapter.title, start, start + numberLines); 
+          this.selectChapter(chapter.title, start, start + numberLines);
         }
       }
 

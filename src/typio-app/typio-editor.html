@@ -555,6 +555,7 @@
 
         // reset ready-screen
         this.initialized = false;
+        this.paused = true;
         this.$.readyScreen.hidden = false;
 
         this.refresh();
@@ -609,7 +610,6 @@
         const classes = this.$.parser.classes;
         this.$.stats.editableCharacters = this._calculateEditableCharacters(classes);
         const intervals = this.$.stats.intervals;
-        console.log('ici', intervals, classes);
 
         let fragment = document.createDocumentFragment();
 

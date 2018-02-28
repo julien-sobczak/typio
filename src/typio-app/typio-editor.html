@@ -427,6 +427,15 @@
             value: false
           },
 
+	  /**
+	   * True only when the user has mistyped.
+	   * False when the typo is fixed.
+	   */
+          _error: {
+	    type: Boolean,
+	    value: false
+	  },
+
 
           //
           // Editor inner working properties
@@ -588,7 +597,9 @@
 
       _preprocess(txt) {
         // Add all hacks
-        return txt.replace(/\r\n/g, '\n'); // Standardize on \n
+        txt = txt.replace(/\r\n/g, '\n'); // Standardize on newlines
+        txt = txt.replace(/\t/g, '  ');   // Standardize on tabs
+        return txt;
       }
 
       /**

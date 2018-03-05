@@ -669,7 +669,7 @@
       _calculateEditableCharacters(classes) {
         let editableCharacters = new Array(this._length);
         for (let i = 0; i < this._length; i++) {
-          editableCharacters[i] = !classes.includes('ignorable');
+          editableCharacters[i] = !classes[i].includes('ignorable');
         }
         return editableCharacters;
       }
@@ -701,7 +701,9 @@
             character.classList.remove('char-invalid');
           } else if (this._error && !this.continueOnErrors) {
             character.classList.add('char-invalid');
-          }
+          } else {
+	    character.classList.remove('char-invalid');
+	  }
 
           // Add marker to highlight mistyping at the end
           if (!character.classList.contains('wrong') && !character.classList.contains('useless')) {

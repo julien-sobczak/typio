@@ -426,7 +426,7 @@
 
         // Assign an interval number to each character
         // Dispatch uniformly editable characters among intervals.
-        const charactersPerInterval = Math.ceil(this.totalEditableCharacters / this.intervalNumber);
+        const charactersPerInterval = Math.floor(this.totalEditableCharacters / this.intervalNumber);
         // = change interval when `charactersPerInterval` has been entered in the current interval
 
         let currentInterval = 0;
@@ -435,7 +435,8 @@
           this.intervals.push(currentInterval);
 
           if (editable) countEditableCharactersInCurrentInterval++;
-          if (countEditableCharactersInCurrentInterval == charactersPerInterval) {
+          if (countEditableCharactersInCurrentInterval == charactersPerInterval &&
+            currentInterval + 1 < this.intervalNumber) {
             // move to next interval
             currentInterval++;
             countEditableCharactersInCurrentInterval = 0;

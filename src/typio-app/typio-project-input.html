@@ -95,7 +95,7 @@
         border-top: 1px solid white;
         border-bottom: 1px solid white;
       }
-      
+
       ul#directories a,
       ul#files a {
           display: inline-block;
@@ -154,7 +154,7 @@
       static get is() { return 'typio-project-input'; }
       static get properties() {
         return {
-          
+
           /**
            * Metadata of a given project in JSON.
            *
@@ -292,7 +292,7 @@
 
         };
       }
-      
+
       /**
        * Called when a new project is selected.
        */
@@ -307,8 +307,12 @@
        * Traverse all files to extract the different extensions and their occurrences.
        */
       _refreshExtensionList() {
+        // reset previous values
+        this._extensions = [];
+
         let totalCount = 0;
         let allExtensions = [];
+        this.$.extensionSelection.selectedValues = [];
         this.metadata.files.forEach(e => {
           let found = false;
           for (let i = 0; i < allExtensions.length; i++) {
@@ -334,15 +338,17 @@
         if (this.extensionsPerLanguage.has(this.metadata.language)) {
           selectedExtensions.push(...this.extensionsPerLanguage.get(this.metadata.language));
         }
+        console.log(selectedExtensions);
         this.$.extensionSelection.selectedValues = selectedExtensions;
       }
 
       _refreshFilesPerDirectory() {
         // Housekeeping
         this._ancestors = [];
+        this._filesPerDirectory = new Map();
         this._directories = [];
         this._files = [];
-        
+
         this.metadata.files.forEach(e => {
           let absolutePath = '/' + e.path; // Ex: /src/main/java/Main.java
           let directoryPath = absolutePath.substring(0, absolutePath.lastIndexOf('/') + 1);
@@ -403,15 +409,15 @@
           });
 
         });
-        
+
         // Sort subdirs and files by name
         for (let [dir, detail] of this._filesPerDirectory) {
           detail.directories.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
           detail.files.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
         }
-        
+
       }
-      
+
       _refreshFiles(e, d) {
         this._setCurrentDirectory(this._currentDirectory);
       }
@@ -427,7 +433,7 @@
           return;
         }
         let entry = this._filesPerDirectory.get(path);
-        
+
         let filteredFilesCount = 0;
         entry.files.forEach(f => { if (this._filterExtensions(f)) filteredFilesCount++; });
 
@@ -454,14 +460,14 @@
         // Force dom-repeat's filter to execute
         this.$.listFiles.render();
       }
-      
+
       _filterExtensions() {
         return file => {
           const selectedExtensions = this.$.extensionSelection.selectedValues;
           return selectedExtensions.includes(file.extension);
         }
       }
-      
+
       /*
        * Utility methods to move around the file tree
        */

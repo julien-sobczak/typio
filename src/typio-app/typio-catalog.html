@@ -837,7 +837,7 @@
         console.log('[typio-catalog] _onMetadataSurpriseLoaded');
         if (this.type === 'code') {
           this.projectMetadata = metadata;
-          let file = this.projectMetadata.files[getRandomInt(this.projectMetadata.files.length)];
+          let file = this.projectMetadata.files[getRandomInt(this.projectMetadata.files.length)]; // TODO delegate random selection to child element <catalog-github/>
           let filename = file.path.split('/').reverse()[0];
           this.selectFile(file.path, filename, file.extension);
         } else if (this.type === 'literature') {

@@ -1,11 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-<!-- 
+<!--
   Common element used to share styles between sevaral elements.
-  See https://www.polymer-project.org/2.0/docs/devguide/style-shadow-dom#share-styles-between-elements 
+  See https://www.polymer-project.org/2.0/docs/devguide/style-shadow-dom#share-styles-between-elements
 -->
 <dom-module id="shared-styles">
-  <link rel="import" type="css" href="/src/typio-app/prism.css">
   <template>
     <style>
 
@@ -28,8 +27,8 @@
         box-sizing: border-box;
       }
 
-      /* 
-       * Basic elements 
+      /*
+       * Basic elements
        */
 
       a {
@@ -42,8 +41,8 @@
         margin: 0;
         overflow-y: scroll;
       }
-      
-      
+
+
       /*
        * Form elements
        */
@@ -57,7 +56,7 @@
         color: white;
         --paper-button-ink-color: white;
         transition: background-color 0.2s linear;
-      }      
+      }
       paper-button:hover {
         background-color: var(--typio-secondary-color);
       }

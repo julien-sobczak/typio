@@ -14,6 +14,10 @@
 
 <dom-module id="typio-editor">
   <template>
+
+    <!-- Stylesheet will be switched according the theme -->
+    <link id="prismStylesheet" href="/css/prism-{{theme}}.css" rel="stylesheet">
+
     <style include="shared-styles">
 
       :host {
@@ -91,6 +95,17 @@
       }
 
 
+      #screen {
+        height: 100%;
+        color: black;
+      }
+
+      /* Theme management */
+      #screen.theme-dark {
+        background: #272822;
+        color: white;
+      }
+
       /* Show a gradient at the bottom to show there is text that follows. */
       #screen.mode-scroll #content:after {
         content: '';
@@ -100,7 +115,12 @@
         z-index: 500;
         left: 0;
         bottom: 0;
+      }
+      #screen.mode-scroll.theme-light #content:after {
         background: linear-gradient(transparent 90%, white);
+      }
+      #screen.mode-scroll.theme-dark #content:after {
+        background: linear-gradient(transparent 90%, #272822);
       }
 
       #screen.showChart-true #content {
@@ -118,6 +138,13 @@
         height: 100%;
 
         transition: margin 300ms; /* Used in Scroll Mode */
+      }
+
+      #screen.theme-light #editor {
+        color: black;
+      }
+      #screen.theme-dark #editor {
+        color: white;
       }
 
 
@@ -325,10 +352,11 @@
         language="[[language]]"
         content="[[content]]"
         ignore-comments="[[settings.ignoreComments]]"
-        ignore-indents="[[settings.ignoreIndents]]">
+        ignore-indents="[[settings.ignoreIndents]]"
+        ignore-module-declarations="[[settings.ignoreModuleDeclarations]]">
     </typio-parser>
 
-    <div id="screen" class$="initialized-[[initialized]] showChart-{{showChart}} mode-{{mode}} ended-{{ended}}">
+    <div id="screen" class$="initialized-[[initialized]] showChart-{{showChart}} mode-{{mode}} ended-{{ended}} theme-{{theme}}">
 
       <template is="dom-if" if="{{resource}}">
         <div id="resourceName">
@@ -455,9 +483,20 @@
               ignoreComments: true,
               ignoreIndents: true,
               continueOnErrors: false,
+              ignoreModuleDeclarations: true,
               showChart: true,
+              theme: 'light',
               mode: 'scroll'
             }
+          },
+
+          /**
+           * Editor code style.
+           * Name should match a CSS resource name /css/prism-{{theme}}.css.
+           */
+          theme: {
+            type: String,
+            value: 'light'
           },
 
 
@@ -528,6 +567,7 @@
             type: Object,
             readOnly: true,
             value: {
+              "backgroundColor": { fill:'transparent' },
               "title": "WPM",
               "legend": "none",
               "fontName": "Cutive",
@@ -639,9 +679,11 @@
         // Determine settings
         this.numberLines = this.content.split('\n').length;
         this.ignoreComments = detail.ignoreComments;
+        this.ignoreModuleDeclarations = detail.ignoreModuleDeclarations;
         this.ignoreIndents = detail.ignoreIndents;
         this.continueOnErrors = detail.continueOnErrors;
         this.showChart = detail.showChart;
+        this.theme = detail.theme;
         this.mode = detail.mode;
         this.initialized = true;
 
@@ -880,7 +922,6 @@
        * For performance reason, this method only need to call after each newline character.
        */
       _scrollEditor() {
-        console.log('[typio-editor] Scroll to show line ' + this._currentLine);
         if (this._currentLine > 5 && this._currentLine < this.numberLines - 5) { // do not scroll too soon. Wait for some lines.
           this._scrollToLine(this._currentLine - 5);
         }

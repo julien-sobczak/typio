@@ -82,8 +82,8 @@
         margin-top: 25px;
         margin-bottom: 25px;
       }
-      
-      /* 
+
+      /*
        * Some setting are not pertinent for all content type.
        * If a control has the class type-SOMETYPE, this control
        * will only be displayed for the given type.
@@ -91,7 +91,7 @@
       #controls .control.type-code,
       #controls .control.type-literature {
         display: none;
-      }      
+      }
       #settings.type-code .control.type-code {
         display: block;
       }
@@ -146,6 +146,9 @@
         <div class="control">
           <typio-toggle-button icon="editor:format-indent-increase" checked="{{ignoreIndents}}">Ignore indentation</typio-toggle-button>
         </div>
+        <div class="control type-code">
+          <typio-toggle-button icon="editor:insert-link" checked="{{ignoreModuleDeclarations}}">Ignore module declarations</typio-toggle-button>
+        </div>
         <div class="control">
           <typio-toggle-button icon="icons:redo" checked="{{continueOnErrors}}">Continue on errors</typio-toggle-button>
         </div>
@@ -155,6 +158,9 @@
         </div>
         <div class="control">
           <typio-toggle-button icon="editor:show-chart" checked="{{showChart}}">Chart</typio-toggle-button>
+        </div>
+        <div class="control">
+          <typio-toggle-button icon="image:compare" checked="{{darkTheme}}">Dark Theme</typio-toggle-button>
         </div>
       </div>
 
@@ -260,6 +266,15 @@
           },
 
           /**
+           * Should we exclude the modules declarations
+           * (ex: `package` and `import` statements in Java).
+           */
+          ignoreModuleDeclarations: {
+            type: Boolean,
+            value: true
+          },
+
+          /**
            * Should user enters indentation characters.
            */
           ignoreIndents: {
@@ -281,6 +296,14 @@
           showChart: {
             type: Boolean,
             value: true
+          },
+
+          /**
+           * Switch editor to dark mode.
+           */
+          darkTheme: {
+            type: Boolean,
+            value: false
           },
 
           /**
@@ -434,9 +457,11 @@
         ready: true,
         ignoreComments: this.ignoreComments,
         ignoreIndents: this.ignoreIndents,
+        ignoreModuleDeclarations: this.ignoreModuleDeclarations,
         continueOnErrors: this.continueOnErrors,
         showChart: this.showChart,
         mode: this.mode,
+        theme: this.darkTheme ? 'dark' : 'light',
         selection: this.selection
       };
       this.dispatchEvent(new CustomEvent('ready', {detail: detail}));

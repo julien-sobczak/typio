@@ -89,9 +89,18 @@
             value: true
           },
 
+          /**
+           * Should we exclude the module declarations
+           * (i.e. `package` and `import` in Java).
+           */
+          ignoreModuleDeclarations: {
+            type: Boolean,
+            value: true
+          },
+
         };
       }
-      
+
       parse() {
         const length = this.content.length;
         const classes = this._emptyClasses();
@@ -99,9 +108,9 @@
         this._determineSpaces(classes);
         if (this.type === 'code') {
           this._determineTokens(classes);
+          this._determineAdvancedTokens(classes);
         }
         this._determineIgnorables(classes);
-
         this._setClasses(classes);
       }
 
@@ -128,13 +137,13 @@
 
           let charTxt = this.content[i];
           let charCode = this.content.charCodeAt(i);
-          
+
           // HACK: http://www.adamkoch.com/2009/07/25/white-space-and-character-160/
           if (charCode === 160) {
             charCode = 32;
             charTxt = ' ';
           }
-          
+
           // All are characters and disabled by default
           let charClasses = ['character', 'disabled']; // General classes
 
@@ -208,7 +217,7 @@
                 // Do not override previous detected token, except if it is a comment
                 // For example:
                 //   //  This a comment containing a "String" to ignore
-                if (!tokens[i] || token === 'comment') { 
+                if (!tokens[i] || token === 'comment') {
                   tokens[i] = token;
                 }
               }
@@ -225,8 +234,30 @@
         }
       }
 
+      _determineAdvancedTokens(classes) {
+
+        // Manage module declarations
+        const moduleDefinitions = new Map();
+        moduleDefinitions.set('java', [/import (static )?[a-zA-Z0-9.*_]*;\n/g, /package [a-zA-Z0-9.*_]*;\n/g]);
+        moduleDefinitions.set('python', [/from [a-zA-Z0-9.]* import .*\n/g, /import [a-zA-Z0-9.*_]*\n/g]);
+
+        if (moduleDefinitions.has(this.language.toLowerCase())) { // supported language?
+          var regex = moduleDefinitions.get(this.language.toLowerCase());
+          regex.forEach(re => {
+            let match;
+            while ((match = re.exec(this.content)) != null) {
+              let moduleDeclaration = match[0];
+              for (let i = match.index; i < match.index + moduleDeclaration.length; i++) {
+                classes[i].push('module'); // FIXME
+              }
+            }
+          });
+        }
+      }
+
       _determineIgnorables(classes) {
         const len = this.content.length;
+
 
         // First, ignore comments
         if (this.ignoreComments) {
@@ -285,17 +316,55 @@
             }
           }
         }
-        
+
+        // Code specific processing
+        if (this.type === 'code') {
+
+          // Ignore module declarations
+          if (this.ignoreModuleDeclarations) {
+            for (let i = 0; i < len; i++) {
+              if (classes[i].includes('module')) {
+                classes[i].push('ignorable');
+
+                // and ignore spaces around
+
+                // backward
+                for (let j = i; j >= 0; j--) {
+                  if (classes[j].includes('space')) {
+                    classes[j].push('ignorable');
+                  }
+                  if (classes[j].includes('backslash')) {
+                    classes[j].push('ignorable');
+                    break; // do not rewind more than on line
+                  }
+                }
+
+                // forward
+                for (let j = i + 1; j < len; j++) {
+                  if (classes[j].includes('space')) {
+                    classes[j].push('ignorable');
+                  }
+                  if (classes[j].includes('backslash')) {
+                    classes[j].push('ignorable');
+                    break; // do not rewind more than on line
+                  }
+                }
+              }
+            }
+          }
+
+        }
+
         // Literature specific processing
         if (this.type === 'literature') {
-          
+
           // Allow user to press space for new line inside a paragraph
           for (let i = 1; i < len - 1; i++) {
             if (classes[i].includes('backslash') &&  // newline
                 !classes[i - 1].includes('space') && // following a non-empty character
-                !classes[i - 1].includes('backslash') && 
+                !classes[i - 1].includes('backslash') &&
                 !classes[i + 1].includes('space') && // preceding a non-empty character
-                !classes[i + 1].includes('backslash')) { 
+                !classes[i + 1].includes('backslash')) {
               classes[i].push('allowSpace');
             }
           }

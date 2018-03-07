@@ -72,7 +72,7 @@
         <span>Most difficult key combinations</span>
         <ul id="keyCombinations">
           <template is="dom-repeat" items="{{mostDifficultKeyCombinations}}">
-          <li><span class="key">[[item.fromCharacter]]</span> &rarr; <span class="key">[[item.toCharacter]]</span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
+          <li><span class="key" inner-h-t-m-l="[[item.fromCharacter]]"></span> &rarr; <span class="key" inner-h-t-m-l="[[item.toCharacter]]"></span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
           </template>
         </ul>
       </div>
@@ -580,7 +580,7 @@
           if (!input.valid) continue; // We are only interested in valid character
           if (!result.has(input.character)) {
             result.set(input.character, {
-              character: input.character,
+              character: this._formatCharacter(input.character),
               totalInMs: 0,
               averageInMs: 0,
               minInMs: Number.MAX_VALUE,
@@ -630,8 +630,8 @@
             const key = prevCharacter + '->' + input.character;
             if (!result.has(key)) {
               result.set(key, {
-                fromCharacter: prevCharacter,
-                toCharacter: input.character,
+                fromCharacter: this._formatCharacter(prevCharacter),
+                toCharacter: this._formatCharacter(input.character),
                 totalInMs: 0,
                 averageInMs: 0,
                 minInMs: Number.MAX_VALUE,
@@ -656,6 +656,12 @@
 
         // Sort in reverse order by average time and return only the first N results.
         return new Array(...result.values()).sort((a, b) => b.averageInMs - a.averageInMs).slice(0, n);
+      }
+
+      _formatCharacter(c) {
+        if (c === ' ') return '&empty;';
+        if (c === '\n') return '&#9166;';
+        return c;
       }
 
 

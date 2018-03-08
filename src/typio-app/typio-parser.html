@@ -380,6 +380,49 @@
       }
 
 
+      static preprocess(txt) {
+        // Add all hacks there
+
+        // Standardize on newlines
+        txt = txt.replace(/\r\n/g, '\n');
+
+        // Standardize on tabs
+        txt = txt.replace(/\t/g, '  ');
+
+        // Split long logical line into several screen lines
+        let newLines = [];
+        let logicalLines = []; // true if `i` the start of a logical line in `newLines[i]`
+
+        let lines = txt.split('\n');
+        for (let i = 0; i < lines.length; i++) {
+          let logicalLine = lines[i];
+          if (logicalLine.length < 100) {
+            newLines.push(logicalLine);
+            logicalLines.push(true);
+          } else { // need to split
+
+            const firstLine = logicalLine.substring(0, 100);
+            const otherLines = logicalLine.substring(100).match(/.{1,90}/g);
+            const indentation = '        ';
+
+            newLines.push(firstLine);
+            logicalLines.push(true);
+
+            otherLines.forEach(screenLine => {
+              newLines.push(indentation + screenLine);
+              logicalLines.push(false);
+            })
+          }
+        }
+        txt = newLines.join('\n');
+
+        return {
+          preprocessedContent: txt,
+          logicalLines: logicalLines
+        };
+      }
+
+
     }
     window.customElements.define(TypioParser.is, TypioParser);
 

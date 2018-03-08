@@ -34,7 +34,7 @@
         bottom: 50px;
         z-index: 40;
         left: 50%;
-        margin-left: -400px; /* Half of the width */
+        margin-left: -500px; /* Half of the width */
 
         overflow-y: hidden;
         overflow-x: visible;
@@ -57,6 +57,10 @@
       }
       span.print-on-focus {
         visibility: hidden;
+      }
+      span.continuation {
+        display: inline-block;
+        width: 1em;
       }
       span.char-invalid.print-on-focus {
         visibility: visible !important;
@@ -338,7 +342,7 @@
     <typio-ready-screen id="readyScreen"
         type="[[type]]"
         language="[[language]]"
-        content="{{content}}"
+        content="[[content]]"
         ignore-comments="{{settings.ignoreComments}}"
         ignore-indents="{{settings.ignoreIndents}}"
         continue-on-errors="{{settings.continueOnErrors}}"
@@ -350,7 +354,7 @@
     <typio-parser id="parser"
         type="[[type]]"
         language="[[language]]"
-        content="[[content]]"
+        content="[[_content]]"
         ignore-comments="[[settings.ignoreComments]]"
         ignore-indents="[[settings.ignoreIndents]]"
         ignore-module-declarations="[[settings.ignoreModuleDeclarations]]">
@@ -367,7 +371,7 @@
       <typio-stats id="stats"></typio-stats>
 
       <div id="content">
-        <pre id="editor" data-type$="[[type]]">[[content]]</pre>
+        <pre id="editor" data-type$="[[type]]">[[_content]]</pre>
       </div>
       <div id="pageControls">
         <paper-icon-button on-click="_moveToFirstPage" icon="first-page"></paper-icon-button>
@@ -455,8 +459,28 @@
            */
           content: {
             type: String,
-            value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n'
+            value: '.PHONY: all binary dynbinary build cross deb help init-go-pkg-cache install manpages rpm run shell test test-docker-py test-integration test-unit validate win\n\n# set the graph driver as the current graphdriver if not set\nDOCKER_GRAPHDRIVER := $(if $(DOCKER_GRAPHDRIVER),$(DOCKER_GRAPHDRIVER),$(shell docker info 2>&1 | grep "Storage Driver" | sed s/.*: //))\n'
+            //value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n'
           },
+
+          /**
+           * The preprocessed content to touch type. Could be different from `content` if long lines are detected for example.
+           */
+          _content: {
+            type: String,
+            value: ""
+          },
+
+          /**
+           * Array(Boolean) Return true for element `i`
+           * if the ith line in `_content` is a logical line
+           * or the start of a logical line.
+           */
+          _logicalLines: {
+            type: Array,
+            value: null
+          },
+
 
           /**
            * The number of lines in `content`.
@@ -674,10 +698,12 @@
        */
       start(e, detail) {
         // Collect selected content
-        this.content = this._preprocess(detail.selection);
+        const result = TypioParser.preprocess(detail.selection);
+        this._content = result.preprocessedContent;
+        this._logicalLines = result.logicalLines;
 
         // Determine settings
-        this.numberLines = this.content.split('\n').length;
+        this.numberLines = this._content.split('\n').length;
         this.ignoreComments = detail.ignoreComments;
         this.ignoreModuleDeclarations = detail.ignoreModuleDeclarations;
         this.ignoreIndents = detail.ignoreIndents;
@@ -691,13 +717,6 @@
         this.refresh();
       }
 
-      _preprocess(txt) {
-        // Add all hacks
-        txt = txt.replace(/\r\n/g, '\n'); // Standardize on newlines
-        txt = txt.replace(/\t/g, '  ');   // Standardize on tabs
-        return txt;
-      }
-
       /**
        * Parse the selected content to determine tokens.
        */
@@ -709,7 +728,7 @@
 
         this._i = -1;
         this._currentLine = 0;
-        this._length = this.content.length;
+        this._length = this._content.length;
 
         this.$.parser.parse();
         console.log('[typio-editor] lexical parser ... done in ' + (performance.now() - startTime) + 'ms');
@@ -721,13 +740,21 @@
         let fragment = document.createDocumentFragment();
 
         console.log('[typio-editor] Number of characters: ' + this._length);
+
+        let lineNumber = 0;
+        let newLine = true;
+
         for (let i = 0; i < this._length; i++) {
-          let charTxt = this.content[i]; // The original character
+          let charTxt = this._content[i]; // The original character
           let charName = charTxt;        // The name as returned by the keypress/keyup event (see key property)
           let charPrint = charTxt;       // The character print on screen
 
-          let charCode = this.content.charCodeAt(i);
+          let charCode = this._content.charCodeAt(i);
           let charClasses = classes[i];
+
+          let span = document.createElement('span');
+          span.classList.add(...charClasses);
+          span.classList.add('interval-' + intervals[i]);
 
           // HACK: http://www.adamkoch.com/2009/07/25/white-space-and-character-160/
           if (charCode === 160) {
@@ -735,15 +762,22 @@
             charCode = 32;
           }
 
-          let span = document.createElement('span');
-          span.classList.add(...charClasses);
-          span.classList.add('interval-' + intervals[i]);
+          if (newLine && !this._logicalLines[lineNumber]) { // continuation line
+            charName = 'Continuation Line';
+            charPrint = ' <strong>&#11153;</strong> \n';
+            span.classList.add('continuation');
+          }
 
           if (charTxt == '\n') {
             // Put Unicode return symbol as content &#9166; (should be displayed only when actived)
             charName = 'Enter';
             charPrint = ' <strong>&#9166;</strong> \n';
             span.classList.add('print-on-focus');
+
+            newLine = true;
+            lineNumber++;
+          } else {
+            newLine = false;
           }
 
           span.dataset.text = charName;
@@ -1046,7 +1080,7 @@
       _getIntervalPage(i) {
         const intervals = this.$.stats.intervals;
         const indexFirstCharacter = intervals.indexOf(i);
-        const lineFirstCharacter = this.content.substring(0, indexFirstCharacter).split('\n').length + 1;
+        const lineFirstCharacter = this._content.substring(0, indexFirstCharacter).split('\n').length + 1;
         this._currentLine = Math.max(lineFirstCharacter - 5, 0); // Add some lines before to add context
         this._scrollToLine(this._currentLine);
       }

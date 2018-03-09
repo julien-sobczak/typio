@@ -385,6 +385,7 @@
 
         // Standardize on newlines
         txt = txt.replace(/\r\n/g, '\n');
+        txt = txt.replace(/\r/g, '');
 
         // Standardize on tabs
         txt = txt.replace(/\t/g, '  ');
@@ -415,7 +416,7 @@
           }
         }
         txt = newLines.join('\n');
-
+        
         return {
           preprocessedContent: txt,
           logicalLines: logicalLines

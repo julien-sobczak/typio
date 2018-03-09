@@ -459,8 +459,8 @@
            */
           content: {
             type: String,
-            value: '.PHONY: all binary dynbinary build cross deb help init-go-pkg-cache install manpages rpm run shell test test-docker-py test-integration test-unit validate win\n\n# set the graph driver as the current graphdriver if not set\nDOCKER_GRAPHDRIVER := $(if $(DOCKER_GRAPHDRIVER),$(DOCKER_GRAPHDRIVER),$(shell docker info 2>&1 | grep "Storage Driver" | sed s/.*: //))\n'
-            //value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n'
+            value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n',
+            observer: '_contentChanged'
           },
 
           /**
@@ -692,6 +692,12 @@
         // Refresh editor
         this._parse();
       }
+      
+      _contentChanged() {
+        const result = TypioParser.preprocess(this.content);
+        this._content = result.preprocessedContent;
+        this._logicalLines = result.logicalLines;
+      }
 
       /**
        * Called when the user has validated the ready screen.
@@ -765,7 +771,7 @@
           if (newLine && !this._logicalLines[lineNumber]) { // continuation line
             charName = 'Continuation Line';
             charPrint = ' <strong>&#11153;</strong> \n';
-            span.classList.add('continuation');
+            span.classList.add('continuation', 'ignorable');
           }
 
           if (charTxt == '\n') {
@@ -967,8 +973,6 @@
       _updatePage() {
         const numberLinesPrintable = countLines(this.$.editor);
         const numberLinesTotal = this.numberLines;
-        console.log('currentLine=', this._currentLine, ' numberLinesPrintable=', numberLinesPrintable);
-
         const pageNumber = parseInt(this._currentLine / numberLinesPrintable) +
           ((this._currentLine % numberLinesPrintable == 0) ? 0 : 1); // + 1 if remainder
         const numberLinesToScroll = (pageNumber > 1) ? (pageNumber - 1) * numberLinesPrintable : 0;
@@ -1139,7 +1143,6 @@
       _updatePage() {
         const numberLinesPrintable = countLines(this.$.editor);
         const numberLinesTotal = this.numberLines;
-        console.log('currentLine=', this._currentLine, ' numberLinesPrintable=', numberLinesPrintable);
 
         const pageNumber = parseInt(this._currentLine / numberLinesPrintable) +
           ((this._currentLine % numberLinesPrintable == 0) ? 0 : 1); // + 1 if remainder

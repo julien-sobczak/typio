@@ -142,7 +142,7 @@
 
           element.stopTimer(new Date("2017-12-19T12:42:07.000Z"));
         });
-        
+
         test('[mostDifficultKeys] return the characters from most difficult to the easiest', function(done) {
           var element = fixture('DefaultFixture');
           element.editableCharacters = "----------";
@@ -161,7 +161,7 @@
           element.newCharacter(8, ' ', true, true, timer = new Date(timer.getTime() + 2));
           element.newCharacter(9, 'a', true, true, timer = new Date(timer.getTime() + 5));
           element.stopTimer(timer);
-          
+
           flush(function() {
 
             const characters = element._mostDifficultKeys(3);
@@ -174,14 +174,14 @@
             assert.equal(first.maxInMs, 20);
             assert.equal(first.occurrences, 4);
             assert.equal(first.averageInMs, 11);
-            
+
             assert.equal(second.character, 'b');
             assert.equal(second.minInMs, 5);
             assert.equal(second.maxInMs, 10);
             assert.equal(second.occurrences, 4);
             assert.equal(second.averageInMs, 6);
 
-            assert.equal(third.character, ' ');
+            assert.equal(third.character, '&empty;');
             assert.equal(third.minInMs, 2);
             assert.equal(third.maxInMs, 4);
             assert.equal(third.occurrences, 2);
@@ -189,9 +189,9 @@
 
             done();
           });
-          
+
         });
-        
+
         test('[mostDifficultKeyCombinations] return the combinations of character from most difficult to the easiest', function(done) {
           var element = fixture('DefaultFixture');
           element.editableCharacters = "----------";
@@ -210,7 +210,7 @@
           element.newCharacter(8, ':', true, true, timer = new Date(timer.getTime() + 15));
           element.newCharacter(9, ']', true, true, timer = new Date(timer.getTime() + 5));
           element.stopTimer(timer);
-          
+
           flush(function() {
 
             const characters = element._mostDifficultKeyCombinations(3);
@@ -224,7 +224,7 @@
             assert.equal(first.maxInMs, 25);
             assert.equal(first.occurrences, 2);
             assert.equal(first.averageInMs, 20);
-            
+
             assert.equal(second.fromCharacter, '{');
             assert.equal(second.toCharacter, 'k');
             assert.equal(second.minInMs, 10);
@@ -241,7 +241,7 @@
 
             done();
           });
-          
+
         });
 
 

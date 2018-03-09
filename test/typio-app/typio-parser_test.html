@@ -44,6 +44,7 @@
           // Define settings
           parser.ignoreComments = false;
           parser.ignoreIndents = false;
+          parser.ignoreModuleDeclarations = false;
 
           // Configure demo text
           parser.type = "code";
@@ -66,6 +67,35 @@ public class Main {
           expect(parser.classes[index(6, 1)]).to.include.members(['indent', 'editable']);    // [\t]public void main
         });
 
+        test('[code] ignore module declarations', function() {
+          var parser = fixture('DefaultFixture');
+
+          // Define settings
+          parser.ignoreComments = false;
+          parser.ignoreIndents = false;
+          parser.ignoreModuleDeclarations = true;
+
+          // Configure demo text
+          parser.type = "code";
+          parser.language = "Java";
+          parser.content =  `
+package test;
+
+import java.util.*;
+
+public class Main {
+
+  public void main(String []args) {
+    System.out.println("Java");
+  }
+
+}`;
+          parser.parse();
+          const index = indexOf(parser.content);
+          
+          expect(parser.classes[index(2, 1)]).to.include.members(['module', 'ignorable']); // [p]ackage
+          expect(parser.classes[index(4, 1)]).to.include.members(['module', 'ignorable']); // [i]mport
+        });
 
         test('[code] ignore comments', function() {
           var parser = fixture('DefaultFixture');
@@ -73,6 +103,7 @@ public class Main {
           // Define settings
           parser.ignoreComments = true;
           parser.ignoreIndents = false;
+          parser.ignoreModuleDeclarations = false;
 
           // Configure demo text
           parser.type = "code";
@@ -104,7 +135,6 @@ public class Main {
           expect(parser.classes[index(4, 9)]).to.include.members(['comment', 'ignorable']); // /** One-[l]ine...
 
           // Multi-line Javadoc comment
-          //console.log('>', parser.content.substring(index(7, 2), index(7, 2) + 10));
           expect(parser.classes[index(7, 3)]).to.include.members(['comment', 'ignorable']);
           expect(parser.classes[index(8, 1)]).to.include.members(['comment', 'ignorable']);
           expect(parser.classes[index(8, 5)]).to.include.members(['comment', 'ignorable']);
@@ -122,7 +152,6 @@ public class Main {
            expect(parser.classes[index(4, 32)]).to.include.members(['backslash', 'ignorable']); // [/]** One-line...
 
            // Multi-line Javadoc comment
-           //console.log('>', parser.content.substring(index(7, 2), index(7, 2) + 10));
            expect(parser.classes[index(7, 1)]).to.include.members(['indent', 'ignorable']);
            expect(parser.classes[index(8, 1)]).to.include.members(['indent', 'ignorable']);
            expect(parser.classes[index(9, 1)]).to.include.members(['indent', 'ignorable']);
@@ -138,6 +167,7 @@ public class Main {
           // Define settings
           parser.ignoreComments = false;
           parser.ignoreIndents = true;
+          parser.ignoreModuleDeclarations = false;
 
           // Configure demo text
           parser.type = "code";
@@ -151,7 +181,7 @@ public class Main {
    * Multi-line Javadoc comment
    */
   public void main(String []args) {
-          
+            
     System.out.println("Java");
   }
   
@@ -178,13 +208,14 @@ public class Main {
           expect(parser.classes[index(7, 32)]).to.include.members(['backslash', 'editable']);
           expect(parser.classes[index(8,  6)]).to.include.members(['backslash', 'editable']);
         });
-        
+
         test('[code] ignore indents & comments', function() {
           var parser = fixture('DefaultFixture');
 
           // Define settings
           parser.ignoreComments = true;
           parser.ignoreIndents = true;
+          parser.ignoreModuleDeclarations = false;
 
           // Configure demo text
           parser.type = "code";
@@ -198,10 +229,10 @@ public class Main {
    * Multi-line Javadoc comment
    */
   public void main(String []args) {
-          
+
     System.out.println("Java");
   }
-  
+
 }`;
           parser.parse();
           const index = indexOf(parser.content);
@@ -212,8 +243,28 @@ public class Main {
           expect(parser.classes[index(7, 32)]).to.include.members(['backslash', 'ignorable']);
           expect(parser.classes[index(8,  6)]).to.include.members(['backslash', 'ignorable']);
         });
-        
-        
+
+        test('[code] break long logical lines into several screen lines', function() {
+          const content = `
+.PHONY: all binary dynbinary build cross deb help init-go-pkg-cache install manpages rpm run shell test test-docker-py test-integration test-unit validate win
+
+# set the graph driver as the current graphdriver if not set
+DOCKER_GRAPHDRIVER := $(if $(DOCKER_GRAPHDRIVER),$(DOCKER_GRAPHDRIVER),$(shell docker info 2>&1 | grep "Storage Driver" | sed s/.*: //))
+`
+          const result = TypioParser.preprocess(content);
+          const expectedContent = `
+.PHONY: all binary dynbinary build cross deb help init-go-pkg-cache install manpages rpm run shell t
+        est test-docker-py test-integration test-unit validate win
+
+# set the graph driver as the current graphdriver if not set
+DOCKER_GRAPHDRIVER := $(if $(DOCKER_GRAPHDRIVER),$(DOCKER_GRAPHDRIVER),$(shell docker info 2>&1 | gr
+        ep "Storage Driver" | sed s/.*: //))
+`;
+          expect(expectedContent).to.equal(result.preprocessedContent);
+          expect(result.logicalLines).to.eql([true, true, false, true, true, true, false, true]);
+        });
+
+
         test('[literature] default settings', function() {
           var parser = fixture('DefaultFixture');
 
@@ -229,7 +280,7 @@ public class Main {
 Voilà cinq semaines que j'habite avec cette pensée, toujours seul avec
 elle, toujours glacé de sa présence, toujours courbé sous son poids !
 
-Autrefois, car il me semble qu'il y a plutôt des années que dessemaines, 
+Autrefois, car il me semble qu'il y a plutôt des années que dessemaines,
 j'étais un homme comme un autre homme.
 `;
           parser.parse();
@@ -244,7 +295,7 @@ j'étais un homme comme un autre homme.
           expect(parser.classes[index(5, 70)]).to.include.members(['backslash', 'editable']).to.not.include.members(['allowSpace']);
           expect(parser.classes[index(6,  1)]).to.include.members(['backslash', 'editable']);
         });
-        
+
         test('[literature] ignore indents', function() {
           var parser = fixture('DefaultFixture');
 
@@ -260,7 +311,7 @@ j'étais un homme comme un autre homme.
 Voilà cinq semaines que j'habite avec cette pensée, toujours seul avec
 elle, toujours glacé de sa présence, toujours courbé sous son poids !
 
-Autrefois, car il me semble qu'il y a plutôt des années que dessemaines, 
+Autrefois, car il me semble qu'il y a plutôt des années que dessemaines,
 j'étais un homme comme un autre homme.
 `;
           parser.parse();

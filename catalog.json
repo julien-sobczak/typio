@@ -584,7 +584,7 @@
     "language": "Java",
     "commit": "v5.0.0.RELEASE",
     "includes": ["/spring-core/", "/spring-context/", "/spring-beans/", "/spring-expression/", "/spring-aop/", "/spring-tx/", "/spring-context-support/"],
-    "active": false
+    "active": true
   },
   {
     "origin": "github",
@@ -601,7 +601,7 @@
     "commit": "0.7.0",
     "excludes": ["/third_party", "/src/test/", "/src/tools/", "/tools/"],
     "max_file_size": 50,
-    "active": false
+    "active": true
   },
   {
     "origin": "github",
@@ -630,7 +630,7 @@
       "/presto-main/src/main/resources/webapp/"
     ],
     "max_file_size": 50,
-    "active": false
+    "active": true
   },
   {
     "origin": "github",
@@ -671,7 +671,7 @@
     "commit": "release-2.7.1",
     "excludes": ["lib", "test"],
     "max_file_size": 50,
-    "active": false
+    "active": true
   },
 
 
@@ -725,7 +725,7 @@
     "commit": "v3.6.3",
     "includes": ["/Modules", "/Objects", "/Python", "/Include", "/Parser", "/Programs"],
     "excludes": ["/Lib", "/Tools"],
-    "active": false
+    "active": true
   },
   {
     "origin": "github",
@@ -815,7 +815,7 @@
     "language": "Ruby",
     "commit": "v1.8.9",
     "excludes": ["/spec/fixtures", "/lib", "/vendor", "/config", "/packaging", "/public"],
-    "active": false
+    "active": true
   },
   {
     "origin": "github",
@@ -825,7 +825,7 @@
     "commit": "v10.0.4",
     "excludes": ["/fixtures", "/doc", "/lib", "/vendor", "/app/assets/images/"],
     "max_file_size": 100,
-    "active": false
+    "active": true
   },
   {
     "origin": "github",
@@ -861,7 +861,7 @@
     "commit": "v1.3.1",
     "excludes": ["/tensorflow/core/profiler/internal/testdata", "/third_party", "/tensorflow/docs_src/", "/tensorflow/examples/", "/tensorflow/g3doc/", "/tensorflow/tools/", "/tensorflow/contrib/", "/tensorflow/python/kernel_tests"],
     "max_file_size": 50,
-    "active": false
+    "active": true
   },
   {
     "origin": "github",
@@ -879,7 +879,7 @@
     "commit": "master",
     "excludes": ["/test", "/validation-test", "/docs", "/include/"],
     "max_file_size": 50,
-    "active": false
+    "active": true
   },
   {
     "origin": "github",
@@ -913,7 +913,7 @@
     "language": "C++",
     "commit": "master",
     "excludes": ["doc/", "runtime/", "test/"],
-    "active": false
+    "active": true
   },
   {
     "origin": "github",
@@ -1026,7 +1026,7 @@
     "commit": "master",
     "excludes": ["/src/System.Management.Automation/engine/remoting/", "/docs/", "/tools/", "/assets/", "/demos/"],
     "max_file_size": 100,
-    "active": false
+    "active": true
   },
 
 
@@ -1057,7 +1057,7 @@
     "includes": ["/pkg/", "/api/", "/test/", "/cmd/", "/cluster/", "/build/", "/federation/"],
     "extensions": ["go", "sh", "request", "response", "conf", "py"],
     "max_file_size": 50,
-    "active": false
+    "active": true
   },
   {
     "origin": "github",
@@ -1110,7 +1110,7 @@
     "commit": "v2.2.0",
     "excludes": ["test/resources/", "/docs/", "/external/", "/sql/"],
     "max_file_size": 50,
-    "active": false
+    "active": true
   },
   {
     "origin": "github",
@@ -1242,7 +1242,7 @@
     "includes": ["/rundeckapp/", "/core/", "/test/"],
     "extensions": ["java", "groovy", "gsp", "sh", "js", "template", "xml", "conf", "css"],
     "max_file_size": 50,
-    "active": false
+    "active": true
   },
 
 
@@ -1336,7 +1336,7 @@
     "language": "TypeScript",
     "commit": "v2.6.0",
     "excludes": ["/doc/", "/tests/", "/lib/"],
-    "active": false
+    "active": true
   },
 
 

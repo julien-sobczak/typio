@@ -1,5 +1,6 @@
 {
   "sources": [
+   "css/**/*",
    "src/**/*",
    "images/**/*",
    "content/github/*.json",

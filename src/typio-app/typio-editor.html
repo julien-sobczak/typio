@@ -16,88 +16,13 @@
   <template>
 
     <!-- Stylesheet will be switched according the theme -->
-    <link id="prismStylesheet" href="/css/prism-{{theme}}.css" rel="stylesheet">
+    <link id="prismStylesheet" href="/css/prism-light.css" href$="/css/prism-{{theme}}.css" rel="stylesheet">
 
     <style include="shared-styles">
 
       :host {
         display: block;
       }
-
-      /* Editor container element */
-      #content {
-        width: 1000px;
-        margin: 0 auto;
-        padding: 1cm;
-        position: fixed;
-        top: 64px;
-        bottom: 50px;
-        z-index: 40;
-        left: 50%;
-        margin-left: -500px; /* Half of the width */
-
-        overflow-y: hidden;
-        overflow-x: visible;
-      }
-      #content pre[data-type="text"]  {
-        font-family: 'Droid Sans Mono', monospace;
-      }
-      #content pre[data-type="code"] {
-        font-family: monospace;
-      }
-
-
-      /* Following style was inspired by https://typing.io/ */
-
-      span {
-        padding: .1em 0;
-      }
-      span.disabled {
-        color: #737373 !important;
-      }
-      span.print-on-focus {
-        visibility: hidden;
-      }
-      span.continuation {
-        display: inline-block;
-        width: 1em;
-      }
-      span.char-invalid.print-on-focus {
-        visibility: visible !important;
-      }
-      span.char-active.print-on-focus {
-        visibility: visible;
-      }
-
-      /* We need !important to override special code
-      such as operator, comment that also define a background. */
-      span.char-active {
-        background-color: #47d42b !important;
-        outline: 1px solid #40be27 !important;
-        color: #fff !important;
-      }
-      span.char-invalid {
-        background-color: #e63d3d !important;
-        outline: none !important;
-        color: #fff !important;
-      }
-      span.char-active.paused {
-        background-color: #ffc40d !important;
-        outline: 1px solid #f3b700 !important;
-        color: #fff !important;
-      }
-
-      #editor.highlight-mistyping span.useless {
-        background-color: #faa937;
-        outline: 1px solid #faa937;
-        color: #fff !important;
-      }
-      #editor.highlight-mistyping span.wrong {
-        background-color: #d51b1b;
-        outline: 1px solid #d51b1b;
-        color: #fff !important;
-      }
-
 
       #screen {
         height: 100%;
@@ -108,66 +33,6 @@
       #screen.theme-dark {
         background: #272822;
         color: white;
-      }
-
-      /* Show a gradient at the bottom to show there is text that follows. */
-      #screen.mode-scroll #content:after {
-        content: '';
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        z-index: 500;
-        left: 0;
-        bottom: 0;
-      }
-      #screen.mode-scroll.theme-light #content:after {
-        background: linear-gradient(transparent 90%, white);
-      }
-      #screen.mode-scroll.theme-dark #content:after {
-        background: linear-gradient(transparent 90%, #272822);
-      }
-
-      #screen.showChart-true #content {
-        bottom: 150px; /* Reserve space to show chart. */
-      }
-      #screen.ended-true #content {
-        bottom: 0 !important;
-      }
-
-
-
-
-      #editor {
-        line-height: 1.5em;
-        height: 100%;
-
-        transition: margin 300ms; /* Used in Scroll Mode */
-      }
-
-      #screen.theme-light #editor {
-        color: black;
-      }
-      #screen.theme-dark #editor {
-        color: white;
-      }
-
-
-      /* Highlight intervals using a CSS class. */
-
-      #editor.highlight-interval-0 span.interval-0,
-      #editor.highlight-interval-1 span.interval-1,
-      #editor.highlight-interval-2 span.interval-2,
-      #editor.highlight-interval-3 span.interval-3,
-      #editor.highlight-interval-4 span.interval-4,
-      #editor.highlight-interval-5 span.interval-5,
-      #editor.highlight-interval-6 span.interval-6,
-      #editor.highlight-interval-7 span.interval-7,
-      #editor.highlight-interval-8 span.interval-8,
-      #editor.highlight-interval-9 span.interval-9,
-      #editor.highlight-interval-10 span.interval-10 {
-        background-color: Gold !important;
-        outline: none !important;
-        color: black !important;
       }
 
 
@@ -313,7 +178,6 @@
       }
 
 
-
       #screen.initialized-false {
         display: none;
       }
@@ -370,9 +234,15 @@
 
       <typio-stats id="stats"></typio-stats>
 
-      <div id="content">
-        <pre id="editor" data-type$="[[type]]">[[_content]]</pre>
-      </div>
+      <typio-core-editor id="editor" 
+          data-type$="[[type]]" 
+          data-theme$="[[theme]]" 
+          data-mode$="[[mode]]" 
+          data-content$="[[_content]]"
+          on-character-entered="_characterEntered"
+          on-typing-ended="_typingEnded">
+      </typio-core-editor>
+      
       <div id="pageControls">
         <paper-icon-button on-click="_moveToFirstPage" icon="first-page"></paper-icon-button>
         <paper-icon-button on-click="_moveToPreviousPage" icon="chevron-left"></paper-icon-button>
@@ -464,14 +334,6 @@
           },
 
           /**
-           * The preprocessed content to touch type. Could be different from `content` if long lines are detected for example.
-           */
-          _content: {
-            type: String,
-            value: ""
-          },
-
-          /**
            * Array(Boolean) Return true for element `i`
            * if the ith line in `_content` is a logical line
            * or the start of a logical line.
@@ -479,23 +341,6 @@
           _logicalLines: {
             type: Array,
             value: null
-          },
-
-
-          /**
-           * The number of lines in `content`.
-           */
-          numberLines: {
-            type: Number,
-            value: 0
-          },
-
-          /**
-           * Log debug information to the console.
-           */
-          debug: {
-            type: Boolean,
-            value: false
           },
 
           /**
@@ -541,44 +386,6 @@
           ended: {
             type: Boolean,
             value: false
-          },
-
-      	  /**
-      	   * True only when the user has mistyped.
-      	   * False when the typo is fixed.
-      	   */
-          _error: {
-      	    type: Boolean,
-      	    value: false
-      	  },
-
-
-          //
-          // Editor inner working properties
-          //
-
-          // The list of <span class="character"> elements representing the characters to enter
-          _characters: {
-            type: Array,
-            value: []
-          },
-
-          // The index of the current editable element
-          _i: {
-              type: Number,
-              value: -1
-          },
-
-          // Line number containing the `_i` character.
-          _currentLine: {
-              type: Number,
-              value: 0
-          },
-
-          // The index of the latest valid entered character
-          _countValid: {
-            type: Number,
-            value: 0
           },
 
 
@@ -635,37 +442,6 @@
 
       ready() {
         super.ready();
-
-        // We listen keyup for nonprintable characters
-        document.addEventListener('keyup', (event) => {
-          if (!this.initialized) return;
-          if (event.key === 'Backspace') {
-            this.backward();
-          }
-        });
-
-        // ... and keypress for printable ones (keypress support dead keys)
-        document.addEventListener('keypress', (event) => {
-          if (!this.initialized) return;
-          const keyName = event.key;
-          const keyCode = event.code;
-
-          if (keyName === 'Control') {
-            // not alert when only Control key is pressed.
-            return;
-          }
-
-          if (event.ctrlKey) {
-            // Even though event.key is not 'Control' (i.e. 'a' is pressed),
-            // event.ctrlKey may be true if Ctrl key is pressed at the time.
-            ;
-          } else {
-            this._checkInput(event, keyName);
-            event.preventDefault();
-            return false;
-          }
-
-        }, false);
       }
 
       /**
@@ -674,25 +450,17 @@
       reset() {
         // Reset variables
         this.$.stats.reset();
-        this._characters = [];
-        this._i = -1;
-        this._currentLine = 0;
-        this._countValid = 0;
+        this.$.editor.reset();
 
-        // reset ready-screen
+        // Reset globals
         this.initialized = false;
         this.paused = true;
         this.ended = false;
+
+        // Reset ready-screen
         this.$.readyScreen.hidden = false;
-
-        this.refresh();
       }
 
-      refresh() {
-        // Refresh editor
-        this._parse();
-      }
-      
       _contentChanged() {
         const result = TypioParser.preprocess(this.content);
         this._content = result.preprocessedContent;
@@ -705,307 +473,63 @@
       start(e, detail) {
         // Collect selected content
         const result = TypioParser.preprocess(detail.selection);
-        this._content = result.preprocessedContent;
         this._logicalLines = result.logicalLines;
 
         // Determine settings
-        this.numberLines = this._content.split('\n').length;
-        this.ignoreComments = detail.ignoreComments;
-        this.ignoreModuleDeclarations = detail.ignoreModuleDeclarations;
-        this.ignoreIndents = detail.ignoreIndents;
-        this.continueOnErrors = detail.continueOnErrors;
+        this.settings.ignoreComments = detail.ignoreComments;
+        this.settings.ignoreModuleDeclarations = detail.ignoreModuleDeclarations;
+        this.settings.ignoreIndents = detail.ignoreIndents;
         this.showChart = detail.showChart;
         this.theme = detail.theme;
         this.mode = detail.mode;
         this.initialized = true;
-
-        // refresh the editor
-        this.refresh();
-      }
-
-      /**
-       * Parse the selected content to determine tokens.
-       */
-      _parse() {
-        console.log('[typio-editor] Number of displayable lines: ' + countLines(this.$.editor));
-
-        const startTime = performance.now();
-        console.log('[typio-editor] _parse');
-
-        this._i = -1;
-        this._currentLine = 0;
-        this._length = this._content.length;
-
+        
+        this.$.parser.content = result.preprocessedContent;
+        this.$.parser.ignoreComments = this.settings.ignoreComments;
+        this.$.parser.ignoreIndents = this.settings.ignoreIndents;
+        this.$.parser.ignoreModuleDeclarations = this.settings.ignoreModuleDeclarations;
         this.$.parser.parse();
-        console.log('[typio-editor] lexical parser ... done in ' + (performance.now() - startTime) + 'ms');
-
-        const classes = this.$.parser.classes;
-        this.$.stats.editableCharacters = this._calculateEditableCharacters(classes);
-        const intervals = this.$.stats.intervals;
-
-        let fragment = document.createDocumentFragment();
-
-        console.log('[typio-editor] Number of characters: ' + this._length);
-
-        let lineNumber = 0;
-        let newLine = true;
-
-        for (let i = 0; i < this._length; i++) {
-          let charTxt = this._content[i]; // The original character
-          let charName = charTxt;        // The name as returned by the keypress/keyup event (see key property)
-          let charPrint = charTxt;       // The character print on screen
-
-          let charCode = this._content.charCodeAt(i);
-          let charClasses = classes[i];
-
-          let span = document.createElement('span');
-          span.classList.add(...charClasses);
-          span.classList.add('interval-' + intervals[i]);
-
-          // HACK: http://www.adamkoch.com/2009/07/25/white-space-and-character-160/
-          if (charCode === 160) {
-            charName = ' ';
-            charCode = 32;
-          }
-
-          if (newLine && !this._logicalLines[lineNumber]) { // continuation line
-            charName = 'Continuation Line';
-            charPrint = ' <strong>&#11153;</strong> \n';
-            span.classList.add('continuation', 'ignorable');
-          }
-
-          if (charTxt == '\n') {
-            // Put Unicode return symbol as content &#9166; (should be displayed only when actived)
-            charName = 'Enter';
-            charPrint = ' <strong>&#9166;</strong> \n';
-            span.classList.add('print-on-focus');
-
-            newLine = true;
-            lineNumber++;
-          } else {
-            newLine = false;
-          }
-
-          span.dataset.text = charName;
-          span.innerHTML = charPrint;
-          fragment.appendChild(span);
-        }
-
-        console.log('[typio-editor] other parser ... done in ' + (performance.now() - startTime) + 'ms');
-        this.$.editor.innerHTML = '';
-        this.$.editor.appendChild(fragment);
-
-        this._characters = this.$.editor.querySelectorAll('.character');
-
-        const endTime = performance.now();
-        console.log('[typio-editor] _parse ... done in ' + (endTime - startTime) + 'ms');
-        this.advance();
+        
+        this.$.stats.editableCharacters = this._calculateEditableCharacters(result.preprocessedContent, this.$.parser.classes);
+        
+        this.$.editor.content = result.preprocessedContent;
+        this.$.editor.classes = this.$.parser.classes;
+        this.$.editor.intervals = this.$.stats.intervals;
+        this.$.editor.logicalLines = result.logicalLines;
+        this.$.editor.continueOnErrors = detail.continueOnErrors;
+        
+        console.log('Launching editor...');
+        this.$.editor.start();
       }
 
-      _calculateEditableCharacters(classes) {
-        let editableCharacters = new Array(this._length);
-        for (let i = 0; i < this._length; i++) {
+      _calculateEditableCharacters(content, classes) {
+        const len = content.length;
+        let editableCharacters = new Array(len);
+        for (let i = 0; i < len; i++) {
           editableCharacters[i] = !classes[i].includes('ignorable');
         }
         return editableCharacters;
       }
 
-      resume() {
-        this.paused = false;
-        this.$.stats.resumeTimer();
-      }
-
-      /**
-       * Called after each key press.
-       */
-      _checkInput(event, keyName) {
-        if (this.paused) {
-          this.resume();
+      _characterEntered(e, detail) {
+        // Update stats
+        if (detail.indexValid <= 1) { // First character entered?
+          this.$.stats.resumeTimer();
         }
+        this.$.stats.newCharacter(detail.character, detail.keyName, detail.valid, detail.accepted);
 
-        let character = this._cursor();
-        let iCharacter = this._i;
-        let valid = undefined;
-
-        if (this.debug) {
-          console.log('Expected: [' + character.dataset.text + '] (' + character.dataset.text.charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + ')');
-        }
-        if (this._isValid(character, keyName)) {
-          valid = true;
-          character.classList.remove('disabled');
-          if (this.continueOnErrors) {
-            character.classList.remove('char-invalid');
-          } else if (this._error && !this.continueOnErrors) {
-            character.classList.add('char-invalid');
-          } else {
-	          character.classList.remove('char-invalid');
-	        }
-
-          // Add marker to highlight mistyping at the end
-          if (!character.classList.contains('wrong') && !character.classList.contains('useless')) {
-            character.classList.add(this._error ? 'useless' : 'right');
-          }
-
-          if (!this._error) {
-            this._countValid++;
-          }
-          this.advance();
-        } else {
-          valid = false;
-          character.classList.add('char-invalid');
-          character.classList.add('wrong');
-          this._error = true;
-          this._iError = this._i;
-          this.$.editor.classList.add('error');
-          this.advance();
-        }
-
-        // Update chart
-        let accepted = valid || this.continueOnErrors;
-        this.$.stats.newCharacter(iCharacter, keyName, valid, accepted);
-
+        // Update charts
         this.$.chart.style.display = 'block !important';
         this.$.chart.rows = this.$.stats.wpmPerInterval();
         this.$.chart.redraw();
       }
 
-      _isValid(character, keyName) {
-        if (character.dataset.text === keyName) {
-          return true;
-        }
-        if (keyName === ' ' && character.classList.contains("allowSpace")) {
-          return true;
-        }
-        return false;
-      }
-
-      /**
-       * Move backward to the previous editable character.
-       */
-      backward() {
-        if (this._i == 0) return; // Do nothing if at start
-
-        do {
-          this._unhighlight();
-          this._backwardOneCharacter();
-
-          if (this._error && this._i === this._iError) {
-            this._error = false;
-            this.$.editor.classList.remove('error');
-          }
-        } while (this._isIgnorable());
-
-        if (this._i >=0) {
-          this._highlight();
-        }
-      }
-
-      /**
-       * Move forward to the next editable character.
-       */
-      advance() {
-        if (this._i >= 0) {
-          this._cursor().classList.remove('char-active');
-        }
-
-        if (this._isEndOfFile()) {
-          // Do not trigger end if there is error, except if allowed
-          if (this._allowToEnd()) {
-            this.end();
-          }
-          return;
-        }
-
-        this._advanceOneCharacter();
-        while (!this._isEndOfFile() && this._isIgnorable()) { this._advanceOneCharacter(); }
-
-        this._highlight();
-      }
-
-      /**
-       * Move backward to the previous character (editable or not editable.)
-       */
-      _advanceOneCharacter() {
-        this._i++;
-
-        // Check if a new line have been triggered
-        if (this._triggerNewLine) {
-          this._currentLine++;
-          if (this.mode === 'scroll') this._scrollEditor();
-          if (this.mode === 'page') this._updatePage();
-          this._triggerNewLine = false;
-        }
-
-        if (this._cursor().classList.contains('backslash')) {
-          // We need to wait the user press 'Enter' before advance the line number.
-          // Because if is press the wrong key, we will stay on the same line...
-          this._triggerNewLine = true;
-        } else {
-          this._triggerNewLine = false;
-        }
-      }
-
-      /**
-       * Move forward to the next character (editable or not editable.)
-       */
-      _backwardOneCharacter() {
-        this._i--;
-        this._triggerNewLine = false;
-        if (this._cursor().classList.contains('backslash')) {
-          this._currentLine--;
-          if (this.mode === 'scroll') this._scrollEditor();
-        }
-      }
-
-      /**
-       * Scroll to position the current line on screen
-       * For performance reason, this method only need to call after each newline character.
-       */
-      _scrollEditor() {
-        if (this._currentLine > 5 && this._currentLine < this.numberLines - 5) { // do not scroll too soon. Wait for some lines.
-          this._scrollToLine(this._currentLine - 5);
-        }
-      }
-
-      /**
-       * Update the editor to display the current page.
-       */
-      _updatePage() {
-        const numberLinesPrintable = countLines(this.$.editor);
-        const numberLinesTotal = this.numberLines;
-        const pageNumber = parseInt(this._currentLine / numberLinesPrintable) +
-          ((this._currentLine % numberLinesPrintable == 0) ? 0 : 1); // + 1 if remainder
-        const numberLinesToScroll = (pageNumber > 1) ? (pageNumber - 1) * numberLinesPrintable : 0;
-
-        console.log('[typio-editor] Scroll to page ' + pageNumber + ' by shifting ' + numberLinesToScroll + ' lines');
-        this._scrollToLine(numberLinesToScroll);
-      }
-
-      /**
-       * Scroll to position the given line at the top of the editor.
-       * For performance reason, this method only need to call after each newline character.
-       */
-      _scrollToLine(lineNumber) {
-        this.$.editor.style.marginTop = lineNumber * -1.5 + 'em'; // see #editor line-height property
-      }
-
-      /**
-       * Have we reached the end of text?
-       */
-      _allowToEnd() {
-        return this._error == false || this.continueOnErrors;
-      }
-
-      /**
-       * Marks the end of the typing session.
-       */
-      end() {
-        this.$.stats.stopTimer();
-        this.$.editor.classList.add('highlight-mistyping');
+      _typingEnded() {
         this.ended = true;
+        this.$.stats.stopTimer();
         this._updateMinichart();
-        this._moveToFirstPage();
-        this.dispatchEvent(new CustomEvent('endOfInput', {detail: {length: this._length}}));
+        this.$.editor.showMispellings();
+        this.$.editor.moveToFirstPage();
       }
 
       _updateMinichart() {
@@ -1017,36 +541,6 @@
         this.listenChartEvents();
       }
 
-
-      // Utility methods to manipulate current character
-
-      _cursor() {
-        return this._characters[this._i];
-      }
-
-      _isIgnorable() {
-        let character = this._cursor();
-        return character.classList.contains('ignorable');
-      }
-
-      _isEndOfFile() {
-        return this._i + 1 >= this._length;
-      }
-
-      _highlight() {
-        let character = this._cursor();
-        character.classList.remove('char-invalid');
-        character.classList.add('char-active');
-        character.classList.add('disabled');
-      }
-
-      _unhighlight() {
-        let character = this._cursor();
-        character.classList.remove('char-active');
-        character.classList.remove('char-invalid');
-        character.classList.add('disabled');
-      }
-
       /**
        * Let user click on the histogram to select a bar
        * and focus the corresponding text.
@@ -1056,102 +550,29 @@
           google.visualization.events.addListener(this.$.minichart._chart, 'select', () => {
             let selection = this.$.minichart._chart.getSelection();
             if (selection.length) {
-              this.selectInterval(selection[0].row);
+              this.$.editor.selectInterval(selection[0].row);
             }
           });
           this._chartEventsListened = true;
         }
       }
-
-      selectInterval(column) {
-        if (this.$.editor.classList.contains('highlight-interval-' + column)) {
-          // unselect
-          this.$.editor.classList.remove('highlight-interval-' + column);
-        } else {
-          // unselect all
-          for (let i = 0; i < this.$.stats.intervalNumber; i++) {
-            this.$.editor.classList.remove('highlight-interval-' + i);
-          }
-          // and select the selected one
-          this.$.editor.classList.add('highlight-interval-' + column);
-        }
-
-        // Scroll to the interval in the editor
-        this._moveToPage(this._getIntervalPage(column));
-      }
-
-      // Return the page number (0-based) containing the ith interval.
-      _getIntervalPage(i) {
-        const intervals = this.$.stats.intervals;
-        const indexFirstCharacter = intervals.indexOf(i);
-        const lineFirstCharacter = this._content.substring(0, indexFirstCharacter).split('\n').length + 1;
-        this._currentLine = Math.max(lineFirstCharacter - 5, 0); // Add some lines before to add context
-        this._scrollToLine(this._currentLine);
-      }
-
-      //
+      
+      // 
       // Page controls
       //
-
+      
       _moveToFirstPage() {
-        this._currentLine = 0;
-        this._scrollToLine(0);
+        this.$.editor.moveToFirstPage();
       }
-
       _moveToPreviousPage() {
-        const numberLinesPrintable = countLines(this.$.editor);
-        const numberLinesTotal = this.numberLines;
-        this._currentLine -= numberLinesPrintable;
-        if (this._currentLine < 0) {
-          this._moveToFirstPage();
-        } else {
-          this._scrollToLine(this._currentLine);
-        }
+        this.$.editor.moveToPreviousPage();
       }
-
       _moveToNextPage() {
-        const numberLinesPrintable = countLines(this.$.editor);
-        const numberLinesTotal = this.numberLines;
-        this._currentLine += numberLinesPrintable;
-        if (this._currentLine > numberLinesTotal) {
-          this._moveToLastPage();
-        } else {
-          this._scrollToLine(this._currentLine);
-        }
+        this.$.editor.moveToNextPage();
       }
-
       _moveToLastPage() {
-        const numberLinesPrintable = countLines(this.$.editor);
-        const numberLinesTotal = this.numberLines;
-        this._currentLine = Math.floor(numberLinesTotal / numberLinesPrintable) * numberLinesPrintable;
-        this._scrollToLine(this._currentLine);
+        this.$.editor.moveToLastPage();
       }
-
-      _moveToPage(n) {
-        const numberLinesPrintable = countLines(this.$.editor);
-        const numberLinesTotal = this.numberLines;
-        if (n * numberLinesPrintable > numberLinesTotal) {
-          this._moveToLastPage();
-        } else if (n <= 0) {
-          this._moveToFistPage();
-        } else {
-          this._currentLine = n * numberLinesPrintable;
-          this._scrollToLine(this._currentLine);
-        }
-      }
-
-      _updatePage() {
-        const numberLinesPrintable = countLines(this.$.editor);
-        const numberLinesTotal = this.numberLines;
-
-        const pageNumber = parseInt(this._currentLine / numberLinesPrintable) +
-          ((this._currentLine % numberLinesPrintable == 0) ? 0 : 1); // + 1 if remainder
-        const numberLinesToScroll = (pageNumber > 1) ? (pageNumber - 1) * numberLinesPrintable : 0;
-
-        console.log('[typio-editor] Scroll to page ' + pageNumber + ' by shifting ' + numberLinesToScroll + ' lines');
-        this._scrollToLine(numberLinesToScroll);
-      }
-
 
       //
       // Navigation
@@ -1163,19 +584,6 @@
 
     }
     window.customElements.define(TypioEditor.is, TypioEditor);
-
-    /**
-     * Determine the number of text lines inside an HTML element.
-     *
-     * @param {HTMLElement} element the element to evaluate.
-     */
-    function countLines(element) {
-      // see https://stackoverflow.com/questions/8606588/how-to-get-the-line-height-of-a-span?rq=1
-      let style = window.getComputedStyle(element);
-      let divHeight = element.offsetHeight;
-      let lineHeight = parseInt(style.lineHeight);
-      return parseInt(divHeight / lineHeight);
-    }
 
   </script>
 </dom-module>

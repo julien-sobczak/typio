@@ -1,0 +1,91 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="/src/typio-app/typio-stats.html">
+<link rel="import" href="/src/typio-app/typio-core-editor.html">
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+<dom-module id="typio-drill-runner">
+  <template>
+
+    <style include="shared-styles">
+
+      :host {
+        display: block;
+      }
+      
+    </style>
+
+    <typio-core-editor id="editor" type="drill" content="jfjfjfjffjfjfjjjffjjffjjffjfjfjjj"></typio-core-editor>
+    
+    <a href="#" on-click="start">Start</a>
+
+  </template>
+
+  <script>
+
+    /**
+     * Editor screen (main screen of the application).
+     *
+     * @customElement
+     * @polymer
+     */
+    class TypioDrillRunner extends Polymer.Element {
+
+      static get is() { return 'typio-drill-runner'; }
+      static get properties() {
+        return {
+
+          /**
+           * The content to touch type.
+           *
+           * This property should be set in JavaScript and
+           * not through an HTML attribute to avoid HTML escaping (&lt; for <).
+           */
+          content: {
+            type: String,
+            value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n'
+          },
+
+          /**
+           * Editor code style.
+           * Name should match a CSS resource name /css/prism-{{theme}}.css.
+           */
+          theme: {
+            type: String,
+            value: 'light'
+          },
+
+
+          /*
+           * State management
+           */
+
+          initialized: {
+            type: Boolean,
+            value: false
+          },
+
+          paused: {
+            type: Boolean,
+            value: true
+          },
+
+          ended: {
+            type: Boolean,
+            value: false
+          },
+        };
+      }
+
+      ready() {
+        super.ready();      
+      }
+      
+      start() {
+        this.$.editor.start();
+      }
+
+    }
+    window.customElements.define(TypioDrillRunner.is, TypioDrillRunner);
+
+  </script>
+</dom-module>

@@ -8,6 +8,7 @@
 <link rel="import" href="/src/typio-app/typio-intro.html">
 <link rel="import" href="/src/typio-app/typio-catalog.html">
 <link rel="import" href="/src/typio-app/typio-editor.html">
+<link rel="import" href="/src/typio-app/typio-drill-runner.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-app">
@@ -63,6 +64,7 @@
       <typio-intro name="intro"></typio-intro>
       <typio-catalog name="catalog" on-entry-selected="_initCodeEditor"></typio-catalog>
       <typio-editor id="editor" name="editor" route="{{route}}" debug></typio-editor>
+      <typio-drill-runner id="drillRunner" name="drillRunner" route="{{route}}" debug></typio-drill-runner>
     </intro-pages>
 
   </template>

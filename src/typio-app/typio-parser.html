@@ -144,8 +144,7 @@
             charTxt = ' ';
           }
 
-          // All are characters and disabled by default
-          let charClasses = ['character', 'disabled']; // General classes
+          let charClasses = [];
 
           if (charTxt == '\n') {
             // Put Unicode return symbol as content &#9166; (should be displayed only when actived)
@@ -397,11 +396,10 @@
         let lines = txt.split('\n');
         for (let i = 0; i < lines.length; i++) {
           let logicalLine = lines[i];
-          if (logicalLine.length < 100) {
+          if (logicalLine.length < 101) {
             newLines.push(logicalLine);
             logicalLines.push(true);
           } else { // need to split
-
             const firstLine = logicalLine.substring(0, 100);
             const otherLines = logicalLine.substring(100).match(/.{1,90}/g);
             const indentation = '        ';

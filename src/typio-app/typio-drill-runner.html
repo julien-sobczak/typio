@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-stats.html">
 <link rel="import" href="/src/typio-app/typio-core-editor.html">
-<link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-drill-runner">
   <template>
@@ -12,9 +12,28 @@
         display: block;
       }
       
+      #screen.ended-true typio-core-editor {
+        display: none;
+      }
+      #screen.ended-false #results {
+        display: none;
+      }
+      
     </style>
+    
+    <div id="screen" class$="ended-{{ended}}">
+      <typio-stats id="stats" headless="true"></typio-stats>
 
-    <typio-core-editor id="editor" type="drill" content="jfjfjfjffjfjfjjjffjjffjjffjfjfjjj"></typio-core-editor>
+      <typio-core-editor id="editor" 
+          type="drill" 
+          mode="scroll"
+          content$="[[content]]"
+          on-character-entered="_characterEntered"
+          on-typing-ended="_typingEnded">
+      </typio-core-editor>
+    
+      <div id="results">Congratulations! <span class="wpm">[[wpm]] WPM</span></div>
+    </div>  
     
     <a href="#" on-click="start">Start</a>
 
@@ -42,7 +61,7 @@
            */
           content: {
             type: String,
-            value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n'
+            value: 'jfjfjfjffj'
           },
 
           /**
@@ -77,11 +96,24 @@
       }
 
       ready() {
-        super.ready();      
+        super.ready();         
       }
       
       start() {
+        this.initialized = true;
         this.$.editor.start();
+        this.$.stats.editableCharacters = Array(this.content.length).fill(true); // all characters are editable in drill type
+        this.$.stats.startTimer();
+      }
+      
+      _characterEntered(e, detail) {
+        this.$.stats.newCharacter(detail.character, detail.keyName, detail.valid, detail.accepted);
+      }
+      
+      _typingEnded(e, detail) {
+        this.$.stats.stopTimer();
+        this.ended = true;
+        this.wpm = this.$.stats.wpm;
       }
 
     }

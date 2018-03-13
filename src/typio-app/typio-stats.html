@@ -45,13 +45,22 @@
         margin-bottom: 25px;
       }
 
+      #stats.headless-true {
+        display: none;
+      }
+      #stats.ended-true #statsInProgress {
+        display: none;
+      }
+      #stats.ended-false #statsFinished {
+        display: none;
+      }
+
     </style>
 
-    <template is="dom-if" if="[[!_ended]]">
-      <span class="wpm">[[currentWpm]] WPM</span>
-    </template>
-    <template is="dom-if" if="[[_ended]]">
-      <div>
+    <div id="stats" class$="ended-{{ended}} headless-{{headless}}">
+      <span id="statsInProgress" class="wpm">[[currentWpm]] WPM</span>
+      
+      <div id="statsFinished">
         <span>WPM <strong>[[wpm]]</strong> in [[elapsedTimeInS]]s</span>
         <ul id="stats">
           <li>Total characters: [[totalCharacters]]</li>
@@ -76,7 +85,7 @@
           </template>
         </ul>
       </div>
-    </template>
+    </div>
 
   </template>
 
@@ -93,35 +102,12 @@
         return {
 
           /**
-           * The type of content (code, literature).
+           * Display nothing in headless mode. 
+           * Metrics could be retrieved using the API instead.
            */
-          type: {
-            type: String,
-            value: "code"
-          },
-
-          /**
-           * Language of the content.
-           *
-           * Could be a programming language (Java, Python) or a
-           * spoken language (French, English).
-           *
-           * Note: Case is not important.
-           */
-          language: {
-            type: String,
-            value: "Python"
-          },
-
-          /**
-           * The content to touch type.
-           *
-           * This property should be set in JavaScript and
-           * not through an HTML attribute to avoid HTML escaping (&lt; for <).
-           */
-          content: {
-            type: String,
-            value: 'print("Hello World")\n'
+          headless: {
+            type: Boolean,
+            value: false
           },
 
 
@@ -356,7 +342,9 @@
        * This syntax is particulary adapted for unit test to avoid large illisible arrays.
        */
       _parseEditableCharacters(editables) {
-        if (Array.isArray(editables)) return editables;
+        if (Array.isArray(editables)) {
+          return editables;
+        }
 
         if (typeof(editables) === 'string') {
           let result = [];

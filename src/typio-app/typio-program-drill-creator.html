@@ -1,0 +1,54 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+
+
+<dom-module id="typio-program-drill-creator">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+        display: block;
+      }
+
+    </style>
+
+    <h2>Program Drill Creator</h2>
+
+    <xml id="toolbox" style="display: none">
+      <block type="controls_if"></block>
+      <block type="controls_repeat_ext"></block>
+      <block type="logic_compare"></block>
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+      <block type="text"></block>
+      <block type="text_print"></block>
+    </xml>
+        
+    <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+    
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioProgramDrillCreator extends Polymer.Element {
+      static get is() { return 'typio-program-drill-creator'; }
+      static get properties() {
+        return {
+        };
+      }
+      
+      ready() {
+        super.ready();
+        var workspacePlayground = Blockly.inject('blocklyDiv', {
+          toolbox: document.getElementById('toolbox')
+        });
+      }
+    }
+
+    window.customElements.define(TypioProgramDrillCreator.is, TypioProgramDrillCreator);
+  </script>
+</dom-module>

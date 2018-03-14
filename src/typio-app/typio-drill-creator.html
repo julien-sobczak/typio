@@ -1,0 +1,171 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="/src/typio-app/typio-static-drill-creator.html">
+<link rel="import" href="/src/typio-app/typio-basic-drill-creator.html">
+<link rel="import" href="/src/typio-app/typio-program-drill-creator.html">
+<link rel="import" href="/src/typio-app/typio-regex-drill-creator.html">
+
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+<dom-module id="typio-drill-creator">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+      }
+
+    </style>
+
+    <app-route
+        route="{{route}}"
+        pattern="/:view"
+        data="{{routeData}}"
+        tail="{{subroute}}">
+    </app-route>
+    
+    <a tabindex="-1" href="/drillCreator/selection">
+      Close
+    </a>
+    
+    <iron-pages selected="[[routeData.view]]" attr-for-selected="name" fallback-selection="selection">
+      <div name="selection">
+        <ul>
+          <li>
+            <a tabindex="-1" href="/drillCreator/static">
+              Static
+            </a>
+          </li>
+          <li>
+            <a tabindex="-1" href="/drillCreator/basic">
+              Basic
+            </a>
+          </li>
+          <li>
+            <a tabindex="-1" href="/drillCreator/program">
+              Program
+            </a>
+          </li>
+          <li>
+            <a tabindex="-1" href="/drillCreator/regex">
+              Regex
+            </a>
+          </li>
+        </ul>
+      </div>
+      <typio-static-drill-creator name="static"></typio-static-drill-creator>
+      <typio-basic-drill-creator name="basic"></typio-basic-drill-creator>
+      <typio-program-drill-creator name="program"></typio-program-drill-creator>
+      <typio-regex-drill-creator name="regex"></typio-regex-drill-creator>
+    </intro-pages>
+
+  </template>
+
+  <script>
+  
+
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioDrillCreator extends Polymer.Element {
+
+      static get is() { return 'typio-drill-creator'; }
+      static get properties() {
+        return {
+          
+          //
+          // Routing management
+          //
+
+          route: {
+            type: Object
+          },
+
+          routeData: {
+            type: Object
+          },
+          
+        };
+      }
+
+
+      //
+      // Utils
+      //
+      
+      
+      static generateDrill(drill) {
+        switch (drill.type) {
+          case 'static':
+            return TypioDrillCreator.generateStaticDrill(drill.text);
+          case 'basic':
+            return TypioDrillCreator.generateBasicDrill(drill.keys, drill.weights);
+        }
+      }
+
+      /**
+       * Generates a content following the static drill definition.
+       */
+      static generateStaticDrill(text) {
+        return text;
+      }
+
+      /**
+       * Generates a content following the basic drill definition.
+       */
+      static generateBasicDrill(keys, weights, length=50) {
+        // Implementation:
+        //
+        // We build an array contains all keys. Each key is duplicated to reflect
+        // its weight:
+        // 
+        //   generateStaticDrill(['a', 'b'], [2. 1]);
+        //   # letters = ['a', 'a', 'b']
+        //
+        // Then, we generate n random numbers (between 0 and the length of `letters`).
+        // For each generated number, we append the letter at this index.
+        
+        if (!weights) {
+          weights = Array(this.content.length).fill(1);
+        }
+        
+        let letters = []
+        for (let i = 0; i < keys.length; i++) {
+          for (let j = 0; j < weights[i]; j++) {
+              letters.push(keys[i]);
+          }
+        }
+        
+        let getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
+        let content = "";
+        for (let i = 0; i < length; i++) {
+          content += letters[getRandomInt(letters.length)];
+        }
+        return content;
+      }
+      
+      /**
+       * Generates a content following the program drill definition.
+       */
+      static generateProgramDrill(program) {
+        // TODO implement
+        return program;
+      }
+      
+      /**
+       * Generates a content following the regex drill definition.
+       */
+      static generateRegexDrill(regexes) {
+        // TODO implement
+        return "hello world";
+      }
+
+    }
+    window.customElements.define(TypioDrillCreator.is, TypioDrillCreator);
+
+  </script>
+</dom-module>

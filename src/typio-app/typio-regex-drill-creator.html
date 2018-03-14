@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+<dom-module id="typio-regex-drill-creator">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+        display: block;
+      }
+
+    </style>
+
+    <h2>Regex Drill Creator</h2>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioRegexDrillCreator extends Polymer.Element {
+      static get is() { return 'typio-regex-drill-creator'; }
+      static get properties() {
+        return {
+        };
+      }
+    }
+
+    window.customElements.define(TypioRegexDrillCreator.is, TypioRegexDrillCreator);
+  </script>
+</dom-module>

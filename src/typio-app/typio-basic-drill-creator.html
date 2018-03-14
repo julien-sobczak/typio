@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+<dom-module id="typio-basic-drill-creator">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+        display: block;
+      }
+
+    </style>
+
+    <h2>Basic Drill Creator</h2>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioBasicDrillCreator extends Polymer.Element {
+      static get is() { return 'typio-basic-drill-creator'; }
+      static get properties() {
+        return {
+        };
+      }
+    }
+
+    window.customElements.define(TypioBasicDrillCreator.is, TypioBasicDrillCreator);
+  </script>
+</dom-module>

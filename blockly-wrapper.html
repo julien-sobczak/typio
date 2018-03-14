@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>Blockly Wrapper</title>
+    
+    <style>
+    
+      * {
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: 'Encode Sans Semi Condensed', sans-serif; /* Same as defined in index.html */
+        overflow: hidden; 
+        margin: 0;
+        padding: 0;
+      }
+      
+      #validateButton {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 150px; /* Same as .blocklyToolboxDiv */
+        background-color: #009ee3;
+        color: white;
+        font-weight: bold;
+        z-index: 100;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+      }
+      
+      iframe {
+          position: fixed;
+          width: 1000px;
+          height: 600px;
+          left: 50%;
+          margin-left: -500px;
+          top: 50%;
+          margin-top: -300px;
+      }
+      
+    </style>
+    
+  </head>
+  <body>
+
+    <a id="validateButton" href="#">Validate</a>
+
+    <iframe id="blockly" title="Blockly Drill Creator" src="http://localhost:8081/blockly.html"></iframe>
+  
+    <script>
+      
+      const domain = 'http://localhost:8081';
+      let blockly = document.getElementById("blockly").contentWindow;
+    
+      // periodical message sender
+      setTimeout(function() {
+        let xmlText = `
+          <xml><variables></variables><block type="text_print" id="]!%~YmJFM+Uq0p%;xMU:" x="678" y="154"><value name="TEXT"><shadow type="text" id="0f$J;1*?.}2krhXo]FPR"><field name="TEXT">abc</field></shadow><block type="text" id="mc=vQQsn)h@Wc69rbFvH"><field name="TEXT">toto</field></block></value></block></xml>
+        `;
+      	blockly.postMessage(xmlText, domain); // send the message and target URI
+      }, 1000); // Required?
+
+      // listen to holla back
+      window.addEventListener('message', function(event) {
+      	console.log('javascript: ', event.data.javascript);
+        console.log('xml: ', event.data.xml);
+      },false);
+      
+      document.getElementById("validateButton").addEventListener("click", function(e) {
+        blockly.postMessage("GET", domain); 
+      });
+  
+    </script>
+    
+  </body>
+</html>

@@ -17,6 +17,7 @@
         overflow: hidden; 
         margin: 0;
         padding: 0;
+        background-color: #666;
       }
       
       #validateButton {
@@ -41,6 +42,7 @@
           margin-left: -500px;
           top: 50%;
           margin-top: -300px;
+          border: 0;
       }
       
     </style>
@@ -55,8 +57,24 @@
     <script>
       
       const domain = 'http://localhost:8081';
+      
       let blockly = document.getElementById("blockly").contentWindow;
-    
+     
+      // See https://davidwalsh.name/window-postmessage for explanations about Window.postMessage()
+      // Or https://developer.mozilla.org/fr/docs/Web/API/Window/postMessage
+      
+      function evaluate(jsText) {
+        let jsUpdatedText = jsText.replace(/window\.alert\((.*?)\);/g, "res += $1;");
+        let program = `
+        function run() {
+          res = "";
+          ${jsUpdatedText}
+          return res;
+        }
+        run()`;
+        return eval(program);
+      }
+      
       // periodical message sender
       setTimeout(function() {
         let xmlText = `
@@ -67,8 +85,12 @@
 
       // listen to holla back
       window.addEventListener('message', function(event) {
-      	console.log('javascript: ', event.data.javascript);
-        console.log('xml: ', event.data.xml);
+        if (event.origin !== domain)
+          return;
+    
+      	//console.log('javascript: ', event.data.javascript);
+        //console.log('xml: ', event.data.xml);
+        console.log('=', evaluate(event.data.javascript))
       },false);
       
       document.getElementById("validateButton").addEventListener("click", function(e) {

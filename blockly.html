@@ -26,20 +26,60 @@
         padding: 0;
       }
       
+      
+      /* Override the workspace's background color */
+      .blocklySvg {
+        background-color: #666 !important;
+      }
+      /* and remove the outer border */
+      .blocklyMainBackground {
+        stroke-width: 0;
+      }
+      
+      /* Style the menu */
       .blocklyToolboxDiv {
         width: 150px;
-        background-color: #009ee3 !important;
+        background-color: inherit !important;
       }
-      
-      .blocklyTreeSelected {
-        background-color: black !important;
+      .blocklyTreeLabel {
+        padding: 2px 10px;
+        background: black;
         color: white;
+        border-radius: 2px;
       }
-      
+      .blocklyFlyoutBackground {
+        fill: black !important;
+        fill-opacity: 0.5;
+      }
+      /* The scrollbar is too large. We reduce its opacity... */
+      .blocklyScrollbarHandle {
+        fill-opacity: 0.3;
+      }
+      /* Highlight menu selection */
+      .blocklyTreeSelected {
+        background-color: rgba(0, 0, 0, .5) !important;
+        color: white;
+      }      
       .blocklyTreeRow:hover {
         background-color: rgba(0,0,0,0.5) !important;
         color: white;
       }
+      
+      
+      /* Lessen block outlines */
+      .blocklyPath {
+        fill: #009ee3 !important;
+      }
+      .blocklyPathLight {
+        fill-opacity: 0;
+      }
+      .blocklyPathDark {
+        fill: rgba(0, 0, 0, .5);
+      }
+      
+      
+      
+
       
     </style>
     
@@ -231,18 +271,27 @@
 
     <script>
     
+      const domain = 'http://localhost:8081';
+    
       // Create the editor
       let workspace = Blockly.inject('blocklyDiv', {
-        toolbox: document.getElementById('toolbox')
+        toolbox: document.getElementById('toolbox'),
+        scrollbars: false,
+        sounds: false,
+        // https://developers.google.com/blockly/guides/configure/web/grid
+        grid: { spacing: 40, length: 2, colour: 'rgba(255,255,255,0.2)', snap: true }
       });
       
       // Listen parent window events
       window.addEventListener('message', function(event) {
+        if (event.origin !== domain)
+          return;
+   
         let content = event.data;
         if (content === "GET") { // send the content
           let javascript = Blockly.JavaScript.workspaceToCode(workspace);
           let xml = Blockly.Xml.workspaceToDom(workspace);
-          let xmlText = Blockly.Xml.domToText(xml);
+          let xmlText = Blockly.Xml.domToPrettyText(xml);
           event.source.postMessage({
             "javascript": javascript,
             "xml": xmlText

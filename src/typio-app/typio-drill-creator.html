@@ -16,6 +16,53 @@
     <style include="shared-styles">
 
       :host {
+        background-color: #666;        
+      }
+      
+      #editor {
+        position: fixed;
+        top: 50px;
+        right: 50px;
+        bottom: 50px;
+        left: 50px;
+        flex-direction: row;
+      }
+      
+      #menu {
+        width: 200px;
+        float: left;
+      }
+      #configuration {
+        height: 100%;
+        margin-left: 220px;
+      }
+      
+      #menu {
+        margin: 0;
+        padding: 0;
+      }
+      #menu li {
+        list-style-type: none;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }    
+      #menu a {
+        display: inline-block;
+        width: 200px;
+        padding: 10px 20px;
+        background-color: rgba(0, 0, 0, .7) !important;
+        color: white;
+        text-decoration: none;
+      }  
+      #menu a .name {
+        display: block;
+        font-size: 110%;
+        font-weight: bold;
+        color: var(--typio-bg-color);
+      }
+      #menu a .description {
+        color: white;
+        font-size: 90%;
       }
 
     </style>
@@ -27,40 +74,42 @@
         tail="{{subroute}}">
     </app-route>
     
-    <a tabindex="-1" href="/drillCreator/selection">
-      Close
-    </a>
-    
-    <iron-pages selected="[[routeData.view]]" attr-for-selected="name" fallback-selection="selection">
-      <div name="selection">
-        <ul>
-          <li>
-            <a tabindex="-1" href="/drillCreator/static">
-              Static
-            </a>
-          </li>
-          <li>
-            <a tabindex="-1" href="/drillCreator/basic">
-              Basic
-            </a>
-          </li>
-          <li>
-            <a tabindex="-1" href="/drillCreator/program">
-              Program
-            </a>
-          </li>
-          <li>
-            <a tabindex="-1" href="/drillCreator/regex">
-              Regex
-            </a>
-          </li>
-        </ul>
+    <div id="editor">
+      <ul id="menu">
+        <li>
+          <a tabindex="-1" href="/drillCreator/static">
+            <span class="name">Static</span>
+            <span class="description">For obvious content</span>
+          </a>
+        </li>
+        <li>
+          <a tabindex="-1" href="/drillCreator/basic">
+            <span class="name">Basic</span>
+            <span class="description">For a little randomization</span>
+          </a>
+        </li>
+        <li>
+          <a tabindex="-1" href="/drillCreator/program">
+            <span class="name">Program</span>
+            <span class="description">For aspiring hackers</span>
+          </a>
+        </li>
+        <li>
+          <a tabindex="-1" href="/drillCreator/regex">
+            <span class="name">Regex</span>
+            <span class="description">For the craziest ones</span>
+          </a>
+        </li>
+      </ul>
+      <div id="configuration">
+        <iron-pages selected="[[routeData.view]]" attr-for-selected="name" fallback-selection="basic">      
+          <typio-static-drill-creator name="static"></typio-static-drill-creator>
+          <typio-basic-drill-creator name="basic"></typio-basic-drill-creator>
+          <typio-program-drill-creator name="program"></typio-program-drill-creator>
+          <typio-regex-drill-creator name="regex"></typio-regex-drill-creator>
+        </intro-pages>
       </div>
-      <typio-static-drill-creator name="static"></typio-static-drill-creator>
-      <typio-basic-drill-creator name="basic"></typio-basic-drill-creator>
-      <typio-program-drill-creator name="program"></typio-program-drill-creator>
-      <typio-regex-drill-creator name="regex"></typio-regex-drill-creator>
-    </intro-pages>
+    </div>
 
   </template>
 

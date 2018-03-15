@@ -63,8 +63,7 @@
         //
         
         test('[program drill] evaluate the program and capture the output', function() {
-          const program = `
-          `;
+          const program = `test`;
           const content = TypioDrillCreator.generateProgramDrill(program);
           
           expect(content).to.eql("test");
@@ -77,9 +76,9 @@
         //
         
         test('[regex drill] hello world', function() {
-          const regexes = [
+          const regexes = {
             'DRILL': /hello world/
-          ]
+          }
           const content = TypioDrillCreator.generateRegexDrill(regexes);
           
           expect(content).to.eql("hello world");

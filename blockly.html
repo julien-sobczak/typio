@@ -250,12 +250,12 @@
 
     <script>
     
-      const domain = 'http://localhost:8081';
+      const domain = window.location.origin;
     
       // Create the editor
       let workspace = Blockly.inject('blocklyDiv', {
         toolbox: document.getElementById('toolbox'),
-        scrollbars: false,
+        //scrollbars: false,
         sounds: false,
         // https://developers.google.com/blockly/guides/configure/web/grid
         grid: { spacing: 40, length: 2, colour: 'rgba(255,255,255,0.2)', snap: true }

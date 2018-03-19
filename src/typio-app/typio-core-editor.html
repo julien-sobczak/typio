@@ -634,8 +634,7 @@
 
         this._advanceOneCharacter();
         while (!this._isEndOfFile() && this._isIgnorable()) { this._advanceOneCharacter(); }
-        
-        console.log('Need to highlight character', this._i, 'at line', this._currentLine);
+
         this._highlight();
       }
 

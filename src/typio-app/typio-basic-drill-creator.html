@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="/src/typio-app/typio-keyboard.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-basic-drill-creator">
@@ -11,7 +12,15 @@
 
     </style>
 
-    <h2>Basic Drill Creator</h2>
+    <typio-keyboard size="fullsize" norm="iso" layout="azerty"></typio-keyboard>
+    <br/>
+    
+    <typio-keyboard size="tenkeyless" norm="ansi" layout="colemak"></typio-keyboard>
+    <br/>
+    
+    <typio-keyboard size="compact" norm="ansi"layout="dvorak"></typio-keyboard>
+    <br/>
+    
   </template>
 
   <script>

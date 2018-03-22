@@ -20,7 +20,8 @@
     "paper-checkbox": "PolymerElements/paper-checkbox#^2.0.1",
     "iron-pages": "PolymerElements/iron-pages#^2.0.1",
     "app-route": "PolymerElements/app-route#^2.0.3",
-    "app-layout": "PolymerElements/app-layout#^2.0.4"
+    "app-layout": "PolymerElements/app-layout#^2.0.4",
+    "paper-tooltip": "PolymerElements/paper-tooltip#^2.1.1"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",

@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-keyboard">
@@ -87,6 +88,7 @@
       .key .label.label-shift,
       .key .label.label-altgr {
         font-size: 100%;
+        border-radius: 50%;
       }
       .key .label.label-default {
         top: calc((var(--calculated-typio-key-size) / 2));
@@ -121,9 +123,30 @@
         background-color: white;
       }
       
+      
+      /*
+       * Character selection
+       */
+       
+      .key.pressed {
+        background-color: var(--typio-key-pressed-color, var(--paper-green-500));
+      }
+      
+      #keyboard.clickable-true .key {
+        cursor: pointer;
+      }
+      
+      #keyboard.clickable-true .key:hover {
+        background-color: var(--typio-key-pressed-color, var(--paper-green-500));
+        color: white;
+      }
+      #keyboard.clickable-true .key .label-shift:hover {
+        background-color: rgba(0,0,0,0.4);
+      }
+      
     </style>
 
-      <div id="keyboard" class$="keyboard {{size}} {{norm}} {{layout}}">
+      <div id="keyboard" on-click="_keyClicked" class$="keyboard {{size}} {{norm}} {{layout}} clickable-{{clickable}}">
         
         <div class="block-main norm-ansi">
           <div class="row row-fn">
@@ -452,6 +475,24 @@
             value: "qwerty"
           },
           
+          /**
+           * Print only uppercase character (as a real keyboard)
+           * or print lowercase and uppercase character?
+           */
+          mixedCases: {
+            type: Boolean,
+            value: false
+          },
+          
+          /**
+           * Allow the user to click on a key.
+           * Trigger the event `key-clicked`.
+           */
+          clickable: {
+            type: Boolean,
+            value: false
+          },
+          
           //
           // Internal properties
           //
@@ -473,6 +514,37 @@
           // Observer method name, followed by a list of dependencies, in parenthesis
           'labelizeKeyboard(norm, layout)'
         ]
+      }
+      
+      ready() {
+        super.ready();
+      }
+      
+      _keyClicked(e) {
+        // Listen for click on keys 
+        if (!this.clickable) {
+          return;
+        }
+        
+        let clickedItem = e.composedPath()[0];
+        let character = undefined;
+        
+        if (clickedItem.classList.contains('label')) {
+          character = clickedItem.innerHTML;
+          // Empty label => fallback on default label
+          if (!character) {
+            clickedItem = clickedItem.parentNode;
+          }
+        }
+        if (!character && clickedItem.classList.contains('key')) {
+          character = clickedItem.querySelector('.label-default').innerHTML;
+        }
+        if (character) {
+          let detail = {
+            character: character
+          };
+          this.dispatchEvent(new CustomEvent('key-clicked', {detail: detail, bubbles: true, composed: true}));
+        }
       }
       
       _isNorm(actual, expected) {
@@ -507,21 +579,55 @@
             const keyElement = keys[c];
             
             let lettersOnKey = 0;
-            if (letters.length >= 1 && letters[0]) {
-              this._keyElementPerCharacter.set(letters[0], [keyElement]);
-              keyElement.querySelector('.label-default').innerHTML = letters[0];
-              lettersOnKey++;  
-            }
-            if (letters.length >= 2 && letters[1]) {
+            
+            if (this.mixedCases && letters.length == 1 && letters[0] >= 'A' && letters[0] <= 'Z') { 
               // Note: Keys on left shoud be accessed using the right shift key, and inversely
-              this._keyElementPerCharacter.set(letters[1], [keyElement, c <= 6 ? shiftRightElement : shiftLeftElement]);
-              keyElement.querySelector('.label-shift').innerHTML = letters[1];
-              lettersOnKey++;
-            }
-            if (letters.length >= 3 && letters[2]) {
-              this._keyElementPerCharacter.set(letters[2], [keyElement, altGrElement]);
-              keyElement.querySelector('.label-altgr').innerHTML = letters[2];
-              lettersOnKey++;
+              this._keyElementPerCharacter.set(letters[0].toLowerCase(), {
+                  keys: [keyElement],
+                  shift: true,
+                  altGr: false,
+              });
+              this._keyElementPerCharacter.set(letters[0].toUpperCase(), {
+                  keys: [keyElement, c <= 6 ? shiftRightElement : shiftLeftElement],
+                  shift: true,
+                  altGr: false,
+              });
+              keyElement.querySelector('.label-default').innerHTML = letters[0].toLowerCase();
+              keyElement.querySelector('.label-shift').innerHTML = letters[0].toUpperCase();
+              lettersOnKey = 2;
+              
+            } else {
+              
+              if (letters.length >= 1 && letters[0]) {
+                this._keyElementPerCharacter.set(letters[0], {
+                    keys: [keyElement],
+                    shift: false,
+                    altGr: false,
+                });
+                keyElement.querySelector('.label-default').innerHTML = letters[0];
+                lettersOnKey++;  
+              }
+              
+              if (letters.length >= 2 && letters[1]) {
+                // Note: Keys on left shoud be accessed using the right shift key, and inversely
+                this._keyElementPerCharacter.set(letters[1], {
+                    keys: [keyElement, c <= 6 ? shiftRightElement : shiftLeftElement],
+                    shift: true,
+                    altGr: false,
+                });
+                keyElement.querySelector('.label-shift').innerHTML = letters[1];
+                lettersOnKey++;
+              }
+              
+              if (letters.length >= 3 && letters[2]) {
+                this._keyElementPerCharacter.set(letters[2], {
+                    keys: [keyElement, altGrElement],
+                    shift: false,
+                    altGr: true,
+                });
+                keyElement.querySelector('.label-altgr').innerHTML = letters[2];
+                lettersOnKey++;
+              }
             }
             
             if (lettersOnKey == 1) {
@@ -550,6 +656,57 @@
         ansiLayout[1].push(ansiLayout[2][12]);
         ansiLayout[2].splice(12, 1);
         return ansiLayout;
+      }
+      
+      /**
+       * Simulate a key pressed by highlighting it.
+       */
+      pressKeys(characters, durationMs=500) {
+        if (!Array.isArray(characters)) {
+          characters = [characters];
+        }
+        
+        characters.forEach(character => {
+          let elements = null;
+          const charactersToTry = [character, character.toUpperCase(), character.toLowerCase()]
+          charactersToTry.forEach(c => {
+            if (this._keyElementPerCharacter.has(c)) {
+              elements = this._keyElementPerCharacter.get(c);
+            }  
+          });
+          if (elements && elements.keys) {
+            elements.keys.forEach(e => e.classList.add('pressed'));
+            if (durationMs > 0) {
+              setTimeout(function() { 
+                elements.keys.forEach(e => e.classList.remove('pressed')); 
+              }, durationMs);
+            }
+          }
+        });
+        
+      }
+      
+      /**
+       * Let client code colorizes the keys using a custom function.
+       * The function should accept a unique argument representing a character
+       * and return a valid CSS color, or a JavaScript negative value 
+       * such as `undefined` to ignore the character. 
+       */
+      colorize(fn) {
+        this._keyElementPerCharacter.forEach((characterKeys, character, map) => {
+          const color = fn(character);
+          if (color) {
+            const key = characterKeys.keys[0];
+            if (characterKeys.shift) {
+              key.querySelector('.label-shift').style.backgroundColor = color;
+              // background: radial-gradient(color 60%, parentColor 90%); to make gradient... 
+            } else if (characterKeys.altGr) {
+              key.querySelector('.label-altgr').style.backgroundColor = color;
+            } else {
+              key.style.backgroundColor = color;
+            }
+          }
+        });
       }
       
     }

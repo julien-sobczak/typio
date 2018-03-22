@@ -589,7 +589,16 @@
         }
 
         // Sort in reverse order by average time and return only the first N results.
-        return new Array(...result.values()).sort((a, b) => b.averageInMs - a.averageInMs).slice(0, n);
+        let subresult = new Array(...result.values()).sort((a, b) => b.averageInMs - a.averageInMs);
+        if (n > 0) {
+          return subresult.slice(0, n);
+        } else {
+          return subresult;
+        }
+      }
+      
+      getResponseTimeKeys() {
+        return this._mostDifficultKeys(0);
       }
 
       /**

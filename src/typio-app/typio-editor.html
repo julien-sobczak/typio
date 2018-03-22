@@ -10,6 +10,7 @@
 <link rel="import" href="/src/typio-app/typio-ready-screen.html">
 <link rel="import" href="/src/typio-app/typio-stats.html">
 <link rel="import" href="/src/typio-app/typio-parser.html">
+<link rel="import" href="/src/typio-app/typio-keyboard.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-editor">
@@ -106,6 +107,33 @@
       /* Displayed only when session is over. */
       #screen.ended-true #minichart {
         display: block !important;
+      }
+      
+      /*
+       * Heatmap
+       */
+       
+      #heatmap {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(255,255,255,0.8);
+        display: none; /* Only revealed after a practice session */
+        z-index: 500;
+      }
+      #heatmap #keyboard {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        /* Using default size, the compact keyboard measures 576px x 192px */
+        margin-top: calc(-1 * 192px / 2);
+        margin-left: calc(-1 * 576px / 2);
+      }
+      
+      #heatmap paper-icon-button {
+        position: absolute;
+        bottom: 1in;
+        right: 1in;
       }
 
 
@@ -248,6 +276,13 @@
         <paper-icon-button on-click="_moveToPreviousPage" icon="chevron-left"></paper-icon-button>
         <paper-icon-button on-click="_moveToNextPage" icon="chevron-right"></paper-icon-button>
         <paper-icon-button on-click="_moveToLastPage" icon="last-page"></paper-icon-button>
+      </div>
+      
+      <a on-click="showHeatmap" style="position: fixed; top: 200px;">View Heatmap</a>
+      
+      <div id="heatmap">
+        <typio-keyboard id="keyboard" mixed-cases></typio-keyboard>
+        <paper-icon-button on-click="hideHeatmap" icon="close"></paper-icon-button>
       </div>
 
       <google-chart id="chart" class$="showChart-{{showChart}}"
@@ -580,6 +615,46 @@
 
       _toggleDrawer() {
         this.$.drawer.toggle();
+      }
+      
+      // 
+      // Heatmap
+      // 
+      
+      showHeatmap() {
+        const responseTimes = this.$.stats.getResponseTimeKeys();
+        const responseTimePerKey = new Map();
+        let worstInMs = 0;
+        responseTimes.forEach(keyStats => { 
+          responseTimePerKey.set(keyStats.character, keyStats);
+          if (keyStats.averageInMs > worstInMs) {
+            worstInMs = keyStats.averageInMs;
+          }
+        });
+
+        this.$.keyboard.colorize(c => {
+          if (!responseTimePerKey.has(c)) return false;
+          const stats = responseTimePerKey.get(c);
+          
+          // We compare the response time with the worst response time to determine the color
+          // We only want to highlight the worse keys, even if the user is typing slowy every key.
+          const ratio = Math.floor(stats.averageInMs * 100 / worstInMs / 10.1); // Note between 0 and 10 exclusive
+          // close to 10 = reddish
+          // close to 0 = yellowish
+          
+          const ignoreBelowRatio = 2;
+          if (ratio < ignoreBelowRatio) return false; 
+          
+          console.log('\tratio=', ratio);
+          // See https://material.io/guidelines/style/color.html#color-color-palette
+          return 'var(--paper-red-' + ((ratio - ignoreBelowRatio) * 100) + ')';
+        });
+        
+        this.$.heatmap.style.display = 'block';
+      }
+      
+      hideHeatmap() {
+        this.$.heatmap.style.display = 'none';
       }
 
     }

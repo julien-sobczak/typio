@@ -645,7 +645,6 @@
           const ignoreBelowRatio = 2;
           if (ratio < ignoreBelowRatio) return false; 
           
-          console.log('\tratio=', ratio);
           // See https://material.io/guidelines/style/color.html#color-color-palette
           return 'var(--paper-red-' + ((ratio - ignoreBelowRatio) * 100) + ')';
         });

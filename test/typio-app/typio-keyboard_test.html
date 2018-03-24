@@ -97,7 +97,7 @@
         function letters(keyboard, norm, rowNumber) {
           let letters = [];
           keyboard.shadowRoot.
-              querySelectorAll(`.block-main.norm-${norm} > .row:nth-child(${rowNumber}) > .key .label-default`).
+              querySelectorAll(`.block-main.norm-${norm} > .row:nth-child(${rowNumber}) > .key:not(.key-static) .label-default`).
               forEach(k => letters.push(k.innerHTML));
           return letters;
         }

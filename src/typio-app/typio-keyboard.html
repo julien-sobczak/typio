@@ -15,6 +15,7 @@
       
       .keyboard {
         display: flex;
+        text-align: left;
       }
       .block-middle, .block-digits {
         margin-left: calc(var(--calculated-typio-key-size) / 4);
@@ -79,16 +80,20 @@
 
       .key .label {
         position: absolute;
-        text-align: center;
-        width: calc((var(--calculated-typio-key-size) / 2));
-        height: calc((var(--calculated-typio-key-size) / 2));
         padding: 0.04in;
+      }
+      .key.key-static .label {
+        text-align: center !important;
+        width: var(--calculated-typio-key-size) !important;
+        height: var(--calculated-typio-key-size) !important;
       }
       .key .label.label-default,
       .key .label.label-shift,
       .key .label.label-altgr {
         font-size: 100%;
         border-radius: 50%;
+        width: calc((var(--calculated-typio-key-size) / 2));
+        height: calc((var(--calculated-typio-key-size) / 2));        
       }
       .key .label.label-default {
         top: calc((var(--calculated-typio-key-size) / 2));
@@ -150,24 +155,25 @@
         
         <div class="block-main norm-ansi">
           <div class="row row-fn">
-            <span class="key key-esc"><span class="label">ESC</span></span><!--
+            <span class="key key-esc key-static"><span class="label label-default">ESC</span></span><!--
             Comments are required to avoid spaces between 
             two consecutives HTML elements:
             see https://stackoverflow.com/a/22689952
             Without that, <span>1</span><span>2</span>...
-         --><span class="key key-f1"><span class="label">F2</span></span><!--
-         --><span class="key key-f3"><span class="label">F3</span></span><!--
-         --><span class="key key-f4"><span class="label">F4</span></span><!--
+         --><span class="key key-f1 key-static"><span class="label label-default">F1</span></span><!--
+         --><span class="key key-f2 key-static"><span class="label label-default">F2</span></span><!--
+         --><span class="key key-f3 key-static"><span class="label label-default">F3</span></span><!--
+         --><span class="key key-f4 key-static"><span class="label label-default">F4</span></span><!--
          
-         --><span class="key key-f5"><span class="label">F5</span></span><!--
-         --><span class="key key-f6"><span class="label">F6</span></span><!--
-         --><span class="key key-f7"><span class="label">F7</span></span><!--
-         --><span class="key key-f8"><span class="label">F8</span></span><!--
+         --><span class="key key-f5 key-static"><span class="label label-default">F5</span></span><!--
+         --><span class="key key-f6 key-static"><span class="label label-default">F6</span></span><!--
+         --><span class="key key-f7 key-static"><span class="label label-default">F7</span></span><!--
+         --><span class="key key-f8 key-static"><span class="label label-default">F8</span></span><!--
          
-         --><span class="key key-f9"><span class="label">F9</span></span><!--
-         --><span class="key key-f10"><span class="label">F10</span></span><!--
-         --><span class="key key-f11"><span class="label">F11</span></span><!--
-         --><span class="key key-f12"><span class="label">F12</span></span>
+         --><span class="key key-f9 key-static"><span class="label label-default">F9</span></span><!--
+         --><span class="key key-f10 key-static"><span class="label label-default">F10</span></span><!--
+         --><span class="key key-f11 key-static"><span class="label label-default">F11</span></span><!--
+         --><span class="key key-f12 key-static"><span class="label label-default">F12</span></span>
           </div>
           <div class="row">
             <span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
@@ -183,10 +189,10 @@
          --><span class="key key-0"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-x2"><span class="label">Backspace</span></span>
+         --><span class="key key-x2 key-static"><span class="label label-default">Backspace</span></span>
           </div>
           <div class="row">
-            <span class="key key-x15"><span class="label">&#11134;</span></span><!--
+            <span class="key key-x15 key-static"><span class="label label-default">&#11134;</span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
@@ -202,7 +208,7 @@
          --><span class="key key-x15"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span>
           </div>
           <div class="row">
-            <span class="key key-x175"><span class="label">Caps</span></span><!--
+            <span class="key key-x175 key-static"><span class="label label-default">Caps</span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
@@ -214,10 +220,10 @@
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-x225"><span class="label">Enter</span></span>
+         --><span class="key key-x225 key-static"><span class="label label-default">Enter</span></span>
           </div>
           <div class="row">
-            <span id="shiftLeft" class="key key-x225"><span class="label">&#8679;</span></span><!--
+            <span id="shiftLeft" class="key key-x225 key-static"><span class="label label-default">&#8679;</span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
@@ -228,40 +234,41 @@
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span id="shiftRight" class="key key-x275"><span class="label">&#8679;</span></span>
+         --><span id="shiftRight" class="key key-x275 key-static"><span class="label label-default">&#8679;</span></span>
           </div>
           <div class="row">
-            <span id="control" class="key key-x125 key-control"><span class="label">Ctrl</span></span><!--
-         --><span class="key key-x125"><span class="label">Win</span></span><!--
-         --><span class="key key-x125"><span class="label">Alt</span></span><!--
-         --><span class="key key-space key-x625"><span class="label"></span></span><!--
-         --><span id="altGr" class="key key-x125"><span class="label">Alt Gr</span></span><!--
-         --><span class="key key-x125"><span class="label">Fn</span></span><!--
-         --><span class="key key-x125"><span class="label">Menu</span></span><!--
-         --><span class="key key-x125"><span class="label">Ctrl</span></span>
+            <span id="control" class="key key-x125 key-control key-static"><span class="label label-default">Ctrl</span></span><!--
+         --><span class="key key-x125 key-static"><span class="label label-default">Win</span></span><!--
+         --><span class="key key-x125 key-static"><span class="label label-default">Alt</span></span><!--
+         --><span class="key key-space key-x625 key-static"><span class="label label-default"></span></span><!--
+         --><span id="altGr" class="key key-x125 key-static"><span class="label label-default">Alt Gr</span></span><!--
+         --><span class="key key-x125 key-static"><span class="label label-default">Fn</span></span><!--
+         --><span class="key key-x125 key-static"><span class="label label-default">Menu</span></span><!--
+         --><span class="key key-x125 key-static"><span class="label label-default">Ctrl</span></span>
           </div>
         </div>
         
         <div class="block-main norm-iso">
           <div class="row row-fn">
-            <span class="key key-esc"><span class="label">ESC</span></span><!--
+            <span class="key key-esc key-static"><span class="label label-default">ESC</span></span><!--
             Comments are required to avoid spaces between 
             two consecutives HTML elements:
             see https://stackoverflow.com/a/22689952
             Without that, <span>1</span><span>2</span>...
-         --><span class="key key-f1"><span class="label">F2</span></span><!--
-         --><span class="key key-f3"><span class="label">F3</span></span><!--
-         --><span class="key key-f4"><span class="label">F4</span></span><!--
+         --><span class="key key-f1 key-static"><span class="label label-default">F1</span></span><!--
+         --><span class="key key-f2 key-static"><span class="label label-default">F2</span></span><!--
+         --><span class="key key-f3 key-static"><span class="label label-default">F3</span></span><!--
+         --><span class="key key-f4 key-static"><span class="label label-default">F4</span></span><!--
          
-         --><span class="key key-f5"><span class="label">F5</span></span><!--
-         --><span class="key key-f6"><span class="label">F6</span></span><!--
-         --><span class="key key-f7"><span class="label">F7</span></span><!--
-         --><span class="key key-f8"><span class="label">F8</span></span><!--
+         --><span class="key key-f5 key-static"><span class="label label-default">F5</span></span><!--
+         --><span class="key key-f6 key-static"><span class="label label-default">F6</span></span><!--
+         --><span class="key key-f7 key-static"><span class="label label-default">F7</span></span><!--
+         --><span class="key key-f8 key-static"><span class="label label-default">F8</span></span><!--
          
-         --><span class="key key-f9"><span class="label">F9</span></span><!--
-         --><span class="key key-f10"><span class="label">F10</span></span><!--
-         --><span class="key key-f11"><span class="label">F11</span></span><!--
-         --><span class="key key-f12"><span class="label">F12</span></span>
+         --><span class="key key-f9 key-static"><span class="label label-default">F9</span></span><!--
+         --><span class="key key-f10 key-static"><span class="label label-default">F10</span></span><!--
+         --><span class="key key-f11 key-static"><span class="label label-default">F11</span></span><!--
+         --><span class="key key-f12 key-static"><span class="label label-default">F12</span></span>
           </div>
           <div class="row">
             <span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
@@ -277,10 +284,10 @@
          --><span class="key key-0"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-x2"><span class="label">Backspace</span></span>
+         --><span class="key key-x2 key-static"><span class="label label-default">Backspace</span></span>
           </div>
           <div class="row">
-            <span class="key key-x15"><span class="label">&#11134;</span></span><!--
+            <span class="key key-x15 key-static"><span class="label label-default">&#11134;</span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
@@ -293,10 +300,10 @@
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span id="enterIsoTop" class="key key-x15"><span class="label">Enter</span></span>
+         --><span id="enterIsoTop" class="key key-x15 key-static"><span class="label label-default">Enter</span></span>
           </div>
           <div class="row">
-            <span class="key key-x175"><span class="label">Caps</span></span><!--
+            <span class="key key-x175 key-static"><span class="label label-default">Caps</span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
@@ -309,10 +316,10 @@
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span id="enterIsoBottom" class="key key-x125"><span class="label"></span></span>
+         --><span id="enterIsoBottom" class="key key-x125 key-static"><span class="label label-default"></span></span>
           </div>
           <div class="row">
-            <span id="shiftLeft" class="key key-x125"><span class="label">&#8679;</span></span><!--
+            <span id="shiftLeft" class="key key-x125 key-static"><span class="label label-default">&#8679;</span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
@@ -324,75 +331,75 @@
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
          --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span id="shiftRight" class="key key-x275"><span class="label">&#8679;</span></span>
+         --><span id="shiftRight" class="key key-x275 key-static"><span class="label label-default">&#8679;</span></span>
           </div>
           <div class="row">
-            <span id="control" class="key key-x125 key-control"><span class="label">Ctrl</span></span><!--
-         --><span class="key key-x125"><span class="label">Win</span></span><!--
-         --><span class="key key-x125"><span class="label">Alt</span></span><!--
-         --><span class="key key-space key-x625"><span class="label"></span></span><!--
-         --><span id="altGr" class="key key-x125"><span class="label">Alt Gr</span></span><!--
-         --><span class="key key-x125"><span class="label">Fn</span></span><!--
-         --><span class="key key-x125"><span class="label">Menu</span></span><!--
-         --><span class="key key-x125"><span class="label">Ctrl</span></span>
+            <span id="control" class="key key-x125 key-control key-static"><span class="label label-default">Ctrl</span></span><!--
+         --><span class="key key-x125 key-static"><span class="label label-default">Win</span></span><!--
+         --><span class="key key-x125 key-static"><span class="label label-default">Alt</span></span><!--
+         --><span class="key key-space key-x625 key-static"><span class="label label-default"></span></span><!--
+         --><span id="altGr" class="key key-x125 key-static"><span class="label label-default">Alt Gr</span></span><!--
+         --><span class="key key-x125 key-static"><span class="label label-default">Fn</span></span><!--
+         --><span class="key key-x125 key-static"><span class="label label-default">Menu</span></span><!--
+         --><span class="key key-x125 key-static"><span class="label label-default">Ctrl</span></span>
           </div>
         </div>
         
         <div class="block-middle">
           <div class="row row-fn">
-            <span class="key key-printScreen"><span class="label">PrtSc</span></span><!--
-         --><span class="key key-scrollLock"><span class="label">ScLck</span></span><!--
-         --><span class="key key-pause"><span class="label">Pause</span></span>
+            <span class="key key-printScreen key-static"><span class="label label-default">PrtSc</span></span><!--
+         --><span class="key key-scrollLock key-static"><span class="label label-default">ScLck</span></span><!--
+         --><span class="key key-pause key-static"><span class="label label-default">Pause</span></span>
           </div>
           <div class="row">
-            <span class="key key-insert"><span class="label">Ins.</span></span><!--
-         --><span class="key key-home"><span class="label">Home</span></span><!--
-         --><span class="key key-pageUp"><span class="label">Up</span></span>
+            <span class="key key-insert key-static"><span class="label label-default">Ins.</span></span><!--
+         --><span class="key key-home key-static"><span class="label label-default">Home</span></span><!--
+         --><span class="key key-pageUp key-static"><span class="label label-default">Up</span></span>
           </div>
           <div class="row">
-            <span class="key key-del"><span class="label">Del.</span></span><!--
-         --><span class="key key-end"><span class="label">End</span></span><!--
-         --><span class="key key-pageDown"><span class="label">Down</span></span>
+            <span class="key key-del key-static"><span class="label label-default">Del.</span></span><!--
+         --><span class="key key-end key-static"><span class="label label-default">End</span></span><!--
+         --><span class="key key-pageDown key-static"><span class="label label-default">Down</span></span>
           </div>
           <div class="row"></div>
           <div class="row">
-            <span class="key key-arrowUp"><span class="label">&#8593;</span></span>
+            <span class="key key-arrowUp key-static"><span class="label label-default">&#8593;</span></span>
           </div>
           <div class="row">
-            <span class="key key-arrowLeft"><span class="label">&#8592;</span></span><!--
-         --><span class="key key-arrowDown"><span class="label">&#8595;</span></span><!--
-         --><span class="key key-arrowRight"><span class="label">&#8594;</span></span>
+            <span class="key key-arrowLeft key-static"><span class="label label-default">&#8592;</span></span><!--
+         --><span class="key key-arrowDown key-static"><span class="label label-default">&#8595;</span></span><!--
+         --><span class="key key-arrowRight key-static"><span class="label label-default">&#8594;</span></span>
           </div>
         </div>
         
         <div class="block-digits">
           <div class="row row-fn"></div>
           <div class="row">
-            <span class="key key-numLock"><span class="label">Lock</span></span><!--
-         --><span class="key key-divide"><span class="label">/</span></span><!--
-         --><span class="key key-multiply"><span class="label">*</span></span><!--
-         --><span class="key key-substract"><span class="label">-</span></span>
+            <span class="key key-numLock key-static"><span class="label label-default">Lock</span></span><!--
+         --><span class="key key-divide key-static"><span class="label label-default">/</span></span><!--
+         --><span class="key key-multiply key-static"><span class="label label-default">*</span></span><!--
+         --><span class="key key-substract key-static"><span class="label label-default">-</span></span>
           </div>
           <div class="row">
-            <span class="key key-7"><span class="label">7</span></span><!--
-         --><span class="key key-8"><span class="label">8</span></span><!--
-         --><span class="key key-9"><span class="label">9</span></span>
+            <span class="key key-7 key-static"><span class="label label-default">7</span></span><!--
+         --><span class="key key-8 key-static"><span class="label label-default">8</span></span><!--
+         --><span class="key key-9 key-static"><span class="label label-default">9</span></span>
           </div>
           <div class="row">
-            <span class="key key-4"><span class="label">4</span></span><!--
-         --><span class="key key-5"><span class="label">5</span></span><!--
-         --><span class="key key-6"><span class="label">6</span></span><!--
-         --><span class="key key-add key-vertical key-x2"><span class="label">+</span></span>
+            <span class="key key-4 key-static"><span class="label label-default">4</span></span><!--
+         --><span class="key key-5 key-static"><span class="label label-default">5</span></span><!--
+         --><span class="key key-6 key-static"><span class="label label-default">6</span></span><!--
+         --><span class="key key-add key-static key-vertical key-x2"><span class="label label-default">+</span></span>
           </div>
           <div class="row">
-            <span class="key key-1"><span class="label">1</span></span><!--
-         --><span class="key key-2"><span class="label">2</span></span><!--
-         --><span class="key key-3"><span class="label">3</span></span>
+            <span class="key key-1 key-static"><span class="label label-default">1</span></span><!--
+         --><span class="key key-2 key-static"><span class="label label-default">2</span></span><!--
+         --><span class="key key-3 key-static"><span class="label label-default">3</span></span>
           </div>
           <div class="row">
-            <span class="key key-0 key-x2"><span class="label">0</span></span><!--
-         --><span class="key key-separator"><span class="label">.</span></span><!--
-         --><span class="key key-enter key-vertical key-x2"><span class="label">Enter</span></span>
+            <span class="key key-0 key-static key-x2"><span class="label label-default">0</span></span><!--
+         --><span class="key key-separator key-static"><span class="label label-default">.</span></span><!--
+         --><span class="key key-enter key-static key-vertical key-x2"><span class="label label-default">Enter</span></span>
           </div>
         </div>
         
@@ -400,8 +407,6 @@
       
       
     </template>
-    
-    
 
   </template>
 
@@ -584,7 +589,7 @@
               // Note: Keys on left shoud be accessed using the right shift key, and inversely
               this._keyElementPerCharacter.set(letters[0].toLowerCase(), {
                   keys: [keyElement],
-                  shift: true,
+                  shift: false,
                   altGr: false,
               });
               this._keyElementPerCharacter.set(letters[0].toUpperCase(), {

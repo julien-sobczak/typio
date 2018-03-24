@@ -1,4 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-static-drill-creator">
@@ -7,11 +10,49 @@
 
       :host {
         display: block;
+        text-align: center;
+      }
+      
+      paper-input#name {
+        --primary-text-color: var(--typio-bg-color);
+        --secondary-text-color: white;
+        --paper-input-container-color: white;
+        --paper-input-container-focus-color: var(--typio-bg-color);
+        --paper-font-subhead_-_font-size: 140%;
+        
+        width: 600px;
+        margin: 0 auto;
+      }
+      
+      paper-textarea#input {
+        --primary-text-color: var(--typio-bg-color);
+        --secondary-text-color: white;
+        --paper-input-container-color: white;
+        --paper-input-container-focus-color: var(--typio-bg-color);
+        
+        width: 90%;
+        margin: 0 auto;
+        text-align: left;
+      }
+      
+      typio-button {
+        --typio-secondary-color: black;
       }
 
     </style>
+    
+    <paper-input id="name" label="Descriptive name" no-label-float></paper-input>
 
-    <h2>Static Drill Creator</h2>
+    <p class="instructions"><iron-icon icon="help"></iron-icon> 
+      Enter the sample characters to use to generate the drill.
+      Press the same character multiple times to make it more frequent in the generated drills.
+    </p>
+    
+    <paper-textarea value="{{content}}"></paper-textarea>
+    
+    <typio-button on-click="tryIt" light><iron-icon icon="check-box"></iron-icon> Try</typio-button>
+    <typio-button on-click="save" light><iron-icon icon="save"></iron-icon> Save</typio-button>
+    
   </template>
 
   <script>
@@ -23,8 +64,23 @@
       static get is() { return 'typio-static-drill-creator'; }
       static get properties() {
         return {
+          
+          "content": {
+              type: String,
+              value: "Your static content here..."
+          },
+          
         };
       }
+      
+      save() {
+        // TODO
+      }
+      
+      tryIt() {
+        // TODO
+      }
+      
     }
 
     window.customElements.define(TypioStaticDrillCreator.is, TypioStaticDrillCreator);

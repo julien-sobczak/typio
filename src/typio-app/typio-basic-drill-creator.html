@@ -11,69 +11,56 @@
 
       :host {
         display: block;
+        text-align: center;
       }
       
       typio-keyboard {
         --typio-key-size: 0.50in;
       }
       
-      ul.selection {
-        height: 50px;
-      }
-      ul.selection li {
-        list-style-type: none;
-        display: inline-block;
-        font-size: 26px;
-      }
-      ul.selection li.size-x-small .character { font-size: 0.8em; width: 30px; height: 30px; }
-      ul.selection li.size-small   .character { font-size: 0.8em; width: 30px; height: 30px; }
-      ul.selection li.size-medium  .character { font-size: 1em;   width: 35px; height: 35px; }
-      ul.selection li.size-large   .character { font-size: 1.2em; width: 40px; height: 40px; }
-      ul.selection li.size-x-large .character { font-size: 1.4em; width: 45px; height: 45px; }
-      
-      ul.selection li .character {
-        display: inline-block;
-        background-color: var(--typio-bg-color);
-        color: white;
-        border-radius: 50%;
-        padding: 3px;
-        margin-left: 5px;
-        margin-right: 20px;
-        text-align: center;
-      }
-      ul.selection li .count {
-        font-size: 12px;
-        color: white;
+      paper-input#name {
+        --primary-text-color: var(--typio-bg-color);
+        --secondary-text-color: white;
+        --paper-input-container-color: white;
+        --paper-input-container-focus-color: var(--typio-bg-color);
+        --paper-font-subhead_-_font-size: 140%;
+        
+        width: 600px;
+        margin: 0 auto;
       }
       
-      paper-input {
+      paper-input#input {
         --primary-text-color: var(--typio-bg-color);
         --secondary-text-color: white;
         --paper-input-container-color: white;
         --paper-input-container-focus-color: var(--typio-bg-color);
         
-        width: 100%;
+        width: 90%;
         margin: 0 auto;
+        text-align: left;
+      }
+            
+      typio-button {
+        --typio-secondary-color: black;
       }
       
     </style>
     
-    <paper-input id="input" label="Characters" value="{{characters}}" on-value-changed="_updateKeyboard">
+    <paper-input id="name" label="Descriptive name" no-label-float></paper-input>
+    
+    <p class="instructions"><iron-icon icon="help"></iron-icon> 
+      Enter the sample characters to use to generate the drill.
+      Press the same character multiple times to make it more frequent in the generated drills.
+    </p>
+    
+    <paper-input id="input" label="Characters" value="{{characters}}">
       <iron-icon icon="hardware:keyboard" slot="prefix"></iron-icon>
     </paper-input>
     
-    <!--
-    <ul class="selection">
-      <template is="dom-repeat" items="{{enteredKeys}}">
-        <li class$="size-{{item.size}}">
-          <span class="weight">{{item.count}}</span>
-          <span class="character">{{item.character}}</span>          
-        </li>
-      </template>
-    </ul>
-    -->
-    
     <typio-keyboard id="keyboard" mixed-cases clickable on-key-clicked="_registerClickedKey"></typio-keyboard>
+    
+    <typio-button on-click="tryIt" light><iron-icon icon="check-box"></iron-icon> Try</typio-button>
+    <typio-button on-click="save" light><iron-icon icon="save"></iron-icon> Save</typio-button>
     
   </template>
 
@@ -86,24 +73,6 @@
       static get is() { return 'typio-basic-drill-creator'; }
       static get properties() {
         return {
-          
-          /** 
-           * Should we listen for key pressed?
-           */
-          listening: {
-            type: Boolean,
-            value: false
-          },
-          
-          /**
-           * List of characters pressed/clicked by the user.
-           * 
-           * Ex: { 'a' => 2, 'A' => 4, ... }
-           */
-          _enteredKeys: {
-            type: Map,
-            value: new Map()
-          },
           
           /**
           * Same as `_enteredKeys` but as array.
@@ -120,7 +89,8 @@
            */
           characters: {
             type: String,
-            value: "test"
+            value: "test",
+            observer: "_charactersChanged"
           },
           
         };
@@ -128,45 +98,6 @@
       
       ready() {
         super.ready();
-        
-        document.addEventListener('keypress', (event) => {
-          if (!this.listening) return;
-          
-          // See https://developer.mozilla.org/fr/docs/Web/API/KeyboardEvent
-          const keyName = event.key;
-          const keyCode = event.code;
-          const ctrlKey = event.ctrlKey;
-          const shiftKey = event.shiftKey;
-          const altKey = event.altKey;
-
-          if (keyName === 'Control') {
-            // not alert when only Control key is pressed.
-            return;
-          }
-
-          if (event.ctrlKey) {
-            // Even though event.key is not 'Control' (i.e. 'a' is pressed),
-            // event.ctrlKey may be true if Ctrl key is pressed at the time.
-            ;
-          } else {
-            this._registerPressedKey(keyName);
-            event.preventDefault();
-            return false;
-          }
-
-        }, false);
-      }
-      
-      
-      // 
-      // State management
-      //
-      
-      startListening() {
-        this.listening = true;
-      }
-      stopListening() {
-        this.listening = false;
       }
       
       
@@ -175,39 +106,48 @@
       //
       
       _registerClickedKey(e, detail) {
-        if (!this.listening) return;
-        this._registerPressedKey(detail.character);
+        this.characters += detail.character;
       }
       
-      _registerPressedKey(character) {
-        this.$.keyboard.pressKeys(character);
-        let count = this._enteredKeys.get(character) || 0;
-        this._enteredKeys.set(character, count + 1);
+      _charactersChanged() {
+        
+        // Count each character
+        const lettersCount = new Map();
+        for (let i = 0; i < this.characters.length; i++) {
+          const character = this.characters[i];
+          let newCount = lettersCount.get(character) || 0;
+          lettersCount.set(character, newCount + 1);
+        }
         
         // Determine maximum occurrence
         let maxCount = 0;
-        this._enteredKeys.forEach((count, character) => {
+        lettersCount.forEach((count, character) => {
           if (count > maxCount) maxCount = count;
         })
         
         // Calculate the array used by dom-repeat
-        const sizes = ['x-small', 'small', 'medium', 'large', 'x-large'];
-        let newEnteredKeys = [];
-        this._enteredKeys.forEach((count, character) => {
+        this.$.keyboard.colorize(c => {
+          // Ignore untyped characters
+          if (!lettersCount.has(c)) return false;
           
-          const size = Math.floor(count * 100 / maxCount / 20.1); // Should be between 0 and 4 inclusive 
-          newEnteredKeys.push({
-            'character': character,
-            'count': count,
-            'size': sizes[size]
-          });
+          const count = lettersCount.get(c);
+          let ratio = Math.floor(count * 100 / maxCount / 10); // [0,10)
+          if (ratio == 0) ratio = 1;
+          if (ratio == 10) ratio = 9;
+          // See https://material.io/guidelines/style/color.html#color-color-palette
+          return 'var(--paper-green-' + (ratio * 100) + ')';
         });
-        this.enteredKeys = newEnteredKeys;
+        
       }
       
-      _updateKeyboard() {
-        console.log('Input changed', this.characters);
+      save() {
+        // TODO
       }
+      
+      tryIt() {
+        // TODO
+      }
+      
     }
 
     window.customElements.define(TypioBasicDrillCreator.is, TypioBasicDrillCreator);

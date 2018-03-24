@@ -1,0 +1,511 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="/src/typio-app/shared-styles.html">
+<link rel="import" href="/src/typio-app/typio-button.html">
+<link rel="import" href="/src/typio-app/typio-collapsable-radio-group.html">
+<link rel="import" href="/src/typio-app/typio-project-input.html">
+<link rel="import" href="/src/typio-app/typio-loader.html">
+
+<dom-module id="typio-catalog-code">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+        text-align: center;
+      }
+      
+      /* TODO extract into typio-notice-text */
+      .notice {
+        font-size: 2em;
+        font-weight: bold;
+        animation: blink-animation 2.4s linear infinite;
+      }
+      .notice b {
+        font-style: italic;
+        font-weight: normal;
+      }
+      @keyframes blink-animation {
+        0%, 30% { opacity: 100; }
+        50% { opacity: 0; }
+        70%, 100% { opacity: 100; }
+      }
+
+      /*
+       * Buttons
+       */
+
+      .buttons {
+        position: absolute;
+        width: 100%;
+        bottom: 10vh;
+        text-align: center;
+      }
+      #intro .buttons {
+        opacity: 0;
+        transition: opacity 2s linear;
+      }
+      #intro.completed .buttons {
+        opacity: 1;
+      }
+      typio-button {
+        display: inline-block;
+      }
+
+
+      .type {
+        padding: 20px 20px 40px;
+        margin-left: 25px;
+        margin-right: 25px;
+      }
+
+      /* Manage the content selection workflow */
+      .type .step {
+        display: none;
+      }
+      .type.step0 .step0 { display: block; }
+      .type.step1 .step1 { display: block; }
+      .type.step2 .step2 { display: block; }
+      .type.step3 .step3 { display: block; }
+      .type.step4 .step4 { display: block; }
+
+
+      /* Selection */
+      .selection {
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .selection .entry {
+        display: none;
+        position: relative;
+        font-size: 90%;
+        padding: 10px 20px;
+        padding-right: 0px;
+        background: rgba(0, 0, 0, 0.5);
+        margin-right: 20px;
+      }
+      .selection .entry a {
+        text-decoration: none;
+        color: white !important;
+      }
+      .type .selection .entry:nth-child(1) { display: inline-block; }
+      .type.step2 .selection .entry:nth-child(2) { display: inline-block; }
+      .type.step3 .selection .entry:nth-child(2) { display: inline-block; }
+      .type.step3 .selection .entry:nth-child(3) { display: inline-block; }
+
+      .selection .entry iron-icon {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+
+    </style>
+
+    <iron-ajax auto url="{{_urlMetadata}}" handle-as="json" on-response="_onMetadataLoaded"></iron-ajax>
+    <iron-ajax auto url="{{_urlContent}}" handle-as="text" on-response="_onContentLoaded"></iron-ajax>
+    <iron-ajax auto url="{{_urlMetadataSurprise}}" handle-as="json" on-response="_onMetadataSurpriseLoaded"></iron-ajax>
+
+    <div class$="type step[[step]]" data-step="1">
+
+      <div class="selection">
+        <div class="entry">
+          <a href="/catalog/menu">
+            Back to Catalog
+            <iron-icon icon="backspace"></iron-icon>
+          </a>
+        </div>
+        <div class="entry">
+          <a on-click="_goToStep1">
+            [[selectedProgrammingLanguage]]
+            <iron-icon icon="backspace"></iron-icon>
+          </a>
+        </div>
+        <div class="entry">
+          <a on-click="_goToStep2">
+            [[selectedProject]]
+            <iron-icon icon="backspace"></iron-icon>
+          </a>
+        </div>
+      </div>
+
+      <div class="step step1">
+        <typio-collapsable-radio-group id="programmingLanguages"
+            elements="{{programmingLanguages}}"
+            on-paper-radio-group-changed="_programmingLanguageSelected"
+            show-description="true">
+        </typio-collapsable-radio-group>
+      </div>
+
+      <div class="step step2">
+        <typio-collapsable-radio-group id="projects"
+            elements="{{projects}}"
+            on-paper-radio-group-changed="_projectSelected"
+            show-description="true"
+            layout="medium">
+        </typio-collapsable-radio-group>
+      </div>
+
+      <div class="step step3">
+        <typio-project-input id="project"
+            metadata="{{metadata}}"
+            on-file-selected="_fileSelected">
+      </div>
+
+      <div class="step step4">
+        <p class="notice">Downloading the file <b>[[selectedFilename]]</b>...</p>
+      </div>
+
+    </div>
+  
+    <template is="dom-if" if="{{isLoading}}">
+      <typio-loader></typio-loader>
+    </template>
+
+  </template>
+
+  <script>
+
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * Math.floor(max));
+    }
+
+    /**
+     * Catalog screen.
+     *
+     * Let the user select the text to touch type from a list of ressources.
+     *
+     * @event entry-selected fired after the user has made his choice and
+     *                       the content to touch type is loaded.
+     * @customElement
+     * @polymer
+     */
+    class TypioCatalogCode extends Polymer.Element {
+
+      static get is() { return 'typio-catalog-code'; }
+      static get properties() {
+        return {
+          
+          route: {
+            type: Object
+          },
+          
+          /**
+           * JSON representing the file `/catalog.json`.
+           */
+          catalog: {
+            type: Object,
+            observer: '_onLoadCatalog'
+          },
+
+          /**
+           * Current step in the workflow.
+           */
+          step: {
+            type: Number,
+            value: 1
+          },
+
+          /**
+           * Sorted list of programming languages present in `catalog`.
+           */
+          programmingLanguages: {
+            type: Array,
+            value: []
+          },
+
+          /**
+           * The selected language among the 'programmingLanguages' list
+           */
+          selectedProgrammingLanguage: {
+            type: String
+          },
+
+          /**
+           * Sorted list of Github projects present in `catalog`.
+           */
+          projects: {
+            type: Array,
+            value: []
+          },
+
+          /**
+           * The selected project among the 'projects' list
+           */
+          selectedProject: {
+            type: String
+          },
+
+          /**
+           * URL to download the metadata of a given ressource.
+           */
+          _urlMetadata: {
+            type: String,
+            value: null
+          },
+
+          /**
+           * URL to download the metadata when using the "Surprise Me".
+           */
+          _urlMetadataSurprise: {
+            type: String,
+            value: null
+          },
+
+          /**
+           * URL to download the content of a given ressource.
+           */
+          _urlContent: {
+            type: String,
+            value: null
+          },
+
+          /**
+           * JSON describing a Github project.
+           *
+           * @see /content/github/*.json for examples.
+           */
+          metadata: {
+            type: Object,
+            value: null // will be loaded once the user select a Github project
+          },
+
+        };
+      }
+
+      /**
+       * Called when the `catalog.json` has finished loaded.
+       */
+      _onLoadCatalog() {
+        if (!this.catalog) return;
+
+        let newProgrammingLanguages = new Array();
+
+        // Traverse the catalog to populate lists.
+        this.catalog.forEach(entry => {
+
+          if (entry.active === false) return;
+
+          if (entry.origin === 'github') {
+            let found = false;
+            for (let i = 0; i < newProgrammingLanguages.length; i++) {
+              if (newProgrammingLanguages[i].key == entry.language) {
+                let programmingLanguage = newProgrammingLanguages[i];
+                found = true;
+                programmingLanguage.count++;
+                programmingLanguage.description = programmingLanguage.count + ' projects';
+                break;
+              }
+            }
+            if (!found) {
+              newProgrammingLanguages.push({
+                'key': entry.language,
+                'name': entry.language,
+                'count': 1,
+                'description': '1 project'
+              });
+            }
+          }
+
+        });
+
+        this.programmingLanguages = newProgrammingLanguages.sort((a,b) => a.count > b.count ? -1 : a.count < b.count ? 1 : 0);
+      }
+
+
+      /**
+       * Called when the user selects a programming language.
+       */
+      _programmingLanguageSelected(value) {
+        this.selectedProgrammingLanguage = this.$.programmingLanguages.selected;
+        this.projects = this._getProjects(this.selectedProgrammingLanguage);
+        this.step = 2;
+      }
+
+      _getProjects(programmingLanguage) {
+        // Search Github projects matching the selected language
+        let projects = new Array();
+        this.catalog.forEach(entry => {
+
+          if (entry.active === false) return;
+
+          if (entry.origin === 'github' && entry.language == programmingLanguage) {
+            projects.push({
+              'key': entry.name,
+              'name': entry.name,
+              'description': entry.url.replace('https://github.com/', '')
+            });
+          }
+        });
+        // Sort by project name
+        return projects.sort((a,b) => a.name.localeCompare(b.name));
+      }
+
+      /**
+       * Called when the user selects a project.
+       */
+      _projectSelected(value) {
+        this.selectedProject = this.$.projects.selected;
+
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'github' && entry.name == this.selectedProject) {
+            let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
+            let commit = entry.commit
+            let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
+            this._urlMetadata = null; // force change
+            this._urlMetadata = '/content/github/' + slug + '.json';
+            this.isLoading = true;
+          }
+        });
+
+      }
+
+      /* Fallback when the attribut 'slug' is not defined in 'catalog.json' */
+      _slug(text) {
+        let slug = text.replace(/\s/g, '-').replace(/'/g, '');
+        return slug;
+      }
+
+      /*
+       * Move between the workflow.
+       */
+       
+      _goToStep1() {
+        this._resetProgrammingLanguage();
+        this._resetProject();
+        this.step = 1;
+      }
+      _goToStep2() {
+        this._resetProject();
+        this.step = 2;
+      }
+
+      _resetProgrammingLanguage() {
+        this.selectedProgrammingLanguage = null;
+        this.$.programmingLanguages.selected = null;
+      }
+      _resetProject() {
+        this.selectedProject = null;
+        this.$.projects.selected = null;
+      }
+
+      /* Metadata */
+      _onMetadataLoaded(e, data) {
+        const metadata = data.response;
+        this.isLoading = false;
+        this.metadata = metadata;
+        this.step = 3;
+      }
+
+      _fileSelected(e) {
+        let d = e.detail;
+        this.selectFile(d.filepath, d.filename, d.extension);
+      }
+
+      selectFile(filepath, filename, extension) {
+        this.selectedFile = filepath;
+        this.selectedFilename = filename;
+        this.selectedFileExtension = extension;
+        this.selectedRealProgrammingLanguage = LANGUAGE_PER_EXTENSIONS.has(this.selectedFileExtension) ?
+          LANGUAGE_PER_EXTENSIONS.get(this.selectedFileExtension) : 'undefined';
+
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'github' && entry.name == this.selectedProject) {
+            let organizationProject = entry.url.replace('https://github.com/', '');
+            let [organization, project] = entry.url.replace('https://github.com/', '').split('/');
+            let commit = entry.commit;
+            let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
+
+            // Load fron GitHub (CORS is supported)
+            // Ex: https://raw.githubusercontent.com/apache/flume/trunk/flume-ng-clients/pom.xml
+            let url = 'https://raw.githubusercontent.com/' + organizationProject + '/' + entry.commit + '/' + this.selectedFile;
+
+            if (entry.offline) {
+              // Load from local instead
+              url = '/content/github/' + slug + '/' + this.selectedFile;
+            }
+
+            console.log('[typio-catalog] loading ' + url);
+            this._urlContent = null; // force change
+            this._urlContent = url;
+            this.isLoading = true;
+            this.step = 4;
+            console.log('[typio-catalog] selectFile ' + this.selectedFile + '...');
+          }
+        });
+      }
+
+      /**
+       * Called when the selected content has finished loaded.
+       */
+      _onContentLoaded(e, data) {
+        const content = data.response;
+        this.isLoading = false;
+
+        this.step = 3;
+
+        let detail = {
+          type: 'code',
+          language: this.selectedRealProgrammingLanguage,
+          resource: this.selectedProject,
+          resourceItem: this.selectedFile,
+          content: content
+        };
+        this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
+      }
+
+      /**
+       * Traverse the catalog matching already selected criteria to find a resource
+       * (a file, a chapter, ...).
+       */
+      surpriseMe() {
+        // We need to determine a source file
+
+        if (!this.selectedProgrammingLanguage) {
+          this.selectedProgrammingLanguage = this.programmingLanguages[getRandomInt(this.programmingLanguages.length)].name;
+        }
+
+        if (!this.selectedProject) {
+          let projects = this._getProjects(this.selectedProgrammingLanguage);
+          this.selectedProject = projects[getRandomInt(projects.length)].name;
+        }
+
+        console.log('[typio-catalog] Using randomly selected project ' + this.selectedProject + ' (' + this.selectedProgrammingLanguage + ')');
+
+        // Retrieve the project JSON file to select a file randomly
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'github' && entry.name == this.selectedProject) {
+            let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
+            let commit = entry.commit
+            let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
+            this._urlMetadataSurprise = null; // force change
+            this._urlMetadataSurprise = '/content/github/' + slug + '.json';
+            this.isLoading = true;
+          }
+        });
+      }
+
+      /**
+       * Metadata (only when using the SurpriseMe button).
+       *
+       * Select randomly an entry in the metadata file.
+       */
+      _onMetadataSurpriseLoaded(e, data) {
+        const metadata = data.response;
+        this.isLoading = false;
+        console.log('[typio-catalog] _onMetadataSurpriseLoaded');
+        this.metadata = metadata;
+        let file = this.metadata.files[getRandomInt(metadata.files.length)]; 
+        let filename = file.path.split('/').reverse()[0];
+        this.selectFile(file.path, filename, file.extension);
+      }
+
+    }
+
+    window.customElements.define(TypioCatalogCode.is, TypioCatalogCode);
+  </script>
+</dom-module>

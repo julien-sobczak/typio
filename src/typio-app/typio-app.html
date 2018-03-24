@@ -64,7 +64,7 @@
 
     <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
       <typio-intro name="intro"></typio-intro>
-      <typio-catalog name="catalog" on-entry-selected="_initCodeEditor"></typio-catalog>
+      <typio-catalog name="catalog" on-entry-selected="_initCodeEditor" route="{{subroute}}"></typio-catalog>
       <typio-editor id="editor" name="editor" route="{{route}}"></typio-editor>
       <typio-drill-runner id="drillRunner" name="drillRunner" route="{{subroute}}"></typio-drill-runner>
       <typio-drill-creator id="drillCreator" name="drillCreator" route="{{subroute}}"></typio-drill-creator>

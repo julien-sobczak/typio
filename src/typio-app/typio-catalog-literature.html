@@ -1,0 +1,485 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="/src/typio-app/shared-styles.html">
+<link rel="import" href="/src/typio-app/typio-button.html">
+<link rel="import" href="/src/typio-app/typio-collapsable-radio-group.html">
+<link rel="import" href="/src/typio-app/typio-book-input.html">
+<link rel="import" href="/src/typio-app/typio-loader.html">
+
+<dom-module id="typio-catalog-literature">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+        text-align: center;
+      }
+
+      /* TODO extract into typio-notice-text */
+      .notice {
+        font-size: 2em;
+        font-weight: bold;
+        animation: blink-animation 2.4s linear infinite;
+      }
+      .notice b {
+        font-style: italic;
+        font-weight: normal;
+      }
+      @keyframes blink-animation {
+        0%, 30% { opacity: 100; }
+        50% { opacity: 0; }
+        70%, 100% { opacity: 100; }
+      }
+
+      /*
+       * Buttons
+       */
+
+      .buttons {
+        position: absolute;
+        width: 100%;
+        bottom: 10vh;
+        text-align: center;
+      }
+      #intro .buttons {
+        opacity: 0;
+        transition: opacity 2s linear;
+      }
+      #intro.completed .buttons {
+        opacity: 1;
+      }
+      typio-button {
+        display: inline-block;
+      }
+
+
+      .type {
+        padding: 20px 20px 40px;
+        margin-left: 25px;
+        margin-right: 25px;
+      }
+
+      /* Manage the content selection workflow */
+      .type .step {
+        display: none;
+      }
+      .type.step0 .step0 { display: block; }
+      .type.step1 .step1 { display: block; }
+      .type.step2 .step2 { display: block; }
+      .type.step3 .step3 { display: block; }
+      .type.step4 .step4 { display: block; }
+
+
+      /* Selection */
+      .selection {
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .selection .entry {
+        display: none;
+        position: relative;
+        font-size: 90%;
+        padding: 10px 20px;
+        padding-right: 0px;
+        background: rgba(0, 0, 0, 0.5);
+        margin-right: 20px;
+      }
+      .selection .entry a {
+        text-decoration: none;
+        color: white !important;
+      }
+      .type .selection .entry:nth-child(1) { display: inline-block; }
+      .type.step2 .selection .entry:nth-child(2) { display: inline-block; }
+      .type.step3 .selection .entry:nth-child(2) { display: inline-block; }
+      .type.step3 .selection .entry:nth-child(3) { display: inline-block; }
+
+      .selection .entry iron-icon {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+
+    </style>
+
+    <iron-ajax auto url="{{_urlMetadata}}" handle-as="json" on-response="_onMetadataLoaded"></iron-ajax>
+    <iron-ajax auto url="{{_urlContent}}" handle-as="text" on-response="_onContentLoaded"></iron-ajax>
+    <iron-ajax auto url="{{_urlMetadataSurprise}}" handle-as="json" on-response="_onMetadataSurpriseLoaded"></iron-ajax>
+
+    <div class$="type step[[step]]">
+
+      <div class="selection">
+        <div class="entry">
+          <a href="/catalog/menu">
+            Back to Catalog
+            <iron-icon icon="backspace"></iron-icon>
+          </a>
+        </div>
+        <div class="entry">
+          <a on-click="_goToStep1">
+            [[selectedSpokenLanguage]]
+            <iron-icon icon="backspace"></iron-icon>
+          </a>
+        </div>
+        <div class="entry">
+          <a on-click="_goToStep2">
+            [[selectedBook]]
+            <iron-icon icon="backspace"></iron-icon>
+          </a>
+        </div>
+      </div>
+
+      <div class="step step1">
+        <typio-collapsable-radio-group id="spokenLanguages"
+            elements="{{spokenLanguages}}"
+            on-paper-radio-group-changed="_spokenLanguageSelected"
+            show-description="true">
+        </typio-collapsable-radio-group>
+      </div>
+
+      <div class="step step2">
+        <typio-collapsable-radio-group id="books"
+            elements="{{books}}"
+            on-paper-radio-group-changed="_bookSelected"
+            show-description="true"
+            layout="large">
+        </typio-collapsable-radio-group>
+      </div>
+
+      <div class="step step3">
+        <typio-book-input id="book"
+            metadata="{{metadata}}"
+            on-chapter-selected="_chapterSelected">
+        </typio-book-input>
+      </div>
+
+      <div class="step step4">
+        <p class="notice">Downloading the book <b>[[selectedBook]]</b>...</p>
+      </div>
+
+    </div>
+
+    <template is="dom-if" if="{{isLoading}}">
+      <typio-loader></typio-loader>
+    </template>
+
+  </template>
+
+  <script>
+
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * Math.floor(max));
+    }
+
+    /**
+     * Catalog screen.
+     *
+     * Let the user select the text to touch type from a list of ressources.
+     *
+     * @event entry-selected fired after the user has made his choice and
+     *                       the content to touch type is loaded.
+     * @customElement
+     * @polymer
+     */
+    class TypioCatalogLiterature extends Polymer.Element {
+
+      static get is() { return 'typio-catalog-literature'; }
+      static get properties() {
+        return {
+          /**
+           * JSON representing the file `/catalog.json`.
+           */
+          catalog: {
+            type: Object,
+            observer: '_onLoadCatalog'
+          },
+
+          /**
+           * Current step in the workflow.
+           */
+          step: {
+            type: Number,
+            value: 1
+          },
+
+          /**
+           * Sorted list of spoken languages present in `catalog`.
+           */
+          spokenLanguages: {
+            type: Array,
+            value: []
+          },
+
+          /**
+           * The selected language among the 'spokenLanguages' list
+           */
+          selectedSpokenLanguage: {
+            type: String
+          },
+
+          /**
+           * Sorted list of books present in `catalog`.
+           */
+          books: {
+            type: Array,
+            value: []
+          },
+
+          /**
+           * The selected book among the 'books' list
+           */
+          selectedBook: {
+            type: String
+          },
+
+          /**
+           * URL to download the metadata of a given ressource.
+           */
+          _urlMetadata: {
+            type: String,
+            value: null
+          },
+
+          /**
+           * URL to download the metadata when using the "Surprise Me".
+           */
+          _urlMetadataSurprise: {
+            type: String,
+            value: null
+          },
+
+          /**
+           * URL to download the content of a given ressource.
+           */
+          _urlContent: {
+            type: String,
+            value: null
+          },
+
+          /**
+           * JSON describing a Gutenberg book.
+           *
+           * @see /content/gutenberg/*.json for examples.
+           */
+          metadata: {
+            type: Object,
+            value: null // will be loaded once the user select a Gutenberg book
+          }
+
+        };
+      }
+
+      /**
+       * Called when the `catalog.json` has finished loaded.
+       */
+      _onLoadCatalog() {
+        if (!this.catalog) return;
+
+        let newSpokenLanguages = new Array();
+
+        // Traverse the catalog to populate lists.
+        this.catalog.forEach(entry => {
+
+          if (entry.active === false) return;
+
+          if (entry.origin === 'gutenberg') {
+            let found = false;
+            for (let i = 0; i < newSpokenLanguages.length; i++) {
+              let spokenLanguage = newSpokenLanguages[i];
+              if (spokenLanguage.key == entry.language) {
+                found = true;
+                spokenLanguage.count++;
+                spokenLanguage.description = spokenLanguage.count + ' books';
+                break;
+              }
+            }
+            if (!found) {
+              newSpokenLanguages.push({
+                'key': entry.language,
+                'name': entry.language,
+                'count': 1,
+                'description': '1 book'
+              });
+            }
+          }
+        });
+
+        this.spokenLanguages = newSpokenLanguages.sort((a,b) => a.count > b.count ? -1 : a.count < b.count ? 1 : 0);
+      }
+
+      /**
+       * Called when the user select a spoken language.
+       */
+      _spokenLanguageSelected(value) {
+        this.selectedSpokenLanguage = this.$.spokenLanguages.selected;
+        this.books = this._getBooks(this.selectedSpokenLanguage);
+        this.step = 2;
+      }
+
+      _getBooks(spokenLanguage) {
+        // Search gutenberg books matching the selected language
+        let books = new Array();
+        this.catalog.forEach(entry => {
+
+          if (entry.active === false) return;
+
+          if (entry.origin === 'gutenberg' && entry.language == spokenLanguage) {
+            books.push({
+              'key': entry.title,
+              'name': entry.title,
+              'description': entry.author
+            });
+          }
+        });
+        // Sort by book title
+        return books.sort((a,b) => a.name.localeCompare(b.name));
+      }
+
+      /**
+       * Called when the user selects a book.
+       */
+      _bookSelected(value) {
+        this.selectedBook = this.$.books.selected;
+
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
+            let slug = entry.slug ? entry.slug : this._slug(entry.title);
+            this._urlMetadata = null; // force change
+            this._urlMetadata = '/content/gutenberg/' + slug + '.json';
+            this.isLoading = true;
+          }
+        });
+      }
+
+      /* Fallback when the attribut 'slug' is not defined in 'catalog.json' */
+      _slug(text) {
+        let slug = text.replace(/\s/g, '-').replace(/'/g, '');
+        return slug;
+      }
+
+      /*
+       * Move between the workflow.
+       */
+
+      _goToStep1() {
+        this._resetSpokenLanguage();
+        this._resetBook();
+        this.step = 1;
+      }
+      _goToStep2() {
+        this._resetBook();
+        this.step = 2;
+      }
+
+      _resetSpokenLanguage() {
+        this.selectedSpokenLanguage = null;
+        this.$.spokenLanguages.selected = null;
+      }
+      _resetBook() {
+        this.selectedBook = null;
+        this.$.books.selected = null;
+      }
+
+      /* Metadata */
+      _onMetadataLoaded(e, data) {
+        const metadata = data.response;
+        this.isLoading = false;
+        this.metadata = metadata;
+        this.step = 3;
+      }
+
+      _chapterSelected(e) {
+        let d = e.detail;
+        this.selectChapter(d.chapterTitle, d.startLine, d.endLine);
+      }
+
+      selectChapter(chapterTitle, startLine, endLine) {
+        this.selectedChapter = chapterTitle;
+        this.startLine = startLine;
+        this.endLine = endLine;
+
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
+            let slug = entry.slug ? entry.slug : this._slug(entry.title);
+            this._urlContent = null; // force change
+            this._urlContent = '/content/gutenberg/' + slug + '.txt';
+            this.isLoading = true;
+            this.step = 4;
+            console.log('[typio-catalog] selectChapter ' + this.selectedBook + '...');
+          }
+        });
+      }
+
+      /**
+       * Called when the selected content has finished loaded.
+       */
+      _onContentLoaded(e, data) {
+        const content = data.response;
+        this.isLoading = false;
+
+        this.step = 3;
+
+        let detail = {
+          type: 'literature',
+          language: this.selectedSpokenLanguage,
+          resource: this.selectedBook,
+          resourceItem: this.selectedChapter,
+          content: content.split('\n').slice(this.startLine - 1, this.endLine).join('\n')
+        };
+        this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
+      }
+
+      /**
+       * Traverse the catalog matching already selected criteria to find a resource
+       * (a file, a chapter, ...).
+       */
+      surpriseMe() {
+        // We need to determine a chapter excerpt
+
+        if (!this.selectedSpokenLanguage) {
+          this.selectedSpokenLanguage = this.spokenLanguages[getRandomInt(this.spokenLanguages.length)].name;
+        }
+
+        if (!this.selectedBook) {
+          let books = this._getBooks(this.selectedSpokenLanguage);
+          this.selectedBook = books[getRandomInt(books.length)].name;
+        }
+
+        console.log('[typio-catalog] Using randomly selected book ' + this.selectedBook + ' (' + this.selectedSpokenLanguage + ')');
+
+        // Retrieve the book JSON file to select a chapter randomly
+        this.catalog.forEach(entry => {
+          if (entry.origin === 'gutenberg' && entry.title == this.selectedBook) {
+            let slug = entry.slug ? entry.slug : this._slug(entry.title);
+            this._urlMetadataSurprise = null; // force change
+            this._urlMetadataSurprise = '/content/gutenberg/' + slug + '.json';
+            this.isLoading = true;
+          }
+        });
+      }
+
+      /**
+       * Metadata (only when using the SurpriseMe button).
+       *
+       * Select randomly an entry in the metadata file.
+       */
+      _onMetadataSurpriseLoaded(e, data) {
+        const metadata = data.response;
+        this.isLoading = false;
+        console.log('[typio-catalog] _onMetadataSurpriseLoaded');
+        this.metadata = metadata;
+        let chapter = this.metadata.chapters[getRandomInt(this.metadata.chapters.length)];
+        const numberLines = 100;
+        let start = Math.max(0, getRandomInt(chapter.end - numberLines));
+        this.selectChapter(chapter.title, start, start + numberLines);
+      }
+
+    }
+
+    window.customElements.define(TypioCatalogLiterature.is, TypioCatalogLiterature);
+  </script>
+</dom-module>

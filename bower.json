@@ -21,7 +21,9 @@
     "iron-pages": "PolymerElements/iron-pages#^2.0.1",
     "app-route": "PolymerElements/app-route#^2.0.3",
     "app-layout": "PolymerElements/app-layout#^2.0.4",
-    "paper-tooltip": "PolymerElements/paper-tooltip#^2.1.1"
+    "paper-tooltip": "PolymerElements/paper-tooltip#^2.1.1",
+    "paper-styles": "PolymerElements/paper-styles#^2.1.0",
+    "paper-card": "PolymerElements/paper-card#^2.1.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",

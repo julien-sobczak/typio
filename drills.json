@@ -1,0 +1,31 @@
+[
+  {
+    "name": "Digits",
+    "type": "basic",
+    "description": "Practice digits using only the top row",
+    "keys": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+  },
+  {
+    "name": "Mixed Cases",
+    "type": "basic",
+    "description": "Train switching between uppercase and lowercase letters",
+    "keys": ["Q", "q", "W", "w", "E", "e", "R", "r", "T", "t", "Y", "y", "U", "u", "I", "i", "O", "o", "P", "p", "A", "a", "S", "s", "D", "d", "F", "f", "G", "g", "H", "h", "J", "j", "K", "k", "L", "l", "Z", "z", "X", "x", "C", "c", "V", "v", "B", "b", "N", "n", "M", "m"]
+  },
+  {
+    "name": "Tongue Twisters",
+    "type": "static",
+    "description": "Be careful with these sentences that we make out dizzy",
+    "sentences": [
+      "Peter Piper picked a peck of pickled peppers.\nA peck of pickled peppers Peter Piper picked.\nIf Peter Piper picked a peck of pickled peppers,\nWhere's the peck of pickled peppers Peter Piper picked?",
+      "I saw Susie sitting in a shoe shine shop.\nWhere she sits she shines, and where she shines she sits.",
+      "How many boards\nCould the Mongols hoard\nIf the Mongol hordes got bored?",
+      "How can a clam cram in a clean cream can?",
+      "Send toast to ten tense stout saints' ten tall tents.",
+      "Denise sees the fleece,\nDenise sees the fleas.\nAt least Denise could sneeze\nand feed and freeze the fleas.",
+      "Coy knows pseudonoise codes.",
+      "Sheena leads, Sheila needs.",
+      "The thirty-three thieves thought that they thrilled the throne throughout Thursday.",
+      "Something in a thirty-acre thermal thicket of thorns and thistles thumped and thundered threatening the three-D thoughts of Matthew the thug - although, theatrically, it was only the thirteen-thousand thistles and thorns through the underneath of his thigh that the thirty year old thug thought of that morning."
+    ]
+  }
+]

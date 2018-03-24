@@ -12,6 +12,7 @@
 <link rel="import" href="/src/typio-app/typio-button.html">
 <link rel="import" href="/src/typio-app/typio-catalog-code.html">
 <link rel="import" href="/src/typio-app/typio-catalog-literature.html">
+<link rel="import" href="/src/typio-app/typio-catalog-drills.html">
 
 <dom-module id="typio-catalog">
   <template>
@@ -76,16 +77,9 @@
           padding: 20px;
           border: none !import;
         }
-        
-        @apply --shadow-elevation-2dp;
-      }
-      paper-card:hover {
-        @apply --shadow-elevation-8dp;
       }
       
-      paper-card a {
-        text-decoration: none;
-      }
+
       
       
       paper-card#drills {
@@ -158,8 +152,13 @@
             </paper-card>
   
           </div>
+          
+          <!-- List of available catalogs -->
           <typio-catalog-literature id="catalogLiterature" name="literature" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-literature>
           <typio-catalog-code id="catalogCode" name="code" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-code>
+          <typio-catalog-drills id="catalogDrills" name="drills" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-drills>
+          <!-- Add new catalog here... --> 
+          
         </iron-pages>
         
       </div>

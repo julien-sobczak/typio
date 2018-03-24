@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-styles/shadow.html">
 
 <!--
   Common element used to share styles between sevaral elements.
@@ -53,6 +54,17 @@
       /*
        * Form elements
        */
+      
+      paper-card {
+        @apply --shadow-elevation-2dp;
+      }
+      paper-card:hover {
+        @apply --shadow-elevation-8dp;
+      }
+      paper-card a {
+        text-decoration: none;
+      }
+     
 
       paper-button {
         /* Font */

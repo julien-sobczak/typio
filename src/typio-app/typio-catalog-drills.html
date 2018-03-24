@@ -1,0 +1,189 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-styles/shadow.html">
+
+<link rel="import" href="/src/typio-app/shared-styles.html">
+<link rel="import" href="/src/typio-app/typio-button.html">
+<link rel="import" href="/src/typio-app/typio-loader.html">
+
+<dom-module id="typio-catalog-drills">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+        text-align: center;
+      }
+
+      /*
+       * Buttons
+       */
+
+      .buttons {
+        position: absolute;
+        width: 100%;
+        bottom: 10vh;
+        text-align: center;
+      }
+      #intro .buttons {
+        opacity: 0;
+        transition: opacity 2s linear;
+      }
+      #intro.completed .buttons {
+        opacity: 1;
+      }
+      typio-button {
+        display: inline-block;
+      }
+
+
+    
+      /* Selection */
+      .selection {
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .selection .entry {
+        display: inline-block;
+        position: relative;
+        font-size: 90%;
+        padding: 10px 20px;
+        padding-right: 0px;
+        background: rgba(0, 0, 0, 0.5);
+        margin-right: 20px;
+      }
+      .selection .entry a {
+        text-decoration: none;
+        color: white !important;
+      }
+      .selection .entry iron-icon {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+      
+      /*
+       * Drill
+       */
+       #drills {
+        @apply --layout-horizontal;
+        @apply --layout-wrap;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      #drills > paper-card {
+        box-sizing: border-box;
+        max-width: 300px;
+        margin: 10px;
+        flex: 0 0 auto;
+      }
+    
+      .drill {
+        background-color: rgba(0, 0, 0, 0.5);
+        margin: 15px auto;
+        color: white;
+        max-width: 1000px;
+      }
+      .drill .name {
+        text-transform: uppercase;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .drill .description {
+        display: block;
+      }
+
+    </style>
+
+    <iron-ajax url="/drills.json" auto last-response="{{drills}}"></iron-ajax>
+    
+    <div>
+
+      <div class="selection">
+        <div class="entry">
+          <a href="/catalog/menu">
+            Back to Catalog
+            <iron-icon icon="backspace"></iron-icon>
+          </a>
+        </div>
+      </div>
+
+      <div id="drills">
+        
+        <template is="dom-repeat" items="{{drills}}" as="drill">
+          <paper-card class="drill" heading="{{drill.name}}" class="{{drill.type}}">
+            <div class="card-content">
+              <p class="description">{{drill.description}}</p>
+              <template is="dom-if" if="{{isEquals(drill.type, 'basic')}}">
+                <ul class="keys">
+                  <template is="dom-repeat" items="{{drill.keys}}" as="key">
+                    <li>{{key}}</li>
+                  </template>
+                </ul>
+              </template>
+              <span class="sample">Sample...</span>
+            </div>
+            <div class="card-actions">
+              <paper-icon-button icon="assignment" style="color:white;">Try</paper-icon-button>
+            </div>
+          </paper-card>  
+        </template>
+      
+      </div>
+      
+    </div>
+
+  </template>
+
+  <script>
+
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioCatalogDrills extends Polymer.Element {
+
+      static get is() { return 'typio-catalog-drills'; }
+      static get properties() {
+        return {
+          
+          /**
+           * JSON representing the file `/drills.json`.
+           */
+          drills: {
+            type: Array,
+            observer: '_onDrillsLoaded'
+          },
+
+        };
+      }
+
+      /* Metadata */
+      _onDrillsLoaded() {
+        if (!this.drills) return;
+        console.log('Drills was loaded');
+      }
+      
+      
+      isEquals(actual, expected) {
+        return actual === expected;
+      }
+      
+
+      /**
+       * Traverse the available drills to select one drill.
+       */
+      surpriseMe() {
+        // We need to determine a drill
+        // TODO
+        //console.log('[typio-catalog-drills] Using randomly selected drill ' + this.selectedBook + ' (' + this.selectedSpokenLanguage + ')');
+      }
+
+    }
+
+    window.customElements.define(TypioCatalogDrills.is, TypioCatalogDrills);
+  </script>
+</dom-module>

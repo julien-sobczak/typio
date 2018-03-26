@@ -1,0 +1,414 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="/src/typio-app/shared-styles.html">
+<link rel="import" href="/src/typio-app/typio-collapsable-radio-group.html">
+<link rel="import" href="/src/typio-app/typio-loader.html">
+
+<dom-module id="typio-catalog-quote">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+        text-align: center;
+      }
+
+      /* TODO extract into typio-notice-text */
+      .notice {
+        font-size: 2em;
+        font-weight: bold;
+        animation: blink-animation 2.4s linear infinite;
+      }
+      .notice b {
+        font-style: italic;
+        font-weight: normal;
+      }
+      @keyframes blink-animation {
+        0%, 30% { opacity: 100; }
+        50% { opacity: 0; }
+        70%, 100% { opacity: 100; }
+      }
+
+
+      .type {
+        padding: 20px 20px 40px;
+        margin-left: 25px;
+        margin-right: 25px;
+      }
+
+      /* Manage the content selection workflow */
+      .type .step {
+        display: none;
+      }
+      .type.step0 .step0 { display: block; }
+      .type.step1 .step1 { display: block; }
+      .type.step2 .step2 { display: block; }
+      .type.step3 .step3 { display: block; }
+      .type.step4 .step4 { display: block; }
+
+
+      /* Selection */
+      .selection {
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .selection .entry {
+        display: none;
+        position: relative;
+        font-size: 90%;
+        padding: 10px 20px;
+        padding-right: 0px;
+        background: rgba(0, 0, 0, 0.5);
+        margin-right: 20px;
+      }
+      .selection .entry a {
+        text-decoration: none;
+        color: white !important;
+      }
+      .type .selection .entry:nth-child(1) { display: inline-block; }
+      .type.step2 .selection .entry:nth-child(2) { display: inline-block; }
+      .type.step3 .selection .entry:nth-child(2) { display: inline-block; }
+      .type.step3 .selection .entry:nth-child(3) { display: inline-block; }
+
+      .selection .entry iron-icon {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+
+      /*
+       * Form
+       */
+       
+      paper-checkbox {
+        display: block;
+        align-self: center;
+        text-align: left;
+        max-width: 800px;
+        border: 1px solid white;
+        padding: 10px 25px;
+        margin: 20px auto;
+
+        --paper-checkbox-checked-color: white;
+        --paper-checkbox-checked-ink-color: black;
+        --paper-checkbox-unchecked-color: rgba(0,0,0,0.5);
+        --paper-checkbox-unchecked-ink-color: rgba(0,0,0,0.5);
+        --paper-checkbox-checkmark-color: var(--typio-bg-color);
+        --paper-checkbox-label-color: white;
+        --paper-checkbox-label-spacing: 0;
+        --paper-checkbox-margin: 8px 16px 8px 0;
+        --paper-checkbox-vertical-align: top;
+      }
+      paper-checkbox[checked] {
+        background-color: rgba(0,0,0,0.5);
+        font-weight: bold;
+      }
+      
+      paper-checkbox .subtitle {
+        display: block;
+        font-size: 0.8em;
+        margin-top: 2px;
+        max-width: 350px;
+      }
+      
+      paper-fab:nth-of-type(1) {
+        position: fixed;
+        right: 75px;
+        bottom: 50px;          
+      }
+      paper-fab:nth-of-type(2) {
+        position: fixed;
+        right: 150px;
+        bottom: 50px;          
+      }
+      paper-fab {
+        background-color: rgba(0,0,0,0.5);
+      }
+      paper-fab[aria-disabled=true] {
+        background-color: rgba(0,0,0,0.2);
+      }
+
+    </style>
+
+    <iron-ajax url="/content/quotes/en.json" auto last-response="{{quotes}}"></iron-ajax>
+    
+    <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
+    <paper-fab icon="av:play-arrow" title="Validate" disabled="{{_selectionEmpty}}" on-click="validate"></paper-fab>
+    
+    <div class$="type step[[step]]">
+
+      <div class="selection">
+        <div class="entry">
+          <a href="/catalog/menu">
+            Back to Catalog
+            <iron-icon icon="backspace"></iron-icon>
+          </a>
+        </div>
+        <div class="entry">
+          <a on-click="_goToStep1">
+            [[selectedTag]]
+            <iron-icon icon="backspace"></iron-icon>
+          </a>
+        </div>
+      </div>
+
+      <div class="step step1">
+        <typio-collapsable-radio-group id="tags"
+            elements="{{tags}}"
+            show-description="true"
+            on-paper-radio-group-changed="_tagSelected">
+        </typio-collapsable-radio-group>
+      </div>
+
+      <div class="step step2">
+        <template is="dom-repeat" items="{{filteredQuotes}}" as="quote">
+          <paper-checkbox class="styled" on-change="_quoteSelected">
+            {{quote.quote}}
+            <span class="subtitle">
+              {{quote.author}}
+            </span>
+          </paper-checkbox>        
+        </template>
+      </div>
+
+      <div class="step step3">        
+      </div>
+
+    </div>
+
+    <template is="dom-if" if="{{isLoading}}">
+      <typio-loader></typio-loader>
+    </template>
+
+  </template>
+
+  <script>
+
+    function getRandomInt(max) {
+      return Math.floor(Math.random() * Math.floor(max));
+    }
+
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TypioCatalogQuote extends Polymer.Element {
+
+      static get is() { return 'typio-catalog-quote'; }
+      static get properties() {
+        return {
+          
+
+          /**
+           * Current step in the workflow.
+           */
+          step: {
+            type: Number,
+            value: 1
+          },
+          
+          /**
+           * Sorted list of quotes present in `content/quotes/en.json`.
+           */
+          quotes: {
+            type: Array,
+            value: [],
+            observer: '_onLoadQuotes'
+          },
+          
+          /**
+           * Sorted list of tags associated with `quotes`.
+           */
+          tags: {
+            type: Array,
+            value: []
+          },          
+          
+          /**
+           * Print the loader if true.
+           */
+          isLoading: {
+            type: Boolean,
+            value: false
+          },
+          
+          /**
+           * Selection of quotes.
+           */
+          selection: {
+            type: Array,
+            value: [],
+          },
+          /**
+           * False as soon as one quote is selected in `selection`.
+           */
+          _selectionEmpty: {
+            type: Boolean,
+            value: true
+          }
+          
+        };
+      }
+
+      /**
+       * Called when the `/content/quotes/en.json` has finished loaded.
+       */
+      _onLoadQuotes() {
+        if (!this.quotes || this.quotes.length == 0) return;
+        
+        this.tags = [];
+        
+        // Traverse the quotes to extract tags.
+        let foundTags = [];
+        let tags = []
+        this.quotes.forEach(quote => {
+          quote.tags.forEach(tag => {
+            if (!foundTags.includes(tag)) {
+              tags.push({
+                'key': tag,
+                'name': tag,
+                'count': 1,
+                'description': '1'
+              });
+              foundTags.push(tag);
+            } else {
+              tags.forEach(t => {
+                if (t.key == tag) {
+                  t.count++;
+                  t.description = "" + t.count;
+                }
+              });
+            }
+          })
+          
+        });
+        this.tags = tags.sort((a,b) => a.count > b.count ? -1 : a.count < b.count ? 1 : 0);
+        
+        this.isLoading = false;
+      }
+
+      /**
+       * Called when the user select a spoken language.
+       */
+      _tagSelected(value) {
+        this.selectedTag = this.$.tags.selected;
+        this.filteredQuotes = this._getQuotes(this.selectedTag);
+        this.step = 2;
+      }
+
+      _getQuotes(tag) {
+        let quotes = new Array();
+        this.quotes.forEach(quote => {
+
+          if (quote.tags.includes(tag)) {
+            quotes.push(quote);
+          }
+        });
+        
+        // Sort by tag author
+        return quotes.sort((a,b) => a.author.localeCompare(b.author));
+      }
+
+      /**
+       * Called when the user selects a quote.
+       */
+      _quoteSelected(e, detail) {
+        let checked = e.target.checked;
+        const quote = e.model.quote;
+        if (checked) {
+          this.selection.push(quote);
+        } else {
+          let index = undefined;
+          for (let i = 0; i < this.selection.length; i++) {
+            if (this.selection[i].quote === quote.quote) {
+              index = i;
+              break;
+            }
+          }
+          if (index !== undefined) {
+            this.selection.splice(index, 1);
+          }
+        }
+        this._selectionEmpty = this.selection.length == 0;
+      }
+      
+      validate() {
+        this.step = 3;
+
+        let content = "";
+        this.selection.forEach(quote => {
+          content += quote.quote + '\n' + quote.author + "\n\n";
+        });
+        console.log(this.selection, content);
+
+        let detail = {
+          type: 'quote',
+          language: 'English',
+          resource: null,
+          content: content
+        };
+        this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
+      }
+
+      /*
+       * Move between the workflow.
+       */
+
+      _goToStep1() {
+        this._resetTag();
+        this._resetQuotes();
+        this.step = 1;
+      }
+      _goToStep2() {
+        this._resetTag();
+        this.step = 2;
+      }
+
+      _resetTag() {
+        this.selectedTag = null;
+        this.$.tags.selected = null;
+      }
+      _resetQuotes() {
+        this.selectedQuote = null;
+        this.$.quotes.selected = null;
+      }
+
+      /**
+       * Traverse the catalog matching already selected criteria to find a resource
+       * (a file, a chapter, ...).
+       */
+      surpriseMe() {
+        // We need to determine a chapter excerpt
+
+        if (!this.selectedTag) {
+          this.selectedTag = this.tags[getRandomInt(this.tags.length)];
+        }
+
+        if (!this.selectedQuotes) {
+          let quotes = this._getQuotes(this.selectedTag);
+          this.selectedQuote = quotes[getRandomInt(quotes.length)].name;
+        }
+
+        console.log('[typio-catalog-quote] Using randomly selected quote ' + this.selectedQuote + ' (' + this.selectedTag + ')');
+
+        let detail = {
+          type: 'quote',
+          language: 'English',
+          resource: this.selectedQuote.author,
+          content: this.selectedQuote.quote
+        };
+        this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
+      }
+
+    }
+
+    window.customElements.define(TypioCatalogQuote.is, TypioCatalogQuote);
+  </script>
+</dom-module>

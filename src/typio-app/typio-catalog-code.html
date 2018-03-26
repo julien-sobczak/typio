@@ -7,7 +7,6 @@
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
-<link rel="import" href="/src/typio-app/typio-button.html">
 <link rel="import" href="/src/typio-app/typio-collapsable-radio-group.html">
 <link rel="import" href="/src/typio-app/typio-project-input.html">
 <link rel="import" href="/src/typio-app/typio-loader.html">
@@ -36,27 +35,7 @@
         70%, 100% { opacity: 100; }
       }
 
-      /*
-       * Buttons
-       */
-
-      .buttons {
-        position: absolute;
-        width: 100%;
-        bottom: 10vh;
-        text-align: center;
-      }
-      #intro .buttons {
-        opacity: 0;
-        transition: opacity 2s linear;
-      }
-      #intro.completed .buttons {
-        opacity: 1;
-      }
-      typio-button {
-        display: inline-block;
-      }
-
+  
 
       .type {
         padding: 20px 20px 40px;

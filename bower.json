@@ -23,7 +23,9 @@
     "app-layout": "PolymerElements/app-layout#^2.0.4",
     "paper-tooltip": "PolymerElements/paper-tooltip#^2.1.1",
     "paper-styles": "PolymerElements/paper-styles#^2.1.0",
-    "paper-card": "PolymerElements/paper-card#^2.1.0"
+    "paper-card": "PolymerElements/paper-card#^2.1.0",
+    "paper-fab": "PolymerElements/paper-fab#^2.1.0",
+    "paper-ripple": "PolymerElements/paper-ripple#^2.1.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",

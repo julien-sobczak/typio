@@ -57,34 +57,37 @@
 
     </style>
 
-    <div id="stats" class$="ended-{{ended}} headless-{{headless}}">
+    <div id="stats" class$="ended-{{_ended}} headless-{{headless}}">
       <span id="statsInProgress" class="wpm">[[currentWpm]] WPM</span>
       
       <div id="statsFinished">
-        <span>WPM <strong>[[wpm]]</strong> in [[elapsedTimeInS]]s</span>
-        <ul id="stats">
-          <li>Total characters: [[totalCharacters]]</li>
-          <li>Typeable characters: [[totalEditableCharacters]]</li>
-          <li>Typed characters: [[enteredCharacters]]</li>
-          <li>Unproductive keystroke overhead: [[unproductiveKeystrokeOverhead]]%</li>
-        </ul>
+        <div>
+          <span>WPM <strong>[[wpm]]</strong> in [[elapsedTimeInS]]s</span>
+          <ul id="stats">
+            <li>Total characters: [[totalCharacters]]</li>
+            <li>Typeable characters: [[totalEditableCharacters]]</li>
+            <li>Typed characters: [[enteredCharacters]]</li>
+            <li>Unproductive keystroke overhead: [[unproductiveKeystrokeOverhead]]%</li>
+          </ul>
+        </div>
+        <div>
+          <span>Most difficult keys</span>
+          <ul id="keys">
+            <template is="dom-repeat" items="{{mostDifficultKeys}}">
+            <li><span class="key">[[item.character]]</span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
+            </template>
+          </ul>
+        </div>
+        <div>
+          <span>Most difficult key combinations</span>
+          <ul id="keyCombinations">
+            <template is="dom-repeat" items="{{mostDifficultKeyCombinations}}">
+            <li><span class="key" inner-h-t-m-l="[[item.fromCharacter]]"></span> &rarr; <span class="key" inner-h-t-m-l="[[item.toCharacter]]"></span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
+            </template>
+          </ul>
+        </div>
       </div>
-      <div>
-        <span>Most difficult keys</span>
-        <ul id="keys">
-          <template is="dom-repeat" items="{{mostDifficultKeys}}">
-          <li><span class="key">[[item.character]]</span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
-          </template>
-        </ul>
-      </div>
-      <div>
-        <span>Most difficult key combinations</span>
-        <ul id="keyCombinations">
-          <template is="dom-repeat" items="{{mostDifficultKeyCombinations}}">
-          <li><span class="key" inner-h-t-m-l="[[item.fromCharacter]]"></span> &rarr; <span class="key" inner-h-t-m-l="[[item.toCharacter]]"></span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
-          </template>
-        </ul>
-      </div>
+      
     </div>
 
   </template>

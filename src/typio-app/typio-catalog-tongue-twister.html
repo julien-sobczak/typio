@@ -12,7 +12,7 @@
 <link rel="import" href="/src/typio-app/typio-collapsable-radio-group.html">
 <link rel="import" href="/src/typio-app/typio-loader.html">
 
-<dom-module id="typio-catalog-quote">
+<dom-module id="typio-catalog-tongue-twister">
   <template>
     <style include="shared-styles">
 
@@ -120,7 +120,8 @@
 
     </style>
 
-    <iron-ajax url="/content/quotes/en.json" auto last-response="{{quotes}}"></iron-ajax>
+    <iron-ajax auto url="{{_urlContent}}" handle-as="json" on-response="_onLoadTongueTwisters"></iron-ajax>
+    <iron-ajax auto url="{{_urlContentSurprise}}" handle-as="json" on-response="_onTongueTwistersSurpriseLoaded"></iron-ajax>
     
     <div class$="type step[[step]] theme-transparent">
       
@@ -136,26 +137,25 @@
         </div>
         <div class="entry">
           <a on-click="_goToStep1">
-            [[selectedTag]]
+            [[selectedSpokenLanguage]]
             <iron-icon icon="backspace"></iron-icon>
           </a>
         </div>
       </div>
 
       <div class="step step1">
-        <typio-collapsable-radio-group id="tags"
-            elements="{{tags}}"
-            show-description="true"
-            on-paper-radio-group-changed="_tagSelected">
+        <typio-collapsable-radio-group id="spokenLanguages"
+            elements="{{spokenLanguages}}"
+            on-paper-radio-group-changed="_spokenLanguageSelected">
         </typio-collapsable-radio-group>
       </div>
 
       <div class="step step2">
-        <template is="dom-repeat" items="{{filteredQuotes}}" as="quote">
-          <paper-checkbox class="styled" on-change="_quoteSelected">
-            {{quote.quote}}
+        <template is="dom-repeat" items="{{tongueTwisters}}" as="tongueTwister">
+          <paper-checkbox class="styled" on-change="_tongueTwisterSelected">
+            {{tongueTwister.text}}
             <span class="subtitle">
-              {{quote.author}}
+              {{tongueTwister.source}}
             </span>
           </paper-checkbox>        
         </template>
@@ -182,12 +182,20 @@
      * @customElement
      * @polymer
      */
-    class TypioCatalogQuote extends Polymer.Element {
+    class TypioCatalogTongueTwister extends Polymer.Element {
 
-      static get is() { return 'typio-catalog-quote'; }
+      static get is() { return 'typio-catalog-tongue-twister'; }
       static get properties() {
         return {
           
+          /**
+           * JSON representing the file `/catalog.json`.
+           */
+          catalog: {
+            type: Object,
+            observer: '_onLoadCatalog'
+          },
+
 
           /**
            * Current step in the workflow.
@@ -198,21 +206,27 @@
           },
           
           /**
-           * Sorted list of quotes present in `content/quotes/en.json`.
+           * Sorted list of languages present in `catalog.json`.
            */
-          quotes: {
+          spokenLanguages: {
             type: Array,
-            value: [],
-            observer: '_onLoadQuotes'
+            value: []
+          },  
+          
+          /**
+           * The selected language among the 'spokenLanguages' list
+           */
+          selectedSpokenLanguage: {
+            type: String
           },
           
           /**
-           * Sorted list of tags associated with `quotes`.
+           * Sorted list of tongueTwisters present in `content/tongue-twisters/<en>.json`.
            */
-          tags: {
+          tongueTwisters: {
             type: Array,
             value: []
-          },          
+          },
           
           /**
            * Print the loader if true.
@@ -223,7 +237,7 @@
           },
           
           /**
-           * Selection of quotes.
+           * Selection of tongue twisters.
            */
           selection: {
             type: Array,
@@ -231,87 +245,104 @@
           },
           
           /**
-           * False as soon as one quote is selected in `selection`.
+           * False as soon as one tongue twister is selected in `selection`.
            */
           _selectionEmpty: {
             type: Boolean,
             value: true
-          }
+          },
+          
+          /**
+           * URL to download the tongue twister for a given language.
+           */
+          _urlContent: {
+            type: String,
+            value: null
+          },
           
         };
       }
+      
+      
+      _onLoadCatalog() {
+        if (!this.catalog) return;
 
-      /**
-       * Called when the `/content/quotes/en.json` has finished loaded.
-       */
-      _onLoadQuotes() {
-        if (!this.quotes || this.quotes.length == 0) return;
-        
-        this.tags = [];
-        
-        // Traverse the quotes to extract tags.
-        let foundTags = [];
-        let tags = []
-        this.quotes.forEach(quote => {
-          quote.tags.forEach(tag => {
-            if (!foundTags.includes(tag)) {
-              tags.push({
-                'key': tag,
-                'name': tag,
-                'count': 1,
-                'description': '1'
-              });
-              foundTags.push(tag);
-            } else {
-              tags.forEach(t => {
-                if (t.key == tag) {
-                  t.count++;
-                  t.description = "" + t.count;
-                }
+        let newSpokenLanguages = new Array();
+
+        // Traverse the catalog to populate lists.
+        this.catalog.forEach(entry => {
+
+          if (entry.active === false) return;
+
+          if (entry.type === 'tongue-twister') {
+            let found = false;
+            for (let i = 0; i < newSpokenLanguages.length; i++) {
+              let spokenLanguage = newSpokenLanguages[i];
+              if (spokenLanguage.key == entry.language) {
+                found = true;
+                spokenLanguage.count++;
+                break;
+              }
+            }
+            if (!found) {
+              newSpokenLanguages.push({
+                'key': entry.language,
+                'name': entry.language,
+                'count': 1
               });
             }
-          })
-          
+          }
         });
-        this.tags = tags.sort((a,b) => a.count > b.count ? -1 : a.count < b.count ? 1 : 0);
-        
-        this.isLoading = false;
+        this.spokenLanguages = newSpokenLanguages.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
       }
-
+      
       /**
        * Called when the user select a spoken language.
        */
-      _tagSelected(value) {
-        this.selectedTag = this.$.tags.selected;
-        this.filteredQuotes = this._getQuotes(this.selectedTag);
+      _spokenLanguageSelected(value) {
+        this.selectedSpokenLanguage = this.$.spokenLanguages.selected;
+        this._urlContent = null; // force change
+        this._urlContent = this._getLanguageUrl(this.selectedSpokenLanguage);
+        this.isLoading = true;
+        this.step = 4;
+      }
+      
+      _getLanguageUrl(spokenLanguage) {
+        // Traverse the retrieve the language.
+        for (let i = 0; i < this.catalog.length; i++) {
+          let entry = this.catalog[i];
+
+          if (entry.active === false) return;
+          if (entry.type === 'tongue-twister' && entry.language === spokenLanguage) {
+            return entry.url;
+          }
+        }     
+           
+        return undefined;   
+      }
+      
+      /**
+       * Called when the `/content/tongue-twisters/en.json` has finished loaded.
+       */
+      _onLoadTongueTwisters(e, data) {
+        let tongueTwisters = data.response;
+        this.tongueTwisters = tongueTwisters.sort((a, b) => a.text.toLowerCase().localeCompare(b.text.toLowerCase()));
+        this.isLoading = false;
         this.step = 2;
       }
 
-      _getQuotes(tag) {
-        let quotes = new Array();
-        this.quotes.forEach(quote => {
-
-          if (quote.tags.includes(tag)) {
-            quotes.push(quote);
-          }
-        });
-        
-        // Sort by tag author
-        return quotes.sort((a,b) => a.author.localeCompare(b.author));
-      }
-
       /**
-       * Called when the user selects a quote.
+       * Called when the user selects a tongue twister.
        */
-      _quoteSelected(e, detail) {
+      _tongueTwisterSelected(e, detail) {
         let checked = e.target.checked;
-        const quote = e.model.quote;
+        const tongueTwister = e.model.tongueTwister;
         if (checked) {
-          this.selection.push(quote);
+          this.selection.push(tongueTwister);
         } else {
           let index = undefined;
           for (let i = 0; i < this.selection.length; i++) {
-            if (this.selection[i].quote === quote.quote) {
+            if (this.selection[i].text === tongueTwister.text) {
               index = i;
               break;
             }
@@ -324,11 +355,11 @@
       }
       
       validate() {
-        this.step = 3;
+        this.step = 2;
 
         let detail = {
-          type: 'quote',
-          language: 'English',
+          type: 'tongue-twister',
+          language: this.spokenLanguage,
           resource: null,
           content: this._selectionToContent()
         };
@@ -337,8 +368,8 @@
       
       _selectionToContent() {
         let content = "";
-        this.selection.forEach(quote => {
-          content += quote.quote + '\n' + quote.author + "\n\n";
+        this.selection.forEach(tongueTwister => {
+          content += tongueTwister.text + '\n\n';
         });
         return content.trim();
       }
@@ -348,49 +379,49 @@
        */
 
       _goToStep1() {
-        this._resetTag();
-        this._resetQuotes();
+        this._resetSpokenLanguage();
+        this._resetTongueTwisters();
         this.step = 1;
       }
       _goToStep2() {
-        this._resetQuotes();
+        this._resetTongueTwisters();
         this.step = 2;
       }
 
-      _resetTag() {
-        this.selectedTag = null;
-        this.$.tags.selected = null;
+      _resetSpokenLanguage() {
+        this.selectedSpokenLanguage = null;
+        this.$.spokenLanguages.selected = null;
       }
-      _resetQuotes() {
+      _resetTongueTwisters() {
         this.selection = [];
       }
 
       /**
-       * Traverse the catalog matching already selected criteria to find a quote.
+       * Select one language and traverse the list to select a tongue twister.
        */
       surpriseMe() {
         // We need to determine a chapter excerpt
 
-        if (!this.selectedTag) {
-          this.selectedTag = this.tags[getRandomInt(this.tags.length)];
+        if (!this.selectedSpokenLanguage) {
+          this.selectedSpokenLanguage = this.spokenLanguages[getRandomInt(this.spokenLanguages.length)].name;
         }
-
-        let quotes = this._getQuotes(this.selectedTag);
-        this.selection.push(quotes[getRandomInt(quotes.length)]);
         
-        console.log('[typio-catalog-quote] Using randomly selected quote ' + this.selectedQuote + ' (' + this.selectedTag + ')');
-
-        let detail = {
-          type: 'quote',
-          language: 'English',
-          resource: null,
-          content: this._selectionToContent()
-        };
-        this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
+        this._urlContentSurprise = null; // force refresh
+        this._urlContentSurprise = this._getLanguageUrl(this.selectedSpokenLanguage);
+        this.isLoading = true;
+        this.step = 2;
+      }
+      
+      _onTongueTwistersSurpriseLoaded(e, data) {
+        this.isLoading = false;
+        this.tongueTwisters = data.response;
+        
+        this.selection.push(this.tongueTwisters[getRandomInt(this.tongueTwisters.length)]);
+        this.validate();      
       }
 
     }
 
-    window.customElements.define(TypioCatalogQuote.is, TypioCatalogQuote);
+    window.customElements.define(TypioCatalogTongueTwister.is, TypioCatalogTongueTwister);
   </script>
 </dom-module>

@@ -13,6 +13,7 @@
 <link rel="import" href="/src/typio-app/typio-catalog-code.html">
 <link rel="import" href="/src/typio-app/typio-catalog-literature.html">
 <link rel="import" href="/src/typio-app/typio-catalog-quote.html">
+<link rel="import" href="/src/typio-app/typio-catalog-tongue-twister.html">
 <link rel="import" href="/src/typio-app/typio-catalog-drills.html">
 
 <dom-module id="typio-catalog">
@@ -47,13 +48,15 @@
       paper-card {
         --paper-card-background-color: rgba(0, 0, 0, 0.5);
         
-        width: 350px;
+        height: 400px;
+        width: 250px;
         color: black;
         margin: 20px;
+        font-size: 15px;
 
         --paper-card-header: {
           padding: 20px;
-          height: 220px;
+          height: 180px;
         }
         --paper-card-header-image: {
           box-sizing: border-box;
@@ -151,6 +154,14 @@
                 <paper-button>About</paper-button>
               </div>
             </paper-card>
+            
+            <paper-card heading="tongue twister" image="data:image/jpeg;base64,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" alt="Gutenberg">
+              <div class="card-content">For everyone who want to enter funny sentences while practicing.</div>
+              <div class="card-actions">
+                <a tabindex="1" href="/catalog/tongue-twister"><paper-button>Explore</paper-button></a>
+                <paper-button>About</paper-button>
+              </div>
+            </paper-card>
 
             <paper-card id="drills" heading="drills" image="https://steemitimages.com/0x0/https://media.licdn.com/mpr/mpr/AAEAAQAAAAAAAAfYAAAAJGE1NjAwMTQyLWMwZDgtNDIwNC1hMzE4LWQyM2JiYjc5YTljMQ.jpg">
               <div class="card-content">Focus one the hardest parts to improve your speed on practice sessions.</div>
@@ -166,6 +177,7 @@
           <typio-catalog-literature id="catalogLiterature" name="literature" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-literature>
           <typio-catalog-code id="catalogCode" name="code" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-code>
           <typio-catalog-quote id="catalogQuote" name="quote" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-quote>
+          <typio-catalog-tongue-twister id="catalogTongueTwister" name="tongue-twister" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-tongue-twister>
           <typio-catalog-drills id="catalogDrills" name="drills" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-drills>
           <!-- Add new catalog here... --> 
           

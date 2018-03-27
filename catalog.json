@@ -1,6 +1,7 @@
 [
 
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "The Adventures of Sherlock Holmes",
     "author": "Arthur Conan Doyle",
@@ -10,6 +11,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Pride and Prejudice",
     "author": "Jane Austen",
@@ -19,6 +21,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Romeo and Juliet",
     "author": "William Shakespeare",
@@ -28,6 +31,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Alice's Adventures in Wonderland",
     "author": "Lewis Carroll",
@@ -37,6 +41,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Hamlet",
     "author": "William Shakespeare",
@@ -46,6 +51,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Dracula",
     "author": "Bram Stoker",
@@ -55,6 +61,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Tales of Space and Time",
     "author": "H. G. Wells",
@@ -64,6 +71,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Peter Pan",
     "author": "J. M. Barrie",
@@ -73,6 +81,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Twelve Years a Slave",
     "author": "Solomon Northup",
@@ -82,6 +91,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "The Wonderful Wizard of Oz",
     "author": "L. Frank Baum",
@@ -91,6 +101,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Grimms' Fairy Tales",
     "author": "Jacob Grimm and Wilhelm Grimm",
@@ -100,6 +111,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Treasure Island",
     "author": "Robert Louis Stevenson",
@@ -109,6 +121,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "The Call of the Wild",
     "author": "Jack London",
@@ -118,6 +131,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Adventures of Huckleberry Finn",
     "author": "Mark Twain",
@@ -127,6 +141,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Frankenstein",
     "author": "Mary Wollstonecraft Shelley",
@@ -136,6 +151,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Wuthering Heights",
     "author": "Emily Brontë",
@@ -145,6 +161,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Moby Dick",
     "author": "Herman Melville",
@@ -154,6 +171,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Robinson Crusoe",
     "author": "Daniel Defoe",
@@ -163,6 +181,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "The Adventures of Tom Sawyer",
     "author": "Mark Twain",
@@ -172,6 +191,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Gulliver's Travels",
     "author": "Jonathan Swift",
@@ -181,6 +201,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Oliver Twist",
     "author": "Charles Dickens",
@@ -190,6 +211,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Autobiography of Benjamin Franklin",
     "author": "Benjamin Franklin",
@@ -199,6 +221,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Little Women",
     "author": "Louisa May Alcott",
@@ -208,6 +231,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "The Jungle Book",
     "author": "Rudyard Kipling",
@@ -217,6 +241,7 @@
     "language": "English"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Ivanhoe",
     "author": "Walter Scott",
@@ -227,6 +252,7 @@
   },
 
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Voyage au Centre de la Terre",
     "author": "Jules Verne",
@@ -236,6 +262,7 @@
     "language": "French"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Candide",
     "author": "Voltaire",
@@ -245,6 +272,7 @@
     "language": "French"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Le rouge et le noir",
     "author": "Stendhal",
@@ -254,6 +282,7 @@
     "language": "French"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Vingt mille Lieues Sous Les Mers",
     "author": "Jules Verne",
@@ -263,6 +292,7 @@
     "language": "French"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Le Tour du monde en quatre-vingts jours",
     "author": "Jules Verne",
@@ -272,6 +302,7 @@
     "language": "French"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Le Dernier Jour d'un Condamné",
     "author": "Victor Hugo",
@@ -281,6 +312,7 @@
     "language": "French"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Germinal",
     "author": "Émile Zola",
@@ -290,6 +322,7 @@
     "language": "French"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Arsène Lupin, gentleman-cambrioleur",
     "author": "Maurice Leblanc",
@@ -299,6 +332,7 @@
     "language": "French"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Les trois mousquetaires",
     "author": "Alexandre Dumas",
@@ -308,6 +342,7 @@
     "language": "French"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Madame Bovary",
     "author": "Gustave Flaubert",
@@ -317,6 +352,7 @@
     "language": "French"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "King Solomon's Mines",
     "author": "H. Rider Haggard",
@@ -327,6 +363,7 @@
   },
 
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Die Verwandlung",
     "author": "Franz Kafka",
@@ -336,6 +373,7 @@
     "language": "German"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Faust",
     "author": "Johann Wolfgang von Goethe",
@@ -345,6 +383,7 @@
     "language": "German"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Buddenbrooks",
     "author": "Thomas Mann",
@@ -354,6 +393,7 @@
     "language": "German"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Siddhartha",
     "author": "Hermann Hesse",
@@ -363,6 +403,7 @@
     "language": "German"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Der Tod in Venedig",
     "author": "Thomas Mann",
@@ -372,6 +413,7 @@
     "language": "German"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Effi Briest",
     "author": "Theodor Fontane",
@@ -383,6 +425,7 @@
 
 
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Don Quijote",
     "author": "Miguel de Cervantes Saavedra",
@@ -392,6 +435,7 @@
     "language": "Spanish"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Niebla",
     "author": "Miguel de Unamuno",
@@ -401,6 +445,7 @@
     "language": "Spanish"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "La Celestina",
     "author": "Fernando de Rojas",
@@ -411,6 +456,7 @@
   },
 
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Os Lusíadas",
     "author": "Luís de Camões",
@@ -420,6 +466,7 @@
     "language": "Portuguese"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Four Plays of Gil Vicente",
     "author": "Gil Vicente",
@@ -429,6 +476,7 @@
     "language": "Portuguese"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "O crime do padre Amaro",
     "author": "Eça de Queirós",
@@ -438,6 +486,7 @@
     "language": "Portuguese"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Amor de Perdição",
     "author": "Camilo Castelo Branco",
@@ -447,6 +496,7 @@
     "language": "Portuguese"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "A Cidade e as Serras",
     "author": "Eça de Queirós",
@@ -457,6 +507,7 @@
   },
 
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "La Divina Commedia di Dante",
     "author": "Dante Alighieri",
@@ -466,6 +517,7 @@
     "language": "Italian"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Orlando Furioso",
     "author": "Lodovico Ariosto",
@@ -475,6 +527,7 @@
     "language": "Italian"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Le vergini delle rocce",
     "author": "Gabriele D'Annunzio",
@@ -484,6 +537,7 @@
     "language": "Italian"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Sei personaggi in cerca d'autore",
     "author": "Luigi Pirandello",
@@ -493,6 +547,7 @@
     "language": "Italian"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Le avventure di Pinocchio",
     "author": "Carlo Collodi",
@@ -503,6 +558,7 @@
   },
 
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Pan Tadeusz",
     "author": "Adam Mickiewicz",
@@ -512,6 +568,7 @@
     "language": "Polish"
   },
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Anhelli",
     "author": "Juliusz Słowacki",
@@ -522,6 +579,7 @@
   },
 
   {
+    "type": "literature",
     "origin": "gutenberg",
     "title": "Max Havelaar",
     "author": "Multatuli",
@@ -535,6 +593,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "React",
     "url": "https://github.com/facebook/react",
@@ -543,6 +602,7 @@
     "includes": ["src", "eslint-rules"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "jQuery",
     "url": "https://github.com/jquery/jquery",
@@ -551,6 +611,7 @@
     "includes": ["src", "test"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Atom",
     "url": "https://github.com/atom/atom",
@@ -560,6 +621,7 @@
     "excludes": ["/spec/fixtures/git"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "three.js",
     "url": "https://github.com/mrdoob/three.js",
@@ -570,6 +632,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "RxJava",
     "url": "https://github.com/ReactiveX/RxJava",
@@ -578,6 +641,7 @@
     "excludes": ["/gradle"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Spring Framework",
     "url": "https://github.com/spring-projects/spring-framework",
@@ -587,6 +651,7 @@
     "active": true
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Netty",
     "url": "https://github.com/netty/netty",
@@ -594,6 +659,7 @@
     "commit": "netty-4.1.16.Final"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Bazel",
     "url": "https://github.com/bazelbuild/bazel",
@@ -604,6 +670,7 @@
     "active": true
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Open Zipkin",
     "url": "https://github.com/openzipkin/zipkin",
@@ -611,6 +678,7 @@
     "commit": "release-2.2.1"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Presto",
     "url": "https://github.com/prestodb/presto",
@@ -633,6 +701,7 @@
     "active": true
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Kafka",
     "url": "https://github.com/apache/kafka",
@@ -640,6 +709,7 @@
     "commit": "0.11.0.1"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Guice",
     "url": "https://github.com/google/guice",
@@ -648,6 +718,7 @@
     "includes": ["/core/"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "JUnit",
     "url": "https://github.com/junit-team/junit5",
@@ -655,6 +726,7 @@
     "commit": "r5.0.1"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Mockito",
     "url": "https://github.com/mockito/mockito",
@@ -664,6 +736,7 @@
     "excludes": ["/src/javadoc/"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Hadoop",
     "url": "https://github.com/apache/hadoop",
@@ -676,6 +749,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "django",
     "url": "https://github.com/django/django",
@@ -686,6 +760,7 @@
     "extensions": ["py", "html", "js", "css", "xml", "conf"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "scikit-learn",
     "url": "https://github.com/scikit-learn/scikit-learn",
@@ -694,6 +769,7 @@
     "excludes": ["/doc", "/build_tools"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Keras",
     "url": "https://github.com/fchollet/keras",
@@ -701,6 +777,7 @@
     "commit": "2.0.8"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Ansible",
     "url": "https://github.com/ansible/ansible",
@@ -711,6 +788,7 @@
     "max_file_size": 100
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Reddit",
     "url": "https://github.com/reddit/reddit",
@@ -718,6 +796,7 @@
     "commit": "master"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "CPython",
     "url": "https://github.com/python/cpython",
@@ -728,6 +807,7 @@
     "active": true
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Docker Compose",
     "url": "https://github.com/docker/compose",
@@ -737,6 +817,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Bootstrap",
     "url": "https://github.com/twbs/bootstrap",
@@ -745,6 +826,7 @@
     "excludes": ["/docs", "/dist"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Animate.css",
     "url": "https://github.com/daneden/animate.css",
@@ -752,6 +834,7 @@
     "commit": "v3.1.0"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Normalize.css",
     "url": "https://github.com/necolas/normalize.css",
@@ -759,6 +842,7 @@
     "commit": "v2.1.3"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Hover.css",
     "url": "https://github.com/IanLunn/Hover",
@@ -768,6 +852,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Laravel",
     "url": "https://github.com/laravel/laravel",
@@ -775,6 +860,7 @@
     "commit": "v5.5.0"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Symfony",
     "url": "https://github.com/symfony/symfony",
@@ -784,6 +870,7 @@
     "extensions": ["php", "xlf", "twig"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Composer",
     "url": "https://github.com/composer/composer",
@@ -793,6 +880,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Rails",
     "url": "https://github.com/rails/rails",
@@ -801,6 +889,7 @@
     "excludes": ["/guides"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Jekyll",
     "url": "https://github.com/jekyll/jekyll",
@@ -809,6 +898,7 @@
     "excludes": ["/test/fixtures", "/docs", "/lib"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Discourse",
     "url": "https://github.com/discourse/discourse",
@@ -818,6 +908,7 @@
     "active": true
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "GitLab",
     "url": "https://github.com/gitlabhq/gitlabhq",
@@ -828,6 +919,7 @@
     "active": true
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Vagrant",
     "url": "https://github.com/hashicorp/vagrant",
@@ -836,6 +928,7 @@
     "excludes": ["/website", "/lib", "/plugins"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Sass",
     "url": "https://github.com/sass/sass",
@@ -844,6 +937,7 @@
     "excludes": ["charset", "/lib"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Homebrew",
     "url": "https://github.com/Homebrew/brew",
@@ -854,6 +948,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "TensorFlow",
     "url": "https://github.com/tensorflow/tensorflow",
@@ -864,6 +959,7 @@
     "active": true
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Electron",
     "url": "https://github.com/electron/electron",
@@ -872,6 +968,7 @@
     "includes": ["/atom", "/spec", "/script"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Swift",
     "url": "https://github.com/apple/swift",
@@ -882,6 +979,7 @@
     "active": true
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Protocol Buffers",
     "url": "https://github.com/google/protobuf",
@@ -891,6 +989,7 @@
     "max_file_size": 100
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "RethinkDB",
     "url": "https://github.com/rethinkdb/rethinkdb",
@@ -899,6 +998,7 @@
     "excludes": ["/external", "/demos", "/drivers", "/packaging", "/admin"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Bitcoin",
     "url": "https://github.com/bitcoin/bitcoin",
@@ -907,6 +1007,7 @@
     "includes": ["/src/"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "HHVM",
     "url": "https://github.com/facebook/hhvm",
@@ -916,6 +1017,7 @@
     "active": true
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Google Guetzli",
     "url": "https://github.com/google/guetzli",
@@ -924,6 +1026,7 @@
     "excludes": ["/third_party"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "V8",
     "url": "https://github.com/v8/v8",
@@ -936,6 +1039,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Linux",
     "url": "https://github.com/torvalds/linux",
@@ -984,6 +1088,7 @@
     ]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Redis",
     "url": "https://github.com/antirez/redis",
@@ -992,6 +1097,7 @@
     "excludes": ["/doc/", "/design-documents"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Git",
     "url": "https://github.com/git/git",
@@ -1002,6 +1108,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Oh My Zsh",
     "url": "https://github.com/robbyrussell/oh-my-zsh",
@@ -1010,6 +1117,7 @@
     "excludes": ["/plugins/emoji/"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Rancher",
     "url": "https://github.com/rancher/rancher",
@@ -1019,6 +1127,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "PowerShell",
     "url": "https://github.com/PowerShell/PowerShell",
@@ -1031,6 +1140,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Docker",
     "url": "https://github.com/moby/moby",
@@ -1039,6 +1149,7 @@
     "excludes": ["/runconfig/opts/fixtures/", "/vendor/", "/docs/", "/contrib"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Golang",
     "url": "https://github.com/golang/go",
@@ -1049,6 +1160,7 @@
     "max_file_size": 50
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Kubernetes",
     "url": "https://github.com/kubernetes/kubernetes",
@@ -1060,6 +1172,7 @@
     "active": true
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "InfluxDB",
     "url": "https://github.com/influxdata/influxdb",
@@ -1067,6 +1180,7 @@
     "commit": "v1.3.6"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Consul",
     "url": "https://github.com/hashicorp/consul",
@@ -1075,6 +1189,7 @@
     "excludes": ["/vendor/"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Terraform",
     "url": "https://github.com/hashicorp/terraform",
@@ -1085,6 +1200,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Alamofire",
     "url": "https://github.com/Alamofire/Alamofire",
@@ -1094,6 +1210,7 @@
     "excludes": ["/Tests/Resources/"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Vapor",
     "url": "https://github.com/vapor/vapor",
@@ -1103,6 +1220,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Spark",
     "url": "https://github.com/apache/spark",
@@ -1113,6 +1231,7 @@
     "active": true
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Play Framework",
     "url": "https://github.com/playframework/playframework",
@@ -1121,6 +1240,7 @@
     "includes": ["/framework/"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Akka",
     "url": "https://github.com/akka/akka",
@@ -1130,6 +1250,7 @@
     "max_file_size": 50
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Chronos",
     "url": "https://github.com/mesos/chronos",
@@ -1137,6 +1258,7 @@
     "commit": "v3.0.2"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "sbt",
     "url": "https://github.com/sbt/sbt",
@@ -1144,6 +1266,7 @@
     "commit": "v1.0.2"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Finagle",
     "url": "https://github.com/twitter/finagle",
@@ -1154,6 +1277,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Pandoc",
     "url": "https://github.com/jgm/pandoc",
@@ -1161,6 +1285,7 @@
     "commit": "1.19.2"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "ShellCheck",
     "url": "https://github.com/koalaman/shellcheck",
@@ -1168,6 +1293,7 @@
     "commit": "v0.4.6"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Elm",
     "url": "https://github.com/elm-lang/elm-compiler",
@@ -1175,6 +1301,7 @@
     "commit": "0.18.0"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Haxl",
     "url": "https://github.com/facebook/Haxl",
@@ -1184,6 +1311,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Kong",
     "url": "https://github.com/Kong/kong",
@@ -1191,6 +1319,7 @@
     "commit": "0.11.0"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Neural Style",
     "url": "https://github.com/jcjohnson/neural-style",
@@ -1200,6 +1329,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Clojure",
     "url": "https://github.com/clojure/clojure",
@@ -1209,6 +1339,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "vrn",
     "url": "https://github.com/AaronJackson/vrn",
@@ -1218,6 +1349,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "webduino",
     "url": "https://github.com/sirleech/Webduino",
@@ -1227,6 +1359,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Jd-Gui",
     "url": "https://github.com/java-decompiler/jd-gui",
@@ -1234,6 +1367,7 @@
     "commit": "v1.4.0"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Rundeck",
     "url": "https://github.com/rundeck/rundeck",
@@ -1247,6 +1381,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Rust",
     "url": "https://github.com/rust-lang/rust",
@@ -1254,6 +1389,7 @@
     "commit": "release-0.7"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Xi editor",
     "url": "https://github.com/google/xi-editor",
@@ -1263,6 +1399,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "OTP",
     "url": "https://github.com/erlang/otp",
@@ -1272,6 +1409,7 @@
     "extensions": ["erl", "sh", "conf", "mk"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "CouchDB",
     "url": "https://github.com/apache/couchdb",
@@ -1279,6 +1417,7 @@
     "commit": "2.1.0"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "RabbitMQ",
     "url": "https://github.com/rabbitmq/rabbitmq-server",
@@ -1288,6 +1427,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Apollo 11",
     "url": "https://github.com/chrislgarry/Apollo-11",
@@ -1295,6 +1435,7 @@
     "commit": "master"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Prince of Persia",
     "url": "https://github.com/jmechner/Prince-of-Persia-Apple-II",
@@ -1305,6 +1446,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Visual Studio Code",
     "url": "https://github.com/Microsoft/vscode",
@@ -1315,6 +1457,7 @@
     "extensions": ["ts", "css", "js", "sh", "bat", "tmLanguage", "html", "scss", "xml", "template"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Ionic",
     "url": "https://github.com/ionic-team/ionic",
@@ -1322,6 +1465,7 @@
     "commit": "v3.7.1"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Angular",
     "url": "https://github.com/angular/angular",
@@ -1330,6 +1474,7 @@
     "excludes": ["/modules/", "/tools/", "/aio/"]
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "TypeScript",
     "url": "https://github.com/Microsoft/TypeScript",
@@ -1341,6 +1486,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "MELPA",
     "url": "https://github.com/melpa/melpa",
@@ -1348,6 +1494,7 @@
     "commit": "master"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Mezzano OS",
     "url": "https://github.com/froggey/Mezzano",
@@ -1358,6 +1505,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Julia",
     "url": "https://github.com/JuliaLang/julia",
@@ -1368,6 +1516,7 @@
 
 
   {
+    "type": "code",
     "origin": "github",
     "name": "Elixir Lang",
     "url": "https://github.com/elixir-lang/elixir",
@@ -1375,6 +1524,7 @@
     "commit": "v1.5.2"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Phoenix Framework",
     "url": "https://github.com/phoenixframework/phoenix",
@@ -1382,11 +1532,55 @@
     "commit": "v1.3.0"
   },
   {
+    "type": "code",
     "origin": "github",
     "name": "Credo",
     "url": "https://github.com/rrrene/credo",
     "language": "Elixir",
     "commit": "v0.8.8"
+  },
+  
+  
+  {
+    "type": "tongue-twister",
+    "language": "German",
+    "url": "/content/tongue-twisters/de.json"
+  },
+  {
+    "type": "tongue-twister",
+    "language": "Dutch",
+    "url": "/content/tongue-twisters/nl.json"
+  },
+  {
+    "type": "tongue-twister",
+    "language": "English",
+    "url": "/content/tongue-twisters/en.json"
+  },
+  {
+    "type": "tongue-twister",
+    "language": "Spanish",
+    "url": "/content/tongue-twisters/es.json"
+  },
+  {
+    "type": "tongue-twister",
+    "language": "French",
+    "url": "/content/tongue-twisters/fr.json"
+  },
+  {
+    "type": "tongue-twister",
+    "language": "Italian",
+    "url": "/content/tongue-twisters/it.json"
+  },
+  {
+    "type": "tongue-twister",
+    "language": "Polish",
+    "url": "/content/tongue-twisters/pl.json"
+  },
+  {
+    "type": "tongue-twister",
+    "language": "Portuguese",
+    "url": "/content/tongue-twisters/pt.json"
   }
+  
 
 ]

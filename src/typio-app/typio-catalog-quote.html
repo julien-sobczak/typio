@@ -117,32 +117,15 @@
         margin-top: 2px;
         max-width: 350px;
       }
-      
-      paper-fab:nth-of-type(1) {
-        position: fixed;
-        right: 75px;
-        bottom: 50px;          
-      }
-      paper-fab:nth-of-type(2) {
-        position: fixed;
-        right: 150px;
-        bottom: 50px;          
-      }
-      paper-fab {
-        background-color: rgba(0,0,0,0.5);
-      }
-      paper-fab[aria-disabled=true] {
-        background-color: rgba(0,0,0,0.2);
-      }
 
     </style>
 
     <iron-ajax url="/content/quotes/en.json" auto last-response="{{quotes}}"></iron-ajax>
     
-    <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
-    <paper-fab icon="av:play-arrow" title="Validate" disabled="{{_selectionEmpty}}" on-click="validate"></paper-fab>
-    
-    <div class$="type step[[step]]">
+    <div class$="type step[[step]] theme-transparent">
+      
+      <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
+      <paper-fab icon="av:play-arrow" title="Validate" disabled="{{_selectionEmpty}}" on-click="validate"></paper-fab>
 
       <div class="selection">
         <div class="entry">
@@ -342,19 +325,21 @@
       validate() {
         this.step = 3;
 
-        let content = "";
-        this.selection.forEach(quote => {
-          content += quote.quote + '\n' + quote.author + "\n\n";
-        });
-        console.log(this.selection, content);
-
         let detail = {
           type: 'quote',
           language: 'English',
           resource: null,
-          content: content
+          content: this._selectionToContent()
         };
         this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
+      }
+      
+      _selectionToContent() {
+        let content = "";
+        this.selection.forEach(quote => {
+          content += quote.quote + '\n' + quote.author + "\n\n";
+        });
+        return content;
       }
 
       /*
@@ -391,18 +376,16 @@
           this.selectedTag = this.tags[getRandomInt(this.tags.length)];
         }
 
-        if (!this.selectedQuotes) {
-          let quotes = this._getQuotes(this.selectedTag);
-          this.selectedQuote = quotes[getRandomInt(quotes.length)].name;
-        }
-
+        let quotes = this._getQuotes(this.selectedTag);
+        this.selection.push(quotes[getRandomInt(quotes.length)]);
+        
         console.log('[typio-catalog-quote] Using randomly selected quote ' + this.selectedQuote + ' (' + this.selectedTag + ')');
 
         let detail = {
           type: 'quote',
           language: 'English',
-          resource: this.selectedQuote.author,
-          content: this.selectedQuote.quote
+          resource: null,
+          content: this._selectionToContent()
         };
         this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
       }

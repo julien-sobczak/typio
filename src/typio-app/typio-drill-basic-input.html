@@ -5,7 +5,7 @@
 <link rel="import" href="/src/typio-app/typio-keyboard.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
-<dom-module id="typio-basic-drill-creator">
+<dom-module id="typio-drill-basic-input">
   <template>
     <style include="shared-styles">
 
@@ -17,18 +17,7 @@
       typio-keyboard {
         --typio-key-size: 0.50in;
       }
-      
-      paper-input#name {
-        --primary-text-color: var(--typio-bg-color);
-        --secondary-text-color: white;
-        --paper-input-container-color: white;
-        --paper-input-container-focus-color: var(--typio-bg-color);
-        --paper-font-subhead_-_font-size: 140%;
-        
-        width: 600px;
-        margin: 0 auto;
-      }
-      
+
       paper-input#input {
         --primary-text-color: var(--typio-bg-color);
         --secondary-text-color: white;
@@ -40,13 +29,7 @@
         text-align: left;
       }
             
-      typio-button {
-        --typio-secondary-color: black;
-      }
-      
     </style>
-    
-    <paper-input id="name" label="Descriptive name" no-label-float></paper-input>
     
     <p class="instructions"><iron-icon icon="help"></iron-icon> 
       Enter the sample characters to use to generate the drill.
@@ -59,9 +42,6 @@
     
     <typio-keyboard id="keyboard" mixed-cases clickable on-key-clicked="_registerClickedKey"></typio-keyboard>
     
-    <typio-button on-click="tryIt" light><iron-icon icon="check-box"></iron-icon> Try</typio-button>
-    <typio-button on-click="save" light><iron-icon icon="save"></iron-icon> Save</typio-button>
-    
   </template>
 
   <script>
@@ -69,8 +49,8 @@
      * @customElement
      * @polymer
      */
-    class TypioBasicDrillCreator extends Polymer.Element {
-      static get is() { return 'typio-basic-drill-creator'; }
+    class TypioDrillBasicInput extends Polymer.Element {
+      static get is() { return 'typio-drill-basic-input'; }
       static get properties() {
         return {
           
@@ -150,6 +130,6 @@
       
     }
 
-    window.customElements.define(TypioBasicDrillCreator.is, TypioBasicDrillCreator);
+    window.customElements.define(TypioDrillBasicInput.is, TypioDrillBasicInput);
   </script>
 </dom-module>

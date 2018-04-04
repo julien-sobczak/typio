@@ -152,7 +152,7 @@
 
       <div class="step step2">
         <template is="dom-repeat" items="{{filteredQuotes}}" as="quote">
-          <paper-checkbox class="styled" on-change="_quoteSelected">
+          <paper-checkbox on-change="_quoteSelected">
             {{quote.quote}}
             <span class="subtitle">
               {{quote.author}}

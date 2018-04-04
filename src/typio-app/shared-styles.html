@@ -109,20 +109,28 @@
       paper-fab {
         z-index: 500;
       }
-      paper-fab:nth-of-type(1) {
+      paper-fab:not(.relative):nth-of-type(1) {
         position: fixed;
         right: 75px;
         bottom: 50px;          
       }
-      paper-fab:nth-of-type(2) {
+      paper-fab:not(.relative):nth-of-type(2) {
         position: fixed;
         right: 150px;
         bottom: 50px;
       }
       
+      paper-fab.relative {
+        position: absolute;
+        right: -20px;
+        bottom: -20px;
+      }
+      
                          paper-fab { background-color: var(--typio-bg-color); }
+      .theme-transparent paper-fab.theme-light { background-color: var(--typio-bg-color); }
       .theme-transparent paper-fab { background-color: rgba(0,0,0,0.5);       }
                          paper-fab[aria-disabled=true] { background-color: rgba(0,0,0,0.2); }
+      .theme-transparent paper-fab.theme-light[aria-disabled=true] { background-color: silver;          }
       .theme-transparent paper-fab[aria-disabled=true] { background-color: rgba(0,0,0,0.2); }
       
       

@@ -4,6 +4,8 @@
 <link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
@@ -88,7 +90,9 @@
     <iron-ajax auto url="{{_urlContent}}" handle-as="text" on-response="_onContentLoaded"></iron-ajax>
     <iron-ajax auto url="{{_urlMetadataSurprise}}" handle-as="json" on-response="_onMetadataSurpriseLoaded"></iron-ajax>
 
-    <div class$="type step[[step]]">
+    <div class$="type step[[step]] theme-transparent">
+      
+      <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
 
       <div class="selection">
         <div class="entry">

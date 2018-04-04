@@ -1,12 +1,15 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../bower_components/paper-radio-button/paper-radio-button.html">
 
-<link rel="import" href="/src/typio-app/typio-static-drill-creator.html">
-<link rel="import" href="/src/typio-app/typio-basic-drill-creator.html">
-<link rel="import" href="/src/typio-app/typio-program-drill-creator.html">
-<link rel="import" href="/src/typio-app/typio-regex-drill-creator.html">
+<link rel="import" href="/src/typio-app/typio-drill-static-input.html">
+<link rel="import" href="/src/typio-app/typio-drill-basic-input.html">
+<link rel="import" href="/src/typio-app/typio-drill-program-input.html">
+<link rel="import" href="/src/typio-app/typio-drill-regex-input.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
@@ -15,113 +18,116 @@
     <style include="shared-styles">
 
       :host {
-        background-color: #666;        
+        background-color: #666;
+      }
+      
+      section {
         padding: 50px;
+        width: 100%;
+        height: 100%
         overflow-y: scroll;
       }
       
-      #editor {
-        flex-direction: row;
+      #form {
+        max-width: 1000px;
+        margin: 25px auto;
       }
       
-      #menu {
-        width: 200px;
-        float: left;
-      }
-      #configuration {
-        margin-left: 250px;
+      paper-input {
+        --primary-text-color: var(--typio-bg-color);
+        --secondary-text-color: white;
+        --paper-input-container-color: white;
+        --paper-input-container-focus-color: var(--typio-bg-color);
+        --paper-font-subhead_-_font-size: 140%;
+        
+        width: 600px;
+        margin: 0 auto;
       }
       
-      #menu {
-        margin: 0;
-        padding: 0;
+      paper-radio-group {
+        margin: 50px auto;
       }
-      #menu li {
-        list-style-type: none;
-        margin-top: 10px;
-        margin-bottom: 10px;
-      }    
-      #menu a {
-        position: absolute;
-        display: inline-block;
-        width: 100%;
-        padding: 10px 20px;
-        background-color: rgba(0, 0, 0, .7);
-        color: white;
-        text-decoration: none;
-      }  
-      #menu a .name {
-        display: block;
-        font-size: 110%;
+      
+      paper-radio-button {
+        --paper-radio-button-unchecked-color:	rgba(0,0,0,0.5);
+        --paper-radio-button-unchecked-ink-color: rgba(0,0,0,0.5);
+        --paper-radio-button-checked-color: white;
+        --paper-radio-button-checked-ink-color: black;
+        --paper-radio-button-size: 20px;
+        --paper-radio-button-ink-size: 48px;
+        --paper-radio-button-label-color: white;
+        --paper-radio-button-radio-container {
+          display: block;
+          align-self: center;
+          text-align: left;
+          max-width: 200px;
+          border: 1px solid white;
+          padding: 10px 25px;
+          margin: 20px auto;
+        }
+      }
+      paper-radio-button[checked] {
+        background-color: rgba(0,0,0,0.5);
         font-weight: bold;
-        color: var(--typio-bg-color);
       }
-      #menu a .description {
-        color: white;
-        font-size: 90%;
+      paper-radio-button .subtitle {
+        display: block;
+        font-size: 0.8em;
+        margin-top: 2px;
       }
       
-      #menu li {
-        position: relative;
-        width: 200px;
-        height: 70px;
+      /* Hide all types by default. We will revealed when user select one type. */
+      typio-drill-static-input,
+      typio-drill-basic-input,
+      typio-drill-program-input,
+      typio-drill-regex-input {
+        display: none;
       }
-      #menu li.selected a, #menu li:hover a {
-          margin-top: -3px;
-          margin-left: -3px;
-          box-shadow: 3px 3px rgba(0, 0, 0, 0.5);
-          transition: all 0.2s linear;
-          background-color: var(--typio-bg-color);
-      }
-      #menu li.selected a .name, #menu li:hover a .name {
-        color: black;
-      }
-
+      #creator.type-static  typio-drill-static-input  { display: block; }
+      #creator.type-basic   typio-drill-basic-input   { display: block; }
+      #creator.type-program typio-drill-program-input { display: block; }
+      #creator.type-regex   typio-drill-regex-input   { display: block; }
+      
     </style>
-
-    <app-route
-        route="{{route}}"
-        pattern="/:view"
-        data="{{routeData}}"
-        tail="{{subroute}}">
-    </app-route>
     
-    <div id="editor">
-      <ul id="menu">
-        <li id="menu-static" class$="{{isSelected(routeData.view, 'static')}}">
-          <a tabindex="-1" href="/drillCreator/static">
-            <span class="name">Static</span>
-            <span class="description">For obvious content</span>
-          </a>
-        </li>
-        <li id="menu-basic" class$="{{isSelected(routeData.view, 'basic')}}">
-          <a tabindex="-1" href="/drillCreator/basic">
-            <span class="name">Basic</span>
-            <span class="description">For a little randomization</span>
-          </a>
-        </li>
-        <li id="menu-program" class$="{{isSelected(routeData.view, 'program')}}">
-          <a tabindex="-1" href="/drillCreator/program">
-            <span class="name">Program</span>
-            <span class="description">For aspiring hackers</span>
-          </a>
-        </li>
-        <li id="menu-regex" class$="{{isSelected(routeData.view, 'regex')}}">
-          <a tabindex="-1" href="/drillCreator/regex">
-            <span class="name">Regex</span>
-            <span class="description">For the craziest ones</span>
-          </a>
-        </li>
-      </ul>
-      <div id="configuration">
-        <iron-pages selected="[[routeData.view]]" attr-for-selected="name" fallback-selection="basic">      
-          <typio-static-drill-creator name="static"></typio-static-drill-creator>
-          <typio-basic-drill-creator name="basic"></typio-basic-drill-creator>
-          <typio-program-drill-creator name="program"></typio-program-drill-creator>
-          <typio-regex-drill-creator name="regex"></typio-regex-drill-creator>
-        </iron-pages>
+    <section id="creator" class$="type-{{type}}">
+      
+      <paper-fab icon="create" title="Create" on-click="create"></paper-fab>
+      <paper-fab icon="av:play-arrow" title="Try" on-click="try"></paper-fab>
+
+      <div id="form">
+        <!-- Common properties --> 
+        <paper-input id="name" label="Name"></paper-input>
+        <paper-input id="description" label="Description"></paper-input>
+        
+        <paper-radio-group selected="{{type}}">
+          <paper-radio-button name="static">
+            Static
+            <span class="subtitle">For obvious content</span>
+          </paper-radio-button>
+          <paper-radio-button name="basic">
+            Basic
+            <span class="subtitle">For a little randomization</span>
+          </paper-radio-button>
+          <paper-radio-button name="program">
+            Program
+            <span class="subtitle">For the aspiring hackers</span>
+          </paper-radio-button>
+          <paper-radio-button name="regex">
+            Regex
+            <span class="subtitle">For the craziest ones</span>
+          </paper-radio-button>
+        </paper-radio-group>
+      
+        <!-- Specific configuration -->
+        <typio-drill-static-input name="static"></typio-drill-static-input>
+        <typio-drill-basic-input name="basic"></typio-drill-basic-input>
+        <typio-drill-program-input name="program"></typio-drill-program-input>
+        <typio-drill-regex-input name="regex"></typio-drill-regex-input>
+        
       </div>
-    </div>
+      
+    </section>
 
   </template>
 
@@ -137,26 +143,18 @@
       static get is() { return 'typio-drill-creator'; }
       static get properties() {
         return {
-          
-          //
-          // Routing management
-          //
-
-          route: {
-            type: Object
-          },
-
-          routeData: {
-            type: Object
+            
+          /** 
+           * Which type of drill to use.
+           */
+          type: {
+            type: String,
+            value: 'static'
           },
           
         };
       }
       
-      isSelected(route, menuEntry) {
-        return (route === menuEntry) ? "selected" : "";
-      }
-
       //
       // Utils
       //
@@ -168,6 +166,10 @@
             return TypioDrillCreator.generateStaticDrill(drill.text);
           case 'basic':
             return TypioDrillCreator.generateBasicDrill(drill.keys, drill.weights);
+          case 'program':
+            return TypioDrillCreator.generateProgramDrill(drill.javascriptCode);
+          case 'regex':
+            return TypioDrillCreator.generateRegexDrill(drill.regexes);
         }
       }
 
@@ -194,7 +196,7 @@
         // For each generated number, we append the letter at this index.
         
         if (!weights) {
-          weights = Array(this.content.length).fill(1);
+          weights = Array(keys.length).fill(1);
         }
         
         let letters = []
@@ -215,9 +217,9 @@
       /**
        * Generates a content following the program drill definition.
        */
-      static generateProgramDrill(program) {
+      static generateProgramDrill(code) {
         // TODO implement
-        return program;
+        return code;
       }
       
       /**

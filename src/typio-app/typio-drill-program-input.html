@@ -5,7 +5,7 @@
 <link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-button.html">
 
-<dom-module id="typio-program-drill-creator">
+<dom-module id="typio-drill-program-input">
   <template>
     <style include="shared-styles">
 
@@ -30,51 +30,16 @@
         border: 0;
       }
       
-      #validateButton { /* TODO use typio-button? */
-        position: fixed;
-        bottom: 0;
-        left: 50%;
-        width: 150px; /* Same as .blocklyToolboxDiv */
-        margin-left: -75px;
-        background-color: #009ee3;
-        color: white;
-        font-weight: bold;
-        z-index: 100;
-        padding: 10px;
-        text-align: center;
-        text-decoration: none;
-      }
-      
-      paper-input {
-        --primary-text-color: var(--typio-bg-color);
-        --secondary-text-color: white;
-        --paper-input-container-color: white;
-        --paper-input-container-focus-color: var(--typio-bg-color);
-        --paper-font-subhead_-_font-size: 140%;
-        
-        width: 600px;
-        margin: 0 auto;
-      }
-      
-      typio-button {
-        --typio-secondary-color: black;
-      }
-      
     </style>
-    
-    <paper-input id="name" label="Descriptive name" no-label-float></paper-input>
     
     <p class="instructions"><iron-icon icon="help"></iron-icon> Use the collection of blocks to build your own program. 
       On saving, the program is run and everything displayed will be used as the drill content.
     </p>
 
     <div id="wrapper">
-      <iframe id="blockly" title="Blockly Drill Creator" src="http://localhost:8081/blockly.html">
+      <iframe id="blockly" title="Blockly Drill Creator" src="/blockly.html">
       </iframe>
     </div>
-    
-    <typio-button on-click="tryIt" light><iron-icon icon="check-box"></iron-icon> Try</typio-button>
-    <typio-button on-click="save" light><iron-icon icon="save"></iron-icon> Save</typio-button>
       
   </template>
 
@@ -83,8 +48,8 @@
      * @customElement
      * @polymer
      */
-    class TypioProgramDrillCreator extends Polymer.Element {
-      static get is() { return 'typio-program-drill-creator'; }
+    class TypioDrillProgramInput extends Polymer.Element {
+      static get is() { return 'typio-drill-program-input'; }
       static get properties() {
         return {
         };
@@ -151,6 +116,6 @@
       
     }
 
-    window.customElements.define(TypioProgramDrillCreator.is, TypioProgramDrillCreator);
+    window.customElements.define(TypioDrillProgramInput.is, TypioDrillProgramInput);
   </script>
 </dom-module>

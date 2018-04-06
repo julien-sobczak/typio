@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../bower_components/paper-range-slider/paper-range-slider.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
@@ -107,21 +108,6 @@
         width: 400px;
       }
 
-      paper-button#start {
-        /* Position */
-        position: fixed;
-        bottom: 0;
-        margin: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-
-        /* Font */
-        font-weight: bold;
-        font-size: 18px;
-      }
-
-
       .lines {
         text-align: center;
       }
@@ -136,8 +122,11 @@
 
     </style>
 
-    <section id="settings" class$="hidden-[[hidden]] type-[[type]]">
 
+    <section id="settings" class$="hidden-[[hidden]] type-[[type]]">
+      
+      <paper-fab title="Start" icon="chevron-right" on-click="start"></paper-fab>
+    
       <div id="controls">
         <h2><iron-icon icon="settings"></iron-icon> Customize</h2>
         <div class="control type-code">
@@ -181,8 +170,6 @@
       <div id="content">
         <pre id="editor" data-type$="[[type]]">[[selection]]</pre>
       </div>
-
-      <paper-button id="start" on-click="start" raised>Start</paper-button>
 
     </section>
 

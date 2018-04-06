@@ -14,6 +14,7 @@
 <link rel="import" href="/src/typio-app/typio-stats.html">
 <link rel="import" href="/src/typio-app/typio-parser.html">
 <link rel="import" href="/src/typio-app/typio-keyboard.html">
+<link rel="import" href="/src/typio-app/typio-hands.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-editor">
@@ -134,6 +135,12 @@
         left: 50%;
         /* Using default size, the compact keyboard measures 576px x 192px */
         margin-top: calc(-1 * 192px / 2);
+        margin-left: calc(-1 * 576px / 2);
+      }
+      #heatmap #hands {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
         margin-left: calc(-1 * 576px / 2);
       }
       
@@ -293,6 +300,7 @@
       
       <div id="heatmap">
         <typio-keyboard id="keyboard" mixed-cases></typio-keyboard>
+        <typio-hands id="hands"></typio-hands>
         <paper-fab id="fabHeatmap" icon="close" title="Close" on-click="hideHeatmap"></paper-fab>
       </div>
 
@@ -669,15 +677,62 @@
           return 'var(--paper-red-' + ((ratio - ignoreBelowRatio) * 100) + ')';
         });
         
+        
+        const fingerRepartition = TypioKeyboard.fingersFromText(this._content);
+        const maxFingerCount = Math.max(
+          fingerRepartition.leftHand.littleFinger,
+          fingerRepartition.leftHand.ringFinger,
+          fingerRepartition.leftHand.middleFinger,
+          fingerRepartition.leftHand.indexFinger,
+          fingerRepartition.leftHand.thumb,
+          fingerRepartition.rightHand.littleFinger,
+          fingerRepartition.rightHand.ringFinger,
+          fingerRepartition.rightHand.middleFinger,
+          fingerRepartition.rightHand.indexFinger,
+          fingerRepartition.rightHand.thumb,
+        );
+        this.$.hands.colorizeLeftHand({
+          littleFinger: TypioEditor.dynamicRedColor(fingerRepartition.leftHand.littleFinger, maxFingerCount),
+          ringFinger:   TypioEditor.dynamicRedColor(fingerRepartition.leftHand.ringFinger, maxFingerCount),
+          middleFinger: TypioEditor.dynamicRedColor(fingerRepartition.leftHand.middleFinger, maxFingerCount),
+          indexFinger:  TypioEditor.dynamicRedColor(fingerRepartition.leftHand.indexFinger, maxFingerCount),
+          thumb:        TypioEditor.dynamicRedColor(fingerRepartition.leftHand.thumb, maxFingerCount),
+        });
+        this.$.hands.colorizeRightHand({
+          littleFinger: TypioEditor.dynamicRedColor(fingerRepartition.rightHand.littleFinger, maxFingerCount),
+          ringFinger:   TypioEditor.dynamicRedColor(fingerRepartition.rightHand.ringFinger, maxFingerCount),
+          middleFinger: TypioEditor.dynamicRedColor(fingerRepartition.rightHand.middleFinger, maxFingerCount),
+          indexFinger:  TypioEditor.dynamicRedColor(fingerRepartition.rightHand.indexFinger, maxFingerCount),
+          thumb:        TypioEditor.dynamicRedColor(fingerRepartition.rightHand.thumb, maxFingerCount),
+        });
+        
         this.$.heatmap.style.display = 'block';
       }
       
       hideHeatmap() {
         this.$.heatmap.style.display = 'none';
+      }   
+      
+      static dynamicPaperColor(paperColor, actualValue, maxValue) {
+        if (actualValue === 0) {
+          return 'inherit'; // let blank if no value
+        }
+        
+        let paperValue = Math.floor(actualValue * 100 / maxValue / 10) * 100;
+        if (paperValue > 900) {
+          paperValue = 900;
+        }
+        
+        return `var(--paper-${paperColor}-${paperValue})`;
+      }
+      
+      static dynamicRedColor(actualValue, maxValue) {
+        return TypioEditor.dynamicPaperColor('red', actualValue, maxValue);
       }
 
     }
     window.customElements.define(TypioEditor.is, TypioEditor);
+
 
   </script>
 </dom-module>

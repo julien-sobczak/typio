@@ -1,0 +1,139 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+<dom-module id="typio-hands">
+  <template>
+  <style include="shared-styles">
+
+      :host {
+        box-sizing: border-box;        
+        
+        /* We depend on the finger size to determine the dimensions of the hands */
+        --calculated-typio-finger-width: var(--typio-finger-width, 0.5in);
+      }
+      
+      #hands {
+        height: calc(var(--calculated-typio-finger-width) * 3.50);
+      }
+      
+      .hand {
+        position: relative;
+        display: inline-block;
+        height: calc(var(--calculated-typio-finger-width) * 3.50);
+        width: calc(var(--calculated-typio-finger-width) * 6);
+        overflow-y: hidden;
+      }
+      .little-finger,
+      .ring-finger,
+      .middle-finger,
+      .index-finger,
+      .thumb {
+        position: absolute;
+        bottom: calc(-1 * var(--calculated-typio-finger-width)); 
+        width: var(--calculated-typio-finger-width);
+        border: 1px solid gray;
+        border-top-right-radius: calc(var(--calculated-typio-finger-width) / 2);
+        border-top-left-radius: calc(var(--calculated-typio-finger-width) / 2); 
+        z-index: 2;
+      }
+      .thumb {
+        /* As the thunb will be rotated, we need to position it below other fingers to avoid overlapping. */
+        z-index: 1;
+      }
+      /* We try to keep human propertions */
+      .little-finger { height: calc(2.50 * var(--calculated-typio-finger-width)); }
+      .ring-finger   { height: calc(3    * var(--calculated-typio-finger-width)); }
+      .middle-finger { height: calc(3.50 * var(--calculated-typio-finger-width)); }
+      .index-finger  { height: calc(3    * var(--calculated-typio-finger-width)); }
+      .thumb         { height: calc(2    * var(--calculated-typio-finger-width)); }
+        
+      /* Sort fingers as when the hands are ready to touch type */
+      .left.hand .little-finger { left: 0; }       
+      .left.hand .ring-finger   { left: calc(1 * var(--calculated-typio-finger-width)); }
+      .left.hand .middle-finger { left: calc(2 * var(--calculated-typio-finger-width)); }
+      .left.hand .index-finger  { left: calc(3 * var(--calculated-typio-finger-width)); }
+      .left.hand .thumb         { left: calc(4 * var(--calculated-typio-finger-width) + var(--calculated-typio-finger-width) / 3); }
+      
+      .right.hand .thumb         { right: calc(4 * var(--calculated-typio-finger-width) + var(--calculated-typio-finger-width) / 3); }
+      .right.hand .index-finger  { right: calc(3 * var(--calculated-typio-finger-width)); }
+      .right.hand .middle-finger { right: calc(2 * var(--calculated-typio-finger-width)); }
+      .right.hand .ring-finger   { right: calc(1 * var(--calculated-typio-finger-width)); }
+      .right.hand .little-finger { right: 0; }    
+      
+      /* A little rotation of the thumbs to differentiate finger with the little finger. */
+      .left.hand  .thumb { transform: rotate(10deg); }
+      .right.hand .thumb { transform: rotate(-10deg); }
+      
+    </style>
+
+      <div id="hands">
+        
+        <div class="hand left">
+          <div id="leftLittleFinger" class="little-finger"></div>
+          <div id="leftRingFinger"   class="ring-finger"></div>
+          <div id="leftMiddleFinger" class="middle-finger"></div>
+          <div id="leftIndexFinger"  class="index-finger"></div>
+          <div id="leftThumb"        class="thumb"></div>
+        </div>
+        
+        <div class="hand right">
+          <div id="rightThumb"        class="thumb"></div>
+          <div id="rightIndexFinger"  class="index-finger"></div>
+          <div id="rightMiddleFinger" class="middle-finger"></div>
+          <div id="rightRingFinger"   class="ring-finger"></div>
+          <div id="rightLittleFinger" class="little-finger"></div>
+        </div>
+        
+      </div>
+      
+    </template>
+
+  </template>
+
+  <script>
+  
+    /**
+     * Display the left and right hand and let user colirize each finger separately.
+     *
+     * This component is used to print statistics concerning fingers.
+     *
+     * @customElement
+     * @polymer
+     */
+    class TypioHands extends Polymer.Element {
+      
+      static get is() { return 'typio-hands'; }
+      static get properties() {
+        return {};        
+      }
+      
+      /**
+       * Let client code colorizes the fingers.
+       * The function accepts an object argument with a key for each finger.
+       * The values should be valid CSS colors, or a JavaScript negative value 
+       * such as `undefined` to ignore the finger.
+       */
+      colorizeLeftHand(fingers) {
+        this.$.leftLittleFinger.style.backgroundColor = (fingers.littleFinger) ? fingers.littleFinger : 'inherit';
+        this.$.leftRingFinger.style.backgroundColor   = (fingers.ringFinger)   ? fingers.ringFinger   : 'inherit';
+        this.$.leftMiddleFinger.style.backgroundColor = (fingers.middleFinger) ? fingers.middleFinger : 'inherit';
+        this.$.leftIndexFinger.style.backgroundColor  = (fingers.indexFinger)  ? fingers.indexFinger  : 'inherit';
+        this.$.leftThumb.style.backgroundColor        = (fingers.thumb)        ? fingers.thumb        : 'inherit';
+      }
+      
+      /**
+       * Same as colorizeLeftHand but for the right hand.
+       */
+      colorizeRightHand(fingers) {
+        this.$.rightLittleFinger.style.backgroundColor = (fingers.littleFinger) ? fingers.littleFinger : 'inherit';
+        this.$.rightRingFinger.style.backgroundColor   = (fingers.ringFinger)   ? fingers.ringFinger   : 'inherit';
+        this.$.rightMiddleFinger.style.backgroundColor = (fingers.middleFinger) ? fingers.middleFinger : 'inherit';
+        this.$.rightIndexFinger.style.backgroundColor  = (fingers.indexFinger)  ? fingers.indexFinger  : 'inherit';
+        this.$.rightThumb.style.backgroundColor        = (fingers.thumb)        ? fingers.thumb        : 'inherit';
+      }
+      
+    }
+
+    window.customElements.define(TypioHands.is, TypioHands);
+  </script>
+</dom-module>

@@ -714,6 +714,136 @@
         });
       }
       
+      /**
+       * Return the typle hand/finger used to touch type a character.
+       */
+      static fingerFromCharacter(character, layout = 'qwerty') {
+          const layoutKeys = ISO_LAYOUT.get(layout);
+          
+          
+          // Map each key with the finger/hand that should press it when doing touch typing
+          // The structure of the arrays should be identical (number of lines and columns) to ISO_LAYOUT entry values.
+          const fingerPerKey = [
+            // Comments represent Qwerty layout only for illustrative purpose
+            // See https://en.wikipedia.org/wiki/Touch_typing for key-finger associations
+            [
+              /* ` */ { hand: 'left',  finger: 'littleFinger' },
+              /* 1 */ { hand: 'left',  finger: 'littleFinger' },
+              /* 2 */ { hand: 'left',  finger: 'ringFinger' },
+              /* 3 */ { hand: 'left',  finger: 'middleFinger' },
+              /* 4 */ { hand: 'left',  finger: 'indexFinger' },
+              /* 5 */ { hand: 'left',  finger: 'indexFinger' },
+              /* 6 */ { hand: 'right', finger: 'indexFinger' },
+              /* 7 */ { hand: 'right', finger: 'indexFinger' },
+              /* 8 */ { hand: 'right', finger: 'middleFinger' },
+              /* 9 */ { hand: 'right', finger: 'ringFinger' },
+              /* 0 */ { hand: 'right', finger: 'littleFinger' },
+              /* - */ { hand: 'right', finger: 'littleFinger' },
+              /* = */ { hand: 'right', finger: 'littleFinger' },
+            ],
+            [
+              /* TAB */ { hand: 'left', finger: 'littleFinger' },
+              /* Q */ { hand: 'left',  finger: 'littleFinger' },
+              /* W */ { hand: 'left',  finger: 'ringFinger' },
+              /* E */ { hand: 'left',  finger: 'middleFinger' },
+              /* R */ { hand: 'left',  finger: 'indexFinger' },
+              /* T */ { hand: 'left',  finger: 'indexFinger' },
+              /* Y */ { hand: 'right', finger: 'indexFinger' },
+              /* U */ { hand: 'right', finger: 'indexFinger' },
+              /* I */ { hand: 'right', finger: 'middleFinger' },
+              /* O */ { hand: 'right', finger: 'ringFinger' },
+              /* P */ { hand: 'right', finger: 'littleFinger' },
+              /* [ */ { hand: 'right', finger: 'littleFinger' },
+              /* ] */ { hand: 'right', finger: 'littleFinger' },
+            ],
+            [
+              /* CAPS */ { hand: 'left', finger: 'littleFinger' },
+              /* A */ { hand: 'left',  finger: 'littleFinger' },
+              /* S */ { hand: 'left',  finger: 'ringFinger' },
+              /* D */ { hand: 'left',  finger: 'middleFinger' },
+              /* F */ { hand: 'left',  finger: 'indexFinger' },
+              /* G */ { hand: 'left',  finger: 'indexFinger' },
+              /* H */ { hand: 'right', finger: 'indexFinger' },
+              /* J */ { hand: 'right', finger: 'indexFinger' },
+              /* K */ { hand: 'right', finger: 'middleFinger' },
+              /* L */ { hand: 'right', finger: 'ringFinger' },
+              /* ; */ { hand: 'right', finger: 'littleFinger' },
+              /* ' */ { hand: 'right', finger: 'littleFinger' },
+              /* \ */ { hand: 'right', finger: 'littleFinger' },
+            ],
+            [
+              /* SHIFT */ { hand: 'left', finger: 'littleFinger' },
+              /* \ */ { hand: 'left',  finger: 'littleFinger' },
+              /* Z */ { hand: 'left',  finger: 'littleFinger' },
+              /* X */ { hand: 'left',  finger: 'ringFinger' },
+              /* C */ { hand: 'left',  finger: 'middleFinger' },
+              /* V */ { hand: 'left',  finger: 'indexFinger' },
+              /* B */ { hand: 'left',  finger: 'indexFinger' },
+              /* N */ { hand: 'right', finger: 'indexFinger' },
+              /* M */ { hand: 'right', finger: 'indexFinger' },
+              /* , */ { hand: 'right', finger: 'middleFinger' },
+              /* . */ { hand: 'right', finger: 'ringFinger' },
+              /* / */ { hand: 'right', finger: 'littleFinger' },
+            ],
+          ];
+          
+          if (character >= 'a' && character <= 'z') {
+            character = character.toUpperCase(); // Only capital letters are present in the dictionary
+          }
+          
+          if (character === ' ') { // special case
+            // Space is the only character we assigned to space key
+            return { hand: 'left', finger: 'thumb' };
+          }
+          
+          for (let r = 0; r < layoutKeys.length; r++) {
+              let row = layoutKeys[r];
+              
+              for (let k = 0; k < row.length; k++) {
+                let key = row[k];
+                let indexCharacter = key.indexOf(character);
+                if (indexCharacter !== -1) {
+                  // Found but which finger?
+                  return fingerPerKey[r][k];
+                }
+              }                
+          }
+          
+          return undefined;
+      }
+      
+      /**
+       * Return the count of characters for each finger of the two hands.
+       */
+      static fingersFromText(text, layout = 'qwerty') {
+        // Initialise the result structure (counters will be incremented later.)
+        const repartition = {
+          'leftHand': {
+            'littleFinger': 0,
+            'ringFinger': 0,
+            'middleFinger': 0,
+            'indexFinger': 0,
+            'thumb': 0,
+          },
+          'rightHand': {
+            'littleFinger': 0,
+            'ringFinger': 0,
+            'middleFinger': 0,
+            'indexFinger': 0,
+            'thumb': 0,
+          }
+        }
+        
+        for (let c = 0; c < text.length; c++) {
+          const fingerHand = TypioKeyboard.fingerFromCharacter(text[c], layout);
+          if (fingerHand) {
+            repartition[fingerHand.hand + 'Hand'][fingerHand.finger]++;
+          }
+        }
+        
+        return repartition;
+      }
+      
     }
 
     window.customElements.define(TypioKeyboard.is, TypioKeyboard);

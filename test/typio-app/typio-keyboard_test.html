@@ -44,6 +44,12 @@
       </template>
     </test-fixture>
     
+    <test-fixture id="AzertyAnsiFixture">
+      <template>
+        <typio-keyboard norm="ansi" layout="azerty"></typio-keyboard>
+      </template>
+    </test-fixture>
+    
     <test-fixture id="MixedCasesFixture">
       <template>
         <typio-keyboard mixed-cases></typio-keyboard>
@@ -266,6 +272,92 @@
           // Trigger a click
           const letterExclamationPoint = keys(keyboard, 'ansi', 2)[1];
           letterExclamationPoint.querySelector('.label-shift').click();
+        });
+        
+        test('[fingerFromCharacter] return the right hand and the right finger', function() {
+          const keyboard = fixture('QwertyIsoFixture');
+          
+          expect(TypioKeyboard.fingerFromCharacter('Q').hand).is.equal('left');
+          expect(TypioKeyboard.fingerFromCharacter('Q').finger).is.equal('littleFinger');
+          
+          // lowercase is supported
+          expect(TypioKeyboard.fingerFromCharacter('q').hand).is.equal('left');
+          expect(TypioKeyboard.fingerFromCharacter('q').finger).is.equal('littleFinger');
+          
+          expect(TypioKeyboard.fingerFromCharacter('W').hand).is.equal('left');
+          expect(TypioKeyboard.fingerFromCharacter('w').finger).is.equal('ringFinger');
+          
+          expect(TypioKeyboard.fingerFromCharacter('E').hand).is.equal('left');
+          expect(TypioKeyboard.fingerFromCharacter('e').finger).is.equal('middleFinger');
+          
+          expect(TypioKeyboard.fingerFromCharacter('R').hand).is.equal('left');
+          expect(TypioKeyboard.fingerFromCharacter('r').finger).is.equal('indexFinger');
+          
+          expect(TypioKeyboard.fingerFromCharacter('T').hand).is.equal('left');
+          expect(TypioKeyboard.fingerFromCharacter('t').finger).is.equal('indexFinger');
+          
+          expect(TypioKeyboard.fingerFromCharacter('Y').hand).is.equal('right');
+          expect(TypioKeyboard.fingerFromCharacter('y').finger).is.equal('indexFinger');
+          
+          // Ignore unknown character (ç)
+          expect(TypioKeyboard.fingerFromCharacter('ç')).is.undefined;
+        });
+        
+        test('[fingerFromCharacter] support different layouts', function() {
+          const keyboard = fixture('AzertyAnsiFixture');
+          
+          // In Qwerty (default)
+          expect(TypioKeyboard.fingerFromCharacter('W', layout = 'qwerty').hand).is.equal('left');
+          expect(TypioKeyboard.fingerFromCharacter('w', layout = 'qwerty').finger).is.equal('ringFinger');
+                    
+          // Differs from Azerty:
+          expect(TypioKeyboard.fingerFromCharacter('W', layout = 'azerty').hand).is.equal('left');
+          expect(TypioKeyboard.fingerFromCharacter('w', layout = 'azerty').finger).is.equal('littleFinger');
+          
+          expect(TypioKeyboard.fingerFromCharacter('Z', layout = 'azerty').hand).is.equal('left');
+          expect(TypioKeyboard.fingerFromCharacter('z', layout = 'azerty').finger).is.equal('ringFinger');
+          
+          expect(TypioKeyboard.fingerFromCharacter('M', layout = 'azerty').hand).is.equal('right');
+          expect(TypioKeyboard.fingerFromCharacter('m', layout = 'azerty').finger).is.equal('littleFinger');
+          
+          expect(TypioKeyboard.fingerFromCharacter('M', layout = 'qwerty').hand).is.equal('right');
+          expect(TypioKeyboard.fingerFromCharacter('m', layout = 'qwerty').finger).is.equal('indexFinger');
+        });
+        
+        test('[fingersFromText] calculate the repartition among fingers', function() {
+          const keyboard = fixture('QwertyIsoFixture');
+          
+          const repartition = TypioKeyboard.fingersFromText('QWERTYqwerty UIOPuiop[]{}');
+          
+          expect(repartition.leftHand.littleFinger).is.equal(2);  // Q and q
+          expect(repartition.leftHand.ringFinger).is.equal(2);    // W and w
+          expect(repartition.leftHand.middleFinger).is.equal(2);  // E and e
+          expect(repartition.leftHand.indexFinger).is.equal(4);   // R, r, T and t
+          expect(repartition.leftHand.thumb).is.equal(1);         // SPC
+          
+          expect(repartition.rightHand.thumb).is.equal(0);
+          expect(repartition.rightHand.indexFinger).is.equal(4);   // Y, y, U and u 
+          expect(repartition.rightHand.middleFinger).is.equal(2);  // I and i
+          expect(repartition.rightHand.ringFinger).is.equal(2);    // O and o
+          expect(repartition.rightHand.littleFinger).is.equal(6);  // P, p, [, {, ], amd }
+        });
+        
+        test('[fingersFromText] support different layouts', function() {
+          const keyboard = fixture('AzertyAnsiFixture');
+          
+          const repartition = TypioKeyboard.fingersFromText('AzErTy', layout = 'azerty');
+          
+          expect(repartition.leftHand.littleFinger).is.equal(1);  // A
+          expect(repartition.leftHand.ringFinger).is.equal(1);    // z
+          expect(repartition.leftHand.middleFinger).is.equal(1);  // E
+          expect(repartition.leftHand.indexFinger).is.equal(2);   // r and T
+          expect(repartition.leftHand.thumb).is.equal(0);
+          
+          expect(repartition.rightHand.thumb).is.equal(0);
+          expect(repartition.rightHand.indexFinger).is.equal(1);   // y
+          expect(repartition.rightHand.middleFinger).is.equal(0);
+          expect(repartition.rightHand.ringFinger).is.equal(0);
+          expect(repartition.rightHand.littleFinger).is.equal(0);
         });
 
       });

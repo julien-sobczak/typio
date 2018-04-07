@@ -1,0 +1,39 @@
+{
+  "name": "randexp",
+  "description": "Create random strings that match a given regular expression.",
+  "main": "build/randexp.min.js",
+  "authors": [
+    "fent (https://github.com/fent)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "regex",
+    "regexp",
+    "regular",
+    "expression",
+    "random",
+    "test"
+  ],
+  "homepage": "https://github.com/fent/randexp.js",
+  "ignore": [
+    "**/.*",
+    "coverage",
+    "gulpfile.js",
+    "lib",
+    "package.json",
+    "bower_components",
+    "node_modules",
+    "test"
+  ],
+  "version": "0.5.2",
+  "_release": "0.5.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.5.2",
+    "commit": "f8a3548e8a1f4fe7195e9825b17597096ece3949"
+  },
+  "_source": "https://github.com/fent/randexp.js.git",
+  "_target": "^0.5.2",
+  "_originalSource": "randexp",
+  "_direct": true
+}

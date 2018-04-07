@@ -31,20 +31,56 @@
         // Static drill 
         //
         
-        test('[static drill] common usage', function() {
-          const content = TypioDrillCreator.generateStaticDrill("azerty");
+        test('[static drill] basic usage', function() {
+          const content = TypioDrillCreator.generateStaticDrill({text: "azerty"});
           
           // Should return the same value
           expect(content).to.eql("azerty");
+        });
+        
+        test('[static drill] limit the number of selected textes', function() {
+          const content = TypioDrillCreator.generateStaticDrill({
+            "text": ["azerty", "qwerty", "colemak", "dvorak"], 
+            "random": false, 
+            "limit": 2
+          });
+          
+          // Should return the same value
+          expect(content).to.equal("azerty\nqwerty");
+        });
+        
+        test('[static drill] limit to 5 results by default', function() {
+          const content = TypioDrillCreator.generateStaticDrill({
+            "text": ["azerty", "qwerty", "colemak", "dvorak", "international qwerty", "bepo"]
+          });
+          
+          // Should return the same value
+          expect(content.split('\n').length).to.equal(5);
         });
         
         // 
         // Basic drill
         //
         
-        test('[basic drill] common usage', function() {
+        test('[basic drill] basic usage', function() {
           const len = 10;
-          const content = TypioDrillCreator.generateBasicDrill(['a','b'], [1, 2], len);
+          const content = TypioDrillCreator.generateBasicDrill({
+            keys: ['a', 'b'], 
+            // weigths are optional
+            length: len,
+          });
+          
+          // Should contains only the given characters 
+          expect(countChar(content, 'a') + countChar(content, 'b')).to.eql(len);
+        });
+        
+        test('[basic drill] with weights', function() {
+          const len = 10;
+          const content = TypioDrillCreator.generateBasicDrill({
+            keys: ['a', 'b'], 
+            weights: [1, 2], 
+            length: len,
+          });
           
           // Should contains only the given characters 
           expect(countChar(content, 'a') + countChar(content, 'b')).to.eql(len);
@@ -52,7 +88,11 @@
         
         test('[basic drill] weights influence the repartition', function() {
           const len = 10;
-          const content = TypioDrillCreator.generateBasicDrill(['a','b'], [1, 100], len);
+          const content = TypioDrillCreator.generateBasicDrill({
+            keys: ['a', 'b'], 
+            weights: [1, 100], 
+            length: len
+          });
           
           // Should contains only the given characters 
           expect(countChar(content, 'a') < countChar(content, 'b')).to.eql(true, "Due to weights, it should have be a lot more 'b' than 'a'");
@@ -62,29 +102,85 @@
         // Program drill
         //
         
-        test('[program drill] evaluate the program and capture the output', function() {
-          const program = `test`;
-          const content = TypioDrillCreator.generateProgramDrill(program);
+        test('[program drill] evaluate and capture the output', function() {
+          const program = 'window.alert("Hello World");'
+          const content = TypioDrillCreator.generateProgramDrill({
+            javascriptCode: program
+          });
           
-          expect(content).to.eql("test");
+          expect(content).to.eql("Hello World");
         });
-        
-        // TODO
         
         //
         // Regex drill
         //
         
         test('[regex drill] hello world', function() {
-          const regexes = {
-            'DRILL': /hello world/
-          }
-          const content = TypioDrillCreator.generateRegexDrill(regexes);
+          const content = TypioDrillCreator.generateRegexDrill({
+            regexes: {
+              'DRILL': /hello world/
+            }
+          });
           
           expect(content).to.eql("hello world");
         });
         
+        test('[regex drill] strings are supported', function() {
+          const content = TypioDrillCreator.generateRegexDrill({
+            regexes: {
+              'DRILL': "hello world"
+            }
+          });
+          
+          expect(content).to.eql("hello world");
+        });
+
+        test('[regex drill] JSON documents', function() {
+          const content = TypioDrillCreator.generateRegexDrill({
+            regexes: {
+              "JSON_PRIMITIVE":          "true|false|\"[a-zA-Z_]{1,10}\"|[1-9]\\d*",
+              "JSON_ARRAY":              "\\[(JSON_PRIMITIVE, )*JSON_PRIMITIVE\\]",
+              "JSON_VALUE":              "JSON_PRIMITIVE|JSON_BASIC_OBJECT|JSON_ARRAY",
+              "JSON_KEY_VALUE":          "  \"[a-zA-Z_]+\": JSON_VALUE",
+              "JSON_KEY_PRMITIVE_VALUE": "    \"[a-zA-Z_]+\": JSON_PRIMITIVE",
+              "JSON_OBJECT":             "\\{\n(JSON_KEY_VALUE,\n)*JSON_KEY_VALUE\n\\}",
+              "JSON_BASIC_OBJECT":       "\\{\n(JSON_KEY_PRMITIVE_VALUE,\n)*JSON_KEY_PRMITIVE_VALUE\n  \\}",
+              "DRILL":                   "JSON_OBJECT"
+            }
+          });
+          
+          console.log(content); 
+          expect(() => JSON.parse(content)).not.to.throw()
+        });
         
+        test('[regex drill] nested function calls', function() {
+          const content = TypioDrillCreator.generateRegexDrill({
+            regexes: {
+              "ARGUMENTS":       "(|\\d{1,2}|FUNCTION_CALL|FUNCTION_CALL)",
+              "FUNCTION_CALL":   "[a-zA-Z_]{1,2}\\(ARGUMENTS\\)",
+              "DRILL":           "FUNCTION_CALL"
+            }
+          });
+          
+          console.log(content); 
+          expect(content[content.length - 1]).is.equal(')');
+        });
+        
+        test('[regex drill] html tags', function() {
+          const content = TypioDrillCreator.generateRegexDrill({
+            regexes: {
+              "HTML_CONTENT": "(|[a-z]+|PARENT_TAG|TAG)",
+              "CHILD":        "<a>[a-z]+</a>|<img src=\"#\" />|<h1>[a-z]+</TEXT>|<blockquote>CHILD</blockquote>|<br/>",
+              "PARENT":       "<span>HTML_CONTENT</span>|<div>HTML_CONTENT</div>|<section>HTML_CONTENT</section>|<p>HTML_CONTENT</p>",
+              "TAG":          "(PARENT|CHILD)",
+              "DRILL":        "(PARENT){5,10}"
+            }
+          });
+          
+          console.log(content); 
+          expect(content[0]).is.equal('<');
+          expect(content[content.length - 1]).is.equal('>');
+        });
 
       });
     </script>

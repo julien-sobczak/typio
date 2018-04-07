@@ -55,6 +55,18 @@
         };
       }
       
+      static evaluate(jsText) {
+        let jsUpdatedText = jsText.replace(/window\.alert\((.*?)\);/g, "res += $1;");
+        let program = `
+        function run() {
+          let res = "";
+          ${jsUpdatedText}
+          return res;
+        }
+        run()`;
+        return eval(program);
+      }
+      
       ready() {
         super.ready();
         
@@ -64,18 +76,6 @@
        
         // See https://davidwalsh.name/window-postmessage for explanations about Window.postMessage()
         // Or https://developer.mozilla.org/fr/docs/Web/API/Window/postMessage
-        
-        function evaluate(jsText) {
-          let jsUpdatedText = jsText.replace(/window\.alert\((.*?)\);/g, "res += $1;");
-          let program = `
-          function run() {
-            let res = "";
-            ${jsUpdatedText}
-            return res;
-          }
-          run()`;
-          return eval(program);
-        }
         
         // periodical message sender
         setTimeout(() => {
@@ -92,8 +92,10 @@
       
         	//console.log('javascript: ', event.data.javascript);
           //console.log('xml: ', event.data.xml);
-          this.result = evaluate(event.data.javascript);
-          console.log('=', this.result);
+          this.result = TypioDrillProgramInput.evaluate(event.data.javascript);
+          console.log('javascript=', event.data.javascript);
+          console.log('xml=', event.data.xml);
+          console.log('output=', this.result);
           // TODO save event
           
         }, false);

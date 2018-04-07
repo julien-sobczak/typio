@@ -1,31 +1,100 @@
 [
+  
   {
     "name": "Digits",
     "type": "basic",
     "description": "Practice digits using only the top row",
     "keys": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
   },
+  
   {
     "name": "Mixed Cases",
     "type": "basic",
     "description": "Train switching between uppercase and lowercase letters",
     "keys": ["Q", "q", "W", "w", "E", "e", "R", "r", "T", "t", "Y", "y", "U", "u", "I", "i", "O", "o", "P", "p", "A", "a", "S", "s", "D", "d", "F", "f", "G", "g", "H", "h", "J", "j", "K", "k", "L", "l", "Z", "z", "X", "x", "C", "c", "V", "v", "B", "b", "N", "n", "M", "m"]
   },
+  
   {
-    "name": "Tongue Twisters",
+    "name": "Accents",
+    "type": "basic",
+    "description": "Be more comfortable in languages that used them",
+    "keys": ["é", "à", "è", "ì", "ù", "ç ", "î", "ô"]
+  },
+  
+  {
+    "name": "French Palindromes",
     "type": "static",
-    "description": "Be careful with these sentences that we make out dizzy",
-    "sentences": [
-      "Peter Piper picked a peck of pickled peppers.\nA peck of pickled peppers Peter Piper picked.\nIf Peter Piper picked a peck of pickled peppers,\nWhere's the peck of pickled peppers Peter Piper picked?",
-      "I saw Susie sitting in a shoe shine shop.\nWhere she sits she shines, and where she shines she sits.",
-      "How many boards\nCould the Mongols hoard\nIf the Mongol hordes got bored?",
-      "How can a clam cram in a clean cream can?",
-      "Send toast to ten tense stout saints' ten tall tents.",
-      "Denise sees the fleece,\nDenise sees the fleas.\nAt least Denise could sneeze\nand feed and freeze the fleas.",
-      "Coy knows pseudonoise codes.",
-      "Sheena leads, Sheila needs.",
-      "The thirty-three thieves thought that they thrilled the throne throughout Thursday.",
-      "Something in a thirty-acre thermal thicket of thorns and thistles thumped and thundered threatening the three-D thoughts of Matthew the thug - although, theatrically, it was only the thirteen-thousand thistles and thorns through the underneath of his thigh that the thirty year old thug thought of that morning."
+    "description": "Examples of palindromes phrases and sentences written by famous authors",
+    "text": [
+      "Ce satrape repart à sec.",
+      "Eh, ce lac né en calèche.",
+      "Tu l'as trop écrasé César ce Port-Salut.",
+      "Ésope reste ici et se repose.",
+      "Éric notre valet alla te laver ton ciré.",
+      "Élu par cette crapule.",
+      "Engage le jeu que je le gagne.",
+      "Sévère mal à l'âme, rêves.",
+      "L'âme des uns n'use de mal.",
+      "Ce reptile lit Perec",
+      "La mère Gide digère mal.",
+      "À l'étape, épate-la !",
+      "Eh ! ça va la vache ?",
+      "Dis beau lama t'as mal au bide ?",
     ]
-  }
+  },
+  
+  {
+    "name": "Similar spellings: keyboard",
+    "type": "static",
+    "description": "List of words whose spelling is similar",
+    "text": [
+      "keyboard",
+      "keyword",
+      "seaboard",
+      "keycard",
+      "keyboards",
+      "wayboard"
+    ]
+  },
+  
+  {
+    "name": "JSON",
+    "type": "regex",
+    "description": "JSON documents",
+    "regexes": {
+      "JSON_PRIMITIVE":          "true|false|\"[a-zA-Z_]{1,10}\"|\\d+",
+      "JSON_ARRAY":              "\\[(JSON_PRIMITIVE, )*JSON_PRIMITIVE\\]",
+      "JSON_VALUE":              "JSON_PRIMITIVE|JSON_BASIC_OBJECT|JSON_ARRAY",
+      "JSON_KEY_VALUE":          "  \"[a-zA-Z_]+\": JSON_VALUE",
+      "JSON_KEY_PRMITIVE_VALUE": "    \"[a-zA-Z_]+\": JSON_PRIMITIVE",
+      "JSON_OBJECT":             "\\{\n(JSON_KEY_VALUE,\n)*JSON_KEY_VALUE\n\\}",
+      "JSON_BASIC_OBJECT":       "\\{\n(JSON_KEY_PRMITIVE_VALUE,\n)*JSON_KEY_PRMITIVE_VALUE\n  \\}",
+      "DRILL":                   "JSON_OBJECT"
+    }
+  },
+    
+  {
+    "name": "Recursive Function Calls",
+    "type": "regex",
+    "description": "Remembering from LISP",
+    "regexes": {
+      "ARGUMENTS":       "(|\\d{1,2}|FUNCTION_CALL|FUNCTION_CALL)",
+      "FUNCTION_CALL":   "[a-zA-Z_]{1,2}\\(ARGUMENTS\\)",
+      "DRILL":           "FUNCTION_CALL"
+    }
+  },
+  
+  {
+    "name": "HTML snippets",
+    "type": "regex",
+    "description": "Short HTML code to practice tag opening and closing",
+    "regexes": {
+      "HTML_CONTENT": "(|[a-z]+|PARENT_TAG|TAG)",
+      "CHILD":        "<a>[a-z]+</a>|<img src=\"#\" />|<h1>[a-z]+</TEXT>|<blockquote>CHILD</blockquote>|<br/>",
+      "PARENT":       "<span>HTML_CONTENT</span>|<div>HTML_CONTENT</div>|<section>HTML_CONTENT</section>|<p>HTML_CONTENT</p>",
+      "TAG":          "(PARENT|CHILD)",
+      "DRILL":        "(PARENT){5,10}"
+    }
+  },
+  
 ]

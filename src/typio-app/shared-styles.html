@@ -116,8 +116,8 @@
       }
       paper-fab:not(.relative):nth-of-type(2) {
         position: fixed;
-        right: 150px;
-        bottom: 50px;
+        right: 75px;
+        bottom: 125px;
       }
       
       paper-fab.relative {
@@ -126,12 +126,18 @@
         bottom: -20px;
       }
       
-                         paper-fab { background-color: var(--typio-bg-color); }
-      .theme-transparent paper-fab.theme-light { background-color: var(--typio-bg-color); }
-      .theme-transparent paper-fab { background-color: rgba(0,0,0,0.5);       }
-                         paper-fab[aria-disabled=true] { background-color: rgba(0,0,0,0.2); }
-      .theme-transparent paper-fab.theme-light[aria-disabled=true] { background-color: silver;          }
-      .theme-transparent paper-fab[aria-disabled=true] { background-color: rgba(0,0,0,0.2); }
+      paper-fab:hover {
+        /* See https://material.io/guidelines/material-design/elevation-shadows.html#elevation-shadows-elevation-android for guidelines */
+        @apply(--shadow-elevation-6dp);
+      }
+
+      /* TODO refactor */
+                         paper-fab                                 { background-color: var(--typio-bg-color); }
+      .theme-transparent paper-fab.theme-light                     { background-color: var(--typio-bg-color); }
+      .theme-transparent paper-fab                                 { background-color: rgba(0,0,0,0.5); }
+                         paper-fab[aria-disabled=true]             { background-color: rgba(0,0,0,0.2); }
+      .theme-transparent paper-fab.theme-light[aria-disabled=true] { background-color: silver; }
+      .theme-transparent paper-fab[aria-disabled=true]             { background-color: rgba(0,0,0,0.2); }
       
       
       /* General */

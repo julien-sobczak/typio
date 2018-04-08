@@ -191,8 +191,11 @@
       
       drillSessionRequested(e) {
         let detail = e.detail;
-        this.$.drillRunner.content = detail.content;
+        this.$.drillRunner.reset();
+        this.$.drillRunner.drill = undefined;
+        this.$.drillRunner.drill = detail.drill;
         this.$.drillRunner.redirectUri = detail.redirectUri;
+        console.log('new drill', detail.drill, detail.redirectUri);
         this.goToDrillSession();
       }
 

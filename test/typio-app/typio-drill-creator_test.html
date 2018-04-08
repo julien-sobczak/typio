@@ -111,6 +111,48 @@
           expect(content).to.eql("Hello World");
         });
         
+        test('[program drill] amouts example', function() {
+          const program = `
+          var number;
+
+          function mathRandomInt(a, b) {
+            if (a > b) {
+              // Swap a and b to ensure a is smaller.
+              var c = a;
+              a = b;
+              b = c;
+            }
+            return Math.floor(Math.random() * (b - a + 1) + a);
+          }
+
+
+          window.alert('$');
+          window.alert(mathRandomInt(1, 999));
+          var repeat_end = mathRandomInt(3, 10);
+          for (var count = 0; count < repeat_end; count++) {
+            window.alert(',');
+            number = mathRandomInt(0, 999);
+            if (number < 10) {
+              window.alert('00');
+              window.alert(number);
+            } else if (number < 100) {
+              window.alert('0');
+              window.alert(number);
+            } else {
+              window.alert(number);
+            }
+          }
+          window.alert('.');
+          window.alert(mathRandomInt(10, 99));`;
+          
+          const content = TypioDrillCreator.generateProgramDrill({
+            javascriptCode: program
+          });
+          
+          console.log(content);
+          expect(/\$\d+(,\d{3}){3,10}[.][1-9][0-9]/.test(content)).to.be.true;
+        });
+        
         //
         // Regex drill
         //

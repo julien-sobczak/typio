@@ -1,6 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+
 <link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-stats.html">
+<link rel="import" href="/src/typio-app/typio-drill-creator.html">
 <link rel="import" href="/src/typio-app/typio-core-editor.html">
 
 <dom-module id="typio-drill-runner">
@@ -18,10 +22,39 @@
       #screen.ended-false #results {
         display: none;
       }
+
+      /* Hide paper-fab according the state. */
+      .started-true #fabStart {
+        display: none;
+      }
+      .ended-false #fabRestart {
+        display: none;
+      }
+      
+      #results {
+        position: fixed;
+        width: 300px;
+        top: 30%;
+        left: 50%;
+        margin-left: -150px;
+        text-align: center;
+        font-size: 200%;
+      }
+      #results .wpm {
+        font-weight: bold;
+      }
       
     </style>
     
-    <div id="screen" class$="ended-{{ended}}">
+    <div id="screen" class$="started-{{started}} ended-{{ended}} theme-transparent">
+      
+      <div class="fabs">
+        <paper-fab id="fabStart" class="theme-light" title="Start" icon="chevron-right" on-click="start"></paper-fab>
+        <paper-fab id="fabRestart" class="theme-light" title="Restart" icon="autorenew" on-click="restart"></paper-fab>
+        <paper-fab id="fabRenew" class="theme-light" title="Renew" icon="autorenew" on-click="renew"></paper-fab>
+        <paper-fab id="fabClose" class="theme-light" icon="close" title="Close" on-click="close"></paper-fab>
+      </div>
+      
       <typio-stats id="stats" headless="true"></typio-stats>
 
       <typio-core-editor id="editor" 
@@ -32,11 +65,9 @@
           on-typing-ended="_typingEnded">
       </typio-core-editor>
     
-      <div id="results">Congratulations! <span class="wpm">[[wpm]] WPM</span></div>
+      <div id="results"><span class="wpm">[[wpm]] WPM</span></div>
     </div>  
     
-    <a href="#" on-click="start">Start</a>
-
   </template>
 
   <script>
@@ -54,14 +85,22 @@
         return {
 
           /**
-           * The content to touch type.
+           * The drill to use.
            *
            * This property should be set in JavaScript and
            * not through an HTML attribute to avoid HTML escaping (&lt; for <).
            */
+          drill: {
+            type: Object,
+            value: {
+              type: 'static',
+              text: ['Hello', 'Bonjour', 'Hola', 'Guten Tag', 'Ciao', 'Olà', 'Namaste', 'Zdravstvuyte', 'Konnichiwa', 'Merhaba', 'Sain Bainuu', 'Szia', 'Ni hau'],
+            },
+            observer: '_drillChanged'
+          },
+          
           content: {
-            type: String,
-            value: 'jfjfjfjffj'
+            type: String
           },
           
           /**
@@ -71,21 +110,11 @@
             type: String
           },
 
-          /**
-           * Editor code style.
-           * Name should match a CSS resource name /css/prism-{{theme}}.css.
-           */
-          theme: {
-            type: String,
-            value: 'light'
-          },
-
-
           /*
            * State management
            */
 
-          initialized: {
+          started: {
             type: Boolean,
             value: false
           },
@@ -106,11 +135,45 @@
         super.ready();         
       }
       
+      _drillChanged() {
+        if (!this.drill) return;
+        this.content = TypioDrillCreator.generateDrill(this.drill);
+        this.$.editor.refresh();
+      }
+      
+      /** Reinit the component. */
+      reset() {
+        this.started = false;
+        this.paused = true;
+        this.ended = false;
+      }
+      
+      /** Launch the drill session. */
       start() {
-        this.initialized = true;
+        this.started = true;
         this.$.editor.start();
+        this.$.stats.reset();
         this.$.stats.editableCharacters = Array(this.content.length).fill(true); // all characters are editable in drill type
         this.$.stats.startTimer();
+      }
+      
+      /** Restart the drill using the same content. */
+      restart() {
+        this.ended = false;
+        this.start();
+      }
+      
+      /** Restart the drill using a newly generated content. */
+      renew() {
+        this.content = TypioDrillCreator.generateDrill(this.drill);
+        this.restart();
+      }
+      
+      /** Go back to previous screen. */
+      close() {
+        console.log('Redirecting to', this.redirectUri);
+        window.history.pushState({}, null, this.redirectUri);
+        window.dispatchEvent(new CustomEvent('location-changed'));
       }
       
       _characterEntered(e, detail) {

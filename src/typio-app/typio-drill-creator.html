@@ -94,8 +94,10 @@
     
     <section id="creator" class$="type-{{type}}">
       
-      <paper-fab icon="create" title="Create" on-click="create"></paper-fab>
-      <paper-fab icon="av:play-arrow" title="Try" on-click="tryIt"></paper-fab>
+      <div class="fabs">
+        <paper-fab icon="create" title="Create" on-click="create"></paper-fab>
+        <paper-fab icon="av:play-arrow" title="Try" on-click="tryIt"></paper-fab>
+      </div>
 
       <div id="form">
         <!-- Common properties --> 
@@ -192,7 +194,7 @@
           case 'program':
             return TypioDrillCreator.generateProgramDrill(drill);
           case 'regex':
-            return TypioDrillCreator.generateRegexDrill(drill.regexes);
+            return TypioDrillCreator.generateRegexDrill(drill);
         }
       }
 

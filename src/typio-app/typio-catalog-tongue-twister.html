@@ -125,9 +125,11 @@
     
     <div class$="type step[[step]] theme-transparent">
       
-      <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
-      <paper-fab icon="av:play-arrow" title="Validate" disabled="{{_selectionEmpty}}" on-click="validate"></paper-fab>
-
+      <div class="fabs">
+        <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
+        <paper-fab icon="av:play-arrow" title="Validate" disabled="{{_selectionEmpty}}" on-click="validate"></paper-fab>
+      </div>
+      
       <div class="selection">
         <div class="entry">
           <a href="/catalog/menu">

@@ -80,7 +80,7 @@
         // periodical message sender
         setTimeout(() => {
           let xmlText = `
-            <xml><variables></variables><block type="text_print" id="]!%~YmJFM+Uq0p%;xMU:" x="678" y="154"><value name="TEXT"><shadow type="text" id="0f$J;1*?.}2krhXo]FPR"><field name="TEXT">abc</field></shadow><block type="text" id="mc=vQQsn)h@Wc69rbFvH"><field name="TEXT">toto</field></block></value></block></xml>
+            <xml><variables></variables><block type="text_print" id="]!%~YmJFM+Uq0p%;xMU:" x="678" y="154"><value name="TEXT"><shadow type="text" id="0f$J;1*?.}2krhXo]FPR"><field name="TEXT">abc</field></shadow><block type="text" id="mc=vQQsn)h@Wc69rbFvH"><field name="TEXT">Hello</field></block></value></block></xml>
           `;
         	this.blockly.postMessage(xmlText, this.domain); // send the message and target URI
         }, 1000); // Required?
@@ -95,6 +95,7 @@
           this.result = TypioDrillProgramInput.evaluate(event.data.javascript);
           console.log('javascript=', event.data.javascript);
           console.log('xml=', event.data.xml);
+          console.log('raw=', event.data.xmlRaw);
           console.log('output=', this.result);
           // TODO save event
           

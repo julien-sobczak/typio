@@ -230,6 +230,8 @@
       #screen.ended-false #fabHeatmap { display: none;  }
       #screen.ended-true  #fabHeatmap { display: block; }
       
+      #screen.ended-false #fabRestart { display: none;  }
+      #screen.ended-true  #fabRestart { display: block; }
 
     </style>
 
@@ -278,8 +280,11 @@
         </div>
       </template>
 
-      <paper-fab id="fabHeatmap" icon="maps:map" title="Heatmap" on-click="showHeatmap"></paper-fab>
-
+      <div class="fabs">
+        <paper-fab id="fabHeatmap" icon="maps:map" title="Heatmap" on-click="showHeatmap"></paper-fab>
+        <paper-fab id="fabRestart" icon="autorenew" title="Restart" on-click="restart"></paper-fab>
+      </div>
+      
       <typio-stats id="stats"></typio-stats>
 
       <typio-core-editor id="editor" 
@@ -301,7 +306,9 @@
       <div id="heatmap">
         <typio-keyboard id="keyboard" mixed-cases></typio-keyboard>
         <typio-hands id="hands"></typio-hands>
-        <paper-fab id="fabHeatmap" icon="close" title="Close" on-click="hideHeatmap"></paper-fab>
+        <div class="fabs">
+          <paper-fab id="fabHeatmap" icon="close" title="Close" on-click="hideHeatmap"></paper-fab>
+        </div>
       </div>
 
       <google-chart id="chart" class$="showChart-{{showChart}}"
@@ -503,6 +510,10 @@
 
       ready() {
         super.ready();
+      }
+      
+      restart() {
+        this.reset();
       }
 
       /**

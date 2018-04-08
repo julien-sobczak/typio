@@ -47,8 +47,9 @@
         white-space: normal; /* Disable pre default behavior*/
       }
       pre[data-type="drill"] span {
-        font-size: 200%;
+        font-size: 150%;
         letter-spacing: 3px;
+        line-height: 2;
         outline: none !important; 
       }
 
@@ -174,7 +175,7 @@
     </style>
 
 
-    <div id="content" class$="type-[[type]] initialized-[[initialized]] mode-{{mode}} ended-{{ended}} theme-[[theme]]">
+    <div id="content" class$="type-[[type]] initialized-[[initialized]] started-[[started]] mode-{{mode}} ended-{{ended}} theme-[[theme]]">
       <pre id="editor" data-type$="[[type]]">[[_content]]</pre>
     </div>      
       
@@ -290,6 +291,11 @@
             type: Boolean,
             value: true
           },
+          
+          started: {
+            type: Boolean,
+            value: false
+          },
 
           ended: {
             type: Boolean,
@@ -390,6 +396,7 @@
 
         // reset ready-screen
         this.initialized = false;
+        this.started = false;
         this.paused = true;
         this.ended = false;
         
@@ -406,6 +413,7 @@
        */
       start() {
         this.initialized = true;
+        this.started = true;
         this.numberLines = this._content.split('\n').length;
 
         // refresh the editor
@@ -494,6 +502,7 @@
         const endTime = performance.now();
         console.log('[typio-core-editor] _parse ... done in ' + (endTime - startTime) + 'ms');
         this.advance();
+        this.initialized = true;
       }
 
       resume() {
@@ -660,7 +669,6 @@
        * For performance reason, this method only need to call after each newline character.
        */
       _scrollEditor() {
-        console.log('_scrollEditor');
         if (this._currentLine > 5 && this._currentLine < this.numberLines - 5) { // do not scroll too soon. Wait for some lines.
           this._scrollToLine(this._currentLine - 5);
         }

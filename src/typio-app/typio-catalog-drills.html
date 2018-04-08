@@ -76,7 +76,7 @@
         padding: 5px 20px;
         text-align: left;
         width: 100%;
-        height: 100px;
+        min-height: 100px;
         background-color: rgba(0, 0, 0, 0.2);
         color: white;
       }
@@ -130,12 +130,17 @@
       }
       
       .sample {
+        display: inline-block;
+        width: 100%;
         position: relative;
-        overflow-wrap: break-word;
         font-family: 'Droid Sans Mono', monospace;
         padding: 25px 10px;
         font-size: 90%;
+        text-align: left;
         background: rgba(255,255,255,0.1);
+        overflow-x: hidden;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
       }
       .sample::before {
         content: 'sample';
@@ -157,9 +162,11 @@
     
     <div class="theme-transparent">
 
-      <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
-      <paper-fab icon="create" title="New" on-click="newDrill"></paper-fab>
-
+      <div class="fabs">
+        <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
+        <paper-fab icon="create" title="New" on-click="newDrill"></paper-fab>
+      </div>
+      
       <div class="selection">
         <div class="entry">
           <a href="/catalog/menu">
@@ -190,13 +197,15 @@
                   </ul>
                 </template>
                 
-                <p class="sample">
+                <div class="sample">
                   <iron-icon icon="autorenew" on-click="_reloadSample"></iron-icon>
-                  <span class="content">{{sample(drill)}}</span>
-                </p>
+                  <pre class="content">{{sample(drill)}}</pre>
+                </div>
               </body>
               
-              <paper-fab icon="av:play-arrow" title="Go" on-click="validateDrill" class="theme-light relative"></paper-fab>
+              <div class="fabs">
+                <paper-fab icon="av:play-arrow" title="Go" on-click="validateDrill" class="theme-light relative"></paper-fab>
+              </div>
               
             </div>            
           </paper-card>  
@@ -241,8 +250,14 @@
         return actual === expected;
       }
       
+      
+      static _escapeHTML(text) {
+        return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      }
+      
       sample(drill) {
-        return TypioDrillCreator.generateDrill(drill);
+        const content = TypioDrillCreator.generateDrill(drill);
+        return TypioCatalogDrills._escapeHTML(content);
       }
       
       /**
@@ -252,6 +267,15 @@
         const sampleTextElement = e.target.parentNode.querySelector('.content');
         const drill = e.model.drill;
         sampleTextElement.innerHTML = this.sample(drill);
+      }
+
+      validateDrill(e, details) {
+        const drill = e.model.drill;
+        const detail = {
+          drill: drill,
+          redirectUri: '/catalog/drills'
+        };
+        this.dispatchEvent(new CustomEvent('drill-session-requested', {detail: detail, bubbles: true, composed: true}));
       }
 
       /**

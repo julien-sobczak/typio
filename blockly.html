@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <!-- Blockly ocould not work in a web component -->
+  <!-- Blockly doesn't work in a web component -->
   <!-- https://github.com/google/blockly/issues/1114 -->
   <head>
     <meta charset="utf-8">
@@ -27,7 +27,6 @@
         margin: 0;
         padding: 0;
       }
-      
       
       /* Override the workspace's background color */
       .blocklySvg {
@@ -271,9 +270,11 @@
           let javascript = Blockly.JavaScript.workspaceToCode(workspace);
           let xml = Blockly.Xml.workspaceToDom(workspace);
           let xmlText = Blockly.Xml.domToPrettyText(xml);
+          let xmlTextRaw = Blockly.Xml.domToText(xml);
           event.source.postMessage({
             "javascript": javascript,
-            "xml": xmlText
+            "xml": xmlText,
+            "xmlRaw": xmlTextRaw
           }, event.origin);
         } else { // init the editor
           let xmlDoc = Blockly.Xml.textToDom(content);

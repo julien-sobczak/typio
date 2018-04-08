@@ -105,27 +105,19 @@
       
       
       /* paper-tab */
-      
-      paper-fab {
+      .fabs {
         z-index: 500;
-      }
-      paper-fab:not(.relative):nth-of-type(1) {
         position: fixed;
-        right: 75px;
-        bottom: 50px;          
-      }
-      paper-fab:not(.relative):nth-of-type(2) {
-        position: fixed;
-        right: 75px;
-        bottom: 125px;
+        right: 50px;
+        bottom: 25px;
       }
       
-      paper-fab.relative {
-        position: absolute;
-        right: -20px;
-        bottom: -20px;
+      .fabs paper-fab {
+        display: block;
+        margin-top: 25px;
+        margin-bottom: 25px;
       }
-      
+            
       paper-fab:hover {
         /* See https://material.io/guidelines/material-design/elevation-shadows.html#elevation-shadows-elevation-android for guidelines */
         @apply(--shadow-elevation-6dp);

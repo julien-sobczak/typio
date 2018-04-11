@@ -374,7 +374,7 @@
         // We need to determine a chapter excerpt
 
         if (!this.selectedTag) {
-          this.selectedTag = this.tags[getRandomInt(this.tags.length)];
+          this.selectedTag = this.tags[getRandomInt(this.tags.length)].key;
         }
 
         let quotes = this._getQuotes(this.selectedTag);

@@ -6,10 +6,6 @@
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
 
-
-<link rel="import" href="../../bower_components/app-layout/app-layout.html">
-<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/effects/waterfall.html">
-
 <link rel="import" href="/src/typio-app/typio-ready-screen.html">
 <link rel="import" href="/src/typio-app/typio-stats.html">
 <link rel="import" href="/src/typio-app/typio-parser.html">
@@ -151,57 +147,7 @@
       }
 
 
-      /*
-       * Menu
-       */
-
-      app-toolbar {
-        background-color: var(--typio-bg-color);
-        color: white;
-        font-family: var(--logo-font-family);
-      }
-
-      paper-icon-button {
-        --paper-icon-button-ink-color: white;
-      }
-
-      paper-icon-button + [main-title] {
-        margin-left: 24px;
-      }
-      app-header {
-        @apply --layout-fixed-top;
-        color: #fff;
-        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
-        z-index: 100;
-        --app-header-background-rear-layer: {
-          background-color: #ef6c00;
-        };
-      }
-      app-drawer {
-        z-index: 50;
-        --app-drawer-scrim-background: rgba(255, 255, 255, 0.6);
-        --app-drawer-content-container: {
-          background-color: white;
-        }
-      }
-      app-drawer nav {
-        margin-top: 100px;
-      }
-      app-drawer nav ul {
-        list-style-type: none;
-      }
-      app-drawer nav li {
-        border: none;
-      }
-      app-toolbar a {
-        text-decoration: none;
-        color: inherit;
-        margin-left: 25px;
-      }
-      app-drawer a {
-        text-decoration: none;
-        color: inherit;
-      }
+    
 
       #resourceName {
         position: fixed;
@@ -235,22 +181,6 @@
 
     </style>
 
-    <app-header effects="waterfall">
-      <app-toolbar>
-        <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
-        <a href="/intro">TYPIO</a>
-        <div main-title></div>
-        <a href="/catalog"><paper-icon-button icon="close"></paper-icon-button></a>
-      </app-toolbar>
-    </app-header>
-    <app-drawer id="drawer" swipe-open>
-      <nav>
-        <ul>
-          <li><paper-icon-button icon="close"></paper-icon-button> <a href="/catalog">Catalog</a></li>
-        </ul>
-      </nav>
-    </app-drawer>
-    
     <typio-ready-screen id="readyScreen"
         type="[[type]]"
         language="[[language]]"
@@ -648,14 +578,7 @@
         this.$.editor.moveToLastPage();
       }
 
-      //
-      // Navigation
-      //
 
-      _toggleDrawer() {
-        this.$.drawer.toggle();
-      }
-      
       // 
       // Heatmap
       // 

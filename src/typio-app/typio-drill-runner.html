@@ -171,7 +171,6 @@
       
       /** Go back to previous screen. */
       close() {
-        console.log('Redirecting to', this.redirectUri);
         window.history.pushState({}, null, this.redirectUri);
         window.dispatchEvent(new CustomEvent('location-changed'));
       }

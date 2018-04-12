@@ -92,7 +92,7 @@
       
     </style>
     
-    <section id="creator" class$="type-{{type}}">
+    <section id="creator" class$="type-{{drill.type}}">
       
       <div class="fabs">
         <paper-fab icon="create" title="Create" on-click="create"></paper-fab>
@@ -101,10 +101,10 @@
 
       <div id="form">
         <!-- Common properties --> 
-        <paper-input id="name" label="Name"></paper-input>
-        <paper-input id="description" label="Description"></paper-input>
+        <paper-input id="name" label="Name" value="[[drill.name]]"></paper-input>
+        <paper-input id="description" label="Description" value="[[drill.description]]"></paper-input>
         
-        <paper-radio-group selected="{{type}}">
+        <paper-radio-group selected="{{drill.type}}">
           <paper-radio-button name="static">
             Static
             <span class="subtitle">For obvious content</span>
@@ -156,6 +156,16 @@
             value: 'static'
           },
           
+          /**
+           * Drill to create or edit.
+           */
+          drill: {
+            type: Object,
+            value: {
+              type: 'static'
+            }
+          }
+          
         };
       }
       
@@ -164,20 +174,32 @@
       //
       
       tryIt() {
-        switch (this.type) {
+        let inputPromise = undefined;
+        
+        switch (this.drill.type) {
           case 'static': 
-            this.$.inputStatic.tryIt();
+            inputPromise = this.$.inputStatic.getInput();
             break;
           case 'basic': 
-            this.$.inputBasic.tryIt();
+            inputPromise = this.$.inputBasic.getInput();
             break;
           case 'program': 
-            this.$.inputProgram.tryIt();
+            inputPromise = this.$.inputProgram.getInput();
             break;
           case 'regex': 
-            this.$.inputRegex.tryIt();
+            inputPromise = this.$.inputRegex.getInput();
             break;                          
         }
+        
+        inputPromise.then(input => {
+          this.drill = Object.assign(this.drill, input);
+          const detail = {
+            drill: this.drill,
+            redirectUri: '/drillCreator'
+          };
+          this.dispatchEvent(new CustomEvent('drill-session-requested', {detail: detail, bubbles: true, composed: true}));
+        });
+        
       }
       
       //
@@ -259,7 +281,7 @@
       /**
        * Generates a content following the program drill definition.
        */
-      static generateProgramDrill({javascriptCode = ""}) {
+      static generateProgramDrill({ javascriptCode = ""}) {
         return TypioDrillProgramInput.evaluate(javascriptCode);
       }
       
@@ -310,6 +332,10 @@
         }       
         
         return generateFromRegex(stringRegexes.get('DRILL'));
+      }
+      
+      create() {
+        // TODO
       }
 
     }

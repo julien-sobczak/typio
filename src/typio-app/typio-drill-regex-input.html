@@ -1,4 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-drill-regex-input">
@@ -8,10 +11,26 @@
       :host {
         display: block;
       }
+      
+      paper-textarea#input {
+        --primary-text-color: var(--typio-bg-color);
+        --secondary-text-color: white;
+        --paper-input-container-color: white;
+        --paper-input-container-focus-color: var(--typio-bg-color);
+        
+        width: 90%;
+        margin: 0 auto;
+        text-align: left;
+      }
 
     </style>
 
-    <h2>Regex Drill Creator</h2>
+    <p class="instructions"><iron-icon icon="help"></iron-icon> 
+      Enter the regex following the format: <code>NON_TERMINAL = [r](e|g)ex?</code>.
+      One of the regex should have the name <code>DRILL</code>.
+    </p>
+    
+    <paper-textarea value="{{content}}"></paper-textarea>
   </template>
 
   <script>
@@ -20,11 +39,39 @@
      * @polymer
      */
     class TypioDrillRegexInput extends Polymer.Element {
+      
       static get is() { return 'typio-drill-regex-input'; }
+      
       static get properties() {
         return {
+          
+          "content": {
+              type: String,
+              value: "DRILL = (Hello|Bonjour|Hola|Guten Tag|Ciao|Olà|Namaste|Zdravstvuyte|Konnichiwa|Merhaba|Sain Bainuu|Szia|Ni hau)"
+          },
+          
         };
       }
+      
+      getInput() {
+        return new Promise((resolve, reject) => {
+          let regexes = {};
+          this.content.split('\n').forEach(line => {
+            let indexSeparator = line.indexOf('=');
+            
+            if (indexSeparator !== -1) {
+              let key = line.substring(0, indexSeparator).trim();
+              let value = line.substring(indexSeparator + 1).trim();
+              regexes[key] = value;
+            }
+          });
+          
+          resolve({
+              regexes: regexes,
+          });
+        });
+      }
+      
     }
 
     window.customElements.define(TypioDrillRegexInput.is, TypioDrillRegexInput);

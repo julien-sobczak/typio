@@ -76,7 +76,7 @@
       }
       app-drawer {
         z-index: 50;
-        --app-drawer-scrim-background: rgba(255, 255, 255, 0.6);
+        --app-drawer-scrim-background: rgba(255, 255, 255, 0.8);
         --app-drawer-content-container: {
           background-color: white;
         }
@@ -119,7 +119,7 @@
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+d" on-keys-pressed="goToDrillSession"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+p" on-keys-pressed="goToPracticeSession"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+c" on-keys-pressed="goToCatalog"></iron-a11y-keys>
-
+    
     <app-header effects="waterfall" class$="menu-{{menuVisible}}">
       <app-toolbar>
         <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
@@ -131,7 +131,8 @@
     <app-drawer id="drawer" swipe-open>
       <nav>
         <ul>
-          <li><paper-icon-button icon="close"></paper-icon-button> <a href="/catalog">Catalog</a></li>
+          <li><paper-icon-button icon="view-module"></paper-icon-button> <a href="/catalog">Consult the catalog</a></li>
+          <li><paper-icon-button icon="create"></paper-icon-button> <a href="/drillCreator">Create a drill</a></li>
         </ul>
       </nav>
     </app-drawer>

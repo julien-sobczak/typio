@@ -55,16 +55,6 @@
         return {
           
           /**
-          * Same as `_enteredKeys` but as array.
-           * 
-           * Ex: [{'character': 'a', 'count'; 2}, ... }
-           */
-          enteredKeys: {
-            type: Array,
-            value: []
-          },
-          
-          /**
            * Characters as entered by the user. The order is preserved.
            */
           characters: {
@@ -118,14 +108,23 @@
           return 'var(--paper-green-' + (ratio * 100) + ')';
         });
         
+        this.lettersCount = lettersCount;        
       }
       
-      save() {
-        // TODO
-      }
-      
-      tryIt() {
-        // TODO
+      getInput() {
+        return new Promise((resolve, reject) => {
+          const keys = [];
+          const weights = [];
+          for (let [key, count] of this.lettersCount.entries()) {
+            keys.push(key);
+            weights.push(count);
+          }
+          
+          resolve({
+            keys: keys,
+            weights: weights,
+          });      
+        });
       }
       
     }

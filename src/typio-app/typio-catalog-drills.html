@@ -275,6 +275,11 @@
         };
         this.dispatchEvent(new CustomEvent('drill-session-requested', {detail: detail, bubbles: true, composed: true}));
       }
+      
+      newDrill(e, details) {
+        window.history.pushState({}, null, '/drillCreator');
+        window.dispatchEvent(new CustomEvent('location-changed'));
+      }
 
       /**
        * Traverse the available drills to select one drill.

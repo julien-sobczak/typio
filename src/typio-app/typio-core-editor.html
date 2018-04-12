@@ -344,21 +344,21 @@
 
         };
       }
-
+      
       ready() {
         super.ready();
-
+        
         // We listen keyup for nonprintable characters
-        document.addEventListener('keyup', (event) => {
-          if (!this.initialized) return;
+        document.addEventListener('keyup', event => {
+          if (!this.started) return;
           if (event.key === 'Backspace') {
             this.backward();
           }
-        });
+        }, false);
 
         // ... and keypress for printable ones (keypress support dead keys)
-        document.addEventListener('keypress', (event) => {
-          if (!this.initialized) return;
+        document.addEventListener('keypress', event => {
+          if (!this.started) return;
           const keyName = event.key;
           const keyCode = event.code;
 
@@ -372,11 +372,11 @@
             // event.ctrlKey may be true if Ctrl key is pressed at the time.
             ;
           } else {
+            console.log('checkinput', event, keyName)
             this._checkInput(event, keyName);
             event.preventDefault();
             return false;
           }
-
         }, false);
       }
 

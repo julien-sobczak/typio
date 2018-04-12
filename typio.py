@@ -123,33 +123,36 @@ class Entry:
 
     @property
     def name(self):
-        if self.data['origin'] == 'gutenberg':
+        if self.type == 'code' and self.data['origin'] == 'gutenberg':
             return self.data['title']
-        elif self.data['origin'] == 'github':
+        elif self.type == 'literature' and self.data['origin'] == 'github':
             return self.data['name']
 
     @property
     def origin(self):
-       return self.data['origin']
-
+        return self.data['origin']
+       
+    @property
+    def type(self):
+        return self.data['type']
+   
     @property
     def slug(self):
-        if self.origin == 'github':
+        if self.type == 'code' and self.origin == 'github':
             organization, project = self.data['url'].replace('https://github.com/', '').split('/')
             commit = self.data['commit']
             slug = organization + '_' + project + '_' + commit
             return slug
-        elif self.origin == 'gutenberg':
+        elif self.type == 'literature' and self.origin == 'gutenberg':
             return slugify(self.data['title'])
 
     @property
     def url(self):
-        if self.data['origin'] == 'github':
+        if self.type == 'code' and self.data['origin'] == 'github':
             # Ex: "https://github.com/junit-team/junit4/archive/r4.12.zip"
             url = self.data['url'] + '/archive/' + self.data['commit'] + '.zip'
             return url
-
-        elif self.data['origin'] == 'gutenberg':
+        elif self.type == 'literature' and self.data['origin'] == 'gutenberg':
             return self.data['file']
 
     def _match_pattern(self, pattern, file, is_directory):
@@ -725,32 +728,133 @@ class TypioPrompt:
 
     def metadata_github(self, entry):
         metadata = entry.data.copy()  # We copy all metadata found in catalog.json
-        metadata['files'] = []        # and add files metadata
-
+        
+        format = 'compressed'  # Supported formats: 'flat', 'compressed'
+        
         local_dir = self.CONTENT_DIR + '/github/' + entry.slug
-        for dirName, subdirList, fileList in os.walk(local_dir):
-            for fname in fileList:
-                aname = os.path.join(dirName, fname)        # absolute name
-                rname = aname.replace(local_dir + '/', '')  # relative name
-                extension = os.path.splitext(fname)[1]
+        metadata = {}
+        
+        if format == 'flat':
+            # {
+            #   <metadata>
+            #   "format": "flat",
+            #   "files": [
+            #     {
+            #       "extension": "java",
+            #       "lines": 130,
+            #       "path": "core/src/main/java/org/junit/Junit.java",
+            #       "size": 4688
+            #     },
+            #     {
+            #       "extension": "java",
+            #       "lines": 50,
+            #       "path": "core/src/main/java/org/junit/Assert.java",
+            #       "size": 1679
+            #     },
+            #     ...
+            #   ]
+            # }
+            format_json = False
+                        
+            metadata['format'] = "flat"
+            metadata['files'] = []        # and add files metadata
 
+            for dirName, subdirList, fileList in os.walk(local_dir):
+                for fname in fileList:
+                    aname = os.path.join(dirName, fname)        # absolute name
+                    rname = aname.replace(local_dir + '/', '')  # relative name
+                    extension = os.path.splitext(fname)[1]
+
+                    if extension and not is_binary(aname):  # Ignore folders
+                        nb_lines = sum(1 for line in open(aname))
+                        extension = extension[1:]
+                        size = os.path.getsize(aname)
+
+                        # Update metadata
+                        metadata['files'].append({
+                            'path': rname,
+                            'extension': extension,
+                            'size': size,
+                            'lines': nb_lines,
+                        })
+
+        elif format == 'compressed':
+            # (formatted only for description purposes)
+            # {
+            #   <metadata>
+            #   "format": "compressed",
+            #   "files": {
+            #       "core/": {
+            #         "src/": {
+            #           "main/": {
+            #             "java/": {
+            #               "org/": {
+            #                 "junit/": {
+            #                   "Junit.java": "java@4688#130",
+            #                   "Assert.java": "java@1679#50"
+            #                 }
+            #               }
+            #             }
+            #           }
+            #         }
+            #       }
+            #     }
+            #     ...
+            #   ]
+            # }
+            format_json = False
+            
+            metadata['format'] = 'compressed'
+            metadata['files'] = {}
+
+            def append_directory(path):
+                nonlocal metadata
+                current_node = metadata['files']
+                for part in path.split('/'):
+                    folder = part + '/'
+                    if folder not in current_node: 
+                        current_node[folder] = {}
+                    current_node = current_node[folder]
+
+            def append_file(path):
+                nonlocal metadata
+                current_node = metadata['files']
+                folders = path.split('/')
+                filename = folders[-1]
+                folders = folders[0:-1]
+                for folder in folders:
+                    folder = folder + '/'
+                    if folder not in current_node: 
+                        current_node[folder] = {}
+                    current_node = current_node[folder]
+                    
+                extension = os.path.splitext(filename)[1]
                 if extension and not is_binary(aname):  # Ignore folders
                     nb_lines = sum(1 for line in open(aname))
-                    extension = extension[1:]
                     size = os.path.getsize(aname)
-
-                    # Update metadata
-                    metadata['files'].append({
-                        'path': rname,
-                        'extension': extension,
-                        'size': size,
-                        'lines': nb_lines,
-                    })
-
+                    extension = extension[1:]
+                    props = "%s@%s#%s" % (extension, size, nb_lines)
+                    current_node[filename] = props
+                    
+            for dirName, subdirList, fileList in os.walk(local_dir):
+                for dname in subdirList:
+                    aname = os.path.join(dirName, dname)        # absolute name
+                    rname = aname.replace(local_dir + '/', '')  # relative name
+                    append_directory(rname)
+                for fname in fileList:
+                    aname = os.path.join(dirName, fname)        # absolute name
+                    rname = aname.replace(local_dir + '/', '')  # relative name
+                    append_file(rname)
+                    
         # Save metadata
         metadata_path = local_dir + '.json'
-        with open(metadata_path, 'w') as f_metadata:
-            json.dump(metadata, f_metadata, sort_keys=True, indent=4, separators=(',', ': '), ensure_ascii=False)
+        with open(metadata_path, 'w') as f:
+            pretty_priting_options = {'sort_keys': True, 'indent': 4, 'separators': (',', ': ')}
+            if format_json:
+                options = pretty_priting_options  
+            else:
+                options = {}
+            json.dump(metadata, f, ensure_ascii=False, **options)
             print('Saved metadata to %s' % Colors.file(metadata_path))
 
     def metadata_gutenberg(self, entry):

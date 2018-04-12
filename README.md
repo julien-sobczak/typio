@@ -69,5 +69,32 @@ Polymer uses [web-component-tester](https://github.com/Polymer/web-component-tes
 $ polymer test
 ```
 
+## Managing the catalog
+
+A CLI is provided to manage the catalog. To use it, you need Python 3 and have virtualenv installed on your machine (see https://packaging.python.org/guides/installing-using-pip-and-virtualenv/ for install details). In summary:
+
+```
+$ python3 -V
+Python 3.6.3
+
+$ sudo apt-get install python-dev and python3-dev
+$ sudo apt-get install python-pip
+$ sudo apt-get install virtualenv
+```
+
+Once `virtualenv` is installed, you can create a new environment and install CLI dependencies:
+
+```
+$ virtualenv -p /usr/bin/python3 env
+
+$ source env/bin/activate
+$ pip install -r requirements.txt
+...
+$ deactivate
+```
+
+To launch the CLI, run the executable `typio`.
+
+
 
 [dp]: https://en.wikipedia.org/wiki/Practice_(learning_method)#Deliberate_practice

@@ -376,7 +376,7 @@
       _onMetadataLoaded(e, data) {
         const metadata = data.response;
         this.isLoading = false;
-        this.metadata = metadata;
+        this.metadata = TypioCatalogCode._uncompressMetadata(metadata);
         this.step = 3;
       }
 
@@ -477,10 +477,58 @@
         const metadata = data.response;
         this.isLoading = false;
         console.log('[typio-catalog] _onMetadataSurpriseLoaded');
-        this.metadata = metadata;
+        this.metadata = TypioCatalogCode._uncompressMetadata(metadata);
         let file = this.metadata.files[getRandomInt(metadata.files.length)]; 
         let filename = file.path.split('/').reverse()[0];
         this.selectFile(file.path, filename, file.extension);
+      }
+      
+      static _uncompressMetadata(metadata) {
+        if (!metadata.hasOwnProperty('format') || metadata.format === 'flat') {
+          // if `format` property is missing, it's an old metadata file and only flat format was supported.
+          return metadata;
+        }
+        
+        if (metadata.format === 'compressed') {
+          const metadata_uncompressed = Object.assign({}, metadata);
+          metadata_uncompressed.format = "flat"; 
+          metadata_uncompressed.files = []; // Only the `files` property should be uncompressed
+          
+          var queue = [];
+          queue.push({ "path": "", "entry": metadata.files });
+          while (queue.length) {
+            let element = queue.pop(); // stack is now [2]  
+            let path = element.path;
+            let entry = element.entry;
+            
+            for (let name in entry) {
+              if (name.endsWith('/')) { 
+                // Folder found => recurse
+                queue.push({ "path": path + name, "entry": entry[name] });
+              } else { 
+                // File => add to result
+                let props = entry[name];
+                let indexSize = props.indexOf('@');
+                let indexNbLines = props.indexOf('#');
+                let extension = props.substring(0, indexSize);
+                let size = parseInt(props.substring(indexSize + 1, indexNbLines));
+                let nbLines = parseInt(props.substring(indexNbLines + 1));
+                
+                metadata_uncompressed.files.push({
+                  'path': path + name,
+                  'extension': extension,
+                  'size': size,
+                  'lines': nbLines,
+                })                
+              }
+            } 
+          }
+                    
+          return metadata_uncompressed;
+        }
+        
+        throw new Error('Unsupported metadata format: ' + metadata.format);
+        
       }
 
     }

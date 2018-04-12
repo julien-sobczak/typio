@@ -1543,41 +1543,49 @@
   
   {
     "type": "tongue-twister",
+    "origin": "uebersetzung",
     "language": "German",
     "url": "/content/tongue-twisters/de.json"
   },
   {
     "type": "tongue-twister",
+    "origin": "uebersetzung",
     "language": "Dutch",
     "url": "/content/tongue-twisters/nl.json"
   },
   {
     "type": "tongue-twister",
+    "origin": "uebersetzung",
     "language": "English",
     "url": "/content/tongue-twisters/en.json"
   },
   {
     "type": "tongue-twister",
+    "origin": "uebersetzung",
     "language": "Spanish",
     "url": "/content/tongue-twisters/es.json"
   },
   {
     "type": "tongue-twister",
+    "origin": "uebersetzung",
     "language": "French",
     "url": "/content/tongue-twisters/fr.json"
   },
   {
     "type": "tongue-twister",
+    "origin": "uebersetzung",
     "language": "Italian",
     "url": "/content/tongue-twisters/it.json"
   },
   {
     "type": "tongue-twister",
+    "origin": "uebersetzung",
     "language": "Polish",
     "url": "/content/tongue-twisters/pl.json"
   },
   {
     "type": "tongue-twister",
+    "origin": "uebersetzung",
     "language": "Portuguese",
     "url": "/content/tongue-twisters/pt.json"
   }

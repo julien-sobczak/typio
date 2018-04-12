@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>typio-catalog-code test</title>
+
+    <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../src/typio-app/typio-catalog-code.html">
+  </head>
+  <body>
+
+    <test-fixture id="DefaultFixture">
+      <template>
+        <typio-catalog-code></typio-catalog-code>
+      </template>
+    </test-fixture>
+    
+    <script>
+    
+    suite('typio-catalog-code', function() {
+  
+        test('[_uncompressMetadata] flat format', function() {
+          const metadata = {
+            "format": "flat",
+            "type": "code",
+            "name": "JUnit",
+            "origin": "github",
+            "language": "Java",
+            "commit": "r5.0.1",
+            "url": "https://github.com/junit-team/junit5",
+            "files": [
+              {
+                "extension": "java",
+                "lines": 130,
+                "path": "core/src/main/java/org/junit/Junit.java",
+                "size": 4688
+              },
+              {
+                "extension": "java",
+                "lines": 50,
+                "path": "core/src/main/java/org/junit/Assert.java",
+                "size": 1679
+              }
+            ]
+          };
+          
+          // Nothing to do in flat format
+          expect(TypioCatalogCode._uncompressMetadata(metadata)).to.deep.equal(metadata);           
+        });
+        
+        test('[_uncompressMetadata] compressed format', function() {
+          const actual = {
+            "format": "compressed",
+            "type": "code",
+            "name": "JUnit",
+            "origin": "github",
+            "language": "Java",
+            "commit": "r5.0.1",
+            "url": "https://github.com/junit-team/junit5",
+            "files": {
+              "core/": {
+                "src/": {
+                  "main/": {
+                    "java/": {
+                      "org/": {
+                        "junit/": {
+                          "Junit.java": "java@4688#130",
+                          "Assert.java": "java@1679#50"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          const expected = {
+            "format": "flat",
+            "type": "code",
+            "name": "JUnit",
+            "origin": "github",
+            "language": "Java",
+            "commit": "r5.0.1",
+            "url": "https://github.com/junit-team/junit5",
+            "files": [
+              {
+                "extension": "java",
+                "lines": 130,
+                "path": "core/src/main/java/org/junit/Junit.java",
+                "size": 4688
+              },
+              {
+                "extension": "java",
+                "lines": 50,
+                "path": "core/src/main/java/org/junit/Assert.java",
+                "size": 1679
+              }
+            ]
+          };
+          
+          // Should be the same as flat format
+          expect(TypioCatalogCode._uncompressMetadata(actual)).to.deep.equal(expected);           
+        });
+        
+      });
+      
+    </script>
+
+  </body>
+</html>

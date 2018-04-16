@@ -530,7 +530,7 @@
       }
 
       _calculateUnproductiveKeystrokeOverhead() {
-        return Math.round(this.enteredCharacters * 100 / this.totalEditableCharacters - 100, "%");
+        return Math.max(0, Math.round(this.enteredCharacters * 100 / this.totalEditableCharacters - 100, "%"));
       }
 
       _calculateElapsedTimeInS() {

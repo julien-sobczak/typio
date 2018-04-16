@@ -347,7 +347,17 @@
       
       ready() {
         super.ready();
-        
+
+        // We listen for tab character (match any number of consecutive characters)
+        document.addEventListener('keydown', event => {
+          if (!this.started || event.ctrlKey) return;
+          if (event.key !== 'Tab') return; // we are only interested by tabular character
+          event.preventDefault();
+          event.stopPropagation();
+          this._checkInput(event, event.key);
+          return false;
+        });
+                
         // We listen keyup for nonprintable characters
         document.addEventListener('keyup', event => {
           if (!this.started) return;
@@ -372,7 +382,6 @@
             // event.ctrlKey may be true if Ctrl key is pressed at the time.
             ;
           } else {
-            console.log('checkinput', event, keyName)
             this._checkInput(event, keyName);
             event.preventDefault();
             return false;
@@ -524,7 +533,14 @@
         if (this.debug) {
           console.log('Expected: [' + character.dataset.text + '] (' + character.dataset.text.charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + ') => valid=' + this._isValid(character, keyName));
         }
-        if (this._isValid(character, keyName)) {
+        
+        if (keyName === 'Tab' && this._canAdvance()) {
+          // advance to the next nonspace character
+          while (this._cursor().classList.contains('space')) {
+            this.advance(); 
+          }
+          
+        } else if (this._isValid(character, keyName)) {
           valid = true;
           character.classList.remove('disabled');
           
@@ -626,6 +642,10 @@
         while (!this._isEndOfFile() && this._isIgnorable()) { this._advanceOneCharacter(); }
 
         this._highlight();
+      }
+      
+      _canAdvance() {
+        return !this.error || this.continueOnErrors;
       }
 
       /**

@@ -478,7 +478,8 @@
         this.isLoading = false;
         console.log('[typio-catalog] _onMetadataSurpriseLoaded');
         this.metadata = TypioCatalogCode._uncompressMetadata(metadata);
-        let file = this.metadata.files[getRandomInt(metadata.files.length)]; 
+        let indexRandomFile = getRandomInt(this.metadata.files.length);
+        let file = this.metadata.files[indexRandomFile];
         let filename = file.path.split('/').reverse()[0];
         this.selectFile(file.path, filename, file.extension);
       }

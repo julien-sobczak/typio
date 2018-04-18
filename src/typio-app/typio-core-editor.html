@@ -37,16 +37,16 @@
        * Type support
        */
       
-      pre[data-type="literature"]  {
+      pre[data-type="literature"] {
         font-family: 'Droid Sans Mono', monospace;
       }
       pre[data-type="code"] {
         font-family: monospace;
       }
-      pre[data-type="drill"] {
+      pre.preserveSpacing-false {
         white-space: normal; /* Disable pre default behavior*/
       }
-      pre[data-type="drill"] span {
+      pre.fontSize-large span {
         font-size: 150%;
         letter-spacing: 3px;
         line-height: 2;
@@ -176,7 +176,7 @@
 
 
     <div id="content" class$="type-[[type]] initialized-[[initialized]] started-[[started]] mode-{{mode}} ended-{{ended}} theme-[[theme]]">
-      <pre id="editor" data-type$="[[type]]">[[_content]]</pre>
+      <pre id="editor" data-type$="[[type]]" class$="preserveSpacing-[[preserveSpacing]] fontSize-[[fontSize]]">[[_content]]</pre>
     </div>      
       
   </template>
@@ -341,7 +341,28 @@
             type: Number,
             value: 0
           },          
-
+          
+          
+          //
+          // Styling
+          //
+          
+          /**
+           * If false, 	Sequences of whitespace will collapse into a single whitespace. 
+           */
+          preserveSpacing: {
+            type: Boolean,
+            value: true
+          },
+          
+          /**
+           * Size of text. Allowed values: 'normal', 'large'.
+           */
+          fontSize: {
+            type: String,
+            value: 'normal'
+          },
+          
         };
       }
       
@@ -531,7 +552,7 @@
         let valid = undefined;
 
         if (this.debug) {
-          console.log('Expected: [' + character.dataset.text + '] (' + character.dataset.text.charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + ') => valid=' + this._isValid(character, keyName));
+          console.log('Expected: [' + character.dataset.text + '] (' + character.dataset.text.charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + '), valid=' + this._isValid(character, keyName) + ', position=' + this._i + ', error=' + this._error + ', positionError=' + this._iError);
         }
         
         if (keyName === 'Tab' && this._canAdvance()) {

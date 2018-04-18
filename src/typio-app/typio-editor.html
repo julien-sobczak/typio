@@ -502,6 +502,8 @@
         this.$.editor.intervals = this.$.stats.intervals;
         this.$.editor.logicalLines = result.logicalLines;
         this.$.editor.continueOnErrors = detail.continueOnErrors;
+        if (detail.fontSize) this.$.editor.fontSize = detail.fontSize;
+        if (detail.preserveSpacing) this.$.editor.preserveSpacing = detail.preserveSpacing;
         
         console.log('Launching editor...');
         this.$.editor.start();

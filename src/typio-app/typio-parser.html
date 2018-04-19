@@ -238,7 +238,7 @@
         // Manage module declarations
         const moduleDefinitions = new Map();
         moduleDefinitions.set('java', [/import (static )?[a-zA-Z0-9.*_]*;\n/g, /package [a-zA-Z0-9.*_]*;\n/g]);
-        moduleDefinitions.set('python', [/from [a-zA-Z0-9.]* import .*\n/g, /import [a-zA-Z0-9.*_]*\n/g]);
+        moduleDefinitions.set('python', [/from [a-zA-Z0-9._]* import .*\n/g, /import [a-zA-Z0-9.*_]*\n/g]);
 
         if (moduleDefinitions.has(this.language.toLowerCase())) { // supported language?
           var regex = moduleDefinitions.get(this.language.toLowerCase());

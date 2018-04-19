@@ -118,9 +118,15 @@
         margin-bottom: 25px;
       }
       
-      paper-fab.relative {
+      paper-fab.relative,
+      * > a:nth-child(1) paper-fab.relative {
         position: absolute;
         right: -20px;
+        bottom: -20px;
+      }
+      * > a:nth-child(2) paper-fab.relative {
+        position: absolute;
+        left: -20px;
         bottom: -20px;
       }
             

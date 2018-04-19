@@ -26,7 +26,8 @@
     "paper-card": "PolymerElements/paper-card#^2.1.0",
     "paper-fab": "PolymerElements/paper-fab#^2.1.0",
     "paper-ripple": "PolymerElements/paper-ripple#^2.1.0",
-    "randexp": "^0.5.2"
+    "randexp": "^0.5.2",
+    "iron-test-helpers": "PolymerElements/iron-test-helpers#^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^6.0.0",

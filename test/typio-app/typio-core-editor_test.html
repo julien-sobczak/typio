@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>typio-core-editor test</title>
+
+    <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+
+    <link rel="import" href="../../src/typio-app/typio-core-editor.html">
+  </head>
+  <body>
+
+    <test-fixture id="CodeFixture">
+      <template>
+        <typio-core-editor id="editor" type="code" debug></typio-core-editor>
+      </template>
+    </test-fixture>
+    <test-fixture id="LiteratureFixture">
+      <template>
+        <typio-core-editor id="editor" type="literature" debug></typio-core-editor>
+      </template>
+    </test-fixture>
+    
+    <script>
+    
+    suite('typio-core-editor', function() {
+      
+        let editor = undefined;
+  
+        function press(key, modifiers = []) {
+          let keys = key;
+          if (!Array.isArray(keys)) {
+            keys = [key]
+          } 
+        
+          keys.forEach(key => MockInteractions.keyEventOn(editor, 'keypress', undefined, [], key));
+        }
+        
+        function pressText(text) {
+          text.split('').forEach(l => press(l));
+        }
+  
+        test('[input] accept basic quotes instead of curved quotes', function() {
+          editor = fixture('LiteratureFixture');
+          editor.content = "‘single’ or “double”" 
+          editor.reset();
+          editor.start();
+          
+          expect(editor._i).to.equal(0);
+          press("'"); // instead of curved opening simple quote
+          press(["s", "i", "n", "g", "l", "e"]);
+          press("'"); // instead of curved closing simple quote
+          press([" ", "o", "r", " "]);
+          press('"'); // instead of curved opening double quote
+          press(["d", "o", "u", "b", "l", "e"]);
+          press('"'); // instead of curved closing double quote
+          expect(editor._i).to.equal(19);
+          expect(editor._error).to.be.false;
+          expect(editor.ended).to.be.true;
+        });
+        
+        test('[input] support continuation lines', function() {
+          editor = fixture('LiteratureFixture');
+          editor.content = "a long\n  line"; // need to set classes (continuation, indent, ignorable, ...)
+          editor.logicalLines = [true, false];
+          editor.classes = [[], [], [], [], [], [], [], ['ignorable'], ['ignorable'], [], [], [], []];
+          
+          // User don't have to press indent after a continuation line
+          editor.reset();
+          editor.start();
+          expect(editor._i).to.equal(0);
+          pressText("a long"); 
+          press('Enter');
+          pressText('line');
+          expect(editor.ended).to.be.true;
+          
+          // User could press a space instead of a new line
+          editor.reset();
+          editor.start();          
+          expect(editor._i).to.equal(0);
+          pressText("a long line"); 
+          expect(editor.ended).to.be.true;
+          
+          // User could press a space instead of a new line
+          editor.reset();
+          editor.start();          
+          expect(editor._i).to.equal(0);
+          pressText("a longline"); 
+          expect(editor.ended).to.be.true;
+        });
+        
+      });
+      
+    </script>
+
+  </body>
+</html>

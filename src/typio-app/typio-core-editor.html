@@ -363,51 +363,14 @@
             value: 'normal'
           },
           
+          
+          
         };
       }
       
       ready() {
         super.ready();
-
-        // We listen for tab character (match any number of consecutive characters)
-        document.addEventListener('keydown', event => {
-          if (!this.started || event.ctrlKey) return;
-          if (event.key !== 'Tab') return; // we are only interested by tabular character
-          event.preventDefault();
-          event.stopPropagation();
-          this._checkInput(event, event.key);
-          return false;
-        });
-                
-        // We listen keyup for nonprintable characters
-        document.addEventListener('keyup', event => {
-          if (!this.started) return;
-          if (event.key === 'Backspace') {
-            this.backward();
-          }
-        }, false);
-
-        // ... and keypress for printable ones (keypress support dead keys)
-        document.addEventListener('keypress', event => {
-          if (!this.started) return;
-          const keyName = event.key;
-          const keyCode = event.code;
-
-          if (keyName === 'Control') {
-            // not alert when only Control key is pressed.
-            return;
-          }
-
-          if (event.ctrlKey) {
-            // Even though event.key is not 'Control' (i.e. 'a' is pressed),
-            // event.ctrlKey may be true if Ctrl key is pressed at the time.
-            ;
-          } else {
-            this._checkInput(event, keyName);
-            event.preventDefault();
-            return false;
-          }
-        }, false);
+        this._addKeysListeners(); 
       }
 
       _contentChanged() {
@@ -431,11 +394,72 @@
         this.ended = false;
         
         this.refresh();
+        this._removeKeysListeners();
+        this._addKeysListeners();
       }
 
       refresh() {
         // Refresh editor
         this._parse();
+      }
+      
+      _removeKeysListeners() {
+        if (this._keydownListener) {
+          document.removeEventListener('keydown', this._keydownListener);
+        }
+        if (this._keyupListener) {
+          document.removeEventListener('keyup', this._keyupListener, false);
+        }
+        if (this._keypressListener) {
+          document.removeEventListener('keypress', this._keypressListener, false);
+        }
+      }
+      
+      _addKeysListeners() {
+        // We listen for tab character (match any number of consecutive characters)
+        this._keydownListener = event => {
+          //console.log('keydown', event);
+          if (!this.started || event.ctrlKey) return;
+          if (event.key !== 'Tab') return; // we are only interested by tabular character
+          event.preventDefault();
+          event.stopPropagation();
+          this._checkInput(event, event.key);
+          return false;
+        };
+        document.addEventListener('keydown', this._keydownListener);
+                
+        // We listen keyup for nonprintable characters
+        this._keyupListener = event => {
+          //console.log('keyup', event);
+          if (!this.started) return;
+          if (event.key === 'Backspace') {
+            this.backward();
+          }
+        };
+        document.addEventListener('keyup', this._keyupListener, false);
+
+        // ... and keypress for printable ones (keypress support dead keys)
+        this._keypressListener = event => {
+          //console.log('keypress', event);
+          if (!this.started) return;
+          const keyName = event.key;
+
+          if (keyName === 'Control') {
+            // not alert when only Control key is pressed.
+            return;
+          }
+
+          if (event.ctrlKey) {
+            // Even though event.key is not 'Control' (i.e. 'a' is pressed),
+            // event.ctrlKey may be true if Ctrl key is pressed at the time.
+            ;
+          } else {
+            this._checkInput(event, keyName);
+            event.preventDefault();
+            return false;
+          }
+        };
+        document.addEventListener('keypress', this._keypressListener, false);
       }
       
       /**
@@ -511,6 +535,11 @@
             charName = 'Enter';
             charPrint = ' <strong>&#9166;</strong> \n';
             span.classList.add('print-on-focus');
+            
+            // Allow user to press space or nothing for continuation return line
+            if (lineNumber + 1 < logicalLines.length && !logicalLines[lineNumber + 1]) {
+              span.classList.add('allowSpace', 'optional');
+            }
 
             newLine = true;
             lineNumber++;
@@ -555,6 +584,15 @@
           console.log('Expected: [' + character.dataset.text + '] (' + character.dataset.text.charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + '), valid=' + this._isValid(character, keyName) + ', position=' + this._i + ', error=' + this._error + ', positionError=' + this._iError);
         }
         
+        // Allow optional character to be passed
+        if (character.classList.contains('optional') && 
+              !this._isValid(this._cursor(), keyName) &&
+               this._isValid(this._nextNonIgnorableCharacter(), keyName)) {
+          this.advance();
+          character = this._cursor();
+          iCharacter = this._i;
+        }
+        
         if (keyName === 'Tab' && this._canAdvance()) {
           // advance to the next nonspace character
           while (this._cursor().classList.contains('space')) {
@@ -588,6 +626,7 @@
             this._countValid++;
           }
           this.advance();
+          
         } else {
           valid = false;
           character.classList.add('char-invalid');
@@ -613,12 +652,31 @@
       }
 
       _isValid(character, keyName) {
-        if (character.dataset.text === keyName) {
+        if (character == undefined) return false;
+        
+        const expectedCharacter = character.dataset.text;
+        
+        // nominal case
+        if (keyName === expectedCharacter) {
           return true;
         }
+        
+        // Manage exceptions:
+        
+        // Curved quotes are not typeable => allow simple quote
+        if (keyName === "'" && (expectedCharacter === '‘' || expectedCharacter === '’')) {
+          return true;
+        }
+        if (keyName === '"' && (expectedCharacter === '“' || expectedCharacter === '”')) {
+          return true;
+        }
+        
+        // Allow space for some indentation characters
         if (keyName === ' ' && character.classList.contains("allowSpace")) {
           return true;
         }
+        
+        // Nothing matches
         return false;
       }
       
@@ -751,6 +809,7 @@
       end() {
         this.ended = true;
         this.dispatchEvent(new CustomEvent('typing-ended', {detail: {length: this._length}}));
+        this._removeKeysListeners();
       }
       
       showMispellings() {
@@ -765,6 +824,17 @@
 
       _cursor() {
         return this._characters[this._i];
+      }
+      
+      _nextNonIgnorableCharacter() {
+        let i = this._i + 1;
+        while (true) {
+          if (this._isEndOfFile()) return undefined;
+          let character = this._characters[i++];
+          if (!character.classList.contains('ignorable')) {
+            return character;
+          }
+        }
       }
 
       _isIgnorable() {

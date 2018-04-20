@@ -7,6 +7,7 @@
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../bower_components/paper-range-slider/paper-range-slider.html">
 
+<link rel="import" href="/src/typio-app/typio-parser.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-toggle-button.html">
 
@@ -119,9 +120,16 @@
         --paper-range-slider-width: 100%;
       }
 
-
     </style>
 
+    <typio-parser id="parser"
+        type="[[type]]"
+        language="[[language]]"
+        content="[[selection]]"
+        ignore-comments="[[ignoreComments]]"
+        ignore-indents="[[ignoreIndents]]"
+        ignore-module-declarations="[[ignoreModuleDeclarations]]">
+    </typio-parser>
 
     <section id="settings" class$="hidden-[[hidden]] type-[[type]]">
       
@@ -336,17 +344,44 @@
 
         };
       }
+      
+      static get observers() {
+        return [
+          '_contentChanged(type, language, content)',
+          '_criteriaChanged(ignoreComments, ignoreIndents, ignoreModuleDeclarations)'
+        ]
+      }
 
       ready() {
         super.ready();
         // Unable to find a way to attach the listener using a DOM attribute...
         this._listenSlider();
       }
-
-      /*
-       * Filter
+      
+      /**
+       * Called when the main content changes..
        */
+      _contentChanged() {
+        console.log('[typio-ready-screen] content changed');
+        this.selection = this.content;
+        this.$.parser.parse();
+      }
+      
+      /**
+       * Called when one of the criteria change.
+       */
+      _criteriaChanged() {
+        console.log('[typio-ready-screen] criteria changed');
+        this.$.parser.parse();
+        this.selection = this.$.parser.targetContent;
+        this.logicalLines = this.$.parser.logicalLines;
+        this.classes = this.$.parser.classes;
+      }
+      
 
+      /**
+       * Called when the user limit the content length using the slider.
+       */
       _listenSlider() {
         let slider = this.$.slider;
         slider.addEventListener('updateValues', e => {
@@ -443,15 +478,9 @@
       this.hidden = true;
 
       let detail = {
-        ready: true,
-        ignoreComments: this.ignoreComments,
-        ignoreIndents: this.ignoreIndents,
-        ignoreModuleDeclarations: this.ignoreModuleDeclarations,
-        continueOnErrors: this.continueOnErrors,
-        showChart: this.showChart,
-        mode: this.mode,
-        theme: this.darkTheme ? 'dark' : 'light',
-        selection: this.selection
+        content: this.selection,
+        logicalLines: this.logicalLines,
+        classes: this.classes
       };
       this.dispatchEvent(new CustomEvent('ready', {detail: detail}));
     }

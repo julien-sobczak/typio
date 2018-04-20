@@ -374,6 +374,7 @@
       }
 
       _contentChanged() {
+        console.log('[typio-core-editor] content changed to', this._content);
         this._content = this.content;
       }
       
@@ -466,6 +467,7 @@
        * Called when the user has validated the ready screen.
        */
       start() {
+        console.debug('[typio-core-editor] start with', this._content);
         this.initialized = true;
         this.started = true;
         this.numberLines = this._content.split('\n').length;
@@ -537,7 +539,7 @@
             span.classList.add('print-on-focus');
             
             // Allow user to press space or nothing for continuation return line
-            if (lineNumber + 1 < logicalLines.length && !logicalLines[lineNumber + 1]) {
+            if (logicalLines && lineNumber + 1 < logicalLines.length && !logicalLines[lineNumber + 1]) {
               span.classList.add('allowSpace', 'optional');
             }
 

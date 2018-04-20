@@ -22,8 +22,10 @@
         return {
 
           //
-          // Mandatory properties
+          // Inputs
           //
+          
+          // Mandatory properties
 
           /**
            * The type of content (code, literature).
@@ -56,22 +58,8 @@
             type: String,
             value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n'
           },
-
-
-          /**
-           * Output of this element.
-           *
-           * The classes are updated when the content or one of its properties is updated.
-           */
-          classes: {
-              type: Array,
-              readOnly: true,
-              value: []
-          },
-
-          //
+          
           // Optional properties
-          //
 
           /**
            * Should we exclude the comments present in the code snippet.
@@ -98,11 +86,33 @@
             value: true
           },
 
+
+          // Outputs
+
+          /**
+           * The classes are updated when the content or one of its properties is updated.
+           */
+          classes: {
+            type: Array,
+            value: []
+          },
+          
+          /**
+           * The content to display 
+           * (could be different from `content` for example 
+           * when there are long lines that does not fit on screen).
+           */
+          targetContent: {
+            type: String
+          },
+
         };
       }
 
       parse() {
-        const length = this.content.length;
+        this._preprocess();
+        
+        const length = this.targetContent.length;
         const classes = this._emptyClasses();
 
         this._determineSpaces(classes);
@@ -111,11 +121,13 @@
           this._determineAdvancedTokens(classes);
         }
         this._determineIgnorables(classes);
-        this._setClasses(classes);
+        
+        // Set output properties
+        this.classes = classes;
       }
 
       _emptyClasses() {
-        const length = this.content.length;
+        const length = this.targetContent.length;
         const result = new Array(length);
 
         for (let i = 0; i < length; i++) {
@@ -126,17 +138,17 @@
       }
 
       _determineSpaces(classes) {
-        let ignorables = new Array(this.content.length);
+        let ignorables = new Array(this.targetContent.length);
 
         const spaces = ' \t\n\r\v';
-        const length = this.content.length;
+        const length = this.targetContent.length;
 
         let eol = false;
 
         for (let i = 0; i < length; i++) {
 
-          let charTxt = this.content[i];
-          let charCode = this.content.charCodeAt(i);
+          let charTxt = this.targetContent[i];
+          let charCode = this.targetContent.charCodeAt(i);
 
           // HACK: http://www.adamkoch.com/2009/07/25/white-space-and-character-160/
           if (charCode === 160) {
@@ -170,7 +182,7 @@
       }
 
       _determineTokens(classes) {
-        const length = this.content.length;
+        const length = this.targetContent.length;
 
         // Intermediate array to store the result of tokenization
         let tokens = new Array(length);
@@ -203,7 +215,7 @@
 
             pattern = new RegExp(pattern, flags);
             let match;
-            while (match = pattern.exec(this.content)) {
+            while (match = pattern.exec(this.targetContent)) {
               if (lookbehind) {
                 lookbehindLength = match[1].length;
               }
@@ -244,7 +256,7 @@
           var regex = moduleDefinitions.get(this.language.toLowerCase());
           regex.forEach(re => {
             let match;
-            while ((match = re.exec(this.content)) != null) {
+            while ((match = re.exec(this.targetContent)) != null) {
               let moduleDeclaration = match[0];
               for (let i = match.index; i < match.index + moduleDeclaration.length; i++) {
                 classes[i].push('module'); // FIXME
@@ -255,8 +267,7 @@
       }
 
       _determineIgnorables(classes) {
-        const len = this.content.length;
-
+        const len = this.targetContent.length;
 
         // First, ignore comments
         if (this.ignoreComments) {
@@ -379,8 +390,8 @@
       }
 
 
-      static preprocess(txt) {
-        // Add all hacks there
+      _preprocess() {
+        let txt = this.content;
 
         // Standardize on newlines
         txt = txt.replace(/\r\n/g, '\n');
@@ -415,10 +426,10 @@
         }
         txt = newLines.join('\n');
         
-        return {
-          preprocessedContent: txt,
-          logicalLines: logicalLines
-        };
+        this.targetContent = txt;
+        this.logicalLines = logicalLines;
+        
+        console.log('[typio-parser] preprocess', txt, 'logicalLines=', logicalLines)
       }
 
 

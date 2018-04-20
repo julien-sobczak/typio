@@ -8,7 +8,6 @@
 
 <link rel="import" href="/src/typio-app/typio-ready-screen.html">
 <link rel="import" href="/src/typio-app/typio-stats.html">
-<link rel="import" href="/src/typio-app/typio-parser.html">
 <link rel="import" href="/src/typio-app/typio-keyboard.html">
 <link rel="import" href="/src/typio-app/typio-hands.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
@@ -121,7 +120,7 @@
         position: fixed;
         height: 100%;
         width: 100%;
-        background-color: rgba(255,255,255,0.8);
+        background-color: rgba(255,255,255,0.95);
         display: none; /* Only revealed after a practice session */
         z-index: 500;
       }
@@ -181,26 +180,17 @@
 
     </style>
 
+
     <typio-ready-screen id="readyScreen"
         type="[[type]]"
         language="[[language]]"
         content="[[content]]"
-        ignore-comments="{{settings.ignoreComments}}"
-        ignore-indents="{{settings.ignoreIndents}}"
-        continue-on-errors="{{settings.continueOnErrors}}"
-        show-chart="{{settings.showChart}}"
-        mode="{{settings.mode}}"
+        continue-on-errors="{{continueOnErrors}}"
+        show-chart="{{showChart}}"
+        mode="{{mode}}"
         on-ready="start">
     </typio-ready-screen>
 
-    <typio-parser id="parser"
-        type="[[type]]"
-        language="[[language]]"
-        content="[[_content]]"
-        ignore-comments="[[settings.ignoreComments]]"
-        ignore-indents="[[settings.ignoreIndents]]"
-        ignore-module-declarations="[[settings.ignoreModuleDeclarations]]">
-    </typio-parser>
 
     <div id="screen" class$="initialized-[[initialized]] showChart-{{showChart}} mode-{{mode}} started-{{started}} ended-{{ended}} theme-{{theme}}">
 
@@ -274,6 +264,10 @@
       static get properties() {
         return {
 
+          //
+          // User settings
+          //
+
           /**
            * The type of content (code, literature).
            */
@@ -322,37 +316,31 @@
           content: {
             type: String,
             //value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n',
-            //value: 'var (\n  toto    string\n  spirou  boolean\n)\n',
-            value: 'this is a very very very very very very very very very very very very very very very very very long line',
-            observer: '_contentChanged'
+            value: 'var (\n  toto    string\n  spirou  boolean\n)\n',
+            //value: 'this is a very very very very very very very very very very very very very very very very very long line'
           },
 
+
+          //
+          // Settings
+          //
+           
           /**
-           * Array(Boolean) Return true for element `i`
-           * if the ith line in `_content` is a logical line
-           * or the start of a logical line.
+           * Allow user to continue typing when an error is detected.
            */
-          _logicalLines: {
-            type: Array,
-            value: null
+          continueOnErrors: {
+            type: Boolean,
+            value: false
           },
-
+          
           /**
-           * Settings
+           * Show a real-time graph while user is typing.
            */
-          settings: {
-            type: Object,
-            value: {
-              ignoreComments: true,
-              ignoreIndents: true,
-              continueOnErrors: false,
-              ignoreModuleDeclarations: true,
-              showChart: true,
-              theme: 'light',
-              mode: 'scroll'
-            }
+          showChart: {
+            type: Boolean,
+            value: true
           },
-
+          
           /**
            * Editor code style.
            * Name should match a CSS resource name /css/prism-{{theme}}.css.
@@ -363,9 +351,9 @@
           },
 
 
-          /*
-           * State management
-           */
+          //
+          // State management
+          //
 
           /** True as soon as everything is ready for the user to start typing. */
           initialized: {
@@ -437,14 +425,9 @@
             ]
           },
 
-
         };
       }
 
-      ready() {
-        super.ready();
-      }
-      
       restart() {
         this.reset();
       }
@@ -467,53 +450,33 @@
         this.$.readyScreen.hidden = false;
       }
 
-      _contentChanged() {
-        const result = TypioParser.preprocess(this.content);
-        this._content = result.preprocessedContent;
-        this._logicalLines = result.logicalLines;
-      }
-
       /**
        * Called when the user has validated the ready screen.
        */
       start(e, detail) {
-        // Collect selected content
-        const result = TypioParser.preprocess(detail.selection);
-        this._logicalLines = result.logicalLines;
-
-        // Determine settings
-        this.settings.ignoreComments = detail.ignoreComments;
-        this.settings.ignoreModuleDeclarations = detail.ignoreModuleDeclarations;
-        this.settings.ignoreIndents = detail.ignoreIndents;
-        this.showChart = detail.showChart;
-        this.theme = detail.theme;
-        this.mode = detail.mode;
+        console.log('[typio-editor] starting', detail);
         this.initialized = true;
         
-        this.$.parser.content = result.preprocessedContent;
-        this.$.parser.ignoreComments = this.settings.ignoreComments;
-        this.$.parser.ignoreIndents = this.settings.ignoreIndents;
-        this.$.parser.ignoreModuleDeclarations = this.settings.ignoreModuleDeclarations;
-        this.$.parser.parse();
+        this._content = detail.content;
+        this.$.stats.editableCharacters = this._calculateEditableCharacters(detail.content, detail.classes);
         
-        this.$.stats.editableCharacters = this._calculateEditableCharacters(result.preprocessedContent, this.$.parser.classes);
-        
-        this.$.editor.content = result.preprocessedContent;
-        this.$.editor.classes = this.$.parser.classes;
+        this.showChart = this.$.readyScreen.showChart;
+        this.theme = this.$.readyScreen.theme;
+        this.$.editor.content = this._content;
+        this.$.editor.classes = detail.classes;
+        this.$.editor.logicalLines = detail.logicalLines;
         this.$.editor.intervals = this.$.stats.intervals;
-        this.$.editor.logicalLines = result.logicalLines;
-        this.$.editor.continueOnErrors = detail.continueOnErrors;
+        
         if (detail.fontSize) this.$.editor.fontSize = detail.fontSize;
         if (detail.preserveSpacing) this.$.editor.preserveSpacing = detail.preserveSpacing;
         
-        console.log('Launching editor...');
+        console.log('[typio-editor] launching editor...');
         this.$.editor.start();
       }
 
       _calculateEditableCharacters(content, classes) {
-        const len = content.length;
-        let editableCharacters = new Array(len);
-        for (let i = 0; i < len; i++) {
+        let editableCharacters = new Array(content.length);
+        for (let i = 0; i < content.length; i++) {
           editableCharacters[i] = !classes[i].includes('ignorable');
         }
         return editableCharacters;

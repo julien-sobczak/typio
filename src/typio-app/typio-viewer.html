@@ -1,0 +1,689 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/shadycss/apply-shim.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/flattened-nodes-observer.html">
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+<dom-module id="typio-viewer">
+  <template>
+
+    <!-- Stylesheet will be switched according the theme -->
+    <link id="prismStylesheet" href="/css/prism-light.css" href$="/css/prism-{{theme}}.css" rel="stylesheet">
+
+    <style include="shared-styles">
+
+      :host {
+        display: block;
+        width: 1000px;
+        margin: 0 auto;
+        padding: 1cm;
+        position: fixed;
+        top: 64px;
+        bottom: 50px;
+        z-index: 40;
+        left: 50%;
+        margin-left: -500px; /* Half of the width */
+
+        overflow-y: hidden;
+        overflow-x: visible;
+        
+        @apply --typio-viewer-content;
+      }
+      
+      #content.initialized-false {
+        display: none;
+      }
+      #content.initialized-true {
+        display: block;
+      }
+      
+      /*
+       * Type support
+       */
+      
+      pre[data-type="literature"] {
+        font-family: 'Droid Sans Mono', monospace;
+      }
+      pre[data-type="code"] {
+        font-family: monospace;
+      }
+      pre.preserveSpacing-false {
+        white-space: normal; /* Disable pre default behavior*/
+      }
+      pre.fontSize-large span {
+        font-size: 150%;
+        letter-spacing: 3px;
+        line-height: 2;
+        outline: none !important; 
+      }
+
+
+      /* Following style was inspired by https://typing.io/ */
+
+      span {
+        padding: .1em 0;
+      }
+      span.disabled {
+        color: #737373 !important;
+      }
+      span.print-on-focus {
+        visibility: hidden;
+      }
+      span.continuation {
+        display: inline-block;
+        width: 1em;
+      }
+      span.char-invalid.print-on-focus {
+        visibility: visible !important;
+      }
+      span.char-active.print-on-focus {
+        visibility: visible;
+      }
+
+      /* We need !important to override special code
+      such as operator, comment that also define a background. */
+      span.char-active {
+        background-color: #47d42b !important;
+        outline: 1px solid #40be27 !important;
+        color: #fff !important;
+      }
+      span.char-invalid {
+        background-color: #e63d3d !important;
+        outline: none !important;
+        color: #fff !important;
+      }
+      span.char-active.paused {
+        background-color: #ffc40d !important;
+        outline: 1px solid #f3b700 !important;
+        color: #fff !important;
+      }
+
+      .highlight-mistyping span.useless {
+        background-color: #faa937;
+        outline: 1px solid #faa937;
+        color: #fff !important;
+      }
+      .highlight-mistyping span.wrong {
+        background-color: #d51b1b;
+        outline: 1px solid #d51b1b;
+        color: #fff !important;
+      }
+
+      #content {
+        height: 100%;
+      }
+      #editor {
+        height: 100%;
+        color: black;
+      }
+
+      /* Theme management */
+      #content.theme-dark {
+        background: #272822;
+        color: white;
+      }
+
+      /* Show a gradient at the bottom to show there is text that follows. */
+      #content.mode-scroll:after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 500;
+        left: 0;
+        bottom: 0;
+      }
+      #content.mode-scroll.theme-light:after {
+        background: linear-gradient(transparent 90%, white);
+      }
+      #content.mode-scroll.theme-dark:after {
+        background: linear-gradient(transparent 90%, #272822);
+      }
+
+      #content.ended-true #content {
+        bottom: 0 !important;
+      }
+
+      #editor {
+        line-height: 1.5em;
+        height: 100%;
+        transition: margin 300ms; /* Used in Scroll Mode */
+      }
+
+      #content.theme-light #editor {
+        color: black;
+      }
+      #content.theme-dark #editor {
+        color: white;
+      }
+
+
+      /* Highlight intervals using a CSS class. */
+
+      .highlight {
+        background-color: Gold !important;
+        outline: none !important;
+        color: black !important;
+      }
+      
+    </style>
+
+
+    <div id="content" class$="type-[[type]] mode-[[mode]] theme-[[theme]]">
+      <pre id="editor" data-type$="[[type]]" class$="preserveSpacing-[[preserveSpacing]] fontSize-[[fontSize]]">[[_content]]</pre>
+    </div>      
+      
+  </template>
+
+  <script>
+
+    /**
+     * Editor screen (where text to type is displayed).
+     *
+     * @customElement
+     * @polymer
+     */
+    class TypioViewer extends Polymer.Element {
+
+      static get is() { return 'typio-viewer'; }
+      static get properties() {
+        return {
+
+          // 
+          // User input properties
+          //
+
+          /**
+           * The type of content (code, literature).
+           */
+          type: {
+            type: String,
+            value: "code"
+          },
+          
+          /**
+           * The content to touch type. (required)
+           *
+           * This property should be set in JavaScript and
+           * not through an HTML attribute to avoid HTML escaping (&lt; for <).
+           */
+          content: {
+            type: String,
+            value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n'
+          },
+          
+          /**
+           * Additional CSS classes to append to each character.
+           * The array should have the same size as the property `content`. 
+           */
+          classes: {
+            type: Array,
+            value: undefined
+          },
+          
+          /**
+           * Editor code style.
+           * Name should match a CSS resource name /css/prism-{{theme}}.css.
+           */
+          theme: {
+            type: String,
+            value: 'light'
+          },
+          
+          /**
+           * The mode to use when text to type exceed the size of the window.
+           *
+           * Possible values: 'scroll', 'page'.
+           */
+          mode: {
+            type: String,
+            value: 'scroll',
+          },
+          
+
+
+          
+          //
+          // Developer options
+          //
+
+          /**
+           * Log debug information to the console.
+           */
+          debug: {
+            type: Boolean,
+            value: false
+          },
+
+
+          //
+          // Editor inner working properties
+          //
+          
+          /**
+           * The preprocessed content to touch type. Could be different from `content` if long lines are detected for example.
+           */
+          _content: {
+            type: String,
+            value: ""
+          },
+
+          // The list of <span class="character"> elements representing the characters to enter
+          _characters: {
+            type: Array,
+            value: []
+          },
+
+          // Line number containing the `_i` character.
+          _currentLine: {
+              type: Number,
+              value: 0
+          },
+          
+          // Line number of the first line on screen.
+          _firstLine: {
+              type: Number,
+              value: 0
+          },
+
+
+          //
+          // Styling
+          //
+          
+          /**
+           * If false, 	Sequences of whitespace will collapse into a single whitespace. 
+           */
+          preserveSpacing: {
+            type: Boolean,
+            value: true
+          },
+          
+          /**
+           * Size of text. Allowed values: 'normal', 'large'.
+           */
+          fontSize: {
+            type: String,
+            value: 'normal'
+          },
+          
+        };
+      }
+      
+      static get observers() {
+        return [
+          '_contentChanged(content, classes)'
+        ]
+      }
+      
+      // 
+      // Getters/Setters
+      //
+      
+      /**
+       * Return the current position (zero-based index) in the content.
+       */ 
+      get position() {
+        return this._i;
+      }
+      
+      /**
+       * Update the position. The visible lines are automatically updated to reflect this change.
+       */
+      set position(i) {
+        this._i = i;
+        const previousLine = this._currentLine;
+        this._currentLine = this._content.substring(0, i + 1).split('\n').length - 1;
+        if (this._currentLine !== previousLine) { // optimization
+          if (this.mode === 'scroll') this._scroll();
+          if (this.mode === 'page') this._updatePage();
+        }
+      }
+      
+      
+      //
+      // Listeners
+      //
+      
+      _contentChanged() {
+        console.log('[typio-viewer] content changed to', this._content);
+        this._content = this.content;
+        this.numberLines = this._content.split('\n').length;
+      }
+      
+      
+      /**
+       * Called this method to reset the editor (ex: retry).
+       */
+      reset() {
+        this.refresh();
+      }
+
+      refresh() {
+        // Refresh editor
+        this._parse();
+      }
+      
+      
+      /**
+       * Parse the selected content to determine tokens.
+       */
+      _parse() {
+        console.log('[typio-viewer] Number of displayable lines: ' + countLines(this.$.editor));
+
+        const startTime = performance.now();
+        console.log('[typio-viewer] _parse');
+
+        this._characters = [];
+        this._i = -1;
+        this._currentLine = 0;
+        this._firstLine = 0;
+        this._length = this._content.length;
+        this.numberLines = this._content.split('\n').length;
+
+        console.log('[typio-viewer] lexical parser ... done in ' + (performance.now() - startTime) + 'ms');
+
+        // TODO Add properties
+        const classes = this.classes;
+        const intervals = this.intervals;
+        const logicalLines = this.logicalLines;
+        // + continueOnErrors
+
+        let fragment = document.createDocumentFragment();
+
+        console.log('[typio-viewer] Number of characters: ' + this._length);
+
+        let lineNumber = 0;
+        let newLine = true;
+
+        for (let i = 0; i < this._length; i++) {
+          let charTxt = this._content[i]; // The original character
+          let charName = charTxt;        // The name as returned by the keypress/keyup event (see key property)
+          let charPrint = charTxt;       // The character print on screen
+
+          let charCode = this._content.charCodeAt(i);
+
+          let span = document.createElement('span');
+          span.classList.add('character', 'disabled'); // General classes
+          if (classes && classes[i]) {
+            span.classList.add(...classes[i]);
+          } 
+          if (intervals) {
+            span.classList.add('interval-' + intervals[i]);
+          }
+
+          // HACK: http://www.adamkoch.com/2009/07/25/white-space-and-character-160/
+          if (charCode === 160) {
+            charName = ' ';
+            charCode = 32;
+          }
+
+          if (newLine && logicalLines && !logicalLines[lineNumber]) { // continuation line
+            charName = 'Continuation Line';
+            charPrint = ' <strong>&#11153;</strong> \n';
+            span.classList.add('continuation', 'ignorable');
+          }
+
+          if (charTxt == '\n') {
+            // Put Unicode return symbol as content &#9166; (should be displayed only when actived)
+            charName = 'Enter';
+            charPrint = ' <strong>&#9166;</strong> \n';
+            span.classList.add('print-on-focus');
+            
+            // Allow user to press space or nothing for continuation return line
+            if (logicalLines && lineNumber + 1 < logicalLines.length && !logicalLines[lineNumber + 1]) {
+              span.classList.add('allowSpace', 'optional');
+            }
+
+            newLine = true;
+            lineNumber++;
+          } else {
+            newLine = false;
+          }
+
+          span.dataset.text = charName;
+          span.innerHTML = charPrint;
+          fragment.appendChild(span);
+        }
+
+        console.log('[typio-viewer] other parser ... done in ' + (performance.now() - startTime) + 'ms');
+        this.$.editor.innerHTML = '';
+        this.$.editor.appendChild(fragment);
+
+        this._characters = this.$.editor.querySelectorAll('.character');
+
+        const endTime = performance.now();
+        console.log('[typio-viewer] _parse ... done in ' + (endTime - startTime) + 'ms');
+      }
+
+      /**
+       * Scroll to position the current line on screen
+       * For performance reason, this method only need to be called after each newline character.
+       */
+      _scroll() {
+        const numberLinesOnScreen = this.numberLinesOnScreen();
+        const numberAboveLinesToDisplay = Math.min(Math.floor((numberLinesOnScreen - 1) / 2), 5); // do not scroll too soon. Wait for some lines before and after if possible.
+        if (this._currentLine > numberAboveLinesToDisplay && this._currentLine < this.numberLines - numberAboveLinesToDisplay) {
+          this._scrollToLine(this._currentLine - numberAboveLinesToDisplay);
+        }
+      }
+
+      /**
+       * Update the editor to display the current page.
+       */
+      _updatePage() {
+        const numberLinesOnScreen = this.numberLinesOnScreen();
+        const pageNumber = this.pageNumber();
+        const numberLinesToScroll = (pageNumber > 1) ? (pageNumber - 1) * numberLinesOnScreen : 0;
+        console.log('[typio-viewer] Scroll to page ' + pageNumber + ' by shifting ' + numberLinesToScroll + ' lines');
+        this._scrollToLine(numberLinesToScroll);
+      }
+
+      /**
+       * Scroll to position the given line at the top of the editor.
+       * For performance reason, this method only need to call after each newline character.
+       */
+      _scrollToLine(lineNumber) {
+        if (lineNumber === this._firstLine) return; // optimization
+        console.log('[typio-viewer] Scroll to line ' + lineNumber);
+        this._firstLine = lineNumber;
+        this.$.editor.style.marginTop = lineNumber * -1.5 + 'em'; // see #editor line-height property
+      }
+
+      // Utility methods to manipulate current character
+
+      cursor() {
+        return this._characters[this._i];
+      }
+      
+      nextNonIgnorableCharacter() {
+        let i = this._i + 1;
+        while (true) {
+          if (this.isEndOfFile()) return undefined;
+          let character = this._characters[i++];
+          if (!character.classList.contains('ignorable')) {
+            return character;
+          }
+        }
+      }
+
+      isIgnorable() {
+        let character = this.cursor();
+        return character.classList.contains('ignorable');
+      }
+
+      isEndOfFile() {
+        return this._i + 1 >= this._length;
+      }
+
+      highlight() {
+        let character = this.cursor();
+        character.classList.remove('char-invalid');
+        character.classList.add('char-active');
+        character.classList.add('disabled');
+      }
+
+      unhighlight() {
+        let character = this.cursor();
+        character.classList.remove('char-active');
+        character.classList.remove('char-invalid');
+        character.classList.add('disabled');
+      }
+      
+      /**
+       * Return the character DOMElement (span) representing the ith character (zero-based index).
+       */
+      elementAt(i) {
+        return this._characters[i];
+      }
+      
+      /**
+       * Return the element at the current position.
+       */
+      element() {
+        return this.elementAt(this._i);
+      }
+      
+      /**
+       * Return the string representation of the ith character.
+       */
+      characterAt(i) {
+        return this.elementAt(i).dataset.text;
+      }
+      
+      /**
+       * Return the character at the current position.
+       */
+      character() {
+        return this.characterAt(this._i);
+      }
+      
+      /**
+       * Return an array containing all the annotations for a given character.
+       */
+      annotationsAt(i) {
+        return [...this.elementAt(i).classList];
+      }
+      
+      /**
+       * Return the annotations at the current position.
+       */
+      annotations() {
+        return this.annotationsAt(this._i);
+      }
+      
+      /**
+       * Return the number of lines that can be displayed on the screen.
+       * Could be less than the number of content lines when it can fit on screen.
+       * Could be more than the number of content lines when it can fit entirely fit on screen.
+       */
+      numberLinesOnScreen() {
+        return countLines(this.$.editor);
+      }
+      
+      /**
+       * Return the current line number (one-based index).
+       */
+      lineNumber() {
+        return this._currentLine + 1;
+      }
+      
+      /**
+       * Return the current page number (one-based index).
+       */
+      pageNumber() {
+        const numberLinesOnScreen = this.numberLinesOnScreen();
+        let pageNumber = 1;
+        if (this._currentLine >= numberLinesOnScreen) {
+          pageNumber = Math.ceil(this._currentLine / numberLinesOnScreen);
+          if (this._currentLine % numberLinesOnScreen === 0) { 
+            pageNumber++; 
+          }
+        }
+        return pageNumber;
+      }
+      
+      
+      /** 
+       * Return the indices of the lines on screen. Ex: [0, 1, 2] if only the first three lines are visible.
+       */
+      linesOnScreen() {
+        let lineIndices = [];
+        const numberLinesOnScreen = this.numberLinesOnScreen();
+        const lastLineIndex = Math.min(this.numberLines, this._firstLine + numberLinesOnScreen);
+        for (let i = this._firstLine; i < lastLineIndex; i++) {
+          lineIndices.push(i + 1); 
+        }
+        return lineIndices;
+      }
+      
+      
+      //
+      // Page controls
+      //
+
+      moveToFirstPage() {
+        this._currentLine = 0;
+        this._scrollToLine(0);
+      }
+
+      moveToPreviousPage() {
+        const numberLinesOnScreen = this.numberLinesOnScreen();
+        const numberLinesTotal = this.numberLines;
+        this._currentLine -= numberLinesOnScreen;
+        if (this._currentLine <= 0) {
+          this.moveToFirstPage();
+        } else {
+          this._scrollToLine(this._currentLine);
+        }
+      }
+
+      moveToNextPage() {
+        const numberLinesOnScreen = this.numberLinesOnScreen();
+        const numberLinesTotal = this.numberLines;
+        this._currentLine += numberLinesOnScreen;
+        if (this._currentLine >= numberLinesTotal) {
+          this.moveToLastPage();
+        } else {
+          this._scrollToLine(this._currentLine);
+        }
+      }
+
+      moveToLastPage() {
+        const numberLinesOnScreen = this.numberLinesOnScreen();
+        const numberLinesTotal = this.numberLines;
+        const numberPages = Math.ceil(numberLinesTotal / numberLinesOnScreen);
+        this._currentLine =  (numberPages - 1) * numberLinesOnScreen;
+        this._scrollToLine(this._currentLine);
+      }
+
+      moveToPage(n) {
+        const numberLinesOnScreen = this.numberLinesOnScreen();
+        const numberLinesTotal = this.numberLines;
+        if (n * numberLinesOnScreen > numberLinesTotal) {
+          this.moveToLastPage();
+        } else if (n <= 0) {
+          this.moveToFirstPage();
+        } else {
+          this._currentLine = n * numberLinesOnScreen - 1;
+          this._scrollToLine(this._currentLine);
+        }
+      }
+
+    }
+    window.customElements.define(TypioViewer.is, TypioViewer);
+
+    /**
+     * Determine the number of text lines inside an HTML element.
+     *
+     * @param {HTMLElement} element the element to evaluate.
+     */
+    function countLines(element) {
+      // see https://stackoverflow.com/questions/8606588/how-to-get-the-line-height-of-a-span?rq=1
+      let style = window.getComputedStyle(element);
+      let divHeight = element.offsetHeight;
+      let lineHeight = parseInt(style.lineHeight);
+      return parseInt(divHeight / lineHeight);
+    }
+
+  </script>
+</dom-module>

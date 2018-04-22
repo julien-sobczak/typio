@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>typio-core-editor test</title>
+
+    <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+
+    <link rel="import" href="../../src/typio-app/typio-viewer.html">
+    
+    <style>
+      typio-viewer.one-line {
+        font-size: 12px;
+        height: 20px; /* Let space for line-height */
+      }
+      typio-viewer.three-lines {
+        font-size: 12px;
+        height: 60px; /* Let space for line-height */
+      }
+    </style>
+  </head>
+  <body>
+
+    <test-fixture id="ScrollCodeFixture">
+      <template>
+        <typio-viewer id="viewer" type="code" mode="scroll" class="three-lines" debug></typio-viewer>
+      </template>
+    </test-fixture>
+    <test-fixture id="CompactScrollCodeFixture">
+      <template>
+        <typio-viewer id="viewer" type="code" mode="scroll" class="one-line" debug></typio-viewer>
+      </template>
+    </test-fixture>
+    <test-fixture id="PageCodeFixture">
+      <template>
+        <typio-viewer id="viewer" type="code" mode="page" class="three-lines" debug></typio-viewer>
+      </template>
+    </test-fixture>
+    <test-fixture id="CompactPageCodeFixture">
+      <template>
+        <typio-viewer id="viewer" type="code" mode="page" class="one-line" debug></typio-viewer>
+      </template>
+    </test-fixture>
+    <test-fixture id="ScrollLiteratureFixture">
+      <template>
+        <typio-viewer id="viewer" type="literature" mode="scroll" debug></typio-viewer>
+      </template>
+    </test-fixture>
+    
+    <script>
+    
+    class ContentBuilder {
+      
+      constructor(content) {
+        this.content = content;
+        this.classes = new Array(content.length);
+      }
+      
+      annotate(index, ...classes) {
+        this.classes[index] = classes;
+        return this;
+      }
+      
+      build() {
+        return [this.content, this.classes];
+      }
+    }
+    
+    suite('typio-viewer', function() {
+      
+        let viewer = undefined;
+        
+        //
+        // Scroll mode
+        //
+  
+        test('[scroll] single line', function() {
+          viewer = fixture('ScrollCodeFixture');
+          [viewer.content, viewer.classes] = new ContentBuilder("  print('Hello World')").
+            annotate(0, 'ignorable').
+            build();
+          viewer.refresh();
+
+          expect(viewer.numberLinesOnScreen()).to.equal(3);      
+          expect(viewer.linesOnScreen()).to.eql([1]);
+          expect(viewer.annotationsAt(0)).to.include('ignorable');
+          expect(viewer.annotationsAt(1)).to.not.include('ignorable');
+        });
+        
+        test('[scroll] content longer than screen size', function() {
+          viewer = fixture('ScrollCodeFixture');
+          viewer.content = `print('Hello')
+print('Bonjour')
+print('Guten tag')
+print('Ola')
+print('Buongiorno')`;
+          viewer.refresh();
+
+          expect(viewer.numberLinesOnScreen()).to.equal(3); 
+          
+          // Initial position     
+          expect(viewer.position).to.equal(-1);
+          expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
+          
+          // Move inside the first line
+          viewer.position = "print('H".length - 1;
+          expect(viewer.character()).to.equal('H');
+          expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
+          
+          // Move to second line
+          viewer.position = "print('Hello')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([1, 2, 3]); // Try to keep the previous line if enough space
+          
+          // Move to third line
+          viewer.position = "print('Hello')\nprint('Bonjour')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([2, 3, 4]);
+          
+          // Move to penultimate line
+          viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([3, 4, 5]); 
+          
+          // Move to last line
+          viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\nprint('Ola')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([3, 4, 5]); // Useless to advance
+        });
+        
+        test('[scroll] content longer but only one line on sceen', function() {
+          viewer = fixture('CompactScrollCodeFixture');
+          viewer.content = `print('Hello')
+print('Bonjour')
+print('Guten tag')
+print('Ola')
+print('Buongiorno')`;
+          viewer.refresh();
+
+          expect(viewer.numberLinesOnScreen()).to.equal(1); 
+          
+          // Initial position     
+          expect(viewer.position).to.equal(-1);
+          expect(viewer.linesOnScreen()).to.eql([1]);
+          
+          // Move inside the first line
+          viewer.position = "print('H".length - 1;
+          expect(viewer.character()).to.equal('H');
+          expect(viewer.linesOnScreen()).to.eql([1]);
+          
+          // Move to second line
+          viewer.position = "print('Hello')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([2]);
+          
+          // Move to third line
+          viewer.position = "print('Hello')\nprint('Bonjour')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([3]);
+          
+          // Move to penultimate line
+          viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([4]);
+          
+          // Move to last line
+          viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\nprint('Ola')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([5]);
+        });
+        
+        //
+        // Page mode
+        //
+        
+        test('[page] single line', function() {
+          viewer = fixture('PageCodeFixture');
+          [viewer.content, viewer.classes] = new ContentBuilder("  print('Hello World')").
+            annotate(0, 'ignorable').
+            build();
+          viewer.refresh();
+
+          expect(viewer.numberLinesOnScreen()).to.equal(3);      
+          expect(viewer.linesOnScreen()).to.eql([1]);
+          expect(viewer.annotationsAt(0)).to.include('ignorable');
+          expect(viewer.annotationsAt(1)).to.not.include('ignorable');
+        });
+        
+        test('[page] content longer than screen size', function() {
+          viewer = fixture('PageCodeFixture');
+          viewer.content = `print('Hello')
+print('Bonjour')
+print('Guten tag')
+print('Ola')
+print('Buongiorno')`;
+          viewer.refresh();
+
+          expect(viewer.numberLinesOnScreen()).to.equal(3); 
+          
+          // Initial position     
+          expect(viewer.position).to.equal(-1);
+          expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
+          
+          // Move inside the first line
+          viewer.position = "print('H".length - 1;
+          expect(viewer.character()).to.equal('H');
+          expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
+          
+          // Move to second line
+          viewer.position = "print('Hello')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
+          
+          // Move to third line
+          viewer.position = "print('Hello')\nprint('Bonjour')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
+          
+          // Move to penultimate line
+          viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([4, 5]); 
+          
+          // Move to last line
+          viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\nprint('Ola')\np".length - 1;
+          expect(viewer.linesOnScreen()).to.eql([4, 5]);
+        });
+        
+        test('[page] content longer but only one line on sceen', function() {
+          viewer = fixture('CompactPageCodeFixture');
+          viewer.content = `print('Hello')
+print('Bonjour')
+print('Guten tag')
+print('Ola')
+print('Buongiorno')`;
+          viewer.refresh();
+
+          expect(viewer.numberLinesOnScreen()).to.equal(1); 
+          
+          // Initial position     
+          expect(viewer.position).to.equal(-1);
+          expect(viewer.pageNumber()).to.equal(1);
+          expect(viewer.linesOnScreen()).to.eql([1]);
+          
+          // Move inside the first line
+          viewer.position = "print('H".length - 1;
+          expect(viewer.character()).to.equal('H');
+          expect(viewer.pageNumber()).to.equal(1);
+          expect(viewer.linesOnScreen()).to.eql([1]);
+          
+          // Move to second line
+          viewer.position = "print('Hello')\np".length - 1;
+          expect(viewer.pageNumber()).to.equal(2);
+          expect(viewer.linesOnScreen()).to.eql([2]);
+          
+          // Move to third line
+          viewer.position = "print('Hello')\nprint('Bonjour')\np".length - 1;
+          expect(viewer.pageNumber()).to.equal(3);
+          expect(viewer.linesOnScreen()).to.eql([3]);
+          
+          // Move to penultimate line
+          viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\np".length - 1;
+          expect(viewer.pageNumber()).to.equal(4);
+          expect(viewer.linesOnScreen()).to.eql([4]);
+          
+          // Move to last line
+          viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\nprint('Ola')\np".length - 1;
+          expect(viewer.pageNumber()).to.equal(5);
+          expect(viewer.linesOnScreen()).to.eql([5]);
+        });
+        
+        // 
+        // Page controls
+        //
+        
+        test('[page] move across single-line pages', function() {
+          viewer = fixture('CompactPageCodeFixture');
+          viewer.content = `print('Hello')
+print('Bonjour')
+print('Guten tag')
+print('Ola')
+print('Buongiorno')`;
+          viewer.refresh();
+
+          expect(viewer.numberLinesOnScreen()).to.equal(1); 
+          
+          expect(viewer.pageNumber()).to.equal(1);
+          viewer.moveToPreviousPage();
+          expect(viewer.pageNumber()).to.equal(1);
+          viewer.moveToNextPage();
+          expect(viewer.pageNumber()).to.equal(2);
+          viewer.moveToNextPage();
+          expect(viewer.pageNumber()).to.equal(3);
+          viewer.moveToPreviousPage();
+          expect(viewer.pageNumber()).to.equal(2);
+          viewer.moveToNextPage();
+          expect(viewer.pageNumber()).to.equal(3);
+          viewer.moveToNextPage();
+          expect(viewer.pageNumber()).to.equal(4);
+          viewer.moveToNextPage();
+          expect(viewer.pageNumber()).to.equal(5);
+          viewer.moveToNextPage();
+          expect(viewer.pageNumber()).to.equal(5);
+          viewer.moveToFirstPage();
+          expect(viewer.pageNumber()).to.equal(1);
+          viewer.moveToPage(3);
+          expect(viewer.pageNumber()).to.equal(3);
+          viewer.moveToLastPage();
+          expect(viewer.pageNumber()).to.equal(5);
+          viewer.moveToLastPage();
+          expect(viewer.pageNumber()).to.equal(5);
+          viewer.moveToPage(-1);
+          expect(viewer.pageNumber()).to.equal(1);
+          viewer.moveToPage(6);
+          expect(viewer.pageNumber()).to.equal(5);
+        });
+        
+        
+        test('[page] move across multi-line pages', function() {
+          viewer = fixture('PageCodeFixture');
+          viewer.content = `print('Hello')
+print('Bonjour')
+print('Guten tag')
+print('Ola')
+print('Buongiorno')
+print('Buenos días')
+print('Aloha')`;
+          viewer.refresh();
+
+          expect(viewer.numberLinesOnScreen()).to.equal(3); 
+          
+          expect(viewer.pageNumber()).to.equal(1);
+          viewer.moveToPreviousPage();
+          expect(viewer.pageNumber()).to.equal(1);
+          viewer.moveToNextPage();
+          expect(viewer.pageNumber()).to.equal(2);
+          viewer.moveToNextPage();
+          expect(viewer.pageNumber()).to.equal(3);
+          viewer.moveToPreviousPage();
+          expect(viewer.pageNumber()).to.equal(2);
+          viewer.moveToFirstPage();
+          expect(viewer.pageNumber()).to.equal(1);
+          viewer.moveToLastPage();
+          expect(viewer.pageNumber()).to.equal(3);
+          viewer.moveToPage(3);
+          expect(viewer.pageNumber()).to.equal(3);
+          viewer.moveToPage(-1);
+          expect(viewer.pageNumber()).to.equal(1);
+          viewer.moveToPage(4);
+          expect(viewer.pageNumber()).to.equal(3);
+        });
+        
+      });
+      
+    </script>
+
+  </body>
+</html>

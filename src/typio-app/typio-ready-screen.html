@@ -8,6 +8,7 @@
 <link rel="import" href="../../bower_components/paper-range-slider/paper-range-slider.html">
 
 <link rel="import" href="/src/typio-app/typio-parser.html">
+<link rel="import" href="/src/typio-app/typio-viewer.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-toggle-button.html">
 
@@ -26,7 +27,7 @@
       }
 
       #content {
-        width: 800px;
+        width: 1000px;
         margin: 0 auto;
         padding: 1cm;
         position: fixed;
@@ -36,13 +37,6 @@
         left: 50%;
         margin-left: -500px; /* Half of the width */
         color: gray;
-      }
-
-      #content pre[data-type="text"]  {
-        font-family: 'Droid Sans Mono', monospace;
-      }
-      #content pre[data-type="code"] {
-        font-family: monospace;
       }
 
 
@@ -61,15 +55,6 @@
 
       #settings.hidden-true #controls {
         display: none;
-      }
-
-      /*
-       * Read only editor
-       */
-
-      #content, #editor {
-        line-height: 1.5em;
-        overflow: hidden;
       }
 
 
@@ -178,7 +163,7 @@
       </div>
 
       <div id="content">
-        <pre id="editor" data-type$="[[type]]">[[selection]]</pre>
+        <typio-viewer id="viewer" type="[[type]]" mode="page" debug></typio-viewer>
       </div>
 
     </section>
@@ -364,7 +349,7 @@
       _contentChanged() {
         console.log('[typio-ready-screen] content changed');
         this.selection = this.content;
-        this.$.parser.parse();
+        this._parseContent();
       }
       
       /**
@@ -372,10 +357,19 @@
        */
       _criteriaChanged() {
         console.log('[typio-ready-screen] criteria changed');
+        this._parseContent();  
+      }
+      
+      _parseContent() {
         this.$.parser.parse();
-        this.selection = this.$.parser.targetContent;
         this.logicalLines = this.$.parser.logicalLines;
         this.classes = this.$.parser.classes;
+        this.selection = this.$.parser.targetContent;
+        
+        // Update viewer (BUG when using databinding...)
+        this.$.viewer.classes = this.$.parser.classes;
+        this.$.viewer.logicalLines = this.$.parser.logicalLines;
+        this.$.viewer.content = this.$.parser.targetContent;
       }
       
 

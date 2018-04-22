@@ -11,17 +11,9 @@
 
     <style include="shared-styles">
 
-      :host {
-        display: block;
-        width: 1000px;
-        margin: 0 auto;
-        padding: 1cm;
-        position: fixed;
-        top: 64px;
-        bottom: 50px;
-        z-index: 40;
-        left: 50%;
-        margin-left: -500px; /* Half of the width */
+      #content {
+        width: 100%;
+        position: relative;
 
         overflow-y: hidden;
         overflow-x: visible;
@@ -64,6 +56,9 @@
       }
       span.disabled {
         color: #737373 !important;
+      }
+      span.ignorable {
+        opacity: 0.5;
       }
       span.print-on-focus {
         visibility: hidden;
@@ -348,6 +343,7 @@
         console.log('[typio-viewer] content changed to', this._content);
         this._content = this.content;
         this.numberLines = this._content.split('\n').length;
+        this.reset();
       }
       
       
@@ -386,7 +382,6 @@
         const classes = this.classes;
         const intervals = this.intervals;
         const logicalLines = this.logicalLines;
-        // + continueOnErrors
 
         let fragment = document.createDocumentFragment();
 
@@ -403,7 +398,7 @@
           let charCode = this._content.charCodeAt(i);
 
           let span = document.createElement('span');
-          span.classList.add('character', 'disabled'); // General classes
+          span.classList.add('character'); // add common classes here 
           if (classes && classes[i]) {
             span.classList.add(...classes[i]);
           } 

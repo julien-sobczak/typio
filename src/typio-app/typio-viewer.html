@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/shadycss/apply-shim.html">
 <link rel="import" href="../../bower_components/polymer/lib/utils/flattened-nodes-observer.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-viewer">
@@ -12,9 +13,9 @@
     <style include="shared-styles">
 
       #content {
+        height: 100%;
         width: 100%;
-        position: relative;
-
+        
         overflow-y: hidden;
         overflow-x: visible;
         
@@ -103,9 +104,6 @@
         color: #fff !important;
       }
 
-      #content {
-        height: 100%;
-      }
       #editor {
         height: 100%;
         color: black;
@@ -160,12 +158,38 @@
         color: black !important;
       }
       
+      /*
+       * Controls
+       */
+      
+      
+      #pageControls {
+        position: absolute;
+        bottom: 0;
+        width: 300px;
+        left: 50%;
+        margin-left: -150px;
+        text-align: center;
+      }
+      #pageControls.controls-false {
+        display: false;
+      }
+      #pageControls.controls-true {
+        display: true;
+      }
+      
     </style>
 
 
     <div id="content" class$="type-[[type]] mode-[[mode]] theme-[[theme]]">
       <pre id="editor" data-type$="[[type]]" class$="preserveSpacing-[[preserveSpacing]] fontSize-[[fontSize]]">[[_content]]</pre>
-    </div>      
+    </div> 
+    <div id="pageControls" class$="controls-[[_controls]]">
+      <paper-icon-button on-click="moveToFirstPage" icon="first-page"></paper-icon-button>
+      <paper-icon-button on-click="moveToPreviousPage" icon="chevron-left"></paper-icon-button>
+      <paper-icon-button on-click="moveToNextPage" icon="chevron-right"></paper-icon-button>
+      <paper-icon-button on-click="moveToLastPage" icon="last-page"></paper-icon-button>
+    </div>     
       
   </template>
 
@@ -233,8 +257,14 @@
             type: String,
             value: 'scroll',
           },
-          
 
+          /**
+           * Enable controls to let user navigate across pages.
+           */
+          controls: {
+            type: Boolean,
+            value: true
+          },
 
           
           //
@@ -306,9 +336,10 @@
       
       static get observers() {
         return [
-          '_contentChanged(content, classes)'
+          '_contentChanged(content, classes)',
         ]
       }
+      
       
       // 
       // Getters/Setters
@@ -325,10 +356,14 @@
        * Update the position. The visible lines are automatically updated to reflect this change.
        */
       set position(i) {
+        if (this.debug) console.log('[typio-viewer] new position', i);
         this._i = i;
+
         const previousLine = this._currentLine;
         this._currentLine = this._content.substring(0, i + 1).split('\n').length - 1;
-        if (this._currentLine !== previousLine) { // optimization
+        if (this._content[this._i] === '\n') this._currentLine--;
+        
+        if (previousLine !== undefined && this._currentLine !== previousLine) { // optimization
           if (this.mode === 'scroll') this._scroll();
           if (this.mode === 'page') this._updatePage();
         }
@@ -342,10 +377,13 @@
       _contentChanged() {
         console.log('[typio-viewer] content changed to', this._content);
         this._content = this.content;
-        this.numberLines = this._content.split('\n').length;
         this.reset();
       }
-      
+    
+    
+      //
+      // State management
+      //
       
       /**
        * Called this method to reset the editor (ex: retry).
@@ -360,11 +398,15 @@
       }
       
       
+      // 
+      // Parsing
+      //
+      
       /**
        * Parse the selected content to determine tokens.
        */
       _parse() {
-        console.log('[typio-viewer] Number of displayable lines: ' + countLines(this.$.editor));
+        console.log('[typio-viewer] Number of displayable lines: ' + this.numberLinesOnScreen());
 
         const startTime = performance.now();
         console.log('[typio-viewer] _parse');
@@ -375,10 +417,9 @@
         this._firstLine = 0;
         this._length = this._content.length;
         this.numberLines = this._content.split('\n').length;
-
+        
         console.log('[typio-viewer] lexical parser ... done in ' + (performance.now() - startTime) + 'ms');
 
-        // TODO Add properties
         const classes = this.classes;
         const intervals = this.intervals;
         const logicalLines = this.logicalLines;
@@ -450,78 +491,23 @@
         console.log('[typio-viewer] _parse ... done in ' + (endTime - startTime) + 'ms');
       }
 
-      /**
-       * Scroll to position the current line on screen
-       * For performance reason, this method only need to be called after each newline character.
-       */
-      _scroll() {
-        const numberLinesOnScreen = this.numberLinesOnScreen();
-        const numberAboveLinesToDisplay = Math.min(Math.floor((numberLinesOnScreen - 1) / 2), 5); // do not scroll too soon. Wait for some lines before and after if possible.
-        if (this._currentLine > numberAboveLinesToDisplay && this._currentLine < this.numberLines - numberAboveLinesToDisplay) {
-          this._scrollToLine(this._currentLine - numberAboveLinesToDisplay);
-        }
-      }
+
+      //
+      // Position
+      //
 
       /**
-       * Update the editor to display the current page.
+       * Alias for `element()`.
        */
-      _updatePage() {
-        const numberLinesOnScreen = this.numberLinesOnScreen();
-        const pageNumber = this.pageNumber();
-        const numberLinesToScroll = (pageNumber > 1) ? (pageNumber - 1) * numberLinesOnScreen : 0;
-        console.log('[typio-viewer] Scroll to page ' + pageNumber + ' by shifting ' + numberLinesToScroll + ' lines');
-        this._scrollToLine(numberLinesToScroll);
-      }
-
-      /**
-       * Scroll to position the given line at the top of the editor.
-       * For performance reason, this method only need to call after each newline character.
-       */
-      _scrollToLine(lineNumber) {
-        if (lineNumber === this._firstLine) return; // optimization
-        console.log('[typio-viewer] Scroll to line ' + lineNumber);
-        this._firstLine = lineNumber;
-        this.$.editor.style.marginTop = lineNumber * -1.5 + 'em'; // see #editor line-height property
-      }
-
-      // Utility methods to manipulate current character
-
       cursor() {
         return this._characters[this._i];
       }
       
-      nextNonIgnorableCharacter() {
-        let i = this._i + 1;
-        while (true) {
-          if (this.isEndOfFile()) return undefined;
-          let character = this._characters[i++];
-          if (!character.classList.contains('ignorable')) {
-            return character;
-          }
-        }
-      }
-
-      isIgnorable() {
-        let character = this.cursor();
-        return character.classList.contains('ignorable');
-      }
-
-      isEndOfFile() {
+      /**
+      * Return if the user reaches the end position.
+       */
+      endOfFile() {
         return this._i + 1 >= this._length;
-      }
-
-      highlight() {
-        let character = this.cursor();
-        character.classList.remove('char-invalid');
-        character.classList.add('char-active');
-        character.classList.add('disabled');
-      }
-
-      unhighlight() {
-        let character = this.cursor();
-        character.classList.remove('char-active');
-        character.classList.remove('char-invalid');
-        character.classList.add('disabled');
       }
       
       /**
@@ -552,6 +538,11 @@
         return this.characterAt(this._i);
       }
       
+      
+      //
+      // Annotations
+      //
+      
       /**
        * Return an array containing all the annotations for a given character.
        */
@@ -567,12 +558,130 @@
       }
       
       /**
+       * Add one or several annotations to the ith character.
+       */
+      annotateAt(i, ...annotations) {
+        this.elementAt(i).classList.add(annotations);
+      }
+      
+      /**
+       * Add one or several annotations to the current character.
+       */
+      annotate(annotations) {
+        this.annotateAt(this._i);
+      }
+      
+      /**
+       * Remove one or several annotations to the ith character.
+       */
+      unannotateAt(i, ...annotations) {
+        this.elementAt(i).classList.remove(annotations);
+      }
+      
+      /**
+       * Remove one or several annotations to the current character.
+       */
+      unannotate(annotations) {
+        this.unannotateAt(this._i);
+      }
+      
+      /**
+       * Add one or several annotations to all characters.
+       */
+      annotateAll(annotations) {
+        for (let i = 0; i < this._characters.length; i++) {
+          this._characters[i].classList.add(annotations);
+        }
+      }
+      
+      /**
+       * Remove one or several annotations to all characters.
+       */
+      unannotateAll(annotations) {
+        for (let i = 0; i < this._characters.length; i++) {
+          this._characters[i].classList.remove(annotations);
+        }
+      }
+      
+      /**
+       * Return if the current character is annotated with the given annotation.
+       */
+      hasAnnotation(annotation) {
+        return this.annotations().includes(annotation);
+      }
+      
+      
+      //
+      // Highlighting
+      //
+      
+      
+      /**
+       * Highlight the ith character.
+       */
+      highlightBetween(start, end, unhighlightAll = false) {
+        if (unhighlightAll) {
+          this.unhighlightAll();
+        }
+        for (let i = start; i < end; i++) {
+          this.highlightAt(i);
+        }        
+      }
+      
+      /**
+       * Annotate all the content.
+       */
+      highlightAll() {
+        this.annotateAll('highlight');
+      }
+      
+      /**
+       * Unannotate all the content.
+       */
+      unhighlightAll() {
+        this.unannotateAll('highlight');
+      }
+
+      /**
+       * Highlight the ith character.
+       */
+      highlightAt(i) {
+        this.annotateAt(i, 'highlight');
+      }
+
+      /**
+       * Highlight the current character.
+       */
+      highlight() {
+        this.highlightAt(this._i);
+      }
+
+      /**
+       * Unhighlight the ith character.
+       */ 
+      unhighlightAt(i) {
+        this.unannotateAt(i, 'highlight');
+      }
+      
+      /**
+       * Unhighlight the current character.
+       */ 
+      unhighlight() {
+        this.unhighlightAt(this._i);
+      }
+      
+      
+      //
+      // Stats
+      //
+            
+      /**
        * Return the number of lines that can be displayed on the screen.
        * Could be less than the number of content lines when it can fit on screen.
        * Could be more than the number of content lines when it can fit entirely fit on screen.
        */
       numberLinesOnScreen() {
-        return countLines(this.$.editor);
+        return TypioViewer.countLines(this.$.editor);
       }
       
       /**
@@ -613,6 +722,45 @@
       
       
       //
+      // Mode management
+      //
+      
+      /**
+       * Scroll to position the current line on screen
+       * For performance reason, this method only need to be called after each newline character.
+       */
+      _scroll() {
+        const numberLinesOnScreen = this.numberLinesOnScreen();
+        const numberAboveLinesToDisplay = Math.min(Math.floor((numberLinesOnScreen - 1) / 2), 5); // do not scroll too soon. Wait for some lines before and after if possible.
+        if (this._currentLine > numberAboveLinesToDisplay && this._currentLine < this.numberLines - numberAboveLinesToDisplay) {
+          this._scrollToLine(this._currentLine - numberAboveLinesToDisplay);
+        }
+      }
+
+      /**
+       * Update the editor to display the current page.
+       */
+      _updatePage() {
+        const numberLinesOnScreen = this.numberLinesOnScreen();
+        const pageNumber = this.pageNumber();
+        const numberLinesToScroll = (pageNumber > 1) ? (pageNumber - 1) * numberLinesOnScreen : 0;
+        console.log('[typio-viewer] Scroll to page ' + pageNumber + ' by shifting ' + numberLinesToScroll + ' lines');
+        this._scrollToLine(numberLinesToScroll);
+      }
+
+      /**
+       * Scroll to position the given line at the top of the editor.
+       * For performance reason, this method only need to call after each newline character.
+       */
+      _scrollToLine(lineNumber) {
+        if (lineNumber === this._firstLine) return; // optimization
+        console.log('[typio-viewer] Scroll to line ' + lineNumber);
+        this._firstLine = lineNumber;
+        this.$.editor.style.marginTop = lineNumber * -1.5 + 'em'; // see #editor line-height property
+      }
+      
+      
+      //
       // Page controls
       //
 
@@ -645,8 +793,7 @@
 
       moveToLastPage() {
         const numberLinesOnScreen = this.numberLinesOnScreen();
-        const numberLinesTotal = this.numberLines;
-        const numberPages = Math.ceil(numberLinesTotal / numberLinesOnScreen);
+        const numberPages = Math.ceil(this.numberLines / numberLinesOnScreen);
         this._currentLine =  (numberPages - 1) * numberLinesOnScreen;
         this._scrollToLine(this._currentLine);
       }
@@ -663,22 +810,31 @@
           this._scrollToLine(this._currentLine);
         }
       }
+      
+      
+      //
+      // Utils
+      //
+      
+      /**
+       * Determine the number of text lines inside an HTML element.
+       *
+       * @param {HTMLElement} element the element to evaluate.
+       */
+      static countLines(element) {
+        // see https://stackoverflow.com/questions/8606588/how-to-get-the-line-height-of-a-span?rq=1
+        element.style.display = 'block';
+        let style = window.getComputedStyle(element);
+        let divHeight = element.offsetHeight;
+        let lineHeight = parseInt(style.lineHeight);
+        //console.log('countLines', divHeight, lineHeight)
+        return parseInt(divHeight / lineHeight);
+      }
 
     }
     window.customElements.define(TypioViewer.is, TypioViewer);
 
-    /**
-     * Determine the number of text lines inside an HTML element.
-     *
-     * @param {HTMLElement} element the element to evaluate.
-     */
-    function countLines(element) {
-      // see https://stackoverflow.com/questions/8606588/how-to-get-the-line-height-of-a-span?rq=1
-      let style = window.getComputedStyle(element);
-      let divHeight = element.offsetHeight;
-      let lineHeight = parseInt(style.lineHeight);
-      return parseInt(divHeight / lineHeight);
-    }
+  
 
   </script>
 </dom-module>

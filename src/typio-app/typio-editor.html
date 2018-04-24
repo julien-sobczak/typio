@@ -10,13 +10,11 @@
 <link rel="import" href="/src/typio-app/typio-stats.html">
 <link rel="import" href="/src/typio-app/typio-keyboard.html">
 <link rel="import" href="/src/typio-app/typio-hands.html">
+<link rel="import" href="/src/typio-app/typio-new-editor.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
 <dom-module id="typio-editor">
   <template>
-
-    <!-- Stylesheet will be switched according the theme -->
-    <link id="prismStylesheet" href="/css/prism-light.css" href$="/css/prism-{{theme}}.css" rel="stylesheet">
 
     <style include="shared-styles">
 
@@ -34,19 +32,25 @@
         background: #272822;
         color: white;
       }
-
-
-      #pageControls {
-        display: none;
-      }
-      #screen.ended-true #pageControls {
-        position: fixed;
+      
+      /*
+       * Editor
+       */
+       
+      typio-new-editor {
         display: block;
-        bottom: 25px;
+        width: 1000px;
+        margin: 0 auto;
+        padding: 1cm;
+        position: fixed;
+        top: 64px;
+        bottom: 50px;
+        z-index: 40;
         left: 50%;
-        width: 300px;
-        margin-left: -150px;
-        z-index: 200;
+        margin-left: -500px; /* Half of the width */
+
+        overflow-y: hidden;
+        overflow-x: visible;
       }
 
 
@@ -207,7 +211,7 @@
       
       <typio-stats id="stats"></typio-stats>
 
-      <typio-core-editor id="editor" 
+      <typio-new-editor id="editor" 
           data-type$="[[type]]" 
           data-theme$="[[theme]]" 
           data-mode$="[[mode]]" 
@@ -215,14 +219,7 @@
           on-character-entered="_characterEntered"
           on-typing-ended="_typingEnded"
           debug>
-      </typio-core-editor>
-      
-      <div id="pageControls">
-        <paper-icon-button on-click="_moveToFirstPage" icon="first-page"></paper-icon-button>
-        <paper-icon-button on-click="_moveToPreviousPage" icon="chevron-left"></paper-icon-button>
-        <paper-icon-button on-click="_moveToNextPage" icon="chevron-right"></paper-icon-button>
-        <paper-icon-button on-click="_moveToLastPage" icon="last-page"></paper-icon-button>
-      </div>
+      </typio-new-editor>
       
       <div id="heatmap">
         <typio-keyboard id="keyboard" mixed-cases></typio-keyboard>
@@ -527,23 +524,6 @@
           });
           this._chartEventsListened = true;
         }
-      }
-      
-      // 
-      // Page controls
-      //
-      
-      _moveToFirstPage() {
-        this.$.editor.moveToFirstPage();
-      }
-      _moveToPreviousPage() {
-        this.$.editor.moveToPreviousPage();
-      }
-      _moveToNextPage() {
-        this.$.editor.moveToNextPage();
-      }
-      _moveToLastPage() {
-        this.$.editor.moveToLastPage();
       }
 
 

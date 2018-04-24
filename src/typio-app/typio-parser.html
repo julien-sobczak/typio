@@ -112,8 +112,8 @@
       parse() {
         this._preprocess();
         
-        const length = this.targetContent.length;
-        const classes = this._emptyClasses();
+        let length = this.targetContent.length;
+        let classes = this._emptyClasses();
 
         this._determineSpaces(classes);
         if (this.type === 'code') {
@@ -127,8 +127,8 @@
       }
 
       _emptyClasses() {
-        const length = this.targetContent.length;
-        const result = new Array(length);
+        let length = this.targetContent.length;
+        let result = new Array(length);
 
         for (let i = 0; i < length; i++) {
           result[i] = [];
@@ -138,8 +138,6 @@
       }
 
       _determineSpaces(classes) {
-        let ignorables = new Array(this.targetContent.length);
-
         const spaces = ' \t\n\r\v';
         const length = this.targetContent.length;
 
@@ -268,44 +266,46 @@
 
       _determineIgnorables(classes) {
         const len = this.targetContent.length;
-
+        
         // First, ignore comments
         if (this.ignoreComments) {
           for (let i = 0; i < len; i++) {
-            if (classes[i].includes('comment')) {
+            if (classes[i].includes('comment') && !classes[i].includes('ignorable')) {
               classes[i].push('ignorable');
 
               // and ignore spaces around comments
 
               // backward
-              for (let j = i; j >= 0; j--) {
+              for (let j = i - 1; j >= 0; j--) {
                 if (classes[j].includes('space')) {
-                  classes[j].push('ignorable');
-                }
-                if (classes[j].includes('backslash')) {
-                  classes[j].push('ignorable');
+                  if (!classes[j].includes('ignorable')) classes[j].push('ignorable');
+                } else if (classes[j].includes('backslash')) {
+                  if (!classes[j].includes('ignorable')) classes[j].push('ignorable');
                   break; // do not rewind more than on line
+                } else {
+                  break;
                 }
               }
 
               // forward
               for (let j = i + 1; j < len; j++) {
                 if (classes[j].includes('space')) {
-                  classes[j].push('ignorable');
-                }
-                if (classes[j].includes('backslash')) {
-                  classes[j].push('ignorable');
+                  if (!classes[j].includes('ignorable')) classes[j].push('ignorable');
+                } else if (classes[j].includes('backslash')) {
+                  if (!classes[j].includes('ignorable')) classes[j].push('ignorable');
                   break; // do not rewind more than on line
+                } else {
+                  break;
                 }
               }
             }
           }
         }
-
+        
         // Second, ignore indent
         if (this.ignoreIndents) {
           for (let i = 0; i < len; i++) {
-            if (classes[i].includes('indent')) {
+            if (classes[i].includes('indent') && !classes[i].includes('ignorable')) {
               classes[i].push('ignorable');
             }
           }
@@ -316,7 +316,7 @@
             if (classes[i].includes('backslash')) { // eof
               if (countNotBlankCharacters == 0) { // Mark previous line as ignoreable
                 for (let j = indexStartLine; j <= i; j++) {
-                  classes[j].push('ignorable');
+                  if (!classes[j].includes('ignorable')) classes[j].push('ignorable');
                 }
               }
               countNotBlankCharacters = 0;
@@ -333,7 +333,7 @@
           // Ignore module declarations
           if (this.ignoreModuleDeclarations) {
             for (let i = 0; i < len; i++) {
-              if (classes[i].includes('module')) {
+              if (classes[i].includes('module') && !classes[i].includes('ignorable')) {
                 classes[i].push('ignorable');
 
                 // and ignore spaces around
@@ -341,22 +341,26 @@
                 // backward
                 for (let j = i; j >= 0; j--) {
                   if (classes[j].includes('space')) {
-                    classes[j].push('ignorable');
+                    if (!classes[j].includes('ignorable')) classes[j].push('ignorable');
                   }
                   if (classes[j].includes('backslash')) {
-                    classes[j].push('ignorable');
+                    if (!classes[j].includes('ignorable')) classes[j].push('ignorable');
                     break; // do not rewind more than on line
+                  } else {
+                    break;
                   }
                 }
 
                 // forward
                 for (let j = i + 1; j < len; j++) {
                   if (classes[j].includes('space')) {
-                    classes[j].push('ignorable');
+                    if (!classes[j].includes('ignorable')) classes[j].push('ignorable');
                   }
                   if (classes[j].includes('backslash')) {
-                    classes[j].push('ignorable');
+                    if (!classes[j].includes('ignorable')) classes[j].push('ignorable');
                     break; // do not rewind more than on line
+                  } else {
+                    break;
                   }
                 }
               }
@@ -386,7 +390,7 @@
             classes[i].push('editable');
           }
         }
-
+        
       }
 
 

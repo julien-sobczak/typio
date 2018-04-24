@@ -1,0 +1,492 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/utils/flattened-nodes-observer.html">
+
+<link rel="import" href="/src/typio-app/shared-styles.html">
+<link rel="import" href="/src/typio-app/typio-viewer.html">
+
+<dom-module id="typio-new-editor">
+
+  <script>
+
+    /**
+     * Editor screen (where text to type is displayed).
+     *
+     * @customElement
+     * @polymer
+     */
+    class TypioNewEditor extends TypioViewer {
+
+      static get is() { return 'typio-new-editor'; }
+      static get properties() {
+        return {
+
+          // 
+          // + typio-viewer properties
+          //
+
+          intervals: {
+            type: Array,
+            value: []
+          },     
+
+          /**
+           * Let the user continues typing when an error occurs.
+           * If false, the session will not end until all characters are valid.
+           */
+          continueOnErrors: {
+            type: Boolean,
+            value: false
+          },
+          
+
+          //
+          // State management
+          //
+
+          initialized: {
+            type: Boolean,
+            value: false
+          },
+
+          paused: {
+            type: Boolean,
+            value: true
+          },
+          
+          started: {
+            type: Boolean,
+            value: false
+          },
+
+          ended: {
+            type: Boolean,
+            value: false
+          },
+
+      	  /**
+      	   * True only when the user has mistyped.
+      	   * False when the typo is fixed.
+      	   */
+          _error: {
+      	    type: Boolean,
+      	    value: false
+      	  },
+
+
+          //
+          // Editor inner working properties
+          //
+          
+          // The index of the latest valid entered character
+          _countValid: {
+            type: Number,
+            value: 0
+          },          
+          
+        };
+      }
+      
+      ready() {
+        super.ready();
+        this.reset();
+        this._addKeysListeners(); 
+      }
+
+      /**
+       * Called this method to reset the editor (ex: retry).
+       */
+      reset() {
+        super.reset();
+        
+        // reset editor styles
+        this.unhighlightAll();
+        this.unannotateAll('disabled');
+        
+        // reset variables
+        this._countValid = 0;
+
+        // reset ready-screen
+        this.initialized = false;
+        this.started = false;
+        this.paused = true;
+        this.ended = false;
+      }
+
+      _removeKeysListeners() {
+        if (this._keydownListener) {
+          console.log("remove 'keydown' listener");
+          document.removeEventListener('keydown', this._keydownListener);
+        }
+        if (this._keyupListener) {
+          console.log("remove 'keyup' listener");
+          document.removeEventListener('keyup', this._keyupListener, false);
+        }
+        if (this._keypressListener) {
+          console.log("remove 'keypress' listener");
+          document.removeEventListener('keypress', this._keypressListener, false);
+        }
+      }
+      
+      _addKeysListeners() {
+        // We listen for tab character (match any number of consecutive characters)
+        this._keydownListener = event => {
+          //console.log('keydown', event);
+          if (!this.started || event.ctrlKey) return;
+          if (event.key !== 'Tab') return; // we are only interested by tabular character
+          event.preventDefault();
+          event.stopPropagation();
+          this._checkInput(event, event.key);
+          return false;
+        };
+        document.addEventListener('keydown', this._keydownListener);
+                
+        // We listen keyup for nonprintable characters
+        this._keyupListener = event => {
+          //console.log('keyup', event);
+          if (!this.started || event.ctrlKey) return;
+          if (event.key === 'Backspace') {
+            this.backward();
+          }
+        };
+        document.addEventListener('keyup', this._keyupListener, false);
+
+        // ... and keypress for printable ones (keypress support dead keys)
+        this._keypressListener = event => {
+          //console.log('keypress', event);
+          if (!this.started) return;
+          const keyName = event.key;
+
+          if (keyName === 'Control') {
+            // not alert when only Control key is pressed.
+            return;
+          }
+
+          if (event.ctrlKey) {
+            // Even though event.key is not 'Control' (i.e. 'a' is pressed),
+            // event.ctrlKey may be true if Ctrl key is pressed at the time.
+            ;
+          } else {
+            this._checkInput(event, keyName);
+            event.preventDefault();
+            return false;
+          }
+        };
+        document.addEventListener('keypress', this._keypressListener, false);
+      }
+      
+      /**
+       * Called when the user has validated the ready screen.
+       */
+      start() {
+        console.debug('[typio-core-editor] start with', this._content);
+        this.initialized = true;
+        this.started = true;
+        this.numberLines = this._content.split('\n').length;
+
+        // refresh the viewer
+        super.refresh();
+        
+        this.initialized = true;
+        this.annotateAll('disabled');
+        this.advance();
+      }
+
+      /**
+       * Pause the practice session.
+       */
+      resume() {
+        this.paused = false;
+      }
+      
+      /**
+       * Marks the end of the typing session.
+       */
+      end() {
+        this.ended = true;
+        this.dispatchEvent(new CustomEvent('typing-ended', {detail: {length: this._length}}));
+      }
+
+      /**
+       * Called after each key press.
+       */
+      _checkInput(event, keyName) {
+        if (!this.started || this.ended) {
+          // ignore input outside practice sessions
+          return;
+        }
+        
+        if (this.paused) {
+          this.resume();
+        }
+
+        let character = this.cursor();
+        let iCharacter = this.position;
+        let valid = undefined;
+
+        if (this.debug) {
+          console.log('Expected: [' + character.dataset.text + '] (' + character.dataset.text.charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + '), valid=' + this._isValid(character, keyName) + ', position=' + this.position + ', error=' + this._error + ', positionError=' + this._iError);
+        }
+        
+        // Allow optional character to be passed
+        if (character.classList.contains('optional') && 
+              !this._isValid(this.element(), keyName) &&
+               this._isValid(this._nextNonIgnorableElement(), keyName)) {
+          this.advance();
+          character = this.cursor();
+          iCharacter = this.position;
+        }
+        
+        if (keyName === 'Tab' && this._canAdvance()) {
+          // advance to the next nonspace character
+          while (this.cursor().classList.contains('space')) {
+            this.advance(); 
+          }
+          
+        } else if (this._isValid(character, keyName)) {
+          valid = true;
+          character.classList.remove('disabled');
+          
+          if (this._error && this._iError == this.position) {
+            console.log('[bug] remove error');
+            character.classList.remove('char-invalid');
+            this._error = false;
+            this._iError = undefined;
+          }
+          
+          if (this.continueOnErrors) {
+            character.classList.remove('char-invalid');
+          } else if (this._error && !this.continueOnErrors) {
+            character.classList.add('char-invalid');
+          } else {
+	          character.classList.remove('char-invalid');
+	        }
+
+          // Add marker to highlight mistyping at the end
+          if (!character.classList.contains('wrong') && !character.classList.contains('useless')) {
+            character.classList.add(this._error ? 'useless' : 'right');
+          }
+
+          if (!this._error) {
+            this._countValid++;
+          }
+          this.advance();
+          
+        } else {
+          valid = false;
+          character.classList.add('char-invalid');
+          character.classList.add('wrong');
+          this._error = true;
+          this._iError = this.position;
+          this.$.editor.classList.add('error');
+          this.advance();
+        }
+
+        // Notify about entered input
+        let accepted = valid || this.continueOnErrors;
+        let detail = {
+          "index": this.position,
+          "indexValid": this._countValid,
+          "line": this._currentLine,
+          "character": iCharacter, 
+          "keyName": keyName, 
+          "valid": valid, 
+          "accepted": accepted,         
+        }
+        this.dispatchEvent(new CustomEvent('character-entered', {detail: detail, bubbles: true, composed: true}));
+      }
+
+      _isValid(character, keyName) {
+        if (character == undefined) return false;
+        
+        const expectedCharacter = character.dataset.text;
+        
+        // nominal case
+        if (keyName === expectedCharacter) {
+          return true;
+        }
+        
+        // Manage exceptions:
+        
+        // Curved quotes are not typeable => allow simple quote
+        if (keyName === "'" && (expectedCharacter === '‘' || expectedCharacter === '’')) {
+          return true;
+        }
+        if (keyName === '"' && (expectedCharacter === '“' || expectedCharacter === '”')) {
+          return true;
+        }
+        
+        // Allow space for some indentation characters
+        if (keyName === ' ' && character.classList.contains("allowSpace")) {
+          return true;
+        }
+        
+        // Nothing matches
+        return false;
+      }
+      
+      /**
+       * Move backward to the previous editable character.
+       */
+      backward() {
+        if (this.position == 0) return; // Do nothing if at start
+
+        do {
+          this._unselect();
+          this._backwardOneCharacter();
+
+          if (this._error && this.position === this._iError) {
+            this._error = false;
+            this._iError = undefined;
+            this.$.editor.classList.remove('error');
+            this.$.editor.classList.remove('char-invalid');
+            this.$.editor.classList.remove('wrong');
+          }
+        } while (this.hasAnnotation('ignorable'));
+
+        if (this.position >= 0) {
+          this._select();
+        }
+      }
+
+      /**
+       * Move forward to the next editable character.
+       */
+      advance() {
+        if (this.position >= 0) {
+          this.cursor().classList.remove('char-active');
+        }
+
+        if (this.endOfFile()) {
+          // Do not trigger end if there is error, except if allowed
+          if (this._allowToEnd()) {
+            this.end();
+          }
+          return;
+        }
+
+        this._advanceOneCharacter();
+        while (!this.endOfFile() && this.hasAnnotation('ignorable')) { this._advanceOneCharacter(); }
+
+        this._select();
+      }
+      
+      _canAdvance() {
+        return !this.error || this.continueOnErrors;
+      }
+
+      /**
+       * Move backward to the previous character (editable or not editable.)
+       */
+      _advanceOneCharacter() {
+        this.position++;
+
+        // Check if a new line have been triggered
+        if (this._triggerNewLine) {
+          this._currentLine++;
+          console.log("Triggering new line...", this.mode);
+          // FIXME what to do instead?
+          //if (this.mode === 'scroll') this._scrollEditor();
+          //if (this.mode === 'page') this._updatePage();
+          this._triggerNewLine = false;
+        }
+
+        if (this.cursor().classList.contains('backslash')) {
+          // We need to wait the user press 'Enter' before advance the line number.
+          // Because if is press the wrong key, we will stay on the same line...
+          this._triggerNewLine = true;
+        } else {
+          this._triggerNewLine = false;
+        }
+      }
+
+      /**
+       * Move forward to the next character (editable or not editable.)
+       */
+      _backwardOneCharacter() {
+        this.position--;
+        this._triggerNewLine = false;
+        if (this.cursor().classList.contains('backslash')) {
+          this._currentLine--;
+          // FIXME what to do instead?
+        }
+      }
+
+      /**
+       * Have we reached the end of text?
+       */
+      _allowToEnd() {
+        return this._error == false || this.continueOnErrors;
+      }
+
+      _select() {
+        let element = this.cursor();
+        element.classList.remove('char-invalid');
+        element.classList.add('char-active');
+        element.classList.add('disabled');
+      }
+
+      _unselect() {
+        let element = this.cursor();
+        element.classList.remove('char-active');
+        element.classList.remove('char-invalid');
+        element.classList.add('disabled');
+      }
+      
+      showMispellings() {
+        this.$.editor.classList.add('highlight-mistyping');
+      }
+      
+      hideMispellings() {
+        this.$.editor.classList.remove('highlight-mistyping');
+      }
+      
+      /**
+       * Return the next character which doesn't have the `ignorable` annotation.
+       */
+      _nextNonIgnorableElement() {
+        let i = this._i + 1;
+        while (true) {
+          if (this.endOfFile()) return undefined;
+          let element = this.elementAt(i++);
+          if (!element.classList.contains('ignorable')) {
+            return element;
+          }
+        }
+      }
+
+
+      // Intervals management
+      
+      selectInterval(column) {
+        if (this.$.editor.classList.contains('highlight-interval-' + column)) {
+          // unselect
+          this.$.editor.classList.remove('highlight-interval-' + column);
+        } else {
+          // unselect all
+          for (let i = 0; i < this.intervals.length; i++) {
+            this.$.editor.classList.remove('highlight-interval-' + i);
+          }
+          // and select the selected one
+          this.$.editor.classList.add('highlight-interval-' + column);
+        }
+
+        // Scroll to the interval in the editor
+        this._gotoIntervalPage(column);
+      }
+
+      // Return the page number (0-based) containing the ith interval.
+      _gotoIntervalPage(i) {
+        if (this.intervals.length < i) { // Intervals was not defined
+          return;
+        }
+        const indexFirstCharacter = this.intervals.indexOf(i);
+        const lineFirstCharacter = this._content.substring(0, indexFirstCharacter).split('\n').length + 1;
+        this._currentLine = Math.max(lineFirstCharacter - 5, 0); // Add some lines before to add context
+        this._scrollToLine(this._currentLine);
+      }
+
+    }
+    window.customElements.define(TypioNewEditor.is, TypioNewEditor);
+
+  </script>
+</dom-module>

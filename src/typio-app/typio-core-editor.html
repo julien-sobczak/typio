@@ -609,6 +609,7 @@
             console.log('[bug] remove error');
             character.classList.remove('char-invalid');
             this._error = false;
+            this._iError = undefined;
           }
           
           if (this.continueOnErrors) {
@@ -694,7 +695,10 @@
 
           if (this._error && this._i === this._iError) {
             this._error = false;
+            this._iError = undefined;
             this.$.editor.classList.remove('error');
+            this.$.editor.classList.remove('char-invalid');
+            this.$.editor.classList.remove('wrong');
           }
         } while (this._isIgnorable());
 

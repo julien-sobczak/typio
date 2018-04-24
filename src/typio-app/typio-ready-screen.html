@@ -31,7 +31,7 @@
         margin: 0 auto;
         padding: 1cm;
         position: fixed;
-        top: 64px;
+        top: 80px;
         bottom: 100px; /* Allow 100px above the chart (200px height) as a last resort. */
         z-index: 200;
         left: 50%;
@@ -365,6 +365,7 @@
         this.logicalLines = this.$.parser.logicalLines;
         this.classes = this.$.parser.classes;
         this.selection = this.$.parser.targetContent;
+        console.log('classes', this.classes);
         
         // Update viewer (BUG when using databinding...)
         this.$.viewer.classes = this.$.parser.classes;
@@ -390,6 +391,7 @@
           if (endLine === -1) endLine = content.length;
 
           this.selection = content.substring(startLine, endLine);
+          this._parseContent();
 
           // Update stats
           const lines = this.selection.split('\n');

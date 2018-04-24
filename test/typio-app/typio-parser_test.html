@@ -65,6 +65,7 @@ public class Main {
           expect(parser.classes[index(1, 1)]).to.include.members(['backslash', 'editable']); // [\n]
           expect(parser.classes[index(2, 1)]).to.include.members(['keyword', 'editable']);   // [p]ackage
           expect(parser.classes[index(6, 1)]).to.include.members(['indent', 'editable']);    // [\t]public void main
+          expect(parser.classes[index(4, 20)]).to.not.include.members(['ignorable']); // [\n]
         });
 
         test('[code] ignore module declarations', function() {
@@ -237,6 +238,10 @@ public class Main {
           parser.parse();
           const index = indexOf(parser.content);
 
+          expect(parser.classes[index(1, 15)]).to.include.members(['backslash']); // \n
+          expect(parser.classes[index(1, 15)]).to.not.include.members(['ignorable']); // \n
+          expect(parser.classes[index(3, 21)]).to.include.members(['backslash']); // \n
+          expect(parser.classes[index(3, 21)]).to.not.include.members(['ignorable']); // \n
           expect(parser.classes[index(5,  1)]).to.include.members(['backslash', 'ignorable']);
           expect(parser.classes[index(6,  6)]).to.include.members(['backslash', 'ignorable']);
           expect(parser.classes[index(7, 10)]).to.include.members(['comment', 'ignorable']);
@@ -337,6 +342,53 @@ j'étais un homme comme un autre homme.
           expect(parser.classes[index(6,  1)]).to.include.members(['backslash', 'ignorable']);
         });
 
+        test('[code] no duplicates', function() {
+          var parser = fixture('DefaultFixture');
+
+          // Define settings
+          parser.ignoreComments = true;
+          parser.ignoreIndents = true;
+          parser.ignoreModuleDeclarations = true;
+
+          // Configure demo text
+          parser.type = "code";
+          parser.language = "Python";
+          parser.content =  `
+import sys
+
+def main():
+  print("Hello World")  # Greeting message
+  sys.exit(0)`;
+          parser.parse();
+          const index = indexOf(parser.content);
+
+          for (let i = 0; i < parser.targetContent.length; i++) {
+            let classes = parser.classes[i].sort();
+            for (let j = 1; j < classes.length; j++) {
+              expect(classes[j]).to.not.equal(classes[j - 1]);
+            }
+          }
+        });
+        
+        test('[code] ignore nothing', function() {
+          var parser = fixture('DefaultFixture');
+
+          // Define settings
+          parser.ignoreComments = false;
+          parser.ignoreIndents = false;
+          parser.ignoreModuleDeclarations = false;
+
+          // Configure demo text
+          parser.type = "code";
+          parser.language = "Python";
+          parser.content =  `i = 0;
+print(i)}`;
+          parser.parse();
+          const index = indexOf(parser.content);
+
+          expect(parser.classes[index(1, 7)]).to.include.members(['backslash']); 
+          expect(parser.classes[index(1, 7)]).to.not.include.members(['ignorable']); 
+        });
 
       });
     </script>

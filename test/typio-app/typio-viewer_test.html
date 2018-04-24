@@ -86,8 +86,11 @@
             build();
           viewer.refresh();
 
-          expect(viewer.numberLinesOnScreen()).to.equal(3);      
+          expect(viewer.numberLines).to.equal(1);
+          expect(viewer.annotationsAt(1)).to.not.include('ignorable');
+          expect(viewer.numberLinesOnScreen()).to.equal(3); 
           expect(viewer.linesOnScreen()).to.eql([1]);
+          
           expect(viewer.annotationsAt(0)).to.include('ignorable');
           expect(viewer.annotationsAt(1)).to.not.include('ignorable');
         });
@@ -342,6 +345,78 @@ print('Aloha')`;
           expect(viewer.pageNumber()).to.equal(1);
           viewer.moveToPage(4);
           expect(viewer.pageNumber()).to.equal(3);
+        });
+        
+        test('[annotations] allow defining the annotations', function() {
+          viewer = fixture('PageCodeFixture');
+          viewer.content = `print('Hello')`;
+          viewer.refresh();
+
+          viewer.annotateAll('disabled');
+          expect(viewer.annotationsAt(0)).to.includes('disabled');
+          expect(viewer.annotationsAt(5)).to.includes('disabled');
+          
+          viewer.annotateAt(5, 'parenthesis');
+          expect(viewer.annotationsAt(0)).to.not.includes('parenthesis');
+          expect(viewer.annotationsAt(5)).to.includes('parenthesis');
+          
+          viewer.unannotateAll('disabled');
+          expect(viewer.annotationsAt(0)).to.not.includes('disabled');
+          expect(viewer.annotationsAt(5)).to.not.includes('disabled');
+          expect(viewer.annotationsAt(5)).to.includes('parenthesis');
+  
+          viewer.unannotateAt(5, 'parenthesis');
+          expect(viewer.annotationsAt(5)).to.not.includes('disabled');
+          
+          // Could remove unknown annotations
+          viewer.unannotateAt(5, 'unknown');
+        });
+        
+        test('[misc] use symbols for special characters', function() {
+          viewer = fixture('ScrollLiteratureFixture');
+          viewer.content = "a long\n  line";
+          viewer.logicalLines = [true, false];
+          viewer.classes = [[], [], [], [], [], [], [], ['ignorable'], ['ignorable'], [], [], [], []];
+          viewer.refresh();
+
+          // Indentation character should be displayed to notify the user
+          expect(viewer.elementAt(6).textContent.trim()).to.equal('⏎');
+          expect(viewer.elementAt(7).textContent.trim()).to.equal('⮑');
+        });
+        
+        test('[highlighting] allow user to highlight some characters', function() {
+          viewer = fixture('ScrollCodeFixture');
+          viewer.content = "print('Hello')";
+          viewer.refresh();
+
+          // Indentation character should be displayed to notify the user
+          viewer.position = 1;
+          expect(viewer.annotationsAt(1)).to.not.includes('highlight');
+          viewer.highlight();
+          expect(viewer.annotationsAt(1)).to.includes('highlight');
+          expect(viewer.annotationsAt(2)).to.not.includes('highlight');
+          viewer.unhighlight();
+          expect(viewer.annotationsAt(1)).to.not.includes('highlight');
+          viewer.highlightAll();
+          expect(viewer.annotationsAt(1)).to.includes('highlight');
+          expect(viewer.annotationsAt(2)).to.includes('highlight');
+          viewer.unhighlightAll();
+          expect(viewer.annotationsAt(1)).to.not.includes('highlight');
+          expect(viewer.annotationsAt(2)).to.not.includes('highlight');
+          viewer.highlightAt(5);
+          expect(viewer.annotationsAt(5)).to.includes('highlight');
+          viewer.highlightBetween(7, 9, false);
+          expect(viewer.annotationsAt(5)).to.includes('highlight');
+          expect(viewer.annotationsAt(6)).to.not.includes('highlight');
+          expect(viewer.annotationsAt(7)).to.includes('highlight');
+          expect(viewer.annotationsAt(8)).to.includes('highlight');
+          expect(viewer.annotationsAt(9)).to.not.includes('highlight'); // not inclusive
+          viewer.highlightBetween(1, 3, true); // clear existing highlighting
+          expect(viewer.annotationsAt(1)).to.includes('highlight');
+          expect(viewer.annotationsAt(2)).to.includes('highlight');
+          expect(viewer.annotationsAt(3)).to.not.includes('highlight');
+          expect(viewer.annotationsAt(5)).to.not.includes('highlight'); // cleared
+          expect(viewer.annotationsAt(8)).to.not.includes('highlight');
         });
         
       });

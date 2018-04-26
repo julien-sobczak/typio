@@ -10,7 +10,7 @@
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-button.html">
-<link rel="import" href="/src/typio-app/typio-drill-creator.html">
+<link rel="import" href="/src/typio-app/typio-drill-creator-screen.html">
 <link rel="import" href="/src/typio-app/typio-loader.html">
 
 <dom-module id="typio-catalog-drills">
@@ -254,7 +254,7 @@
       }
       
       sample(drill) {
-        const content = TypioDrillCreator.generateDrill(drill);
+        const content = TypioDrillCreatorScreen.generateDrill(drill);
         return TypioCatalogDrills._escapeHTML(content);
       }
       

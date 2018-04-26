@@ -8,12 +8,12 @@
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
-<link rel="import" href="/src/typio-app/typio-intro.html">
-<link rel="import" href="/src/typio-app/typio-catalog.html">
-<link rel="import" href="/src/typio-app/typio-editor.html">
-<link rel="import" href="/src/typio-app/typio-drill-runner.html">
-<link rel="import" href="/src/typio-app/typio-drill-creator.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
+<link rel="import" href="/src/typio-app/typio-intro-screen.html">
+<link rel="import" href="/src/typio-app/typio-catalog-screen.html">
+<link rel="import" href="/src/typio-app/typio-practice-screen.html">
+<link rel="import" href="/src/typio-app/typio-drill-runner-screen.html">
+<link rel="import" href="/src/typio-app/typio-drill-creator-screen.html">
 
 <dom-module id="typio-app">
   <template>
@@ -138,11 +138,11 @@
     </app-drawer>
     
     <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
-      <typio-intro name="intro"></typio-intro>
-      <typio-catalog name="catalog" on-entry-selected="_initCodeEditor" route="{{subroute}}"></typio-catalog>
-      <typio-editor id="editor" name="editor" route="{{route}}"></typio-editor>
-      <typio-drill-runner id="drillRunner" name="drillRunner" route="{{subroute}}"></typio-drill-runner>
-      <typio-drill-creator id="drillCreator" name="drillCreator" route="{{subroute}}"></typio-drill-creator>
+      <typio-intro-screen name="intro"></typio-intro-screen>
+      <typio-catalog-screen name="catalog" on-entry-selected="_initCodeEditor" route="{{subroute}}"></typio-catalog-screen>
+      <typio-practice-screen id="editor" name="editor" route="{{route}}"></typio-practice-screen>
+      <typio-drill-runner-screen id="drillRunner" name="drillRunner" route="{{subroute}}"></typio-drill-runner-screen>
+      <typio-drill-creator-screen id="drillCreator" name="drillCreator" route="{{subroute}}"></typio-drill-creator-screen>
     </intro-pages>
 
   </template>

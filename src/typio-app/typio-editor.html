@@ -1,365 +1,49 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/utils/flattened-nodes-observer.html">
-<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/google-chart/google-chart.html">
-<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
 
-<link rel="import" href="/src/typio-app/typio-ready-screen.html">
-<link rel="import" href="/src/typio-app/typio-stats.html">
-<link rel="import" href="/src/typio-app/typio-keyboard.html">
-<link rel="import" href="/src/typio-app/typio-hands.html">
-<link rel="import" href="/src/typio-app/typio-new-editor.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
+<link rel="import" href="/src/typio-app/typio-viewer.html">
 
 <dom-module id="typio-editor">
-  <template>
-
-    <style include="shared-styles">
-
-      :host {
-        display: block;
-      }
-
-      #screen {
-        height: 100%;
-        color: black;
-      }
-
-      /* Theme management */
-      #screen.theme-dark {
-        background: #272822;
-        color: white;
-      }
-      
-      /*
-       * Editor
-       */
-       
-      typio-new-editor {
-        display: block;
-        width: 1000px;
-        margin: 0 auto;
-        padding: 1cm;
-        position: fixed;
-        top: 64px;
-        bottom: 50px;
-        z-index: 40;
-        left: 50%;
-        margin-left: -500px; /* Half of the width */
-
-        overflow-y: hidden;
-        overflow-x: visible;
-      }
-
-
-      /*
-       * Statistics panel
-       */
-
-      #stats {
-        position: fixed;
-        top: 0;
-        right: 0;
-        padding: 1in;
-        transition: width 0.5s, height 0.5s;
-      }
-
-      #chart {
-        display: none;
-        /*
-          There is a bug that displays:
-            'TypeError: cannot read property 'draw' of null'
-          on load time during a short time before showing the chart correctly.
-
-          As a hack, we hide the chart until the last moment.
-          At this time, the error message was already printed
-          and we can reveal the chart.
-         */
-        height: 200px;
-        width: 100%;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 100;
-      }
-      #screen.started-true #chart {
-        display: block;
-      }
-
-      /* Support option "Show Chart" */
-      #screen.showChart-false #chart,
-      #screen.showChart-true.ended-true #chart {
-        display: none !important;
-      }
-      #screen.showChart-true #chart {
-        display: block !important;
-      }
-
-
-      /*
-       * Mini chart
-       */
-      #minichart {
-        display: none;
-        position: fixed;
-        height: 200px;
-        width: 250px;
-        top: 150px;
-        left: 50px;
-      }
-
-      /* Displayed only when session is over. */
-      #screen.ended-true #minichart {
-        display: block !important;
-      }
-      
-      /*
-       * Heatmap
-       */
-       
-      #heatmap {
-        position: fixed;
-        height: 100%;
-        width: 100%;
-        background-color: rgba(255,255,255,0.95);
-        display: none; /* Only revealed after a practice session */
-        z-index: 500;
-      }
-      #heatmap #keyboard {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        /* Using default size, the compact keyboard measures 576px x 192px */
-        margin-top: calc(-1 * 192px / 2);
-        margin-left: calc(-1 * 576px / 2);
-      }
-      #heatmap #hands {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        margin-left: calc(-1 * 576px / 2);
-      }
-      
-      #heatmap paper-icon-button {
-        position: absolute;
-        bottom: 1in;
-        right: 1in;
-      }
-
-
-    
-
-      #resourceName {
-        position: fixed;
-        top: 17px;
-        height: 30px;
-        left: 50%;
-        width: 650px;
-        margin-left: -250px;
-        padding: 5px 25px;
-        color: white;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 150;
-        text-align: center;
-        border-radius: 15px;
-        overflow: hidden;
-      }
-
-
-      #screen.initialized-false {
-        display: none;
-      }
-      #screen.initialized-true {
-        display: block;
-      }
-      
-      #screen.ended-false #fabHeatmap { display: none;  }
-      #screen.ended-true  #fabHeatmap { display: block; }
-      
-      #screen.ended-false #fabRestart { display: none;  }
-      #screen.ended-true  #fabRestart { display: block; }
-
-    </style>
-
-
-    <typio-ready-screen id="readyScreen"
-        type="[[type]]"
-        language="[[language]]"
-        content="[[content]]"
-        continue-on-errors="{{continueOnErrors}}"
-        show-chart="{{showChart}}"
-        mode="{{mode}}"
-        on-ready="start">
-    </typio-ready-screen>
-
-
-    <div id="screen" class$="initialized-[[initialized]] showChart-{{showChart}} mode-{{mode}} started-{{started}} ended-{{ended}} theme-{{theme}}">
-
-      <template is="dom-if" if="{{resource}}">
-        <div id="resourceName">
-          <strong>[[resource]]</strong> | [[resourceItem]]
-        </div>
-      </template>
-
-      <div class="fabs">
-        <paper-fab id="fabHeatmap" icon="maps:map" title="Heatmap" on-click="showHeatmap"></paper-fab>
-        <paper-fab id="fabRestart" icon="autorenew" title="Restart" on-click="restart"></paper-fab>
-      </div>
-      
-      <typio-stats id="stats"></typio-stats>
-
-      <typio-new-editor id="editor" 
-          data-type$="[[type]]" 
-          data-theme$="[[theme]]" 
-          data-mode$="[[mode]]" 
-          data-content$="[[_content]]"
-          on-character-entered="_characterEntered"
-          on-typing-ended="_typingEnded"
-          debug>
-      </typio-new-editor>
-      
-      <div id="heatmap">
-        <typio-keyboard id="keyboard" mixed-cases></typio-keyboard>
-        <typio-hands id="hands"></typio-hands>
-        <div class="fabs">
-          <paper-fab id="fabHeatmap" icon="close" title="Close" on-click="hideHeatmap"></paper-fab>
-        </div>
-      </div>
-
-      <google-chart id="chart" class$="showChart-{{showChart}}"
-        type="stepped-area"
-        options="[[chartOptions]]"
-        cols="[[chartCols]]"
-        rows='[]'>
-      </google-chart>
-
-      <google-chart id="minichart"
-        type="stepped-area"
-        options="[[chartOptions]]"
-        cols="[[chartCols]]"
-        rows='[]'>
-      </google-chart>
-
-    </div>
-
-  </template>
 
   <script>
 
     /**
-     * Editor screen (main screen of the application).
+     * Editor screen (where text to type is displayed).
      *
      * @customElement
      * @polymer
      */
-    class TypioEditor extends Polymer.Element {
+    class TypioEditor extends TypioViewer {
 
       static get is() { return 'typio-editor'; }
       static get properties() {
         return {
 
+          // 
+          // + typio-viewer properties
           //
-          // User settings
-          //
+
+          intervals: {
+            type: Array,
+            value: []
+          },     
 
           /**
-           * The type of content (code, literature).
-           */
-          type: {
-            type: String,
-            value: "code"
-          },
-
-          /**
-           * Language of the content.
-           *
-           * Could be a programming language (Java, Python) or a
-           * spoken language (French, English).
-           *
-           * Note: Case is not important.
-           */
-          language: {
-            type: String,
-            value: "Python"
-          },
-
-          /**
-           * The name of the resource where the content is extracted.
-           * Could be a book title or a Github project name.
-           */
-          resource: {
-            type: String,
-            value: null
-          },
-
-          /**
-           * A reference to idemtity the content inside the resource.
-           * Could be a chapter title, or a file path.
-           */
-          resourceItem: {
-            type: String,
-            value: null
-          },
-
-          /**
-           * The content to touch type.
-           *
-           * This property should be set in JavaScript and
-           * not through an HTML attribute to avoid HTML escaping (&lt; for <).
-           */
-          content: {
-            type: String,
-            value: 'import sys\n\ndef main():\n  print("Hello World")  # Greeting message\n  sys.exit(0)\n',
-            //value: 'var (\n  toto    string\n  spirou  boolean\n)\n',
-            //value: 'this is a very very very very very very very very very very very very very very very very very long line'
-          },
-
-
-          //
-          // Settings
-          //
-           
-          /**
-           * Allow user to continue typing when an error is detected.
+           * Let the user continues typing when an error occurs.
+           * If false, the session will not end until all characters are valid.
            */
           continueOnErrors: {
             type: Boolean,
             value: false
           },
           
-          /**
-           * Show a real-time graph while user is typing.
-           */
-          showChart: {
-            type: Boolean,
-            value: true
-          },
-          
-          /**
-           * Editor code style.
-           * Name should match a CSS resource name /css/prism-{{theme}}.css.
-           */
-          theme: {
-            type: String,
-            value: 'light'
-          },
-
 
           //
           // State management
           //
 
-          /** True as soon as everything is ready for the user to start typing. */
           initialized: {
-            type: Boolean,
-            value: false
-          },
-          
-          /** True as soon as the user had pressed his first key. */
-          started: {
             type: Boolean,
             value: false
           },
@@ -368,253 +52,442 @@
             type: Boolean,
             value: true
           },
+          
+          started: {
+            type: Boolean,
+            value: false
+          },
 
           ended: {
             type: Boolean,
             value: false
           },
 
+      	  /**
+      	   * True only when the user has mistyped.
+      	   * False when the typo is fixed.
+      	   */
+          _error: {
+      	    type: Boolean,
+      	    value: false
+      	  },
+
 
           //
-          // Google Chart Configuration
-          // See https://developers.google.com/chart/interactive/docs/gallery/steppedareachart
+          // Editor inner working properties
           //
-
-          chartOptions: {
-            type: Object,
-            readOnly: true,
-            value: {
-              "backgroundColor": { fill:'transparent' },
-              "title": "WPM",
-              "legend": "none",
-              "fontName": "Cutive",
-              "areaOpacity": 1,
-              "tooltip": {"trigger": "none"},
-              "chartArea": {
-                "left": 0,
-                "top": 0,
-                "width": "100%",
-                "height": "100%",
-                "backgroundColor": {"strokeWidth": 0}
-              },
-              "hAxis": { "textPosition": "in", "textStyle": { "color": "black", "bold": true, "auraColor": "none" } },
-              "vAxis": {
-                "textPosition": "int",
-                "minValue": 0,
-                "maxValue": 200,
-                "gridlines": { "count": 0 }
-              },
-              "colors": ["#009ee3"],
-              "lineWidth": 2,
-              "annotations": {"textStyle": { "color": "orange"} }
-            }
-          },
-
-          chartCols: {
-            type: Array,
-            readOnly: true,
-            value: [
-              {"label": "Progress", "type": "string"},
-              {"label": "WPM",      "type": "number"},
-              {"type": "string",    "role": "annotation"},
-              {"type": "string",    "role": "style"}
-              // see https://developers.google.com/chart/interactive/docs/roles?hl=en for the role property of columns
-            ]
-          },
-
+          
+          // The index of the latest valid entered character
+          _countValid: {
+            type: Number,
+            value: 0
+          },          
+          
         };
       }
-
-      restart() {
+      
+      ready() {
+        super.ready();
         this.reset();
+        this._addKeysListeners(); 
       }
 
       /**
        * Called this method to reset the editor (ex: retry).
        */
       reset() {
-        // Reset variables
-        this.$.stats.reset();
-        this.$.editor.reset();
+        super.reset();
+        
+        // reset editor styles
+        this.unhighlightAll();
+        this.unannotateAll('disabled');
+        
+        // reset variables
+        this._countValid = 0;
 
-        // Reset globals
+        // reset ready-screen
         this.initialized = false;
         this.started = false;
         this.paused = true;
         this.ended = false;
-
-        // Reset ready-screen
-        this.$.readyScreen.hidden = false;
       }
 
+      _removeKeysListeners() {
+        if (this._keydownListener) {
+          console.log("remove 'keydown' listener");
+          document.removeEventListener('keydown', this._keydownListener);
+        }
+        if (this._keyupListener) {
+          console.log("remove 'keyup' listener");
+          document.removeEventListener('keyup', this._keyupListener, false);
+        }
+        if (this._keypressListener) {
+          console.log("remove 'keypress' listener");
+          document.removeEventListener('keypress', this._keypressListener, false);
+        }
+      }
+      
+      _addKeysListeners() {
+        // We listen for tab character (match any number of consecutive characters)
+        this._keydownListener = event => {
+          //console.log('keydown', event);
+          if (!this.started || event.ctrlKey) return;
+          if (event.key !== 'Tab') return; // we are only interested by tabular character
+          event.preventDefault();
+          event.stopPropagation();
+          this._checkInput(event, event.key);
+          return false;
+        };
+        document.addEventListener('keydown', this._keydownListener);
+                
+        // We listen keyup for nonprintable characters
+        this._keyupListener = event => {
+          //console.log('keyup', event);
+          if (!this.started || event.ctrlKey) return;
+          if (event.key === 'Backspace') {
+            this.backward();
+          }
+        };
+        document.addEventListener('keyup', this._keyupListener, false);
+
+        // ... and keypress for printable ones (keypress support dead keys)
+        this._keypressListener = event => {
+          //console.log('keypress', event);
+          if (!this.started) return;
+          const keyName = event.key;
+
+          if (keyName === 'Control') {
+            // not alert when only Control key is pressed.
+            return;
+          }
+
+          if (event.ctrlKey) {
+            // Even though event.key is not 'Control' (i.e. 'a' is pressed),
+            // event.ctrlKey may be true if Ctrl key is pressed at the time.
+            ;
+          } else {
+            this._checkInput(event, keyName);
+            event.preventDefault();
+            return false;
+          }
+        };
+        document.addEventListener('keypress', this._keypressListener, false);
+      }
+      
       /**
        * Called when the user has validated the ready screen.
        */
-      start(e, detail) {
-        console.log('[typio-editor] starting', detail);
+      start() {
+        console.debug('[typio-core-editor] start with', this._content);
         this.initialized = true;
+        this.started = true;
+        this.numberLines = this._content.split('\n').length;
+
+        // refresh the viewer
+        super.refresh();
         
-        this._content = detail.content;
-        this.$.stats.editableCharacters = this._calculateEditableCharacters(detail.content, detail.classes);
-        
-        this.showChart = this.$.readyScreen.showChart;
-        this.theme = this.$.readyScreen.theme;
-        this.$.editor.content = this._content;
-        this.$.editor.classes = detail.classes;
-        this.$.editor.logicalLines = detail.logicalLines;
-        this.$.editor.intervals = this.$.stats.intervals;
-        
-        if (detail.fontSize) this.$.editor.fontSize = detail.fontSize;
-        if (detail.preserveSpacing) this.$.editor.preserveSpacing = detail.preserveSpacing;
-        
-        console.log('[typio-editor] launching editor...');
-        this.$.editor.start();
-      }
-
-      _calculateEditableCharacters(content, classes) {
-        let editableCharacters = new Array(content.length);
-        for (let i = 0; i < content.length; i++) {
-          editableCharacters[i] = !classes[i].includes('ignorable');
-        }
-        return editableCharacters;
-      }
-
-      _characterEntered(e, detail) {
-        // Update stats
-        if (detail.indexValid <= 1) { // First character entered?
-          this.$.stats.resumeTimer();
-          this.started = true;
-        }
-        this.$.stats.newCharacter(detail.character, detail.keyName, detail.valid, detail.accepted);
-
-        // Update charts
-        this.$.chart.style.display = 'block !important';
-        this.$.chart.rows = this.$.stats.wpmPerInterval();
-        this.$.chart.redraw();
-      }
-
-      _typingEnded() {
-        this.ended = true;
-        this.$.stats.stopTimer();
-        this._updateMinichart();
-        this.$.editor.showMispellings();
-        this.$.editor.moveToFirstPage();
-      }
-
-      _updateMinichart() {
-        this.$.minichart.rows = this.$.stats.wpmPerInterval();
-        for (let i = 0; i < this.$.minichart.rows.length; i++) {
-          this.$.minichart.rows[i][2] = ''; // remove annotations
-        }
-        this.$.minichart.redraw();
-        this.listenChartEvents();
+        this.initialized = true;
+        this.annotateAll('disabled');
+        this.advance();
       }
 
       /**
-       * Let user click on the histogram to select a bar
-       * and focus the corresponding text.
+       * Pause the practice session.
        */
-      listenChartEvents() {
-        if (!this._chartEventsListened) {
-          google.visualization.events.addListener(this.$.minichart._chart, 'select', () => {
-            let selection = this.$.minichart._chart.getSelection();
-            if (selection.length) {
-              this.$.editor.selectInterval(selection[0].row);
-            }
-          });
-          this._chartEventsListened = true;
-        }
+      resume() {
+        this.paused = false;
+      }
+      
+      /**
+       * Marks the end of the typing session.
+       */
+      end() {
+        this.ended = true;
+        this.dispatchEvent(new CustomEvent('typing-ended', {detail: {length: this._length}}));
       }
 
+      /**
+       * Called after each key press.
+       */
+      _checkInput(event, keyName) {
+        if (!this.started || this.ended) {
+          // ignore input outside practice sessions
+          return;
+        }
+        
+        if (this.paused) {
+          this.resume();
+        }
 
-      // 
-      // Heatmap
-      // 
-      
-      showHeatmap() {
-        const responseTimes = this.$.stats.getResponseTimeKeys();
-        const responseTimePerKey = new Map();
-        let worstInMs = 0;
-        responseTimes.forEach(keyStats => { 
-          responseTimePerKey.set(keyStats.character, keyStats);
-          if (keyStats.averageInMs > worstInMs) {
-            worstInMs = keyStats.averageInMs;
+        let character = this.cursor();
+        let iCharacter = this.position;
+        let valid = undefined;
+
+        if (this.debug) {
+          console.log('Expected: [' + character.dataset.text + '] (' + character.dataset.text.charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + '), valid=' + this._isValid(character, keyName) + ', position=' + this.position + ', error=' + this._error + ', positionError=' + this._iError);
+        }
+        
+        // Allow optional character to be passed
+        if (character.classList.contains('optional') && 
+              !this._isValid(this.element(), keyName) &&
+               this._isValid(this._nextNonIgnorableElement(), keyName)) {
+          this.advance();
+          character = this.cursor();
+          iCharacter = this.position;
+        }
+        
+        if (keyName === 'Tab' && this._canAdvance()) {
+          // advance to the next nonspace character
+          while (this.cursor().classList.contains('space')) {
+            this.advance(); 
           }
-        });
+          
+        } else if (this._isValid(character, keyName)) {
+          valid = true;
+          character.classList.remove('disabled');
+          
+          if (this._error && this._iError == this.position) {
+            console.log('[bug] remove error');
+            character.classList.remove('char-invalid');
+            this._error = false;
+            this._iError = undefined;
+          }
+          
+          if (this.continueOnErrors) {
+            character.classList.remove('char-invalid');
+          } else if (this._error && !this.continueOnErrors) {
+            character.classList.add('char-invalid');
+          } else {
+	          character.classList.remove('char-invalid');
+	        }
 
-        this.$.keyboard.colorize(c => {
-          if (!responseTimePerKey.has(c)) return false;
-          const stats = responseTimePerKey.get(c);
+          // Add marker to highlight mistyping at the end
+          if (!character.classList.contains('wrong') && !character.classList.contains('useless')) {
+            character.classList.add(this._error ? 'useless' : 'right');
+          }
+
+          if (!this._error) {
+            this._countValid++;
+          }
+          this.advance();
           
-          // We compare the response time with the worst response time to determine the color
-          // We only want to highlight the worse keys, even if the user is typing slowy every key.
-          const ratio = Math.floor(stats.averageInMs * 100 / worstInMs / 10.1); // Note between 0 and 10 exclusive
-          // close to 10 = reddish
-          // close to 0 = yellowish
-          
-          const ignoreBelowRatio = 2;
-          if (ratio < ignoreBelowRatio) return false; 
-          
-          // See https://material.io/guidelines/style/color.html#color-color-palette
-          return 'var(--paper-red-' + ((ratio - ignoreBelowRatio) * 100) + ')';
-        });
-        
-        
-        const fingerRepartition = TypioKeyboard.fingersFromText(this._content);
-        const maxFingerCount = Math.max(
-          fingerRepartition.leftHand.littleFinger,
-          fingerRepartition.leftHand.ringFinger,
-          fingerRepartition.leftHand.middleFinger,
-          fingerRepartition.leftHand.indexFinger,
-          fingerRepartition.leftHand.thumb,
-          fingerRepartition.rightHand.littleFinger,
-          fingerRepartition.rightHand.ringFinger,
-          fingerRepartition.rightHand.middleFinger,
-          fingerRepartition.rightHand.indexFinger,
-          fingerRepartition.rightHand.thumb,
-        );
-        this.$.hands.colorizeLeftHand({
-          littleFinger: TypioEditor.dynamicRedColor(fingerRepartition.leftHand.littleFinger, maxFingerCount),
-          ringFinger:   TypioEditor.dynamicRedColor(fingerRepartition.leftHand.ringFinger, maxFingerCount),
-          middleFinger: TypioEditor.dynamicRedColor(fingerRepartition.leftHand.middleFinger, maxFingerCount),
-          indexFinger:  TypioEditor.dynamicRedColor(fingerRepartition.leftHand.indexFinger, maxFingerCount),
-          thumb:        TypioEditor.dynamicRedColor(fingerRepartition.leftHand.thumb, maxFingerCount),
-        });
-        this.$.hands.colorizeRightHand({
-          littleFinger: TypioEditor.dynamicRedColor(fingerRepartition.rightHand.littleFinger, maxFingerCount),
-          ringFinger:   TypioEditor.dynamicRedColor(fingerRepartition.rightHand.ringFinger, maxFingerCount),
-          middleFinger: TypioEditor.dynamicRedColor(fingerRepartition.rightHand.middleFinger, maxFingerCount),
-          indexFinger:  TypioEditor.dynamicRedColor(fingerRepartition.rightHand.indexFinger, maxFingerCount),
-          thumb:        TypioEditor.dynamicRedColor(fingerRepartition.rightHand.thumb, maxFingerCount),
-        });
-        
-        this.$.heatmap.style.display = 'block';
+        } else {
+          valid = false;
+          character.classList.add('char-invalid');
+          character.classList.add('wrong');
+          this._error = true;
+          this._iError = this.position;
+          this.$.editor.classList.add('error');
+          this.advance();
+        }
+
+        // Notify about entered input
+        let accepted = valid || this.continueOnErrors;
+        let detail = {
+          "index": this.position,
+          "indexValid": this._countValid,
+          "line": this._currentLine,
+          "character": iCharacter, 
+          "keyName": keyName, 
+          "valid": valid, 
+          "accepted": accepted,         
+        }
+        this.dispatchEvent(new CustomEvent('character-entered', {detail: detail, bubbles: true, composed: true}));
       }
-      
-      hideHeatmap() {
-        this.$.heatmap.style.display = 'none';
-      }   
-      
-      static dynamicPaperColor(paperColor, actualValue, maxValue) {
-        if (actualValue === 0) {
-          return 'inherit'; // let blank if no value
+
+      _isValid(character, keyName) {
+        if (character == undefined) return false;
+        
+        const expectedCharacter = character.dataset.text;
+        
+        // nominal case
+        if (keyName === expectedCharacter) {
+          return true;
         }
         
-        let paperValue = Math.floor(actualValue * 100 / maxValue / 10) * 100;
-        if (paperValue > 900) {
-          paperValue = 900;
+        // Manage exceptions:
+        
+        // Curved quotes are not typeable => allow simple quote
+        if (keyName === "'" && (expectedCharacter === '‘' || expectedCharacter === '’')) {
+          return true;
+        }
+        if (keyName === '"' && (expectedCharacter === '“' || expectedCharacter === '”')) {
+          return true;
         }
         
-        return `var(--paper-${paperColor}-${paperValue})`;
+        // Allow space for some indentation characters
+        if (keyName === ' ' && character.classList.contains("allowSpace")) {
+          return true;
+        }
+        
+        // Nothing matches
+        return false;
       }
       
-      static dynamicRedColor(actualValue, maxValue) {
-        return TypioEditor.dynamicPaperColor('red', actualValue, maxValue);
+      /**
+       * Move backward to the previous editable character.
+       */
+      backward() {
+        if (this.position == 0) return; // Do nothing if at start
+
+        do {
+          this._unselect();
+          this._backwardOneCharacter();
+
+          if (this._error && this.position === this._iError) {
+            this._error = false;
+            this._iError = undefined;
+            this.$.editor.classList.remove('error');
+            this.$.editor.classList.remove('char-invalid');
+            this.$.editor.classList.remove('wrong');
+          }
+        } while (this.hasAnnotation('ignorable'));
+
+        if (this.position >= 0) {
+          this._select();
+        }
+      }
+
+      /**
+       * Move forward to the next editable character.
+       */
+      advance() {
+        if (this.position >= 0) {
+          this.cursor().classList.remove('char-active');
+        }
+
+        if (this.endOfFile()) {
+          // Do not trigger end if there is error, except if allowed
+          if (this._allowToEnd()) {
+            this.end();
+          }
+          return;
+        }
+
+        this._advanceOneCharacter();
+        while (!this.endOfFile() && this.hasAnnotation('ignorable')) { this._advanceOneCharacter(); }
+
+        this._select();
+      }
+      
+      _canAdvance() {
+        return !this.error || this.continueOnErrors;
+      }
+
+      /**
+       * Move backward to the previous character (editable or not editable.)
+       */
+      _advanceOneCharacter() {
+        this.position++;
+
+        // Check if a new line have been triggered
+        if (this._triggerNewLine) {
+          this._currentLine++;
+          console.log("Triggering new line...", this.mode);
+          // FIXME what to do instead?
+          //if (this.mode === 'scroll') this._scrollEditor();
+          //if (this.mode === 'page') this._updatePage();
+          this._triggerNewLine = false;
+        }
+
+        if (this.cursor().classList.contains('backslash')) {
+          // We need to wait the user press 'Enter' before advance the line number.
+          // Because if is press the wrong key, we will stay on the same line...
+          this._triggerNewLine = true;
+        } else {
+          this._triggerNewLine = false;
+        }
+      }
+
+      /**
+       * Move forward to the next character (editable or not editable.)
+       */
+      _backwardOneCharacter() {
+        this.position--;
+        this._triggerNewLine = false;
+        if (this.cursor().classList.contains('backslash')) {
+          this._currentLine--;
+          // FIXME what to do instead?
+        }
+      }
+
+      /**
+       * Have we reached the end of text?
+       */
+      _allowToEnd() {
+        return this._error == false || this.continueOnErrors;
+      }
+
+      _select() {
+        let element = this.cursor();
+        element.classList.remove('char-invalid');
+        element.classList.add('char-active');
+        element.classList.add('disabled');
+      }
+
+      _unselect() {
+        let element = this.cursor();
+        element.classList.remove('char-active');
+        element.classList.remove('char-invalid');
+        element.classList.add('disabled');
+      }
+      
+      showMispellings() {
+        this.$.editor.classList.add('highlight-mistyping');
+      }
+      
+      hideMispellings() {
+        this.$.editor.classList.remove('highlight-mistyping');
+      }
+      
+      /**
+       * Return the next character which doesn't have the `ignorable` annotation.
+       */
+      _nextNonIgnorableElement() {
+        let i = this._i + 1;
+        while (true) {
+          if (this.endOfFile()) return undefined;
+          let element = this.elementAt(i++);
+          if (!element.classList.contains('ignorable')) {
+            return element;
+          }
+        }
+      }
+
+
+      // Intervals management
+      
+      selectInterval(column) {
+        // FIXME does not work following typio-editor refactoring
+        if (this.$.editor.classList.contains('highlight-interval-' + column)) {
+          // unselect
+          this.$.editor.classList.remove('highlight-interval-' + column);
+        } else {
+          // unselect all
+          for (let i = 0; i < this.intervals.length; i++) {
+            this.$.editor.classList.remove('highlight-interval-' + i);
+          }
+          // and select the selected one
+          this.$.editor.classList.add('highlight-interval-' + column);
+        }
+
+        // Scroll to the interval in the editor
+        this._gotoIntervalPage(column);
+      }
+
+      // Return the page number (0-based) containing the ith interval.
+      _gotoIntervalPage(i) {
+        if (this.intervals.length < i) { // Intervals was not defined
+          return;
+        }
+        const indexFirstCharacter = this.intervals.indexOf(i);
+        const lineFirstCharacter = this._content.substring(0, indexFirstCharacter).split('\n').length + 1;
+        this._currentLine = Math.max(lineFirstCharacter - 5, 0); // Add some lines before to add context
+        this._scrollToLine(this._currentLine);
       }
 
     }
     window.customElements.define(TypioEditor.is, TypioEditor);
-
 
   </script>
 </dom-module>

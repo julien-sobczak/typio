@@ -10,13 +10,13 @@
     <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../bower_components/web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../../src/typio-app/typio-drill-creator.html">
+    <link rel="import" href="../../src/typio-app/typio-drill-creator-screen.html">
   </head>
   <body>
 
     <test-fixture id="DefaultFixture">
       <template>
-        <typio-drill-creator></typio-drill-creator>
+        <typio-drill-creator-screen></typio-drill-creator-screen>
       </template>
     </test-fixture>
 
@@ -25,21 +25,21 @@
           return (str.match(new RegExp(c, 'g'))||[]).length
       }
     
-      suite('typio-drill-creator', function() {
+      suite('typio-drill-creator-screen', function() {
 
         //
         // Static drill 
         //
         
         test('[static drill] basic usage', function() {
-          const content = TypioDrillCreator.generateStaticDrill({text: "azerty"});
+          const content = TypioDrillCreatorScreen.generateStaticDrill({text: "azerty"});
           
           // Should return the same value
           expect(content).to.eql("azerty");
         });
         
         test('[static drill] limit the number of selected textes', function() {
-          const content = TypioDrillCreator.generateStaticDrill({
+          const content = TypioDrillCreatorScreen.generateStaticDrill({
             "text": ["azerty", "qwerty", "colemak", "dvorak"], 
             "random": false, 
             "limit": 2
@@ -50,7 +50,7 @@
         });
         
         test('[static drill] limit to 5 results by default', function() {
-          const content = TypioDrillCreator.generateStaticDrill({
+          const content = TypioDrillCreatorScreen.generateStaticDrill({
             "text": ["azerty", "qwerty", "colemak", "dvorak", "international qwerty", "bepo"]
           });
           
@@ -64,7 +64,7 @@
         
         test('[basic drill] basic usage', function() {
           const len = 10;
-          const content = TypioDrillCreator.generateBasicDrill({
+          const content = TypioDrillCreatorScreen.generateBasicDrill({
             keys: ['a', 'b'], 
             // weigths are optional
             length: len,
@@ -76,7 +76,7 @@
         
         test('[basic drill] with weights', function() {
           const len = 10;
-          const content = TypioDrillCreator.generateBasicDrill({
+          const content = TypioDrillCreatorScreen.generateBasicDrill({
             keys: ['a', 'b'], 
             weights: [1, 2], 
             length: len,
@@ -88,7 +88,7 @@
         
         test('[basic drill] weights influence the repartition', function() {
           const len = 10;
-          const content = TypioDrillCreator.generateBasicDrill({
+          const content = TypioDrillCreatorScreen.generateBasicDrill({
             keys: ['a', 'b'], 
             weights: [1, 100], 
             length: len
@@ -104,7 +104,7 @@
         
         test('[program drill] evaluate and capture the output', function() {
           const program = 'window.alert("Hello World");'
-          const content = TypioDrillCreator.generateProgramDrill({
+          const content = TypioDrillCreatorScreen.generateProgramDrill({
             javascriptCode: program
           });
           
@@ -145,7 +145,7 @@
           window.alert('.');
           window.alert(mathRandomInt(10, 99));`;
           
-          const content = TypioDrillCreator.generateProgramDrill({
+          const content = TypioDrillCreatorScreen.generateProgramDrill({
             javascriptCode: program
           });
           
@@ -158,7 +158,7 @@
         //
         
         test('[regex drill] hello world', function() {
-          const content = TypioDrillCreator.generateRegexDrill({
+          const content = TypioDrillCreatorScreen.generateRegexDrill({
             regexes: {
               'DRILL': /hello world/
             }
@@ -168,7 +168,7 @@
         });
         
         test('[regex drill] strings are supported', function() {
-          const content = TypioDrillCreator.generateRegexDrill({
+          const content = TypioDrillCreatorScreen.generateRegexDrill({
             regexes: {
               'DRILL': "hello world"
             }
@@ -178,7 +178,7 @@
         });
 
         test('[regex drill] JSON documents', function() {
-          const content = TypioDrillCreator.generateRegexDrill({
+          const content = TypioDrillCreatorScreen.generateRegexDrill({
             regexes: {
               "JSON_PRIMITIVE":          "true|false|\"[a-zA-Z_]{1,10}\"|[1-9]\\d*",
               "JSON_ARRAY":              "\\[(JSON_PRIMITIVE, )*JSON_PRIMITIVE\\]",
@@ -196,7 +196,7 @@
         });
         
         test('[regex drill] nested function calls', function() {
-          const content = TypioDrillCreator.generateRegexDrill({
+          const content = TypioDrillCreatorScreen.generateRegexDrill({
             regexes: {
               "ARGUMENTS":       "(|\\d{1,2}|FUNCTION_CALL|FUNCTION_CALL)",
               "FUNCTION_CALL":   "[a-zA-Z_]{1,2}\\(ARGUMENTS\\)",
@@ -209,7 +209,7 @@
         });
         
         test('[regex drill] html tags', function() {
-          const content = TypioDrillCreator.generateRegexDrill({
+          const content = TypioDrillCreatorScreen.generateRegexDrill({
             regexes: {
               "HTML_CONTENT": "(|[a-z]+|PARENT_TAG|TAG)",
               "CHILD":        "<a>[a-z]+</a>|<img src=\"#\" />|<h1>[a-z]+</TEXT>|<blockquote>CHILD</blockquote>|<br/>",

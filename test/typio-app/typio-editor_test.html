@@ -9,26 +9,176 @@
     <link rel="import" href="../../bower_components/polymer/polymer-element.html">
     <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../bower_components/iron-test-helpers/mock-interactions.js"></script>
 
     <link rel="import" href="../../src/typio-app/typio-editor.html">
+    
+    <style>
+      typio-editor.one-line {
+        font-size: 12px;
+        height: 20px; /* Let space for line-height */
+      }
+      typio-editor.three-lines {
+        font-size: 12px;
+        height: 60px; /* Let space for line-height */
+      }
+    </style>
   </head>
   <body>
 
-    <test-fixture id="DefaultFixture">
+    <test-fixture id="ScrollCodeFixture">
       <template>
-        <typio-editor></typio-editor>
+        <typio-editor id="editor" type="code" mode="scroll" class="three-lines" debug></typio-editor>
+      </template>
+    </test-fixture>
+    <test-fixture id="CompactScrollCodeFixture">
+      <template>
+        <typio-editor id="editor" type="code" mode="scroll" class="one-line" debug></typio-editor>
+      </template>
+    </test-fixture>
+    <test-fixture id="PageCodeFixture">
+      <template>
+        <typio-editor id="editor" type="code" mode="page" class="three-lines" debug></typio-editor>
+      </template>
+    </test-fixture>
+    <test-fixture id="CompactPageCodeFixture">
+      <template>
+        <typio-editor id="editor" type="code" mode="page" class="one-line" debug></typio-editor>
+      </template>
+    </test-fixture>
+    <test-fixture id="ScrollLiteratureFixture">
+      <template>
+        <typio-editor id="editor" type="literature" mode="scroll" debug></typio-editor>
       </template>
     </test-fixture>
     
     <script>
     
+    class ContentBuilder {
+      
+      constructor(content) {
+        this.content = content;
+        this.classes = new Array(content.length);
+      }
+      
+      annotate(index, ...classes) {
+        this.classes[index] = classes;
+        return this;
+      }
+      
+      build() {
+        return [this.content, this.classes];
+      }
+    }
+    
     suite('typio-editor', function() {
-  
-        test('[dynamicPaperColor] with integers', function() {
-          expect(TypioEditor.dynamicPaperColor('red', 0, 10)).to.equal('inherit');
-          expect(TypioEditor.dynamicPaperColor('red', 2, 10)).to.equal('var(--paper-red-200)');
-          expect(TypioEditor.dynamicPaperColor('red', 5, 10)).to.equal('var(--paper-red-500)');
-          expect(TypioEditor.dynamicPaperColor('red', 10, 10)).to.equal('var(--paper-red-900)');
+      
+        let editor = undefined;
+        
+        // 
+        // Interaction utils
+        //
+        
+        function press(key, modifiers = []) {
+          let keys = key;
+          if (!Array.isArray(keys)) {
+            keys = [key]
+          } 
+        
+          keys.forEach(key => MockInteractions.keyEventOn(editor, 'keypress', undefined, [], key));
+        }
+        
+        function pressText(text) {
+          text.split('').forEach(l => press(l));
+        }
+        
+        function pressEnter() {
+          press('Enter');
+        }
+        
+        
+        teardown('remove key listeners', function() {
+          // Be sure key listeners are removed after each practice session
+          editor.end();
+        });
+        
+                
+        test('[input] accept basic quotes instead of curved quotes', function() {
+          editor = fixture('ScrollLiteratureFixture');
+          editor.content = "‘single’ or “double”" 
+          editor.reset();
+          editor.start();
+          
+          expect(editor.position).to.equal(0);
+          press("'"); // instead of curved opening simple quote
+          press(["s", "i", "n", "g", "l", "e"]);
+          press("'"); // instead of curved closing simple quote
+          press([" ", "o", "r", " "]);
+          press('"'); // instead of curved opening double quote
+          press(["d", "o", "u", "b", "l", "e"]);
+          press('"'); // instead of curved closing double quote
+          expect(editor._i).to.equal(19);
+          expect(editor._error).to.be.false;
+          expect(editor.ended).to.be.true;
+        });
+        
+        test('[input] support continuation lines', function() {
+          editor = fixture('ScrollLiteratureFixture');
+          editor.content = "a long\n  line"; // need to set classes (continuation, indent, ignorable, ...)
+          editor.logicalLines = [true, false];
+          editor.classes = [[], [], [], [], [], [], [], ['ignorable'], ['ignorable'], [], [], [], []];
+          
+          // User don't have to press indent after a continuation line
+          editor.reset();
+          editor.start();
+          expect(editor.position).to.equal(0);
+          pressText("a long"); 
+          pressEnter(editor);
+          pressText('line');
+          expect(editor.ended).to.be.true;
+          
+          // User could press a space instead of a new line
+          editor.reset();
+          editor.start();          
+          expect(editor.position).to.equal(0);
+          pressText("a long line"); 
+          expect(editor.ended).to.be.true;
+          
+          // User could press a space instead of a new line
+          editor.reset();
+          editor.start();          
+          expect(editor.position).to.equal(0);
+          pressText("a longline"); 
+          expect(editor.ended).to.be.true;
+        });
+        
+        test('[code] check line number progresses as text is entered', function() {
+          editor = fixture('ScrollCodeFixture');
+          editor.content = `i = 1
+i++
+print(i)`; 
+          
+          editor.reset();
+          editor.start();
+          console.log('classes', editor.classes);
+          expect(editor.position).to.equal(0);
+          expect(editor.lineNumber()).to.equal(1);
+          pressText("i = 1");
+          expect(editor.position).to.equal(5);
+          expect(editor.lineNumber()).to.equal(1); // BUG
+          pressEnter(editor);
+          expect(editor.lineNumber()).to.equal(2);
+          pressText('i++');
+          expect(editor.position).to.equal(9);
+          expect(editor.lineNumber()).to.equal(2);
+          pressEnter(editor);
+          expect(editor.lineNumber()).to.equal(3);
+          pressText('print(i)')
+          expect(editor.position).to.equal(17);
+          expect(editor.lineNumber()).to.equal(3);
+          pressEnter(editor);
+          expect(editor.lineNumber()).to.equal(3);
+          expect(editor.ended).to.be.true;
         });
         
       });

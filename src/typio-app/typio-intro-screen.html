@@ -6,7 +6,7 @@
 <link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-button.html">
 
-<dom-module id="typio-intro">
+<dom-module id="typio-intro-screen">
   <template>
     <style include="shared-styles">
 
@@ -247,8 +247,8 @@
      * @customElement
      * @polymer
      */
-    class TypioIntro extends Polymer.Element {
-      static get is() { return 'typio-intro'; }
+    class TypioIntroScreen extends Polymer.Element {
+      static get is() { return 'typio-intro-screen'; }
       static get properties() {
         return {};
       }
@@ -295,6 +295,6 @@
 
     }
 
-    window.customElements.define(TypioIntro.is, TypioIntro);
+    window.customElements.define(TypioIntroScreen.is, TypioIntroScreen);
   </script>
 </dom-module>

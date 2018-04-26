@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>typio-editor test</title>
+
+    <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../src/typio-app/typio-practice-screen.html">
+  </head>
+  <body>
+
+    <test-fixture id="DefaultFixture">
+      <template>
+        <typio-practice-screen></typio-practice-screen>
+      </template>
+    </test-fixture>
+    
+    <script>
+    
+    suite('typio-practice-screen', function() {
+  
+        test('[dynamicPaperColor] with integers', function() {
+          expect(TypioPracticeScreen.dynamicPaperColor('red', 0, 10)).to.equal('inherit');
+          expect(TypioPracticeScreen.dynamicPaperColor('red', 2, 10)).to.equal('var(--paper-red-200)');
+          expect(TypioPracticeScreen.dynamicPaperColor('red', 5, 10)).to.equal('var(--paper-red-500)');
+          expect(TypioPracticeScreen.dynamicPaperColor('red', 10, 10)).to.equal('var(--paper-red-900)');
+        });
+        
+      });
+      
+    </script>
+
+  </body>
+</html>

@@ -18,7 +18,7 @@
 <link rel="import" href="/src/typio-app/typio-catalog-tongue-twister.html">
 <link rel="import" href="/src/typio-app/typio-catalog-drills.html">
 
-<dom-module id="typio-catalog">
+<dom-module id="typio-catalog-screen">
   <template>
     <style include="shared-styles">
 
@@ -165,9 +165,9 @@
      * @customElement
      * @polymer
      */
-    class TypioCatalog extends Polymer.Element {
+    class TypioCatalogScreen extends Polymer.Element {
 
-      static get is() { return 'typio-catalog'; }
+      static get is() { return 'typio-catalog-screen'; }
       static get properties() {
         return {
           
@@ -226,6 +226,6 @@
       return Math.floor(Math.random() * Math.floor(max));
     }
 
-    window.customElements.define(TypioCatalog.is, TypioCatalog);
+    window.customElements.define(TypioCatalogScreen.is, TypioCatalogScreen);
   </script>
 </dom-module>

@@ -15,7 +15,7 @@
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
-<dom-module id="typio-drill-creator">
+<dom-module id="typio-drill-creator-screen">
   <template>
     <style include="shared-styles">
 
@@ -144,9 +144,9 @@
      * @customElement
      * @polymer
      */
-    class TypioDrillCreator extends Polymer.Element {
+    class TypioDrillCreatorScreen extends Polymer.Element {
 
-      static get is() { return 'typio-drill-creator'; }
+      static get is() { return 'typio-drill-creator-screen'; }
       static get properties() {
         return {
             
@@ -212,13 +212,13 @@
       static generateDrill(drill) {
         switch (drill.type) {
           case 'static':
-            return TypioDrillCreator.generateStaticDrill(drill);
+            return TypioDrillCreatorScreen.generateStaticDrill(drill);
           case 'basic':
-            return TypioDrillCreator.generateBasicDrill(drill);
+            return TypioDrillCreatorScreen.generateBasicDrill(drill);
           case 'program':
-            return TypioDrillCreator.generateProgramDrill(drill);
+            return TypioDrillCreatorScreen.generateProgramDrill(drill);
           case 'regex':
-            return TypioDrillCreator.generateRegexDrill(drill);
+            return TypioDrillCreatorScreen.generateRegexDrill(drill);
         }
       }
 
@@ -341,7 +341,7 @@
       }
 
     }
-    window.customElements.define(TypioDrillCreator.is, TypioDrillCreator);
+    window.customElements.define(TypioDrillCreatorScreen.is, TypioDrillCreatorScreen);
 
   </script>
 </dom-module>

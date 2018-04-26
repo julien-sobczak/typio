@@ -4,10 +4,10 @@
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-stats.html">
-<link rel="import" href="/src/typio-app/typio-drill-creator.html">
-<link rel="import" href="/src/typio-app/typio-core-editor.html">
+<link rel="import" href="/src/typio-app/typio-drill-creator-screen.html">
+<link rel="import" href="/src/typio-app/typio-editor.html">
 
-<dom-module id="typio-drill-runner">
+<dom-module id="typio-drill-runner-screen">
   <template>
 
     <style include="shared-styles">
@@ -16,11 +16,27 @@
         display: block;
       }
       
-      #screen.ended-true typio-core-editor {
+      #screen.ended-true typio-editor {
         display: none;
       }
       #screen.ended-false #results {
         display: none;
+      }
+      
+      typio-editor {
+        display: block;
+        width: 1000px;
+        margin: 0 auto;
+        padding: 1cm;
+        position: fixed;
+        top: 64px;
+        bottom: 50px;
+        z-index: 40;
+        left: 50%;
+        margin-left: -500px; /* Half of the width */
+
+        overflow-y: hidden;
+        overflow-x: visible;
       }
 
       /* Hide paper-fab according the state. */
@@ -57,7 +73,7 @@
       
       <typio-stats id="stats" headless="true"></typio-stats>
 
-      <typio-core-editor id="editor" 
+      <typio-editor id="editor" 
           type="drill" 
           mode="scroll"
           content$="[[content]]"
@@ -65,7 +81,7 @@
           on-typing-ended="_typingEnded"
           font-size="large"
           preserve-spacing>
-      </typio-core-editor>
+      </typio-editor>
     
       <div id="results"><span class="wpm">[[wpm]] WPM</span></div>
     </div>  
@@ -80,9 +96,9 @@
      * @customElement
      * @polymer
      */
-    class TypioDrillRunner extends Polymer.Element {
+    class TypioDrillRunnerScreen extends Polymer.Element {
 
-      static get is() { return 'typio-drill-runner'; }
+      static get is() { return 'typio-drill-runner-screen'; }
       static get properties() {
         return {
 
@@ -139,7 +155,7 @@
       
       _drillChanged() {
         if (!this.drill) return;
-        this.content = TypioDrillCreator.generateDrill(this.drill);
+        this.content = TypioDrillCreatorScreen.generateDrill(this.drill);
         this.$.editor.refresh();
       }
       
@@ -167,7 +183,7 @@
       
       /** Restart the drill using a newly generated content. */
       renew() {
-        this.content = TypioDrillCreator.generateDrill(this.drill);
+        this.content = TypioDrillCreatorScreen.generateDrill(this.drill);
         this.restart();
       }
       
@@ -188,7 +204,7 @@
       }
 
     }
-    window.customElements.define(TypioDrillRunner.is, TypioDrillRunner);
+    window.customElements.define(TypioDrillRunnerScreen.is, TypioDrillRunnerScreen);
 
   </script>
 </dom-module>

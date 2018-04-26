@@ -2,6 +2,7 @@
 /build/
 env/
 /content/github/*.zip
+/content/github/*.tar.gz
 /content/github/*/
 \#*\#
 tmp/

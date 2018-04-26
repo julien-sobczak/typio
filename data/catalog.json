@@ -629,6 +629,23 @@
     "commit": "r87",
     "excludes": ["/examples", "/utils", "/build", "/docs"]
   },
+  {
+    "type": "code",
+    "origin": "github",
+    "name": "npm",
+    "url": "https://github.com/npm/npm",
+    "language": "JavaScript",
+    "commit": "v6.0.0",
+    "excludes": ["/doc", "/lib"]
+  },
+  {
+    "type": "code",
+    "origin": "github",
+    "name": "React Native",
+    "url": "https://github.com/facebook/react-native",
+    "language": "JavaScript",
+    "commit": "v0.54.4"
+  },
 
 
   {
@@ -849,6 +866,14 @@
     "language": "CSS",
     "commit": "v2.1.1"
   },
+  {
+    "type": "code",
+    "origin": "github",
+    "name": "Font Awesome",
+    "url": "https://github.com/FortAwesome/Font-Awesome",
+    "language": "CSS",
+    "commit": "v4.7.0"
+  },
 
 
   {
@@ -1036,6 +1061,14 @@
     "excludes": ["/test/"],
     "max_file_size": 50
   },
+  {
+    "type": "code",
+    "origin": "github",
+    "name": "ClamAV",
+    "url": "https://github.com/Cisco-Talos/clamav-devel",
+    "language": "C++",
+    "commit": "clamav-0.100.0"
+  },
 
 
   {
@@ -1104,6 +1137,15 @@
     "language": "C",
     "commit": "v2.14.2",
     "excludes": ["/t/", "/Documentation/", "/po/", "/crontib/"]
+  },
+  {
+    "type": "code",
+    "origin": "github",
+    "name": "BIND",
+    "url": "https://github.com/jschlyter/bind9",
+    "language": "C",
+    "commit": "v9_11_1",
+    "excludes": ["/bin/", "/doc/", "/lib/", "/contrib/", "/COPYRIGHT"]
   },
 
 
@@ -1196,6 +1238,15 @@
     "language": "Go",
     "commit": "v0.10.7",
     "excludes": ["/vendor/", "test-fixtures/", "/docs/", "/contrib/"]
+  },
+  {
+    "type": "code",
+    "origin": "github",
+    "name": "containerd",
+    "url": "https://github.com/containerd/containerd",
+    "language": "Go",
+    "commit": "v1.1.0",
+    "excludes": ["/vendor/"]
   },
 
 
@@ -1437,6 +1488,14 @@
   {
     "type": "code",
     "origin": "github",
+    "name": "1st Edition UNIX kernel",
+    "url": "https://github.com/c3x04/Unix-1st-Edition-jun72",
+    "language": "Assembly",
+    "commit": "master"
+  },
+  {
+    "type": "code",
+    "origin": "github",
     "name": "Prince of Persia",
     "url": "https://github.com/jmechner/Prince-of-Persia-Apple-II",
     "language": "Assembly",
@@ -1502,6 +1561,14 @@
     "commit": "demo3",
     "excludes": ["/notes/"]
   },
+  {
+    "type": "code",
+    "origin": "github",
+    "name": "Magit",
+    "url": "https://github.com/magit/magit",
+    "language": "Lisp",
+    "commit": "2.12.1"
+  },
 
 
   {
@@ -1538,6 +1605,17 @@
     "url": "https://github.com/rrrene/credo",
     "language": "Elixir",
     "commit": "v0.8.8"
+  },
+  
+  
+  {
+    "type": "code",
+    "origin": "github",
+    "name": "SWI-Prolog",
+    "url": "https://github.com/SWI-Prolog/swipl-devel",
+    "language": "Prolog",
+    "commit": "master",
+    "excludes": ["/src/Tests/charset/"]
   },
   
   

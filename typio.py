@@ -844,6 +844,7 @@ class TypioPrompt:
                 for fname in fileList:
                     aname = os.path.join(dirName, fname)        # absolute name
                     rname = aname.replace(local_dir + '/', '')  # relative name
+                    #print(rname)
                     append_file(rname)
                     
         # Save metadata
@@ -979,7 +980,7 @@ class TypioPrompt:
             """)
 
         def get_bottom_toolbar_tokens(cli):
-            return [(Token.Toolbar, ' This is a toolbar.')]
+            return [(Token.Toolbar, ' Your Personal Assistant.')]
 
         operatorsCommands = ['archive', 'clean', 'delete', 'download', 'extract', 'get', 'inspect', 'metadata', 'unarchive']
         entries = ['all', 'gutenberg', 'github'] + self.catalog.get_entry_names()

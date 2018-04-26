@@ -158,7 +158,7 @@
 
     </style>
 
-    <iron-ajax url="/drills.json" auto last-response="{{drills}}"></iron-ajax>
+    <iron-ajax url="/data/drills.json" auto last-response="{{drills}}"></iron-ajax>
     
     <div class="theme-transparent">
 
@@ -228,7 +228,7 @@
         return {
           
           /**
-           * JSON representing the file `/drills.json`.
+           * JSON representing the file `drills.json`.
            */
           drills: {
             type: Array,

@@ -3,9 +3,9 @@
    "css/**/*",
    "src/**/*",
    "images/**/*",
+   "data/**/*",
    "content/github/*.json",
    "content/gutenberg/**",
-   "catalog.json",
    "bower.json"
   ],
   "lint": {

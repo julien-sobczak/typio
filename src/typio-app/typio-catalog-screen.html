@@ -84,7 +84,7 @@
         tail="{{subroute}}">
     </app-route>
 
-    <iron-ajax url="/catalog.json" auto last-response="{{catalog}}"></iron-ajax>
+    <iron-ajax url="/data/catalog.json" auto last-response="{{catalog}}"></iron-ajax>
 
     <section id="catalog" class="theme-transparent">
       <h3>Practice</h3>
@@ -188,7 +188,7 @@
           //
 
           /**
-           * JSON representing the file `/catalog.json`.
+           * JSON representing the file `catalog.json`.
            */
           catalog: {
             type: Object

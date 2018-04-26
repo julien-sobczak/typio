@@ -1058,5 +1058,5 @@ class TypioPrompt:
 
 
 if __name__ == '__main__':
-    p = TypioPrompt('catalog.json')
+    p = TypioPrompt('data/catalog.json')
     p.prompt()

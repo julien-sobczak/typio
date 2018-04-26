@@ -44,8 +44,6 @@ $ polymer build
 
 This will create builds of your application in the `build/` directory, optimized to be served in production. 
 
-By default, GitHub project resources (under `/content/github/`) are not copied. You need to run the scripts `python link-content.py`. This script only copies enabled projects (useful to limit the space consumption on Firebase Hosting.)
-
 You can then serve the built versions by giving `polymer serve` a folder to serve from:
 
 ```

@@ -24,11 +24,6 @@
           // + typio-viewer properties
           //
 
-          intervals: {
-            type: Array,
-            value: []
-          },     
-
           /**
            * Let the user continues typing when an error occurs.
            * If false, the session will not end until all characters are valid.
@@ -62,15 +57,29 @@
             type: Boolean,
             value: false
           },
+          
+          
+          //
+          // Error management
+          //
 
       	  /**
       	   * True only when the user has mistyped.
       	   * False when the typo is fixed.
       	   */
-          _error: {
+          error: {
       	    type: Boolean,
       	    value: false
       	  },
+          
+          /** 
+           * The position where the error is located. (0-based index)
+           * Returns `undefined` if `error` is false.
+           */
+          positionError: {
+            type: Number,
+            value: undefined
+          },
 
 
           //
@@ -103,7 +112,9 @@
         this.unannotateAll('disabled');
         
         // reset variables
-        this._countValid = 0;
+        this.error = false;
+        this.positionError = undefined;
+        this._countValid = 0;        
 
         // reset ready-screen
         this.initialized = false;
@@ -224,7 +235,7 @@
         let valid = undefined;
 
         if (this.debug) {
-          console.log('Expected: [' + character.dataset.text + '] (' + character.dataset.text.charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + '), valid=' + this._isValid(character, keyName) + ', position=' + this.position + ', error=' + this._error + ', positionError=' + this._iError);
+          console.log('Expected: [' + character.dataset.text + '] (' + character.dataset.text.charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + '), valid=' + this._isValid(character, keyName) + ', position=' + this.position + ', error=' + this.error + ', positionError=' + this.positionError);
         }
         
         // Allow optional character to be passed
@@ -246,16 +257,16 @@
           valid = true;
           character.classList.remove('disabled');
           
-          if (this._error && this._iError == this.position) {
+          if (this.error && this.positionError == this.position) {
             console.log('[bug] remove error');
             character.classList.remove('char-invalid');
-            this._error = false;
-            this._iError = undefined;
+            this.error = false;
+            this.positionError = undefined;
           }
           
           if (this.continueOnErrors) {
             character.classList.remove('char-invalid');
-          } else if (this._error && !this.continueOnErrors) {
+          } else if (this.error && !this.continueOnErrors) {
             character.classList.add('char-invalid');
           } else {
 	          character.classList.remove('char-invalid');
@@ -263,10 +274,10 @@
 
           // Add marker to highlight mistyping at the end
           if (!character.classList.contains('wrong') && !character.classList.contains('useless')) {
-            character.classList.add(this._error ? 'useless' : 'right');
+            character.classList.add(this.error ? 'useless' : 'right');
           }
 
-          if (!this._error) {
+          if (!this.error) {
             this._countValid++;
           }
           this.advance();
@@ -275,8 +286,8 @@
           valid = false;
           character.classList.add('char-invalid');
           character.classList.add('wrong');
-          this._error = true;
-          this._iError = this.position;
+          this.error = true;
+          this.positionError = this.position;
           this.$.editor.classList.add('error');
           this.advance();
         }
@@ -334,9 +345,9 @@
           this._unselect();
           this._backwardOneCharacter();
 
-          if (this._error && this.position === this._iError) {
-            this._error = false;
-            this._iError = undefined;
+          if (this.error && this.position === this.positionError) {
+            this.error = false;
+            this.positionError = undefined;
             this.$.editor.classList.remove('error');
             this.$.editor.classList.remove('char-invalid');
             this.$.editor.classList.remove('wrong');
@@ -415,7 +426,7 @@
        * Have we reached the end of text?
        */
       _allowToEnd() {
-        return this._error == false || this.continueOnErrors;
+        return this.error == false || this.continueOnErrors;
       }
 
       _select() {
@@ -453,39 +464,7 @@
           }
         }
       }
-
-
-      // Intervals management
       
-      selectInterval(column) {
-        // FIXME does not work following typio-editor refactoring
-        if (this.$.editor.classList.contains('highlight-interval-' + column)) {
-          // unselect
-          this.$.editor.classList.remove('highlight-interval-' + column);
-        } else {
-          // unselect all
-          for (let i = 0; i < this.intervals.length; i++) {
-            this.$.editor.classList.remove('highlight-interval-' + i);
-          }
-          // and select the selected one
-          this.$.editor.classList.add('highlight-interval-' + column);
-        }
-
-        // Scroll to the interval in the editor
-        this._gotoIntervalPage(column);
-      }
-
-      // Return the page number (0-based) containing the ith interval.
-      _gotoIntervalPage(i) {
-        if (this.intervals.length < i) { // Intervals was not defined
-          return;
-        }
-        const indexFirstCharacter = this.intervals.indexOf(i);
-        const lineFirstCharacter = this._content.substring(0, indexFirstCharacter).split('\n').length + 1;
-        this._currentLine = Math.max(lineFirstCharacter - 5, 0); // Add some lines before to add context
-        this._scrollToLine(this._currentLine);
-      }
-
     }
     window.customElements.define(TypioEditor.is, TypioEditor);
 

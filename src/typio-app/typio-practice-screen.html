@@ -43,7 +43,7 @@
         margin: 0 auto;
         padding: 1cm;
         position: fixed;
-        top: 64px;
+        top: 80px;
         bottom: 50px;
         z-index: 40;
         left: 50%;
@@ -462,7 +462,7 @@
         this.$.editor.content = this._content;
         this.$.editor.classes = detail.classes;
         this.$.editor.logicalLines = detail.logicalLines;
-        this.$.editor.intervals = this.$.stats.intervals;
+        this._intervals = this.$.stats.intervals;
         
         if (detail.fontSize) this.$.editor.fontSize = detail.fontSize;
         if (detail.preserveSpacing) this.$.editor.preserveSpacing = detail.preserveSpacing;
@@ -518,9 +518,13 @@
         if (!this._chartEventsListened) {
           google.visualization.events.addListener(this.$.minichart._chart, 'select', () => {
             let selection = this.$.minichart._chart.getSelection();
-            if (selection.length) {
-              this.$.editor.selectInterval(selection[0].row);
-            }
+            let column = selection[0].row;
+            
+            // Highlight the characters belonging to the selected interval
+            let startIndex = this._intervals.indexOf(column);
+            let endIndex = this._intervals.lastIndexOf(column);
+            this.$.editor.highlightBetwen(startIndex, endIndex + 1, true);
+            this.$.editor.position = startIndex;
           });
           this._chartEventsListened = true;
         }
@@ -594,6 +598,16 @@
       hideHeatmap() {
         this.$.heatmap.style.display = 'none';
       }   
+      
+      //
+      // Utils
+      //
+      
+      shortcutStart() {
+        if (this.started) return;
+        this.$.readyScreen.start();
+      }
+      
       
       static dynamicPaperColor(paperColor, actualValue, maxValue) {
         if (actualValue === 0) {

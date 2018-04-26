@@ -6,6 +6,8 @@
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/hardware-icons.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
@@ -114,6 +116,7 @@
         tail="{{subroute}}">
     </app-route>
 
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+enter" on-keys-pressed="start"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+i" on-keys-pressed="goToIntro"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+e" on-keys-pressed="goToDrillEditor"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+d" on-keys-pressed="goToDrillSession"></iron-a11y-keys>
@@ -125,6 +128,7 @@
         <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
         <a href="/intro">TYPIO</a>
         <div main-title></div>
+        <paper-icon-button icon="hardware:keyboard"></paper-icon-button>
         <a href="/catalog"><paper-icon-button icon="close"></paper-icon-button></a>
       </app-toolbar>
     </app-header>
@@ -268,6 +272,12 @@
       }
       goToCatalog() {
         this.set('route.path', '/catalog');
+      }
+      
+      start() {
+        if (this.route.path === '/editor') {
+          this.$.editor.shortcutStart();
+        }
       }
       
       _toggleDrawer() {

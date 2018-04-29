@@ -508,19 +508,35 @@
                 queue.push({ "path": path + name, "entry": entry[name] });
               } else { 
                 // File => add to result
+                let metadata = {}
+                
                 let props = entry[name];
                 let indexSize = props.indexOf('@');
                 let indexNbLines = props.indexOf('#');
+                let indexOpeningBracket = props.indexOf('[');
+                let indexComma = props.indexOf(',');
+                let indexClosingBracket = props.indexOf(']');
+                
                 let extension = props.substring(0, indexSize);
                 let size = parseInt(props.substring(indexSize + 1, indexNbLines));
-                let nbLines = parseInt(props.substring(indexNbLines + 1));
                 
-                metadata_uncompressed.files.push({
-                  'path': path + name,
-                  'extension': extension,
-                  'size': size,
-                  'lines': nbLines,
-                })                
+                metadata['path'] = path + name;
+                metadata['extension'] = extension;
+                metadata['size'] = size;
+                
+                if (indexOpeningBracket !== -1 && indexClosingBracket !== -1) {
+                  let nbLines = parseInt(props.substring(indexNbLines + 1), indexOpeningBracket);
+                  let commits = parseInt(props.substring(indexOpeningBracket + 1, indexComma));
+                  let activeDays = parseInt(props.substring(indexComma + 1. indexClosingBracket));
+                  metadata['lines'] = nbLines;
+                  metadata['commits'] = commits;
+                  metadata['activeDays'] = activeDays;
+                } else {
+                  let nbLines = parseInt(props.substring(indexNbLines + 1));
+                  metadata['lines'] = nbLines;
+                }
+                
+                metadata_uncompressed.files.push()                
               }
             } 
           }

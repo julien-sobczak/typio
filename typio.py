@@ -30,6 +30,7 @@ import re
 import requests
 import shutil
 import string
+import subprocess
 import tarfile
 import zipfile
 
@@ -148,6 +149,10 @@ class Entry:
 
     @property
     def url(self):
+        return self.data['url']
+
+    @property
+    def download_url(self):
         if self.type == 'code' and self.data['origin'] == 'github':
             # Ex: "https://github.com/junit-team/junit4/archive/r4.12.zip"
             url = self.data['url'] + '/archive/' + self.data['commit'] + '.zip'
@@ -326,17 +331,22 @@ class TypioPrompt:
     ## Command 'download'
     ##
 
-    def download_github(self, entry):
-        local_file = self.CONTENT_DIR + '/github/' + entry.slug + '.zip'
-
+    def download_github(self, entry, clone=True):
         print('Retrieving source code from Github...')
-        self._download_file(entry.url, local_file)
+        
+        if not clone:
+            local_file = self.CONTENT_DIR + '/github/' + entry.slug + '.zip'
+            self._download_file(entry.download_url, local_file)
+        else:
+            clone_url = entry.url + '.git'
+            local_dir = '/tmp/github/' + entry.slug
+            subprocess.run(['git', 'clone', clone_url, local_dir])
 
     def download_gutenberg(self, entry):
         local_file = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.txt'
 
         print('Retrieving script from Gutenberg...')
-        self._download_file(entry.url, local_file)
+        self._download_file(entry.download_url, local_file)
 
     def _download_file(self, url, to_file):
         # Do nothing if the archive was already downloaded
@@ -392,12 +402,14 @@ class TypioPrompt:
     def delete_github(self, entry):
         archive_file = self.CONTENT_DIR + '/github/' + entry.slug + '.zip'
         extracted_dir = self.CONTENT_DIR + '/github/' + entry.slug
+        extracted_tmp_dir = '/tmp/github/' + entry.slug
         metadata_file = self.CONTENT_DIR + '/github/' + entry.slug + '.json'
         archive_file2 = self.CONTENT_DIR + '/github/' + entry.slug + '.tar.gz'
 
-        if not os.path.isfile(archive_file) and \
-           not os.path.isdir(extracted_dir) and \
-           not os.path.isfile(metadata_file)and \
+        if not os.path.isfile(archive_file)     and \
+           not os.path.isdir(extracted_dir)     and \
+           not os.path.isdir(extracted_tmp_dir) and \
+           not os.path.isfile(metadata_file)    and \
            not os.path.isfile(archive_file2):
            print(Colors.warn("Nothing to delete"))
 
@@ -409,6 +421,10 @@ class TypioPrompt:
             shutil.rmtree(extracted_dir)
             print("Delete successfully folder '%s'." % Colors.file(extracted_dir))
 
+        if os.path.isdir(extracted_tmp_dir):
+            shutil.rmtree(extracted_tmp_dir)
+            print("Delete successfully folder '%s'." % Colors.file(extracted_tmp_dir))
+    
         if os.path.isfile(metadata_file):
             os.remove(metadata_file)
             print("Delete successfully file '%s'." % Colors.file(metadata_file))
@@ -442,9 +458,19 @@ class TypioPrompt:
         count_file = 0
         count_directory = 0
         size = 0
+        
+        local_dir = self.CONTENT_DIR + '/github/' + entry.slug
+        tmp_dir = '/tmp' + '/github/' + entry.slug + '/'
+        
+        # Check if repository was cloned
+        if os.path.exists(tmp_dir) and os.path.isdir(tmp_dir):
+            sources_dir = tmp_dir
+            cloned = True
+        else:
+            sources_dir = local_dir
+            cloned = False
 
-        local_dir = self.CONTENT_DIR + '/github/' + entry.slug + '/'
-        for root, dirs, files in os.walk(local_dir):
+        for root, dirs, files in os.walk(sources_dir):
             relative_root = root.replace(local_dir, '')
             ignorable_dirs  = [d for d in dirs  if entry.ignorable(os.path.join(relative_root, d), is_directory=True)]
             ignorable_files = [f for f in files if entry.ignorable(os.path.join(relative_root, f), is_directory=False)]
@@ -484,7 +510,17 @@ class TypioPrompt:
         total_size = 0
 
         local_dir = self.CONTENT_DIR + '/github/' + entry.slug
-        for dirName, subdirList, fileList in os.walk(local_dir):
+        tmp_dir = '/tmp' + '/github/' + entry.slug + '/'
+        
+        # Check if repository was cloned
+        if os.path.exists(tmp_dir) and os.path.isdir(tmp_dir):
+            sources_dir = tmp_dir
+            cloned = True
+        else:
+            sources_dir = local_dir
+            cloned = False
+            
+        for dirName, subdirList, fileList in os.walk(sources_dir):
             for fname in fileList:
                 aname = os.path.join(dirName, fname)        # absolute name
                 rname = aname.replace(local_dir + '/', '')  # relative name
@@ -508,7 +544,7 @@ class TypioPrompt:
                         sizes_per_folder[root_folder] += size
 
         # Print counters
-        print('Total size: %s\n' % human_size(total_size))
+        print('Total size: %s (cloned: %s)\n' % (human_size(total_size), cloned))
 
         print('Folder:')
         folder_sizes = ['%s: %s' % (folder, human_size(sizes_per_folder[folder]))
@@ -521,7 +557,6 @@ class TypioPrompt:
                                 for extension, count
                                 in cnt.most_common(15)]
         print('  ' + ' / '.join(extensions_sizes) + '\n')
-
 
     def inspect_gutenberg(self, entry):
         local_file = self.CONTENT_DIR + '/gutenberg/' + entry.slug + '.txt'
@@ -732,8 +767,37 @@ class TypioPrompt:
         format = 'compressed'  # Supported formats: 'flat', 'compressed'
         
         local_dir = self.CONTENT_DIR + '/github/' + entry.slug
-        metadata = {}
+        tmp_dir = '/tmp' + '/github/' + entry.slug
         
+        # Check if repository was cloned
+        if os.path.exists(tmp_dir) and os.path.isdir(tmp_dir):
+            sources_dir = tmp_dir
+            cloned = True
+        else:
+            sources_dir = local_dir
+            cloned = False
+                    
+        def stats(project_path):
+            """Get stats about most changed files ("Hot files")."""
+
+            stats = {}
+            p = re.compile('^\s*(.+?)\s*[.]*\s*(\d+)\s+(\d+)\s*$')
+            print('Determining the change frequency for each file...')
+            result = subprocess.run('(cd %s && git effort)' % project_path, shell=True, stdout=subprocess.PIPE)
+            
+            for line in result.stdout.decode('utf-8').split('\n'):
+                m = p.match(line)
+                if m:
+                    filepath, commits, active_days = m.group(1), m.group(2), m.group(3)
+                    stats[filepath] = {
+                        "commits": int(commits),
+                        "activeDays": int(active_days),
+                    }
+                    
+            return stats
+            
+        stats_per_file = stats(sources_dir)
+                
         if format == 'flat':
             # {
             #   <metadata>
@@ -759,7 +823,7 @@ class TypioPrompt:
             metadata['format'] = "flat"
             metadata['files'] = []        # and add files metadata
 
-            for dirName, subdirList, fileList in os.walk(local_dir):
+            for dirName, subdirList, fileList in os.walk(sources_dir):
                 for fname in fileList:
                     aname = os.path.join(dirName, fname)        # absolute name
                     rname = aname.replace(local_dir + '/', '')  # relative name
@@ -771,12 +835,17 @@ class TypioPrompt:
                         size = os.path.getsize(aname)
 
                         # Update metadata
-                        metadata['files'].append({
+                        file_metadata = {
                             'path': rname,
                             'extension': extension,
                             'size': size,
                             'lines': nb_lines,
-                        })
+                        }
+                        if rname in stats_per_file:
+                            file_metadata['commits'] = stats_per_file[rname]['commits']
+                            file_metadata['active_days'] = stats_per_file[rname]['active_days']
+                        metadata['files'].append(file_metadata)
+                        
 
         elif format == 'compressed':
             # (formatted only for description purposes)
@@ -834,16 +903,20 @@ class TypioPrompt:
                     size = os.path.getsize(aname)
                     extension = extension[1:]
                     props = "%s@%s#%s" % (extension, size, nb_lines)
+                    if path in stats_per_file:
+                        props += '[%s,%s]' % (
+                            stats_per_file[path]['commits'], 
+                            stats_per_file[path]['active_days'])
                     current_node[filename] = props
                     
-            for dirName, subdirList, fileList in os.walk(local_dir):
+            for dirName, subdirList, fileList in os.walk(sources_dir):
                 for dname in subdirList:
                     aname = os.path.join(dirName, dname)        # absolute name
-                    rname = aname.replace(local_dir + '/', '')  # relative name
+                    rname = aname.replace(sources_dir + '/', '')  # relative name
                     append_directory(rname)
                 for fname in fileList:
                     aname = os.path.join(dirName, fname)        # absolute name
-                    rname = aname.replace(local_dir + '/', '')  # relative name
+                    rname = aname.replace(sources_dir + '/', '')  # relative name
                     #print(rname)
                     append_file(rname)
                     
@@ -980,7 +1053,7 @@ class TypioPrompt:
             """)
 
         def get_bottom_toolbar_tokens(cli):
-            return [(Token.Toolbar, ' Your Personal Assistant.')]
+            return [(Token.Toolbar, ' TAB for completion')]
 
         operatorsCommands = ['archive', 'clean', 'delete', 'download', 'extract', 'get', 'inspect', 'metadata', 'unarchive']
         entries = ['all', 'gutenberg', 'github'] + self.catalog.get_entry_names()

@@ -91,8 +91,13 @@ $ pip install -r requirements.txt
 $ deactivate
 ```
 
-To launch the CLI, run the executable `typio`.
+The CLI has additional dependencies:
 
+```
+$ sudo apt-get install git-extras
+```
+
+To launch the CLI, run the executable `typio`.
 
 
 [dp]: https://en.wikipedia.org/wiki/Practice_(learning_method)#Deliberate_practice

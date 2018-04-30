@@ -152,7 +152,10 @@
 
       /* Highlight intervals using a CSS class. */
 
-      .highlight {
+      .highlight,
+      .highlight-mistyping .highlight,
+      .highlight-mistyping .highlight.useless,
+      .highlight-mistyping .highlight.wrong {
         background-color: Gold !important;
         outline: none !important;
         color: black !important;

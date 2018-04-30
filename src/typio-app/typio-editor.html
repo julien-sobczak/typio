@@ -260,6 +260,7 @@
           if (this.error && this.positionError == this.position) {
             console.log('[bug] remove error');
             character.classList.remove('char-invalid');
+            character.classList.remove('wrong');
             this.error = false;
             this.positionError = undefined;
           }

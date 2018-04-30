@@ -399,7 +399,7 @@
               },
               "hAxis": { "textPosition": "in", "textStyle": { "color": "black", "bold": true, "auraColor": "none" } },
               "vAxis": {
-                "textPosition": "int",
+                "textPosition": "in",
                 "minValue": 0,
                 "maxValue": 200,
                 "gridlines": { "count": 0 }
@@ -458,7 +458,9 @@
         this.$.stats.editableCharacters = this._calculateEditableCharacters(detail.content, detail.classes);
         
         this.showChart = this.$.readyScreen.showChart;
-        this.theme = this.$.readyScreen.theme;
+        console.log('theme', detail.theme);
+        this.theme = detail.theme;
+        this.$.editor.theme = detail.theme;
         this.$.editor.content = this._content;
         this.$.editor.classes = detail.classes;
         this.$.editor.logicalLines = detail.logicalLines;
@@ -518,12 +520,16 @@
         if (!this._chartEventsListened) {
           google.visualization.events.addListener(this.$.minichart._chart, 'select', () => {
             let selection = this.$.minichart._chart.getSelection();
+            if (!selection.length) {
+              return;
+            }
+
             let column = selection[0].row;
             
             // Highlight the characters belonging to the selected interval
             let startIndex = this._intervals.indexOf(column);
             let endIndex = this._intervals.lastIndexOf(column);
-            this.$.editor.highlightBetwen(startIndex, endIndex + 1, true);
+            this.$.editor.highlightBetween(startIndex, endIndex + 1, true);
             this.$.editor.position = startIndex;
           });
           this._chartEventsListened = true;
@@ -578,18 +584,18 @@
           fingerRepartition.rightHand.thumb,
         );
         this.$.hands.colorizeLeftHand({
-          littleFinger: TypioEditor.dynamicRedColor(fingerRepartition.leftHand.littleFinger, maxFingerCount),
-          ringFinger:   TypioEditor.dynamicRedColor(fingerRepartition.leftHand.ringFinger, maxFingerCount),
-          middleFinger: TypioEditor.dynamicRedColor(fingerRepartition.leftHand.middleFinger, maxFingerCount),
-          indexFinger:  TypioEditor.dynamicRedColor(fingerRepartition.leftHand.indexFinger, maxFingerCount),
-          thumb:        TypioEditor.dynamicRedColor(fingerRepartition.leftHand.thumb, maxFingerCount),
+          littleFinger: TypioPracticeScreen.dynamicRedColor(fingerRepartition.leftHand.littleFinger, maxFingerCount),
+          ringFinger:   TypioPracticeScreen.dynamicRedColor(fingerRepartition.leftHand.ringFinger, maxFingerCount),
+          middleFinger: TypioPracticeScreen.dynamicRedColor(fingerRepartition.leftHand.middleFinger, maxFingerCount),
+          indexFinger:  TypioPracticeScreen.dynamicRedColor(fingerRepartition.leftHand.indexFinger, maxFingerCount),
+          thumb:        TypioPracticeScreen.dynamicRedColor(fingerRepartition.leftHand.thumb, maxFingerCount),
         });
         this.$.hands.colorizeRightHand({
-          littleFinger: TypioEditor.dynamicRedColor(fingerRepartition.rightHand.littleFinger, maxFingerCount),
-          ringFinger:   TypioEditor.dynamicRedColor(fingerRepartition.rightHand.ringFinger, maxFingerCount),
-          middleFinger: TypioEditor.dynamicRedColor(fingerRepartition.rightHand.middleFinger, maxFingerCount),
-          indexFinger:  TypioEditor.dynamicRedColor(fingerRepartition.rightHand.indexFinger, maxFingerCount),
-          thumb:        TypioEditor.dynamicRedColor(fingerRepartition.rightHand.thumb, maxFingerCount),
+          littleFinger: TypioPracticeScreen.dynamicRedColor(fingerRepartition.rightHand.littleFinger, maxFingerCount),
+          ringFinger:   TypioPracticeScreen.dynamicRedColor(fingerRepartition.rightHand.ringFinger, maxFingerCount),
+          middleFinger: TypioPracticeScreen.dynamicRedColor(fingerRepartition.rightHand.middleFinger, maxFingerCount),
+          indexFinger:  TypioPracticeScreen.dynamicRedColor(fingerRepartition.rightHand.indexFinger, maxFingerCount),
+          thumb:        TypioPracticeScreen.dynamicRedColor(fingerRepartition.rightHand.thumb, maxFingerCount),
         });
         
         this.$.heatmap.style.display = 'block';
@@ -623,7 +629,7 @@
       }
       
       static dynamicRedColor(actualValue, maxValue) {
-        return TypioEditor.dynamicPaperColor('red', actualValue, maxValue);
+        return TypioPracticeScreen.dynamicPaperColor('red', actualValue, maxValue);
       }
 
     }

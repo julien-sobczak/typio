@@ -476,7 +476,8 @@
       let detail = {
         content: this.selection,
         logicalLines: this.logicalLines,
-        classes: this.classes
+        classes: this.classes,
+        theme: this.darkTheme ? 'dark' : 'light'
       };
       this.dispatchEvent(new CustomEvent('ready', {detail: detail}));
     }

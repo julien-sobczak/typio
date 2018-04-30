@@ -571,7 +571,7 @@
        * Add one or several annotations to the current character.
        */
       annotate(annotations) {
-        this.annotateAt(this._i);
+        this.annotateAt(this._i, annotations);
       }
       
       /**
@@ -585,7 +585,7 @@
        * Remove one or several annotations to the current character.
        */
       unannotate(annotations) {
-        this.unannotateAt(this._i);
+        this.unannotateAt(this._i, annotations);
       }
       
       /**
@@ -613,6 +613,33 @@
         return this.annotations().includes(annotation);
       }
       
+      /**
+       * Return if the ith character is annotated with the given annotation.
+       */
+      hasAnnotationAt(i, annotation) {
+        return this.annotationsAt(i).includes(annotation);
+      }
+      
+      /**
+       * Return if the specified character is annotated with the given annotation.
+       */
+      hasAnnotationElement(element, annotation) {
+        return element.includes(annotation);
+      }
+            
+      /**
+       * Annotate the editor instead of the current character.
+       */
+      annotateGlobal(annotations) {
+        this.$.editor.classList.add(annotations);
+      }
+      
+      /**
+       * Unannotate the editor instead of the current character.
+       */
+      unannotateGlobal(annotations) {
+        this.$.editor.classList.remove(annotations);
+      }
       
       //
       // Highlighting

@@ -230,52 +230,47 @@
           this.resume();
         }
 
-        let character = this.cursor();
-        let iCharacter = this.position;
         let valid = undefined;
 
         if (this.debug) {
-          console.log('Expected: [' + character.dataset.text + '] (' + character.dataset.text.charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + '), valid=' + this._isValid(character, keyName) + ', position=' + this.position + ', error=' + this.error + ', positionError=' + this.positionError);
+          console.log('Expected: [' + this.character() + '] (' + this.character().charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + '), valid=' + this._isValid(this.element(), keyName) + ', position=' + this.position + ', error=' + this.error + ', positionError=' + this.positionError);
         }
         
         // Allow optional character to be passed
-        if (character.classList.contains('optional') && 
+        if (this.hasAnnotation('optional') && 
               !this._isValid(this.element(), keyName) &&
                this._isValid(this._nextNonIgnorableElement(), keyName)) {
           this.advance();
-          character = this.cursor();
-          iCharacter = this.position;
         }
         
         if (keyName === 'Tab' && this._canAdvance()) {
           // advance to the next nonspace character
-          while (this.cursor().classList.contains('space')) {
+          while (this.hasAnnotation('space')) {
             this.advance(); 
           }
           
-        } else if (this._isValid(character, keyName)) {
+        } else if (this._isValid(this.element(), keyName)) {
           valid = true;
-          character.classList.remove('disabled');
+          this.unannotate('disabled');
           
           if (this.error && this.positionError == this.position) {
             console.log('[bug] remove error');
-            character.classList.remove('char-invalid');
-            character.classList.remove('wrong');
+            this.unannotate('char-invalid', 'wrong');
             this.error = false;
             this.positionError = undefined;
           }
           
           if (this.continueOnErrors) {
-            character.classList.remove('char-invalid');
+            this.unannotate('char-invalid');
           } else if (this.error && !this.continueOnErrors) {
-            character.classList.add('char-invalid');
+            this.annotate('char-invalid');
           } else {
-	          character.classList.remove('char-invalid');
+	          this.unannotate('char-invalid');
 	        }
 
           // Add marker to highlight mistyping at the end
-          if (!character.classList.contains('wrong') && !character.classList.contains('useless')) {
-            character.classList.add(this.error ? 'useless' : 'right');
+          if (!this.hasAnnotation('wrong') && !this.hasAnnotation('useless')) {
+            this.annotate(this.error ? 'useless' : 'right');
           }
 
           if (!this.error) {
@@ -285,11 +280,10 @@
           
         } else {
           valid = false;
-          character.classList.add('char-invalid');
-          character.classList.add('wrong');
           this.error = true;
           this.positionError = this.position;
-          this.$.editor.classList.add('error');
+          this.annotate('char-invalid', 'wrong');
+          this.annotateGlobal('error');
           this.advance();
         }
 
@@ -299,7 +293,7 @@
           "index": this.position,
           "indexValid": this._countValid,
           "line": this._currentLine,
-          "character": iCharacter, 
+          "character": this.position, 
           "keyName": keyName, 
           "valid": valid, 
           "accepted": accepted,         
@@ -328,7 +322,7 @@
         }
         
         // Allow space for some indentation characters
-        if (keyName === ' ' && character.classList.contains("allowSpace")) {
+        if (keyName === ' ' && this.hasAnnotationElement(character, "allowSpace")) {
           return true;
         }
         
@@ -349,9 +343,8 @@
           if (this.error && this.position === this.positionError) {
             this.error = false;
             this.positionError = undefined;
-            this.$.editor.classList.remove('error');
-            this.$.editor.classList.remove('char-invalid');
-            this.$.editor.classList.remove('wrong');
+            this.unannotateGlobal('error');
+            this.unannotate('char-invalid', 'wrong');
           }
         } while (this.hasAnnotation('ignorable'));
 
@@ -365,7 +358,7 @@
        */
       advance() {
         if (this.position >= 0) {
-          this.cursor().classList.remove('char-active');
+          this.unannotate('char-active');
         }
 
         if (this.endOfFile()) {
@@ -377,8 +370,7 @@
         }
 
         this._advanceOneCharacter();
-        while (!this.endOfFile() && this.hasAnnotation('ignorable')) { this._advanceOneCharacter(); }
-
+        while (!this.endOfFile() && this.hasAnnotation('ignorable')) { console.log('advance'); this._advanceOneCharacter(); }
         this._select();
       }
       
@@ -402,7 +394,7 @@
           this._triggerNewLine = false;
         }
 
-        if (this.cursor().classList.contains('backslash')) {
+        if (this.hasAnnotation('backslash')) {
           // We need to wait the user press 'Enter' before advance the line number.
           // Because if is press the wrong key, we will stay on the same line...
           this._triggerNewLine = true;
@@ -417,7 +409,7 @@
       _backwardOneCharacter() {
         this.position--;
         this._triggerNewLine = false;
-        if (this.cursor().classList.contains('backslash')) {
+        if (this.hasAnnotation('backslash')) {
           this._currentLine--;
           // FIXME what to do instead?
         }
@@ -431,36 +423,32 @@
       }
 
       _select() {
-        let element = this.cursor();
-        element.classList.remove('char-invalid');
-        element.classList.add('char-active');
-        element.classList.add('disabled');
+        this.unannotate('char-invalid');
+        this.annotate('char-active', 'disabled');
       }
 
       _unselect() {
-        let element = this.cursor();
-        element.classList.remove('char-active');
-        element.classList.remove('char-invalid');
-        element.classList.add('disabled');
+        this.unannotate('char-active', 'char-invalid');
+        this.annotate('disabled');
       }
       
       showMispellings() {
-        this.$.editor.classList.add('highlight-mistyping');
+        this.annotateGlobal('highlight-mistyping');
       }
       
       hideMispellings() {
-        this.$.editor.classList.remove('highlight-mistyping');
+        this.unannotateGlobal('highlight-mistyping');
       }
       
       /**
        * Return the next character which doesn't have the `ignorable` annotation.
        */
       _nextNonIgnorableElement() {
-        let i = this._i + 1;
+        let i = this.position + 1;
         while (true) {
           if (this.endOfFile()) return undefined;
           let element = this.elementAt(i++);
-          if (!element.classList.contains('ignorable')) {
+          if (!this.hasAnnotationElement(element, 'ignorable')) {
             return element;
           }
         }

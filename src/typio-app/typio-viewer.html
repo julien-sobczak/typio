@@ -42,10 +42,12 @@
       pre.preserveSpacing-false {
         white-space: normal; /* Disable pre default behavior*/
       }
+      pre.fontSize-normal span {
+      }
       pre.fontSize-large span {
         font-size: 150%;
         letter-spacing: 3px;
-        line-height: 2;
+        line-height: 2em;
         outline: none !important; 
       }
 
@@ -106,6 +108,7 @@
 
       #editor {
         height: 100%;
+        font-size: 12px;
         color: black;
       }
 
@@ -175,10 +178,10 @@
         text-align: center;
       }
       #pageControls.controls-false {
-        display: false;
+        display: none;
       }
       #pageControls.controls-true {
-        display: true;
+        display: block;
       }
       
     </style>
@@ -187,7 +190,7 @@
     <div id="content" class$="type-[[type]] mode-[[mode]] theme-[[theme]]">
       <pre id="editor" data-type$="[[type]]" class$="preserveSpacing-[[preserveSpacing]] fontSize-[[fontSize]]">[[_content]]</pre>
     </div> 
-    <div id="pageControls" class$="controls-[[_controls]]">
+    <div id="pageControls" class$="controls-[[controls]]">
       <paper-icon-button on-click="moveToFirstPage" icon="first-page"></paper-icon-button>
       <paper-icon-button on-click="moveToPreviousPage" icon="chevron-left"></paper-icon-button>
       <paper-icon-button on-click="moveToNextPage" icon="chevron-right"></paper-icon-button>
@@ -243,6 +246,15 @@
           },
           
           /**
+           * Performance optimisation.
+           * No need to decorate each character with its own tag in read-only mode. 
+           */
+          noCursorOptimization: {
+            type: Boolean,
+            value: false
+          },
+          
+          /**
            * Editor code style.
            * Name should match a CSS resource name /css/prism-{{theme}}.css.
            */
@@ -270,19 +282,6 @@
           },
 
           
-          //
-          // Developer options
-          //
-
-          /**
-           * Log debug information to the console.
-           */
-          debug: {
-            type: Boolean,
-            value: false
-          },
-
-
           //
           // Editor inner working properties
           //
@@ -334,6 +333,27 @@
             value: 'normal'
           },
           
+          
+          //
+          // Developer options
+          //
+
+          /**
+           * Log debug information to the console.
+           */
+          debug: {
+            type: Boolean,
+            value: false
+          },
+          
+          /**
+           * Log executing timings.
+           */
+          profile: {
+            type: Boolean,
+            value: false
+          },
+          
         };
       }
       
@@ -359,7 +379,9 @@
        * Update the position. The visible lines are automatically updated to reflect this change.
        */
       set position(i) {
-        if (this.debug) console.log('[typio-viewer] new position', i);
+        if (this.debug) {
+          console.log('[typio-viewer] new position', i);
+        }
         this._i = i;
 
         const previousLine = this._currentLine;
@@ -378,7 +400,7 @@
       //
       
       _contentChanged() {
-        console.log('[typio-viewer] content changed to', this._content);
+        console.log('[typio-viewer] content changed to', this._content.substring(0, 50) + '...');
         this._content = this.content;
         this.reset();
       }
@@ -409,10 +431,12 @@
        * Parse the selected content to determine tokens.
        */
       _parse() {
-        console.log('[typio-viewer] Number of displayable lines: ' + this.numberLinesOnScreen());
+        if (this.debug) {
+          console.log('[typio-viewer] Number of displayable lines: ' + this.numberLinesOnScreen());
+        }
 
         const startTime = performance.now();
-        console.log('[typio-viewer] _parse');
+        console.log('[typio-viewer] parsing...');
 
         this._characters = [];
         this._i = -1;
@@ -421,7 +445,9 @@
         this._length = this._content.length;
         this.numberLines = this._content.split('\n').length;
         
-        console.log('[typio-viewer] lexical parser ... done in ' + (performance.now() - startTime) + 'ms');
+        if (this.profile) {
+          console.log('[typio-viewer] lexical parser ... done in ' + (performance.now() - startTime) + 'ms');
+        }
 
         const classes = this.classes;
         const intervals = this.intervals;
@@ -429,69 +455,90 @@
 
         let fragment = document.createDocumentFragment();
 
-        console.log('[typio-viewer] Number of characters: ' + this._length);
+        if (this.debug) {
+          console.log('[typio-viewer] Number of characters: ' + this._length);
+        }
 
         let lineNumber = 0;
         let newLine = true;
 
-        for (let i = 0; i < this._length; i++) {
-          let charTxt = this._content[i]; // The original character
-          let charName = charTxt;        // The name as returned by the keypress/keyup event (see key property)
-          let charPrint = charTxt;       // The character print on screen
-
-          let charCode = this._content.charCodeAt(i);
+        let i = 0;
+        while (i < this._length) {
 
           let span = document.createElement('span');
           span.classList.add('character'); // add common classes here 
           if (classes && classes[i]) {
             span.classList.add(...classes[i]);
           } 
-          if (intervals) {
+          if (!this.noCursorOptimization && intervals) {
             span.classList.add('interval-' + intervals[i]);
           }
-
-          // HACK: http://www.adamkoch.com/2009/07/25/white-space-and-character-160/
-          if (charCode === 160) {
-            charName = ' ';
-            charCode = 32;
-          }
-
-          if (newLine && logicalLines && !logicalLines[lineNumber]) { // continuation line
-            charName = 'Continuation Line';
-            charPrint = ' <strong>&#11153;</strong> \n';
-            span.classList.add('continuation', 'ignorable');
-          }
-
-          if (charTxt == '\n') {
-            // Put Unicode return symbol as content &#9166; (should be displayed only when actived)
-            charName = 'Enter';
-            charPrint = ' <strong>&#9166;</strong> \n';
-            span.classList.add('print-on-focus');
+          
+          let spanText = '';
+          let spanHTML = '';  
+          
+          do {
             
-            // Allow user to press space or nothing for continuation return line
-            if (logicalLines && lineNumber + 1 < logicalLines.length && !logicalLines[lineNumber + 1]) {
-              span.classList.add('allowSpace', 'optional');
+            let charTxt = this._content[i]; // The original character
+            let charName = charTxt;         // The name as returned by the keypress/keyup event (see key property)
+            let charPrint = charTxt;        // The character print on screen
+            let charCode = this._content.charCodeAt(i);
+
+            // HACK: http://www.adamkoch.com/2009/07/25/white-space-and-character-160/
+            if (charCode === 160) {
+              charName = ' ';
+              charCode = 32;
             }
 
-            newLine = true;
-            lineNumber++;
-          } else {
-            newLine = false;
-          }
+            if (newLine && logicalLines && !logicalLines[lineNumber]) { // continuation line
+              charName = 'Continuation Line';
+              charPrint = ' <strong>&#11153;</strong> \n';
+              span.classList.add('continuation', 'ignorable');
+            }
 
-          span.dataset.text = charName;
-          span.innerHTML = charPrint;
+            if (charTxt == '\n') {
+              // Put Unicode return symbol as content &#9166; (should be displayed only when actived)
+              charName = 'Enter';
+              charPrint = ' <strong>&#9166;</strong> \n';
+              span.classList.add('print-on-focus');
+              
+              // Allow user to press space or nothing for continuation return line
+              if (logicalLines && lineNumber + 1 < logicalLines.length && !logicalLines[lineNumber + 1]) {
+                span.classList.add('allowSpace', 'optional');
+              }
+
+              newLine = true;
+              lineNumber++;
+            } else {
+              newLine = false;
+            }
+            
+            spanText += charName;
+            spanHTML += charPrint;
+            i++;
+            
+          // Optimization: sometimes, we don't need to create a span for each character.
+          // If several character share the same classes, just create a single span
+          // to reduce DOM parsing.
+          } while (this.noCursorOptimization && i < this._length && (!classes || TypioViewer.sameArrays(classes[i - 1], classes[i])));
+          
+          span.dataset.text = spanText;
+          span.innerHTML = spanHTML;
           fragment.appendChild(span);
         }
-
-        console.log('[typio-viewer] other parser ... done in ' + (performance.now() - startTime) + 'ms');
+        
+        if (this.profile) {
+          console.log('[typio-viewer] DOM construction done in ' + (performance.now() - startTime) + 'ms');
+        }
+        
         this.$.editor.innerHTML = '';
         this.$.editor.appendChild(fragment);
 
         this._characters = this.$.editor.querySelectorAll('.character');
 
-        const endTime = performance.now();
-        console.log('[typio-viewer] _parse ... done in ' + (endTime - startTime) + 'ms');
+        if (this.profile) {
+          console.log('[typio-viewer] parsing done in ' + (performance.now() - startTime) + 'ms');
+        }
       }
 
 
@@ -624,7 +671,7 @@
        * Return if the specified character is annotated with the given annotation.
        */
       hasAnnotationElement(element, annotation) {
-        return element.includes(annotation);
+        return element.classList.contains(annotation);
       }
             
       /**
@@ -774,7 +821,9 @@
         const numberLinesOnScreen = this.numberLinesOnScreen();
         const pageNumber = this.pageNumber();
         const numberLinesToScroll = (pageNumber > 1) ? (pageNumber - 1) * numberLinesOnScreen : 0;
-        console.log('[typio-viewer] Scroll to page ' + pageNumber + ' by shifting ' + numberLinesToScroll + ' lines');
+        if (this.debug) {
+          console.log('[typio-viewer] Scroll to page ' + pageNumber + ' by shifting ' + numberLinesToScroll + ' lines');
+        }
         this._scrollToLine(numberLinesToScroll);
       }
 
@@ -784,7 +833,9 @@
        */
       _scrollToLine(lineNumber) {
         if (lineNumber === this._firstLine) return; // optimization
-        console.log('[typio-viewer] Scroll to line ' + lineNumber);
+        if (this.debug) {
+          console.log('[typio-viewer] Scroll to line ' + lineNumber);
+        }
         this._firstLine = lineNumber;
         this.$.editor.style.marginTop = lineNumber * -1.5 + 'em'; // see #editor line-height property
       }
@@ -859,6 +910,20 @@
         let lineHeight = parseInt(style.lineHeight);
         //console.log('countLines', divHeight, lineHeight)
         return parseInt(divHeight / lineHeight);
+      }
+      
+      /**
+       * Compare two arrays to determine if they contain the same elements in the same order.
+       */
+      static sameArrays(arr1, arr2) {
+        if (!arr1 && !arr2) return true;
+        if (!arr1) return false;
+        if (!arr2) return false;
+        if (arr1.length !== arr2.length) return false;
+        for (let i = 0; i < arr1.length; i++) {
+          if (arr1[i] !== arr2[i]) return false;
+        }
+        return true;
       }
 
     }

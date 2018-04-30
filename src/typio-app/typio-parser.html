@@ -105,25 +105,60 @@
           targetContent: {
             type: String
           },
+          
+          
+          //
+          // Developer flags
+          //
+
+          debug: {
+            type: Boolean,
+            value: false
+          },
+          
+          profile: {
+            type: Boolean,
+            value: false
+          },
 
         };
       }
 
       parse() {
+        const startTime = performance.now();
+        
         this._preprocess();
+        if (this.profile) {
+          console.log('[typio-viewer] preprocessing done in ' + (performance.now() - startTime) + 'ms');
+        }      
         
         let length = this.targetContent.length;
         let classes = this._emptyClasses();
 
         this._determineSpaces(classes);
+        if (this.profile) {
+          console.log('[typio-viewer] spacing analysis done after ' + (performance.now() - startTime) + 'ms');
+        }
+        
         if (this.type === 'code') {
           this._determineTokens(classes);
           this._determineAdvancedTokens(classes);
+          if (this.profile) {
+            console.log('[typio-viewer] tokenization done after ' + (performance.now() - startTime) + 'ms');
+          }
         }
+        
         this._determineIgnorables(classes);
+        if (this.profile) {
+          console.log('[typio-viewer] ignorable analysis done after ' + (performance.now() - startTime) + 'ms');
+        }
         
         // Set output properties
         this.classes = classes;
+        
+        if (this.profile) {
+          console.log('[typio-viewer] preprocessing done in ' + (performance.now() - startTime) + 'ms');
+        } 
       }
 
       _emptyClasses() {
@@ -432,8 +467,6 @@
         
         this.targetContent = txt;
         this.logicalLines = logicalLines;
-        
-        console.log('[typio-parser] preprocess', txt, 'logicalLines=', logicalLines)
       }
 
 

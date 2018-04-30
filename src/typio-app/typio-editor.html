@@ -23,6 +23,12 @@
           // 
           // + typio-viewer properties
           //
+          
+          // Override
+          controls: {
+            type: Boolean,
+            value: false
+          },
 
           /**
            * Let the user continues typing when an error occurs.
@@ -110,6 +116,8 @@
         // reset editor styles
         this.unhighlightAll();
         this.unannotateAll('disabled');
+        this.unannotateGlobal('error');
+        this.hideMispellings();
         
         // reset variables
         this.error = false;
@@ -229,7 +237,8 @@
         if (this.paused) {
           this.resume();
         }
-
+        
+        const startTime = performance.now();
         let valid = undefined;
 
         if (this.debug) {
@@ -299,6 +308,10 @@
           "accepted": accepted,         
         }
         this.dispatchEvent(new CustomEvent('character-entered', {detail: detail, bubbles: true, composed: true}));
+        
+        if (this.profile) {
+          console.log('[typio-editor] checking input done in ' + (performance.now() - startTime) + 'ms');
+        }
       }
 
       _isValid(character, keyName) {
@@ -434,10 +447,12 @@
       
       showMispellings() {
         this.annotateGlobal('highlight-mistyping');
+        this.controls = true;
       }
       
       hideMispellings() {
         this.unannotateGlobal('highlight-mistyping');
+        this.controls = false;
       }
       
       /**

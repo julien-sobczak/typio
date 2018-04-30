@@ -525,7 +525,7 @@
                 metadata['size'] = size;
                 
                 if (indexOpeningBracket !== -1 && indexClosingBracket !== -1) {
-                  let nbLines = parseInt(props.substring(indexNbLines + 1), indexOpeningBracket);
+                  let nbLines = parseInt(props.substring(indexNbLines + 1, indexOpeningBracket));
                   let commits = parseInt(props.substring(indexOpeningBracket + 1, indexComma));
                   let activeDays = parseInt(props.substring(indexComma + 1, indexClosingBracket));
                   metadata['lines'] = nbLines;
@@ -536,7 +536,7 @@
                   metadata['lines'] = nbLines;
                 }
                 
-                metadata_uncompressed.files.push()                
+                metadata_uncompressed.files.push(metadata);                
               }
             } 
           }

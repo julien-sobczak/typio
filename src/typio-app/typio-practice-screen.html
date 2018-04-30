@@ -218,7 +218,7 @@
           data-content$="[[_content]]"
           on-character-entered="_characterEntered"
           on-typing-ended="_typingEnded"
-          debug>
+          profile>
       </typio-editor>
       
       <div id="heatmap">
@@ -458,9 +458,9 @@
         this.$.stats.editableCharacters = this._calculateEditableCharacters(detail.content, detail.classes);
         
         this.showChart = this.$.readyScreen.showChart;
-        console.log('theme', detail.theme);
         this.theme = detail.theme;
         this.$.editor.theme = detail.theme;
+        this.$.editor.mode = detail.mode;
         this.$.editor.content = this._content;
         this.$.editor.classes = detail.classes;
         this.$.editor.logicalLines = detail.logicalLines;

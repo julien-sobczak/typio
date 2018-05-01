@@ -71,7 +71,7 @@
         <paper-fab id="fabClose" class="theme-light" icon="close" title="Close" on-click="close"></paper-fab>
       </div>
       
-      <typio-stats id="stats" headless="true"></typio-stats>
+      <typio-stats id="stats"></typio-stats>
 
       <typio-editor id="editor" 
           type="drill" 
@@ -200,7 +200,7 @@
       _typingEnded(e, detail) {
         this.$.stats.stopTimer();
         this.ended = true;
-        this.wpm = this.$.stats.wpm;
+        this.wpm = this.$.stats.summary.wpm;
       }
 
     }

@@ -231,7 +231,14 @@
         }
 
         this._selectedPage = pageData.view;
+
+        // Hide the menu when displaying introduction page
         this.menuVisible = this._selectedPage !== 'intro';
+        
+        // Cancel the editor to stop listening keypress
+        if (oldPageData && oldPageData.view === 'editor') {
+          this.$.editor.cancel();
+        }
         
         if (map[pageData.view] != null) {
           Polymer.AppLayout.scroll({ top: map[pageData.view], behavior: 'silent' });

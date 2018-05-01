@@ -58,13 +58,17 @@
        * Statistics panel
        */
 
-      #stats {
+      #statsPanel {
         position: fixed;
         top: 0;
         right: 0;
         padding: 1in;
         transition: width 0.5s, height 0.5s;
       }
+      
+      /*
+       * Main chart
+       */
 
       #chart {
         display: none;
@@ -182,9 +186,64 @@
       #screen.ended-false #fabRestart { display: none;  }
       #screen.ended-true  #fabRestart { display: block; }
 
+
+      /*
+       * statistics
+       */
+
+       #statsPanel .elapsedTime {
+         font-size: 12px;
+         color: gray;
+       }
+
+       #statsPanel .wpm {
+         font-weight: bold;
+         font-size: 1.7em;
+       }
+       
+       #statsPanel #table {
+         margin-bottom: 25px;
+       }
+
+       #statsInProgress, 
+       #statsFinished {
+         display: none;
+       }
+       #screen.ended-false #statsInProgress {
+         display: block;
+       }
+       #screen.ended-true #statsFinished {
+         display: block;
+       }
+
+      ul#summary, ul#keys, ul#keyCombinations {
+        list-style-type: none;
+      }
+      ul#summary li {
+        margin: 10px 15px;
+      }
+      ul#keys li {
+        display: inline-block;
+      }
+      .key {
+        display: inline-block;
+        height: 35px;
+        width: 35px;
+        padding: 10px 10px;
+        text-align: center;
+        color: white;
+        font-family: var(--logo-font-family);
+        background-color: var(--typio-bg-color);
+        margin: 10px 15px;
+        border-radius: 3px;
+        box-shadow: 2px 2px gray;
+      }
+      
+      
+
     </style>
 
-
+    <!-- Configure the content -->
     <typio-ready-screen id="readyScreen"
         type="[[type]]"
         language="[[language]]"
@@ -194,6 +253,9 @@
         mode="{{mode}}"
         on-ready="start">
     </typio-ready-screen>
+    
+    <!-- Get stats about practice session -->
+    <typio-stats id="stats"></typio-stats>
 
 
     <div id="screen" class$="initialized-[[initialized]] showChart-{{showChart}} mode-{{mode}} started-{{started}} ended-{{ended}} theme-{{theme}}">
@@ -209,7 +271,37 @@
         <paper-fab id="fabRestart" icon="autorenew" title="Restart" on-click="restart"></paper-fab>
       </div>
       
-      <typio-stats id="stats"></typio-stats>
+      <div id="statsPanel">
+        <span id="statsInProgress" class="wpm">[[currentWpm]] WPM</span>
+        
+        <div id="statsFinished">
+          <div>
+            <span>WPM <strong>[[statsSummary.wpm]]</strong> in [[statsSummary.elapsedTimeInS]]s</span>
+            <ul id="summary">
+              <li>Total characters: [[statsSummary.totalCharacters]]</li>
+              <li>Typeable characters: [[statsSummary.totalEditableCharacters]]</li>
+              <li>Typed characters: [[statsSummary.enteredCharacters]]</li>
+              <li>Unproductive keystroke overhead: [[statsSummary.unproductiveKeystrokeOverhead]]%</li>
+            </ul>
+          </div>
+          <div>
+            <span>Most difficult keys</span>
+            <ul id="keys">
+              <template is="dom-repeat" items="{{mostDifficultKeys}}">
+              <li><span class="key">[[item.character]]</span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
+              </template>
+            </ul>
+          </div>
+          <div>
+            <span>Most difficult key combinations</span>
+            <ul id="keyCombinations">
+              <template is="dom-repeat" items="{{mostDifficultKeyCombinations}}">
+              <li><span class="key" inner-h-t-m-l="[[item.fromCharacter]]"></span> &rarr; <span class="key" inner-h-t-m-l="[[item.toCharacter]]"></span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
+              </template>
+            </ul>
+          </div>
+        </div>        
+      </div>
 
       <typio-editor id="editor" 
           data-type$="[[type]]" 
@@ -455,7 +547,7 @@
         this.initialized = true;
         
         this._content = detail.content;
-        this.$.stats.editableCharacters = this._calculateEditableCharacters(detail.content, detail.classes);
+        this.$.stats.init(detail.content, detail.classes);
         
         this.showChart = this.$.readyScreen.showChart;
         this.theme = detail.theme;
@@ -472,13 +564,11 @@
         console.log('[typio-editor] launching editor...');
         this.$.editor.start();
       }
-
-      _calculateEditableCharacters(content, classes) {
-        let editableCharacters = new Array(content.length);
-        for (let i = 0; i < content.length; i++) {
-          editableCharacters[i] = !classes[i].includes('ignorable');
+      
+      cancel() {
+        if (this.started) {
+          this.$.editor.cancel();
         }
-        return editableCharacters;
       }
 
       _characterEntered(e, detail) {
@@ -488,7 +578,8 @@
           this.started = true;
         }
         this.$.stats.newCharacter(detail.character, detail.keyName, detail.valid, detail.accepted);
-
+        this.currentWpm = this.$.stats.currentWpm;
+        
         // Update charts
         this.$.chart.style.display = 'block !important';
         this.$.chart.rows = this.$.stats.wpmPerInterval();
@@ -496,11 +587,20 @@
       }
 
       _typingEnded() {
-        this.ended = true;
+        // Show stats
         this.$.stats.stopTimer();
+        this.statsSummary = this.$.stats.summary;
+        this.mostDifficultKeys = this.$.stats.mostDifficultKeys(3);
+        this.mostDifficultKeyCombinations = this.$.stats.mostDifficultKeyCombinations(3);
+        
+        // Show minichart
         this._updateMinichart();
+        
+        // Highlight errors
         this.$.editor.showMispellings();
         this.$.editor.moveToFirstPage();
+        
+        this.ended = true; // trigger changes on screen        
       }
 
       _updateMinichart() {

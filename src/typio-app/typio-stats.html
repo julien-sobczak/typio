@@ -1,97 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-<link rel="import" href="/src/typio-app/shared-styles.html">
-
 <dom-module id="typio-stats">
-  <template>
-    <style include="shared-styles">
-
-      :host {
-      }
-
-      .wpm {
-        font-weight: bold;
-        font-size: 1.7em;
-      }
-
-      ul#stats, ul#keys, ul#keyCombinations {
-        list-style-type: none;
-      }
-      ul#stats li {
-        margin: 10px 15px;
-      }
-      ul#keys li {
-        display: inline-block;
-      }
-      .key {
-        display: inline-block;
-        height: 35px;
-        width: 35px;
-        padding: 10px 10px;
-        text-align: center;
-        color: white;
-        font-family: var(--logo-font-family);
-        background-color: var(--typio-bg-color);
-        margin: 10px 15px;
-        border-radius: 3px;
-        box-shadow: 2px 2px gray;
-      }
-      .elapsedTime {
-        font-size: 12px;
-        color: gray;
-      }
-
-      #table {
-        margin-bottom: 25px;
-      }
-
-      #stats.headless-true {
-        display: none;
-      }
-      #stats.ended-true #statsInProgress {
-        display: none;
-      }
-      #stats.ended-false #statsFinished {
-        display: none;
-      }
-
-    </style>
-
-    <div id="stats" class$="ended-{{_ended}} headless-{{headless}}">
-      <span id="statsInProgress" class="wpm">[[currentWpm]] WPM</span>
-      
-      <div id="statsFinished">
-        <div>
-          <span>WPM <strong>[[wpm]]</strong> in [[elapsedTimeInS]]s</span>
-          <ul id="stats">
-            <li>Total characters: [[totalCharacters]]</li>
-            <li>Typeable characters: [[totalEditableCharacters]]</li>
-            <li>Typed characters: [[enteredCharacters]]</li>
-            <li>Unproductive keystroke overhead: [[unproductiveKeystrokeOverhead]]%</li>
-          </ul>
-        </div>
-        <div>
-          <span>Most difficult keys</span>
-          <ul id="keys">
-            <template is="dom-repeat" items="{{mostDifficultKeys}}">
-            <li><span class="key">[[item.character]]</span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
-            </template>
-          </ul>
-        </div>
-        <div>
-          <span>Most difficult key combinations</span>
-          <ul id="keyCombinations">
-            <template is="dom-repeat" items="{{mostDifficultKeyCombinations}}">
-            <li><span class="key" inner-h-t-m-l="[[item.fromCharacter]]"></span> &rarr; <span class="key" inner-h-t-m-l="[[item.toCharacter]]"></span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
-            </template>
-          </ul>
-        </div>
-      </div>
-      
-    </div>
-
-  </template>
-
   <script>
 
     /**
@@ -103,16 +12,6 @@
       static get is() { return 'typio-stats'; }
       static get properties() {
         return {
-
-          /**
-           * Display nothing in headless mode. 
-           * Metrics could be retrieved using the API instead.
-           */
-          headless: {
-            type: Boolean,
-            value: false
-          },
-
 
           /**
            * True when the timer is over.
@@ -183,18 +82,6 @@
             value: 0
           },
 
-
-          /**
-           * A raw value to represent the editable characters among the total characters.
-           *
-           * See `_parseEditableCharacters` for supported formats.
-           */
-          editableCharacters: {
-            type: Object,
-            value: null,
-            observer: '_editableCharactersChanged'
-          },
-
           /**
            * A boolean character for each charcter (from 0 to `totalCharacters`)
            * that determines if the character should be entered.
@@ -205,7 +92,7 @@
           },
 
           /**
-          * An index number for each character (from 0 to `intervalNumber` - 1)
+          * An index number for each character (from 0 to `numberOfIntervals` - 1)
           * that determines in which interval the character belongs.
           *
           * This could be used to show a progress chart.
@@ -236,48 +123,11 @@
           //
           // Summary statistics
           //
-
-          /**
-           *
-           */
-          unproductiveKeystrokeOverhead: {
-            type: Number,
-            //readOnly: true,
-            value: 0
-          },
-
-          /**
-           *
-           */
-          elapsedTimeInS: {
-            type: Number,
-            //readOnly: true,
-            value: 0
-          },
-
-          /**
-           *
-           */
-          wpm: {
-            type: Number,
-            //readOnly: true,
-            value: 0
-          },
-
-          /**
-           *
-           */
-          mostDifficultKeys: {
-            type: Array,
-            value: []
-          },
-
-          /**
-           *
-           */
-          mostDifficultKeyCombinations: {
-            type: Array,
-            value: []
+          
+          summary: {
+            type: Object,
+            readOnly: true,
+            value: null
           },
 
 
@@ -288,7 +138,7 @@
           /**
            * The number of intervals to use to split the text.
            */
-          intervalNumber: {
+          numberOfIntervals: {
             type: Number,
             value: 10
           },
@@ -316,14 +166,7 @@
 
         this.reset();
       }
-
-      _editableCharactersChanged() {
-        this._editables = this._parseEditableCharacters(this.editableCharacters);
-        this._setTotalCharacters(this._editables.length);
-        this._setTotalEditableCharacters(this._countEditableCharacters());
-        this._determineIntervals();
-      }
-
+      
       reset() {
         this._setTotalCharacters(0);
         this._setTotalEditableCharacters(0);
@@ -337,27 +180,35 @@
         this._inputs = [];
         this.intervals = [];
       }
+      
+      init(content, classes = undefined) {
+        this.content = content;
+        this.classes = classes;
+        
+        // Be sure `classes` is valid 
+        if (!classes) {
+          this.classes = new Array();
+          for (let i = 0; i < this.content.length; i++) {
+            this.classes.push([]);
+          }
+        }
+
+        this._editables = this._calculateEditableCharacters();
+        this._setTotalCharacters(this._editables.length);
+        this._setTotalEditableCharacters(this._countEditableCharacters());
+        this._determineIntervals();
+      }
 
       /**
-       * The most basic accepted format is an array of boolean value (false means ignorable characters).
-       *
-       * A string format is supported ('X' represents false and '-' represent true).
-       * This syntax is particulary adapted for unit test to avoid large illisible arrays.
+       * Build an array having the same length as `content`. The ith element is
+       * true if the character is editable (non-ignorable) by the user.
        */
-      _parseEditableCharacters(editables) {
-        if (Array.isArray(editables)) {
-          return editables;
+      _calculateEditableCharacters() {
+        let editables = new Array(this.content.length);
+        for (let i = 0; i < this.content.length; i++) {
+          editables[i] = !this.classes[i].includes('ignorable');
         }
-
-        if (typeof(editables) === 'string') {
-          let result = [];
-          for (let i = 0; i < editables.length; i++) {
-            result.push(editables.charAt(i) === 'X' ? false : true);
-          }
-          return result;
-        }
-
-        return [];
+        return editables;
       }
 
 
@@ -371,8 +222,8 @@
 
       stopTimer(timestamp = new Date()) {
         this._endTimestamp = timestamp;
-        this._ended = true;
-        this._calculateSummaryStatistics();
+        this._ended = true;        
+        this.calculateSummaryStatistics();
       }
 
       resumeTimer() {
@@ -385,8 +236,15 @@
       //
       // Input
       // (Accept input from the user)
+      //
 
       newCharacter(index, character, valid, accepted, timestamp = new Date()) {
+        // startTimer() is optional. If not called, we trigger the watch on first character.
+        if (!this._startTimestamp) this._startTimestamp = timestamp;
+        // stopTimer() is optional. If called, it will overriden this value. Otherwise, 
+        // we consider the last entered input timestamp.
+        this._endTimestamp = timestamp;
+        
         if (character === 'Enter') character = '\\n';
         let durationInMs = timestamp - this._startTimestamp;
         for (let i = this._inputs.length - 1; i >= 0; i--) {
@@ -417,9 +275,9 @@
 
         // Assign an interval number to each character
         // Dispatch uniformly editable characters among intervals.
-        const charactersPerInterval = Math.floor(this.totalEditableCharacters / this.intervalNumber);
+        const charactersPerInterval = Math.max(Math.floor(this.totalEditableCharacters / this.numberOfIntervals), 1);
         // = change interval when `charactersPerInterval` has been entered in the current interval
-
+        
         let currentInterval = 0;
         let countEditableCharactersInCurrentInterval = 0;
         for (let editable of this._editables) {
@@ -427,7 +285,7 @@
 
           if (editable) countEditableCharactersInCurrentInterval++;
           if (countEditableCharactersInCurrentInterval == charactersPerInterval &&
-            currentInterval + 1 < this.intervalNumber) {
+            currentInterval + 1 < this.numberOfIntervals) {
             // move to next interval
             currentInterval++;
             countEditableCharactersInCurrentInterval = 0;
@@ -458,7 +316,7 @@
       wpmPerInterval() {
         // Init the result to blank
         let result = [];
-        for (let i = 0; i < this.intervalNumber; i++) {
+        for (let i = 0; i < this.numberOfIntervals; i++) {
           result.push(["", undefined, "", ""]);
         }
 
@@ -521,12 +379,35 @@
       // Summary statistics
       //
 
-      _calculateSummaryStatistics() {
-        this.unproductiveKeystrokeOverhead = this._calculateUnproductiveKeystrokeOverhead();
-        this.elapsedTimeInS = this._calculateElapsedTimeInS();
-        this.wpm = this._calculateWpm();
-        this.mostDifficultKeys = this._mostDifficultKeys(3);
-        this.mostDifficultKeyCombinations = this._mostDifficultKeyCombinations(3);
+      calculateSummaryStatistics() {
+        this._setSummary({
+          // Export in progress stats
+          'totalCharacters': this.totalCharacters,
+          'totalEditableCharacters': this.totalEditableCharacters, 
+          'enteredCharacters': this.enteredCharacters,
+          
+          // and calculate global stats
+          'wpm': this._calculateEffectiveWpm(),
+          'theoricalWpm': this._calculateTheoricalWpm(),
+          'unproductiveKeystrokeOverhead': this._calculateUnproductiveKeystrokeOverhead(),
+          'elapsedTimeInS': this._calculateElapsedTimeInS(),
+          'elapsedTimeInMs': this._calculateElapsedTimeInMs(),
+        });
+      }
+      
+      _calculateEffectiveWpm() {
+        // see https://en.wikipedia.org/wiki/Words_per_minute for official definition
+        const wpm = Math.round(this.totalEditableCharacters / this._calculateElapsedTimeInS() * 60.0 / 5);
+        if (isFinite(wpm)) {
+          return wpm;
+        } else {
+          return 0;
+        }
+      }
+      
+      _calculateTheoricalWpm() {
+        // TODO
+        return this._calculateEffectiveWpm();
       }
 
       _calculateUnproductiveKeystrokeOverhead() {
@@ -540,11 +421,15 @@
         }
         return TypioStats.durationInS(this._startTimestamp, end);
       }
-
-      _calculateWpm() {
-        // see https://en.wikipedia.org/wiki/Words_per_minute for official definition
-        return Math.round(this.totalEditableCharacters / this.elapsedTimeInS * 60.0 / 5);
+      
+      _calculateElapsedTimeInMs() {
+        let end = this._endTimestamp;
+        if (!end) {
+          end = new Date();
+        }
+        return TypioStats.durationInMs(this._startTimestamp, end);
       }
+  
 
       //
       // Difficulties
@@ -564,14 +449,14 @@
        *   occurrences: 5
        * }
        */
-      _mostDifficultKeys(n = 10) {
+      mostDifficultKeys(n = 10) {
         let result = new Map();
 
         for (let input of this._inputs) {
           if (!input.valid) continue; // We are only interested in valid character
           if (!result.has(input.character)) {
             result.set(input.character, {
-              character: this._formatCharacter(input.character),
+              character: TypioStats._formatCharacter(input.character),
               totalInMs: 0,
               averageInMs: 0,
               minInMs: Number.MAX_VALUE,
@@ -601,7 +486,7 @@
       }
       
       getResponseTimeKeys() {
-        return this._mostDifficultKeys(0);
+        return this.mostDifficultKeys(0);
       }
 
       /**
@@ -619,7 +504,7 @@
        *   occurrences: 5
        * }
        */
-      _mostDifficultKeyCombinations(n = 10) {
+      mostDifficultKeyCombinations(n = 10) {
         let result = new Map();
         let prevCharacter = null;
 
@@ -630,8 +515,8 @@
             const key = prevCharacter + '->' + input.character;
             if (!result.has(key)) {
               result.set(key, {
-                fromCharacter: this._formatCharacter(prevCharacter),
-                toCharacter: this._formatCharacter(input.character),
+                fromCharacter: TypioStats._formatCharacter(prevCharacter),
+                toCharacter: TypioStats._formatCharacter(input.character),
                 totalInMs: 0,
                 averageInMs: 0,
                 minInMs: Number.MAX_VALUE,
@@ -658,19 +543,23 @@
         return new Array(...result.values()).sort((a, b) => b.averageInMs - a.averageInMs).slice(0, n);
       }
 
-      _formatCharacter(c) {
+
+      //
+      // Utils
+      //
+      
+      static _formatCharacter(c) {
         if (c === ' ') return '&empty;';
         if (c === '\n') return '&#9166;';
         return c;
       }
 
-
-      //
-      // Utils
-      //
-
       static durationInS(start, end) {
         return Math.round((end - start) / 1000);
+      }
+      
+      static durationInMs(start, end) {
+        return end - start;
       }
 
     }

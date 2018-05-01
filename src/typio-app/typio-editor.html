@@ -150,7 +150,7 @@
         // We listen for tab character (match any number of consecutive characters)
         this._keydownListener = event => {
           //console.log('keydown', event);
-          if (!this.started || event.ctrlKey) return;
+          if (!this.started || this.ended || event.ctrlKey) return;
           if (event.key !== 'Tab') return; // we are only interested by tabular character
           event.preventDefault();
           event.stopPropagation();
@@ -162,7 +162,7 @@
         // We listen keyup for nonprintable characters
         this._keyupListener = event => {
           //console.log('keyup', event);
-          if (!this.started || event.ctrlKey) return;
+          if (!this.started || this.ended || event.ctrlKey) return;
           if (event.key === 'Backspace') {
             this.backward();
           }
@@ -172,7 +172,7 @@
         // ... and keypress for printable ones (keypress support dead keys)
         this._keypressListener = event => {
           //console.log('keypress', event);
-          if (!this.started) return;
+          if (!this.started || this.ended) return;
           const keyName = event.key;
 
           if (keyName === 'Control') {
@@ -208,6 +208,11 @@
         this.initialized = true;
         this.annotateAll('disabled');
         this.advance();
+      }
+      
+      cancel() {
+        console.log('[typio-editor] cancelled');
+        this.ended = true;
       }
 
       /**

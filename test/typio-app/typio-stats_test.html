@@ -21,11 +21,37 @@
     </test-fixture>
 
     <script>
+    
+      class ContentBuilder {
+        
+        constructor() {
+          this.content = '';
+          this.classes = new Array();
+        }
+        
+        append(text, ...annotations) {
+          this.content += text;
+          for (let i = 0; i < text.length; i++) {
+            this.classes.push(annotations);
+          }
+          return this;
+        }
+        
+        annotate(index, ...classes) {
+          this.classes[index] = classes;
+          return this;
+        }
+        
+        build() {
+          return [this.content, this.classes];
+        }
+      }
+    
       suite('typio-stats', function() {
 
-        test('[_stats] enter a character at regular interval', function() {
+        test('[stats] enter a character at regular interval', function() {
           var element = fixture('DefaultFixture');
-          element.editableCharacters = "----------";
+          element.init("abcdefghij");
 
           // Check read-only property
           assert.equal(element.totalCharacters, 10);
@@ -45,12 +71,19 @@
           element.newCharacter(8, 'i', true, true, new Date("2017-12-19T12:42:05.500Z"));
           element.newCharacter(9, 'j', true, true, new Date("2017-12-19T12:42:06.000Z"));
           element.stopTimer(new Date("2017-12-19T12:42:07.000Z"));
-          assert.equal(element.wpm, 20);
+          assert.equal(element.summary.wpm, 20);
         });
 
-        test('[_stats] with ignorable characters', function() {
+        test('[stats] with ignorable characters', function() {
           var element = fixture('DefaultFixture');
-          element.editableCharacters = "XXX------X---X-";
+          element.init(...new ContentBuilder().
+            append("   ", "ignorable").
+            append("abcdef").
+            append("-", "ignorable").
+            append("ghi").
+            append("-", "ignorable").
+            append("j").
+            build());
 
           // Check read-only property
           assert.equal(element.totalCharacters, 15);
@@ -70,14 +103,18 @@
           element.newCharacter(8, 'i', true, true, new Date("2017-12-19T12:42:05.500Z"));
           element.newCharacter(9, 'j', true, true, new Date("2017-12-19T12:42:06.000Z"));
           element.stopTimer(new Date("2017-12-19T12:42:07.000Z"));
-          assert.equal(element.wpm, 20);
+          assert.equal(element.summary.wpm, 20);
         });
 
-
-        test('[_stats] check summary statistics', function(done) {
+        test('[stats] check summary statistics', function(done) {
           var element = fixture('DefaultFixture');
-          element.intervalNumber = 5;
-          element.editableCharacters = "XX---X--";
+          element.numberOfIntervals = 5;
+          element.init(...new ContentBuilder().
+            append("XX", "ignorable").
+            append("abc").
+            append("-", "ignorable").
+            append("de").
+            build());
 
           // Check read-only property
           assert.deepEqual(element.intervals, [0, 0, 0, 1, 2, 3, 3, 4]);
@@ -98,21 +135,27 @@
             assert.equal(element.totalCharacters, 8);
             assert.equal(element.totalEditableCharacters, 5);
             assert.equal(element.enteredCharacters, 6);
-            assert.equal(element.unproductiveKeystrokeOverhead, 20);
-            assert.equal(element.elapsedTimeInS, 6);
-            assert.equal(element.wpm, 10);
+            assert.equal(element.summary.unproductiveKeystrokeOverhead, 20);
+            assert.equal(element.summary.elapsedTimeInS, 6);
+            assert.equal(element.summary.wpm, 10);
 
             done();
           });
 
         });
 
-
-        test('[wpmPerInterval] WPM are available per interval', function() {
+        test('[stats] WPM are available per interval', function() {
           var element = fixture('DefaultFixture');
-          element.intervalNumber = 2;
+          element.numberOfIntervals = 2;
           element.minCharactersPerInterval = 3;
-          element.editableCharacters = "XX---X-X--";
+          element.init(...new ContentBuilder().
+            append("XX", "ignorable").
+            append("abc").
+            append("-", "ignorable").
+            append("d").
+            append("-", "ignorable").
+            append("ef").
+            build());
 
           // Check read-only property
           assert.deepEqual(element.intervals, [0, 0, 0, 0, 0, 1, 1, 1, 1, 1]);
@@ -145,7 +188,7 @@
 
         test('[mostDifficultKeys] return the characters from most difficult to the easiest', function(done) {
           var element = fixture('DefaultFixture');
-          element.editableCharacters = "----------";
+          element.init("abab bba a");
 
           // Simulate key press
           let timer = new Date("2017-12-19T12:42:01.000Z")
@@ -164,7 +207,7 @@
 
           flush(function() {
 
-            const characters = element._mostDifficultKeys(3);
+            const characters = element.mostDifficultKeys(3);
             const first = characters[0];
             const second = characters[1];
             const third = characters[2];
@@ -194,7 +237,7 @@
 
         test('[mostDifficultKeyCombinations] return the combinations of character from most difficult to the easiest', function(done) {
           var element = fixture('DefaultFixture');
-          element.editableCharacters = "----------";
+          element.init("[{k:[{{k:]");
 
           // Simulate key press
           let timer = new Date("2017-12-19T12:42:01.000Z")
@@ -213,7 +256,7 @@
 
           flush(function() {
 
-            const characters = element._mostDifficultKeyCombinations(3);
+            const characters = element.mostDifficultKeyCombinations(3);
             const first = characters[0];
             const second = characters[1];
             const third = characters[2];
@@ -242,6 +285,41 @@
             done();
           });
 
+        });
+        
+        test('[timer] start and stop are optional', function() {
+          var element = fixture('DefaultFixture');
+          element.init("ab");
+
+          // Simulate key press
+          let timer = new Date("2017-12-19T12:42:01.000Z")
+          element.newCharacter(0, 'a', true, true, timer = new Date(timer.getTime() + 10));
+          element.newCharacter(1, 'b', true, true, timer = new Date(timer.getTime() + 5));
+          element.calculateSummaryStatistics();
+          
+          assert.equal(element.summary.wpm, 0);
+          assert.equal(element.summary.elapsedTimeInMs, 5);
+        });
+        
+        test('[stats] theorical WPM', function() {
+          var element = fixture('DefaultFixture');
+          element.init("abcde");
+
+          // Simulate key press
+          let timer = new Date("2017-12-19T12:42:01.000Z")
+          element.newCharacter(0, 'a', true,  true,  timer = new Date(timer.getTime() + 0));
+          element.newCharacter(1, 'c', false, false, timer = new Date(timer.getTime() + 5));
+          element.newCharacter(1, 'b', true,  true,  timer = new Date(timer.getTime() + 20));
+          element.newCharacter(2, 'd', false, false, timer = new Date(timer.getTime() + 25));
+          element.newCharacter(2, 'b', false, false, timer = new Date(timer.getTime() + 30));
+          element.newCharacter(2, 'c', true,  true,  timer = new Date(timer.getTime() + 50));
+          element.newCharacter(3, 'd', true,  true,  timer = new Date(timer.getTime() + 60));
+          element.newCharacter(4, 'f', false, false, timer = new Date(timer.getTime() + 80));
+          element.newCharacter(4, 'e', true,  true,  timer = new Date(timer.getTime() + 100));
+          element.calculateSummaryStatistics();
+          
+          assert.equal(element.summary.wpm, 80);
+          assert.equal(element.summary.theoricalWpm, 50);
         });
 
 

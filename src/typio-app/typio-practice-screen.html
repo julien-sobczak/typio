@@ -111,12 +111,22 @@
         position: fixed;
         height: 200px;
         width: 250px;
-        top: 150px;
+        top: 100px;
+        left: 50px;
+      }
+      
+      #heatmapp {
+        display: none;
+        position: fixed;
+        height: 150px;
+        width: 250px;
+        bottom: 50px;
         left: 50px;
       }
 
       /* Displayed only when session is over. */
-      #screen.ended-true #minichart {
+      #screen.ended-true #minichart, 
+      #screen.ended-true #heatmapp {
         display: block !important;
       }
       
@@ -278,6 +288,7 @@
           <div>
             <span>WPM <strong>[[statsSummary.wpm]]</strong> in [[statsSummary.elapsedTimeInS]]s</span>
             <ul id="summary">
+              <li>WPM if no error: [[statsSummary.theoricalWpm]]</li>
               <li>Total characters: [[statsSummary.totalCharacters]]</li>
               <li>Typeable characters: [[statsSummary.totalEditableCharacters]]</li>
               <li>Typed characters: [[statsSummary.enteredCharacters]]</li>
@@ -333,6 +344,12 @@
         options="[[chartOptions]]"
         cols="[[chartCols]]"
         rows='[]'>
+      </google-chart>
+      
+      <google-chart id="heatmapp"
+        type="bar"
+        options='[[heatmapOptions]]'
+        data='[[heatmapData]]'>
       </google-chart>
 
     </div>
@@ -501,6 +518,34 @@
               "annotations": {"textStyle": { "color": "orange"} }
             }
           },
+          
+          heatmapOptions: {
+            type: Object,
+            readOnly: true,
+            value: {
+              orientation: 'horizontal',
+              width: 250,
+              height: 150,
+              legend: { position: 'none' },
+              bar: { groupWidth: '100%' },
+              bars: 'horizontal',
+              isStacked: 'percent',
+              theme: 'maximized',
+              vAxis: { 
+                textPosition: 'none'
+              },
+              hAxis: {
+                textPosition: 'none'
+              }
+            }
+          },
+          
+          heatmapData: {
+            type: Array,
+            readOnly: true,
+            value: undefined
+          },
+          
 
           chartCols: {
             type: Array,
@@ -595,6 +640,7 @@
         
         // Show minichart
         this._updateMinichart();
+        this._updateHeatmap();
         
         // Highlight errors
         this.$.editor.showMispellings();
@@ -609,7 +655,13 @@
           this.$.minichart.rows[i][2] = ''; // remove annotations
         }
         this.$.minichart.redraw();
+        
         this.listenChartEvents();
+      }
+      
+      _updateHeatmap() {
+        this._setHeatmapData(this.$.stats.stackedBarData());
+        this.$.heatmapp.redraw();
       }
 
       /**

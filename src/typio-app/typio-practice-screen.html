@@ -191,7 +191,13 @@
         left: 50%;
         margin-left: 300px;
       }
-
+      
+      #mostDifficultWords {
+        position: fixed;
+        width: 500px;
+        right: 0;
+        bottom: 0;
+      }
 
     
 
@@ -380,6 +386,24 @@
           options='[[lineOptions]]'
           data='[[lineData]]'>
         </google-chart>
+        
+        <div id="mostDifficultWords">
+          <span>Most difficult words</span>
+          <table>
+            <thead>
+              <tr>
+                <th>Text</th><th>WPM</th>
+              </tr>
+            </thead>
+            <tbody>
+            <template is="dom-repeat" items="{{mostDifficultWords}}">
+              <tr>
+                <td class="text" inner-h-t-m-l="[[item.word]]"></td><td>[[item.wpm]]</td>
+              </tr>
+            </template>
+            </tbody>
+          </table>
+        </div>
         
         <div class="fabs">
           <paper-fab id="fabHeatmap" icon="close" title="Close" on-click="hideHeatmap"></paper-fab>
@@ -766,7 +790,7 @@
           this.$.stats.resumeTimer();
           this.started = true;
         }
-        this.$.stats.newCharacter(detail.character, detail.keyName, detail.valid, detail.accepted);
+        this.$.stats.newCharacter(detail.index, detail.character, detail.valid, detail.accepted);
         this.currentWpm = this.$.stats.currentWpm;
         
         // Update charts
@@ -781,6 +805,7 @@
         this.statsSummary = this.$.stats.summary;
         this.mostDifficultKeys = this.$.stats.mostDifficultKeys(3);
         this.mostDifficultKeyCombinations = this.$.stats.mostDifficultKeyCombinations(3);
+        this.mostDifficultWords = this.$.stats.mostDifficultWords(this._difficultWordOptions());
         
         // Show mini chart
         this._updateCharts();
@@ -790,6 +815,20 @@
         this.$.editor.moveToFirstPage();
         
         this.ended = true; // trigger changes on screen        
+      }
+      
+      _difficultWordOptions() {
+        const delimitersPerType = new Map();
+        delimitersPerType.set('code', '\n');
+        delimitersPerType.set('literature', '[\\s(),;.!?:"\']');
+        
+        let options = {
+          n: 10
+        }
+        if (delimitersPerType.has(this.type)) {
+          options.wordDelimiters = delimitersPerType.get(this.type);
+        }
+        return options;
       }
       
       _updateCharts() {

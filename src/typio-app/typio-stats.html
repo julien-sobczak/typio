@@ -521,6 +521,82 @@
         return new Array(...result.values()).sort((a, b) => b.averageInMs - a.averageInMs).slice(0, n);
       }
       
+      /**
+       * Return the most difficult words from the most difficult to the easier.
+       */
+      mostDifficultWords({n = 10, wordDelimiters = '\\s', minWordSize = 3} = {}) {
+        if (!Array.isArray(wordDelimiters)) {
+          wordDelimiters = [wordDelimiters];
+        }
+        
+        let words = [];
+        let currentWord = undefined;
+        let currentAnnotations = undefined;
+        let currentDurationInMs = undefined;
+        
+        let addWord = function(word, annotations, durationInMs) {
+          if (currentWord.length >= minWordSize) {
+            
+            let emptyAnnotations = true;
+            for (let annotation of annotations) {
+              if (annotation.length) {
+                emptyAnnotations = false;
+                break;
+              }
+            }
+            
+            words.push({
+                word: word,
+                durationInMs: durationInMs,
+                wpm: TypioStats._wpm(word.length, durationInMs),
+                annotations: emptyAnnotations ? null : annotations
+            });
+          }
+        }
+        
+        for (let i = 0; i < this._inputs.length; i++) {
+          let input = this._inputs[i];
+          if (!input.accepted) continue;
+          let isWordDelimiter = false;
+          for (let delimiter of wordDelimiters) {
+            if (input.character.match(delimiter)) {
+              isWordDelimiter = true;
+              break;
+            }
+          }
+          
+          if (currentWord) { // word in progress
+            if (isWordDelimiter) { // end of word
+              addWord(currentWord, currentAnnotations, currentDurationInMs);
+              
+              // reset for next word
+              currentWord = undefined;
+              currentAnnotations = undefined;
+              currentDurationInMs = undefined;
+            } else { 
+              currentWord += input.character;
+              currentAnnotations.push(this.classes[input.index]);
+              currentDurationInMs += input.durationInMs;
+            }
+          } else { // new word?
+            
+            if (isWordDelimiter || input.character.match('\\s')) continue; 
+            
+            currentWord = input.character;
+            currentAnnotations = [this.classes[input.index]];
+            currentDurationInMs = input.durationInMs;
+          }
+        }
+        
+        if (currentWord) { // do not forget last word
+          addWord(currentWord, currentAnnotations, currentDurationInMs);  
+        }
+        
+        words.sort((a, b) => a.wpm - b.wpm);
+        
+        return words.slice(0, n);
+      }
+      
       
       //
       // Charts

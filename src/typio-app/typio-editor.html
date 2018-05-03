@@ -244,8 +244,12 @@
         }
         
         const startTime = performance.now();
+        
         let valid = undefined;
-
+        let position = this.position;
+        let character = this.character();
+        let line = this._currentLine;
+        
         if (this.debug) {
           console.log('Expected: [' + this.character() + '] (' + this.character().charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + '), valid=' + this._isValid(this.element(), keyName) + ', position=' + this.position + ', error=' + this.error + ', positionError=' + this.positionError);
         }
@@ -304,10 +308,10 @@
         // Notify about entered input
         let accepted = valid || this.continueOnErrors;
         let detail = {
-          "index": this.position,
+          "index": position,
           "indexValid": this._countValid,
-          "line": this._currentLine,
-          "character": this.position, 
+          "line": line,
+          "character": TypioEditor.keyNameToChar(character),
           "keyName": keyName, 
           "valid": valid, 
           "accepted": accepted,         
@@ -472,6 +476,12 @@
             return element;
           }
         }
+      }
+      
+      static keyNameToChar(keyName) {
+        if (keyName === 'Enter') return '\n';
+        // Add specific cases here
+        return keyName;
       }
       
     }

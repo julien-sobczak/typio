@@ -389,6 +389,31 @@ print(i)}`;
           expect(parser.classes[index(1, 7)]).to.include.members(['backslash']); 
           expect(parser.classes[index(1, 7)]).to.not.include.members(['ignorable']); 
         });
+        
+        test('[code] mix ignore and line comments', function() {
+          var parser = fixture('DefaultFixture');
+
+          // Define settings
+          parser.ignoreComments = true;
+          parser.ignoreIndents = true;
+          parser.ignoreModuleDeclarations = false;
+
+          // Configure demo text
+          parser.type = "code";
+          parser.language = "Python";
+          parser.content =  `import sys
+
+def main():
+  print("Hello World")  # Greeting message
+  sys.exit(0)`; 
+          parser.parse();
+          // The newline after the comment should not be ignorable.
+          
+          const index = indexOf(parser.content);
+
+          expect(parser.classes[index(4, 43)]).to.include.members(['backslash']); 
+          expect(parser.classes[index(4, 43)]).to.not.include.members(['ignorable']); 
+        });
 
       });
     </script>

@@ -418,11 +418,25 @@
             }
           }
         }
-
+        
         // Otherwise, mark as editable
         for (let i = 0; i < len; i++) {
           if (!classes[i].includes('ignorable')) {
             classes[i].push('editable');
+          }
+        }
+        
+        // Be sure each editable line end with an editable new line
+        let countEditableCurrentLine = 0;
+        for (let i = 0; i < len; i++) {
+          if (classes[i].includes('backslash')) {
+            if (countEditableCurrentLine && classes[i].includes('ignorable')) {
+              // Replace `ignorable` by `editable`
+              classes[i].splice(classes[i].indexOf('ignorable'), 1, 'editable');
+            }
+            countEditableCurrentLine = 0;
+          } else if (classes[i].includes('editable')) {
+            countEditableCurrentLine++;
           }
         }
         

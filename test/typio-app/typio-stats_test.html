@@ -301,6 +301,159 @@
 
         });
         
+        test('[mostDifficultWords] return the most difficult words', function() {
+          var element = fixture('DefaultFixture');
+          element.init("ceci est une phrase");
+
+          // Simulate key press
+          element.startTimer(timer);
+          element.newCharacter( 0, 'c', true,  true,  afterMs(200));
+          element.newCharacter( 1, 'b', false, false, afterMs(180)); // to ignore
+          element.newCharacter( 1, 'e', true,  true,  afterMs(230));
+          element.newCharacter( 2, 'c', true,  true,  afterMs(210));
+          element.newCharacter( 3, 'i', true,  true,  afterMs(150)); // == 950 ms / 4 characters
+          element.newCharacter( 4, ' ', true,  true,  afterMs(50));
+          element.newCharacter( 5, 'e', true,  true,  afterMs(150)); 
+          element.newCharacter( 6, 's', true,  true,  afterMs(160));
+          element.newCharacter( 7, 't', true,  true,  afterMs(90));  // = 400 ms / 3 characters
+          element.newCharacter( 8, ' ', true,  true,  afterMs(400));
+          element.newCharacter( 9, 'u', true,  true,  afterMs(250));
+          element.newCharacter(10, 'n', true,  true,  afterMs(240));
+          element.newCharacter(11, 'e', true,  true,  afterMs(100)); // 590 ms / 3 characters
+          element.newCharacter(12, ' ', true,  true,  afterMs(75));
+          element.newCharacter(13, 'p', true,  true,  afterMs(100));
+          element.newCharacter(14, 'h', true,  true,  afterMs(105));
+          element.newCharacter(15, 'r', true,  true,  afterMs(95));
+          element.newCharacter(16, 'a', true,  true,  afterMs(90));
+          element.newCharacter(17, 's', true,  true,  afterMs(150));
+          element.newCharacter(18, 'e', true,  true,  afterMs(130)); // 670 ms / 6 characters
+          element.stopTimer();
+          
+          const results = element.mostDifficultWords();
+          const expected = [
+            { word: 'ceci',   durationInMs: 970, wpm: 49, annotations: null },
+            { word: 'une',    durationInMs: 590, wpm: 61, annotations: null },
+            { word: 'est',    durationInMs: 400, wpm: 90, annotations: null },
+            { word: 'phrase', durationInMs: 670, wpm: 107, annotations: null },
+          ];
+          expect(results).to.deep.equal(expected);
+        });
+
+        test('[mostDifficultWords] return the annotations', function() {
+          var element = fixture('DefaultFixture');
+          element.init(...new ContentBuilder().
+            append("m", "word", "capital").
+            append("ot", "word").
+            build());
+
+          // Simulate key press
+          element.newCharacter(0, 'm', true, true, afterMs(200));
+          element.newCharacter(1, 'o', true, true, afterMs(200));
+          element.newCharacter(2, 't', true, true, afterMs(200));
+          element.stopTimer();
+          
+          const results = element.mostDifficultWords();
+          expect(results[0].word).to.equal('mot');
+          expect(results[0].annotations).to.deep.equal([['word', 'capital'], ['word'], ['word']]);
+        });
+        
+        test('[mostDifficultWords] could limit results and filter on word size', function() {
+          var element = fixture('DefaultFixture');
+          element.init('un court exemple');
+
+          // Simulate key press
+          element.newCharacter( 0, 'u', true, true, afterMs(800));
+          element.newCharacter( 1, 'n', true, true, afterMs(800));
+          element.newCharacter( 2, ' ', true, true, afterMs(200));
+          element.newCharacter( 3, 'c', true, true, afterMs(300));
+          element.newCharacter( 4, 'o', true, true, afterMs(300));
+          element.newCharacter( 5, 'u', true, true, afterMs(300));
+          element.newCharacter( 6, 'r', true, true, afterMs(300));
+          element.newCharacter( 7, 't', true, true, afterMs(300));
+          element.newCharacter( 8, ' ', true, true, afterMs(200));
+          element.newCharacter( 9, 'e', true, true, afterMs(400));
+          element.newCharacter(10, 'x', true, true, afterMs(400));
+          element.newCharacter(11, 'e', true, true, afterMs(400));
+          element.newCharacter(12, 'm', true, true, afterMs(400));
+          element.newCharacter(13, 'p', true, true, afterMs(400));
+          element.newCharacter(14, 'l', true, true, afterMs(400));
+          element.newCharacter(15, 'e', true, true, afterMs(400));
+          element.stopTimer();
+          
+          const results = element.mostDifficultWords({n: 1, minWordSize: 3});
+          expect(results.length).to.equal(1);
+          expect(results[0].word).to.equal('exemple');
+          expect(results[0].wpm).to.equal(30);
+        });
+        
+        test('[mostDifficultWords] could customize the word delimiters', function() {
+          var element = fixture('DefaultFixture');
+          element.init('et, donc, oui; (non)');
+
+          // Simulate key press
+          element.newCharacter( 0, 'e', true, true, afterMs(800));
+          element.newCharacter( 1, 't', true, true, afterMs(800));
+          element.newCharacter( 2, ',', true, true, afterMs(200));
+          element.newCharacter( 3, ' ', true, true, afterMs(200));
+          element.newCharacter( 4, 'd', true, true, afterMs(300));
+          element.newCharacter( 5, 'o', true, true, afterMs(300));
+          element.newCharacter( 6, 'n', true, true, afterMs(300));
+          element.newCharacter( 7, 'c', true, true, afterMs(300));
+          element.newCharacter( 8, ',', true, true, afterMs(200));
+          element.newCharacter( 9, ' ', true, true, afterMs(200));
+          element.newCharacter(10, 'o', true, true, afterMs(400));
+          element.newCharacter(11, 'u', true, true, afterMs(400));
+          element.newCharacter(12, 'i', true, true, afterMs(400));
+          element.newCharacter(13, ';', true, true, afterMs(400));
+          element.newCharacter(14, ' ', true, true, afterMs(200));
+          element.newCharacter(15, '(', true, true, afterMs(500));
+          element.newCharacter(16, 'n', true, true, afterMs(500));
+          element.newCharacter(17, 'o', true, true, afterMs(500));
+          element.newCharacter(18, 'n', true, true, afterMs(500));
+          element.newCharacter(19, ')', true, true, afterMs(500));
+          element.stopTimer();
+          
+          const results = element.mostDifficultWords({wordDelimiters: '[\\s(),;.]'});
+          const expected = [
+            { word: 'non',  durationInMs: 1500, wpm: 24, annotations: null },
+            { word: 'oui',  durationInMs: 1200, wpm: 30, annotations: null },
+            { word: 'donc', durationInMs: 1200, wpm: 40, annotations: null },
+          ];
+          expect(results).to.deep.equal(expected);
+        });
+        
+        test('[mostDifficultWords] search instructions', function() {
+          var element = fixture('DefaultFixture');
+          let content = `
+i+=1;
+if True:
+  print('Hello World')
+return 0;
+`;
+          element.init(content);
+
+          // Simulate key press
+          let increasingDurationInMs = 100;
+          for (let i = 0; i < content.length; i++) {
+            increasingDurationInMs += 20;
+            element.newCharacter(i, content[i], true, true, afterMs(increasingDurationInMs));
+          }
+          
+          const results = element.mostDifficultWords({wordDelimiters: '\n'});
+          const expected = [
+            { word: "return 0;",            durationInMs: 8820,  wpm: 12, annotations: null },
+            { word: "print('Hello World')", durationInMs: 13400, wpm: 18, annotations: null },
+            { word: "if True:",             durationInMs: 2640,  wpm: 36, annotations: null },
+            { word: "i+=1;",                durationInMs: 900,   wpm: 67, annotations: null },
+          ];
+          expect(results).to.deep.equal(expected);
+        });
+        
+        
+        //
+        // Timer
+        // 
+        
         test('[timer] start and stop are optional', function() {
           var element = fixture('DefaultFixture');
           element.init("ab");

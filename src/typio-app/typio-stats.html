@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+  <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
 <dom-module id="typio-stats">
   <script>
@@ -302,70 +302,12 @@
         }
         return countEditables;
       }
-
-
+      
+      
       //
       // WPM
       //
-
-      /**
-       * Return WPM per interval.
-       *
-       * The output format is compatible with the Google chart expected format. (see typio-editor).
-       */
-      wpmPerInterval() {
-        // Init the result to blank
-        let result = [];
-        for (let i = 0; i < this.numberOfIntervals; i++) {
-          result.push(["", undefined, "", ""]);
-        }
-
-        // Search the current interval
-        // TODO refactor to keep this information while progressing
-        let currentInterval = 0;
-        for (let i = this._inputs.length - 1; i >= 0; i--) { // Optmization: search backward
-          let input = this._inputs[i];
-          if (input.accepted) {
-            currentInterval = this.intervals[input.index];
-            break;
-          }
-        }
-
-        for (let i = 0; i <= currentInterval; i++) {
-          // we determine WPM for this range
-          let firstTimestamp = undefined;
-          let lastTimestamp = undefined;
-          let characterCount = 0;
-          for (let j = 0; j < this._inputs.length; j++) {
-            let input = this._inputs[j];
-            if (this.intervals[input.index] != i) continue; // not the same interval
-            if (input.accepted) {
-              characterCount++;
-            }
-            if (!firstTimestamp) {
-              firstTimestamp = input.timestamp;
-            } else {
-              lastTimestamp = input.timestamp;
-            }
-          }
-
-          if (characterCount >= this.minCharactersPerInterval) {
-            // We wait at least 3 characters before displaying the WPM
-            // to avoid diplaying peaks at the start of each interval
-            let wpm = Math.round(characterCount / TypioStats.durationInS(firstTimestamp, lastTimestamp) * 60.0 / 5);
-            result[i][0] = isFinite(wpm) ? '' + wpm : '-';
-            result[i][1] = wpm;
-            result[i][2] = (wpm > this.WPM_FANTASTIC) ? 'fantastic!' : (wpm > this.WPM_WOW) ? 'wow' : (wpm > this.WPM_GREAT) ? 'great' : '';
-          }
-        }
-
-        if (!this._ended) {
-          result[currentInterval][3] = "color: Gold";
-        }
-
-        return result;
-      }
-
+      
       // Current WPM value. Unlike wpm(), this method could be call anytime.
       _calculateCurrentWpm() {
         if (this.enteredCharacters < 10) {
@@ -579,12 +521,98 @@
         return new Array(...result.values()).sort((a, b) => b.averageInMs - a.averageInMs).slice(0, n);
       }
       
+      
+      //
+      // Charts
+      //
+      
+      /**
+       * Return Google Chart compliant data for a stepped-area graph.
+       *
+       * @see https://developers.google.com/chart/interactive/docs/gallery/steppedareachart
+       */
+      chartSteppedAreaData() {
+        let data = [];
+        
+        let heading = [
+            {"label": "Progress", "type": "string"},
+            {"label": "WPM",      "type": "number"},
+            {"type": "string",    "role": "annotation"},
+            {"type": "string",    "role": "style"}
+            // see https://developers.google.com/chart/interactive/docs/roles?hl=en for the role property of columns
+        ];
+        
+        data.push(heading);
+        data.push(...this.chartSteppedAreaRows());
+        
+        return data;
+      }
+
+      /**
+       * Return WPM per interval. The data is compliant with Google Chart stepped-area chart.
+       *
+       * @see https://developers.google.com/chart/interactive/docs/gallery/steppedareachart
+       */
+      chartSteppedAreaRows() {
+        // Init the result to blank
+        let result = [];
+        for (let i = 0; i < this.numberOfIntervals; i++) {
+          result.push(["", undefined, "", ""]);
+        }
+
+        // Search the current interval
+        // TODO refactor to keep this information while progressing
+        let currentInterval = 0;
+        for (let i = this._inputs.length - 1; i >= 0; i--) { // Optmization: search backward
+          let input = this._inputs[i];
+          if (input.accepted) {
+            currentInterval = this.intervals[input.index];
+            break;
+          }
+        }
+
+        for (let i = 0; i <= currentInterval; i++) {
+          // we determine WPM for this range
+          let firstTimestamp = undefined;
+          let lastTimestamp = undefined;
+          let characterCount = 0;
+          for (let j = 0; j < this._inputs.length; j++) {
+            let input = this._inputs[j];
+            if (this.intervals[input.index] != i) continue; // not the same interval
+            if (input.accepted) {
+              characterCount++;
+            }
+            if (!firstTimestamp) {
+              firstTimestamp = input.timestamp;
+            } else {
+              lastTimestamp = input.timestamp;
+            }
+          }
+
+          if (characterCount >= this.minCharactersPerInterval) {
+            // We wait at least 3 characters before displaying the WPM
+            // to avoid diplaying peaks at the start of each interval
+            let wpm = Math.round(characterCount / TypioStats.durationInS(firstTimestamp, lastTimestamp) * 60.0 / 5);
+            result[i][0] = isFinite(wpm) ? '' + wpm : '-';
+            result[i][1] = wpm;
+            result[i][2] = (wpm > this.WPM_FANTASTIC) ? 'fantastic!' : (wpm > this.WPM_WOW) ? 'wow' : (wpm > this.WPM_GREAT) ? 'great' : '';
+          }
+        }
+
+        if (!this._ended) {
+          result[currentInterval][3] = "color: Gold";
+        }
+        
+        return result;
+      }
+
+      
       /**
        * Return Google Chart compliant data for a stacked bar graph.
        *
        * @see https://developers.google.com/chart/interactive/docs/gallery/barchart
        */
-      stackedBarData() {
+      chartStackedBarData() {
         // Colors are based on Light Blue material colors
         // https://material.io/guidelines/style/color.html#color-color-palette
         
@@ -670,6 +698,92 @@
           row.push('');
           
           data.push(row);
+        }
+        
+        return data;
+      }
+      
+      /**
+       * Google Chart scatter chart compliant data.
+       *
+       * @see https://developers.google.com/chart/interactive/docs/gallery/scatterchart
+       */
+      chartScatterData() {
+        let data = [['Time', 'Duration', { role: 'tooltip'}, { role: 'annotation'}]];
+        
+        // Ratio between two successive WPM values to be considered as peak or valley
+        const peakRatio = 1.5;
+        // Minimum number of points without annotations
+        const minPointsBetweenTwoAnnotations = 4;
+        
+        let totalDurationInMs = 0;
+        let lastDurationInMs = undefined;
+        let lastAnnotationIndex = 0;
+        
+        for (let i = 0; i < this._inputs.length; i++) {
+          let input = this._inputs[i];
+          if (!input.accepted) continue;
+          totalDurationInMs += input.durationInMs;
+          let annotation = null;
+          
+          if (i > lastAnnotationIndex + minPointsBetweenTwoAnnotations) {
+            // Try to detect peak and valley
+            let min = Math.min(lastDurationInMs, input.durationInMs);
+            let max = Math.max(lastDurationInMs, input.durationInMs);
+            if (min * peakRatio > max) { // peak or valley detected!
+              annotation = input.character;
+              lastAnnotationIndex = i;
+            }
+          }
+          
+          lastDurationInMs = input.durationInMs;
+          
+          data.push([totalDurationInMs, input.durationInMs, input.character, annotation]);
+        }
+        
+        return data;
+      }
+      
+      chartLineData() {
+        let data = [['Time', 'WPM', {role: 'tooltip'}, {role: 'annotation'}]]; 
+        
+        // Ratio between two successive WPM values to be considered as peak or valley
+        const peakRatio = 1.5;
+        // Minimum number of points without annotations
+        const minPointsBetweenTwoAnnotations = 4;
+        
+        let totalDurationInMs = 0;
+        let lastWpms = [];
+        let lastInstantWpm = undefined;
+        let lastAnnotationIndex = 0;
+
+        for (let i = 0; i < this._inputs.length; i++) {
+          let input = this._inputs[i];
+          
+          if (!input.accepted) continue;
+          totalDurationInMs += input.durationInMs;
+          
+          lastWpms.push(input.durationInMs);
+          
+          if (lastWpms.length < 5) continue; // Need at least 5 charactersr to calculate the WPM
+          
+          let instantWpm = TypioStats._wpm(5, lastWpms[0] + lastWpms[1] + lastWpms[2] + lastWpms[3] + lastWpms[4]);
+          let annotation = null;
+          
+          if (i > lastAnnotationIndex + minPointsBetweenTwoAnnotations) {
+            // Try to detect peak and valley
+            let min = Math.min(lastInstantWpm, instantWpm);
+            let max = Math.max(lastInstantWpm, instantWpm);
+            if (min * peakRatio > max) { // peak or valley detected!
+              annotation = input.character;
+              lastAnnotationIndex = i;
+            }
+          }
+          
+          data.push([totalDurationInMs, instantWpm, input.character, annotation]);
+          
+          lastInstantWpm = instantWpm;
+          lastWpms.pop();
         }
         
         return data;

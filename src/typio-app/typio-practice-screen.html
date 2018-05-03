@@ -106,7 +106,7 @@
       /*
        * Mini chart
        */
-      #minichart {
+      #miniChart {
         display: none;
         position: fixed;
         height: 200px;
@@ -114,21 +114,12 @@
         top: 100px;
         left: 50px;
       }
-      
-      #heatmapp {
-        display: none;
-        position: fixed;
-        height: 150px;
-        width: 250px;
-        bottom: 50px;
-        left: 50px;
-      }
 
       /* Displayed only when session is over. */
-      #screen.ended-true #minichart, 
-      #screen.ended-true #heatmapp {
+      #screen.ended-true #miniChart {
         display: block !important;
       }
+      
       
       /*
        * Heatmap
@@ -144,7 +135,7 @@
       }
       #heatmap #keyboard {
         position: absolute;
-        top: 50%;
+        bottom: 200px;
         left: 50%;
         /* Using default size, the compact keyboard measures 576px x 192px */
         margin-top: calc(-1 * 192px / 2);
@@ -161,6 +152,44 @@
         position: absolute;
         bottom: 1in;
         right: 1in;
+      }
+      
+      /* List of graphs displayed in heatmap */
+      
+      #steppedAreaChart {
+        position: fixed;
+        height: 150px;
+        width: 250px;
+        top: 150px;
+        left: 50%;
+        margin-left: -600px;
+      }
+
+      #heatmapChart {
+        position: fixed;
+        height: 150px;
+        width: 250px;
+        top: 150px;
+        left: 50%;
+        margin-left: -300px;
+      }
+      
+      #scatterChart {
+        position: fixed;
+        height: 150px;
+        width: 250px;
+        top: 150px;
+        left: 50%;
+        margin-left: 0;
+      }
+      
+      #lineChart {
+        position: fixed;
+        height: 150px;
+        width: 250px;
+        top: 150px;
+        left: 50%;
+        margin-left: 300px;
       }
 
 
@@ -327,6 +356,31 @@
       <div id="heatmap">
         <typio-keyboard id="keyboard" mixed-cases></typio-keyboard>
         <typio-hands id="hands"></typio-hands>
+        
+        <google-chart id="steppedAreaChart"
+          type="stepped-area"
+          options="[[steppedAreaOptions]]"
+          data="[[steppedAreaData]]">
+        </google-chart>
+        
+        <google-chart id="heatmapChart"
+          type="bar"
+          options='[[heatmapOptions]]'
+          data='[[heatmapData]]'>
+        </google-chart>
+
+        <google-chart id="scatterChart"
+          type="scatter"
+          options='[[scatterOptions]]'
+          data='[[scatterData]]'>
+        </google-chart>
+        
+        <google-chart id="lineChart"
+          type="line"
+          options='[[lineOptions]]'
+          data='[[lineData]]'>
+        </google-chart>
+        
         <div class="fabs">
           <paper-fab id="fabHeatmap" icon="close" title="Close" on-click="hideHeatmap"></paper-fab>
         </div>
@@ -339,19 +393,13 @@
         rows='[]'>
       </google-chart>
 
-      <google-chart id="minichart"
+      <google-chart id="miniChart"
         type="stepped-area"
         options="[[chartOptions]]"
         cols="[[chartCols]]"
         rows='[]'>
       </google-chart>
       
-      <google-chart id="heatmapp"
-        type="bar"
-        options='[[heatmapOptions]]'
-        data='[[heatmapData]]'>
-      </google-chart>
-
     </div>
 
   </template>
@@ -485,39 +533,89 @@
 
 
           //
-          // Google Chart Configuration
+          // Google Chart Configurations
           // See https://developers.google.com/chart/interactive/docs/gallery/steppedareachart
           //
+          
+          // stepped-area chart
 
+          steppedAreaOptions: {
+            type: Object,
+            readOnly: true,
+            value: {
+              legend: "none",
+              width: 250,
+              height: 150,
+              theme: 'maximized',
+              backgroundColor: { fill: 'transparent' },
+              fontName: "Cutive",
+              areaOpacity: 1,
+              tooltip: { trigger: "none" },
+              chartArea: {
+                backgroundColor: { strokeWidth: 0 }
+              },
+              hAxis: { textPosition: "in", textStyle: { color: "black", bold: true, auraColor: "none" } },
+              vAxis: {
+                textPosition: "in",
+                minValue: 0,
+                maxValue: 200,
+                gridlines: { "count": 0 }
+              },
+              colors: ["#009ee3"],
+              lineWidth: 2,
+              annotations: { textStyle: { color: "orange"} }
+            }
+          },
+          
+          steppedAreaData: {
+            type: Array,
+            readOnly: true,
+            value: undefined
+          },
+          
           chartOptions: {
             type: Object,
             readOnly: true,
             value: {
-              "backgroundColor": { fill:'transparent' },
-              "title": "WPM",
-              "legend": "none",
-              "fontName": "Cutive",
-              "areaOpacity": 1,
-              "tooltip": {"trigger": "none"},
-              "chartArea": {
-                "left": 0,
-                "top": 0,
-                "width": "100%",
-                "height": "100%",
-                "backgroundColor": {"strokeWidth": 0}
+              backgroundColor: { fill:'transparent' },
+              title: "WPM",
+              legend: "none",
+              fontName: "Cutive",
+              areaOpacity: 1,
+              tooltip: {trigger: "none"},
+              chartArea: {
+                left: 0,
+                top: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: {strokeWidth: 0}
               },
-              "hAxis": { "textPosition": "in", "textStyle": { "color": "black", "bold": true, "auraColor": "none" } },
-              "vAxis": {
-                "textPosition": "in",
-                "minValue": 0,
-                "maxValue": 200,
-                "gridlines": { "count": 0 }
+              hAxis: { textPosition: "in", textStyle: { color: "black", bold: true, auraColor: "none" } },
+              vAxis: {
+                textPosition: "in",
+                minValue: 0,
+                maxValue: 200,
+                gridlines: { "count": 0 }
               },
-              "colors": ["#009ee3"],
-              "lineWidth": 2,
-              "annotations": {"textStyle": { "color": "orange"} }
+              colors: ["#009ee3"],
+              lineWidth: 2,
+              annotations: { textStyle: { color: "orange"} }
             }
           },
+          
+          chartCols: {
+            type: Array,
+            readOnly: true,
+            value: [
+              {"label": "Progress", "type": "string"},
+              {"label": "WPM",      "type": "number"},
+              {"type": "string",    "role": "annotation"},
+              {"type": "string",    "role": "style"}
+              // see https://developers.google.com/chart/interactive/docs/roles?hl=en for the role property of columns
+            ]
+          },
+          
+          // heatmap chart
           
           heatmapOptions: {
             type: Object,
@@ -531,12 +629,15 @@
               bars: 'horizontal',
               isStacked: 'percent',
               theme: 'maximized',
+              colors: ["#009ee3"],
               vAxis: { 
                 textPosition: 'none'
               },
               hAxis: {
                 textPosition: 'none'
-              }
+              },
+              annotations: { textStyle: { color: "black"} },
+              tooltip: { trigger: "none" },
             }
           },
           
@@ -546,19 +647,62 @@
             value: undefined
           },
           
-
-          chartCols: {
+          // scatter chart
+          
+          scatterOptions: {
+            type: Object,
+            readOnly: true,
+            value: {
+              width: 250,
+              height: 150,
+              legend: { position: 'none' },
+              theme: 'maximized',
+              colors: ["#009ee3"],
+              vAxis: { 
+                textPosition: 'none'
+              },
+              hAxis: {
+                textPosition: 'none'
+              },
+              tooltip: { textStyle: { bold: true, fontSize: '24px'} },
+              annotations: { textStyle: { color: "black"} },
+            }
+          },
+          
+          scatterData: {
             type: Array,
             readOnly: true,
-            value: [
-              {"label": "Progress", "type": "string"},
-              {"label": "WPM",      "type": "number"},
-              {"type": "string",    "role": "annotation"},
-              {"type": "string",    "role": "style"}
-              // see https://developers.google.com/chart/interactive/docs/roles?hl=en for the role property of columns
-            ]
+            value: undefined
+          },
+          
+          // line chart
+          
+          lineOptions: {
+            type: Object,
+            readOnly: true,
+            value: {
+              width: 250,
+              height: 150,
+              legend: { position: 'none' },
+              theme: 'maximized',
+              colors: ["#009ee3"],
+              vAxis: { 
+                textPosition: 'none'
+              },
+              hAxis: {
+                textPosition: 'none'
+              },
+              tooltip: { textStyle: { bold: true, fontSize: '24px'} },
+              annotations: { textStyle: { color: "black"} },
+            }
           },
 
+          lineData: {
+            type: Array,
+            readOnly: true,
+            value: undefined
+          },
+          
         };
       }
 
@@ -627,7 +771,7 @@
         
         // Update charts
         this.$.chart.style.display = 'block !important';
-        this.$.chart.rows = this.$.stats.wpmPerInterval();
+        this.$.chart.rows = this.$.stats.chartSteppedAreaRows();
         this.$.chart.redraw();
       }
 
@@ -638,9 +782,8 @@
         this.mostDifficultKeys = this.$.stats.mostDifficultKeys(3);
         this.mostDifficultKeyCombinations = this.$.stats.mostDifficultKeyCombinations(3);
         
-        // Show minichart
-        this._updateMinichart();
-        this._updateHeatmap();
+        // Show mini chart
+        this._updateCharts();
         
         // Highlight errors
         this.$.editor.showMispellings();
@@ -648,20 +791,43 @@
         
         this.ended = true; // trigger changes on screen        
       }
+      
+      _updateCharts() {
+        this._updateMiniChart();
+        this._updateSteppedAreaChart();
+        this._updateHeatmapChart();
+        this._updateScatterChart();
+        this._updateLineChart();
+      }
 
-      _updateMinichart() {
-        this.$.minichart.rows = this.$.stats.wpmPerInterval();
-        for (let i = 0; i < this.$.minichart.rows.length; i++) {
-          this.$.minichart.rows[i][2] = ''; // remove annotations
+      _updateMiniChart() {
+        this.$.miniChart.rows = this.$.stats.chartSteppedAreaRows();
+        for (let i = 0; i < this.$.miniChart.rows.length; i++) {
+          this.$.miniChart.rows[i][2] = ''; // remove annotations
         }
-        this.$.minichart.redraw();
+        this.$.miniChart.redraw();
         
         this.listenChartEvents();
       }
       
-      _updateHeatmap() {
-        this._setHeatmapData(this.$.stats.stackedBarData());
-        this.$.heatmapp.redraw();
+      _updateSteppedAreaChart() {
+        this._setSteppedAreaData(this.$.stats.chartSteppedAreaData());
+        this.$.steppedAreaChart.redraw();
+      }
+      
+      _updateHeatmapChart() {
+        this._setHeatmapData(this.$.stats.chartStackedBarData());
+        this.$.heatmapChart.redraw();
+      }
+      
+      _updateScatterChart() {
+        this._setScatterData(this.$.stats.chartScatterData());
+        this.$.scatterChart.redraw();
+      }
+
+      _updateLineChart() {
+        this._setLineData(this.$.stats.chartLineData());
+        this.$.lineChart.redraw();
       }
 
       /**
@@ -670,8 +836,8 @@
        */
       listenChartEvents() {
         if (!this._chartEventsListened) {
-          google.visualization.events.addListener(this.$.minichart._chart, 'select', () => {
-            let selection = this.$.minichart._chart.getSelection();
+          google.visualization.events.addListener(this.$.miniChart._chart, 'select', () => {
+            let selection = this.$.miniChart._chart.getSelection();
             if (!selection.length) {
               return;
             }

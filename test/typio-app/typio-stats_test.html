@@ -160,7 +160,7 @@
 
         });
 
-        test('[stats] WPM are available per interval', function() {
+        test('[stats] stepped area chart', function() {
           var element = fixture('DefaultFixture');
           element.numberOfIntervals = 2;
           element.minCharactersPerInterval = 3;
@@ -180,24 +180,24 @@
           element.startTimer(afterMs(0));
 
           element.newCharacter(2, 'a', true, true, afterMs(500));
-          assert.isUndefined(element.wpmPerInterval()[0][1]); // not enough entered characters
+          assert.isUndefined(element.chartSteppedAreaRows()[0][1]); // not enough entered characters
 
           element.newCharacter(3, 'b', true, true, afterMs(500));
-          assert.isUndefined(element.wpmPerInterval()[0][1]); // not enough entered characters
+          assert.isUndefined(element.chartSteppedAreaRows()[0][1]); // not enough entered characters
 
           element.newCharacter(4, 'c', true, true, afterMs(1500));
-          assert.equal(element.wpmPerInterval()[0][1], '18'); // enough characters to calculate the WPM
+          assert.equal(element.chartSteppedAreaRows()[0][1], '18'); // enough characters to calculate the WPM
 
           element.newCharacter(6, 'd', true, true, afterMs(1000));
-          assert.equal(element.wpmPerInterval()[0][1], '18'); // previous interval is preserved
-          assert.isUndefined(element.wpmPerInterval()[1][1]); // but not enough entered characters for new interval
+          assert.equal(element.chartSteppedAreaRows()[0][1], '18'); // previous interval is preserved
+          assert.isUndefined(element.chartSteppedAreaRows()[1][1]); // but not enough entered characters for new interval
 
           element.newCharacter(8, 'e', true, true, afterMs(2000));
-          assert.isUndefined(element.wpmPerInterval()[1][1]); // Still not enough entered characters for new interval
+          assert.isUndefined(element.chartSteppedAreaRows()[1][1]); // Still not enough entered characters for new interval
 
           element.newCharacter(9, 'f', true, true, afterMs(500));
-          assert.equal(element.wpmPerInterval()[0][1], '18');
-          assert.equal(element.wpmPerInterval()[1][1], '12'); // It's OK!
+          assert.equal(element.chartSteppedAreaRows()[0][1], '18');
+          assert.equal(element.chartSteppedAreaRows()[1][1], '12'); // It's OK!
 
           element.stopTimer(afterMs(0));
         });
@@ -342,6 +342,39 @@
         });
         
         
+        //
+        // Charts
+        //        
+        
+        test('[stats] stepped area chart', function() {
+          var element = fixture('DefaultFixture');
+          const content = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`;
+          element.init(content);
+
+          // Enter the full text
+          for (let i = 0; i < content.length; i++) {
+            let c = content[i];
+            let increasingDuration = 100 + i * 10;
+            element.newCharacter(i, c, true, true, afterMs(increasingDuration));
+          }
+          element.stopTimer();
+        
+          const expected = [
+            [{"label":"Progress","type":"string"},{"label":"WPM","type":"number"},{"type":"string","role":"annotation"},{"type":"string","role":"style"}],
+            ["72", 72, "great", ""],
+            ["72", 72, "great", ""],
+            ["72", 72, "great", ""],
+            ["36", 36, "", ""],
+            ["36", 36, "", ""],
+            ["36", 36, "", ""],
+            ["36", 36, "", ""],
+            ["24", 24, "", ""],
+            ["24", 24, "", ""],
+            ["19", 19, "", ""],
+          ];
+          expect(element.chartSteppedAreaData()).to.deep.equal(expected);
+        });
+        
         test('[stats] stacked bar chart', function() {
           var element = fixture('DefaultFixture');
           const content = `
@@ -366,7 +399,7 @@
             element.newCharacter(i, c, true, true, afterMs(increasingDuration));
           }
           
-          const expected  = [
+          const expected = [
             ["Interval","0-10%",{"role":"style"},"10-20%",{"role":"style"},"20-30%",{"role":"style"},"30-40%",{"role":"style"},"40-50%",{"role":"style"},"50-60%",{"role":"style"},"60-70%",{"role":"style"},"70-80%",{"role":"style"},"80-90%",{"role":"style"},"90-100%",{"role":"style"},{"role":"annotation"}],
             ["",10,"#01579B",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",""],
             ["",10,"white",10,"#0277BD",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",""],
@@ -379,7 +412,134 @@
             ["",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"#E1F5FE",10,"#0288D1",10,"white",""],
             ["",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"#E1F5FE",10,"#0288D1",""]
           ];
-          expect(element.stackedBarData()[1]).to.deep.equal(expected[1]);
+          expect(element.chartStackedBarData()).to.deep.equal(expected);
+        });
+        
+        test('[stats] scatter chart', function() {
+          var element = fixture('DefaultFixture');
+          const content = `abcdefghijklmnopqrstuvwxyz`;
+          element.init(content);
+
+          // Enter the full text
+          element.newCharacter(0,  'a', true, true, afterMs(0));
+          element.newCharacter(1,  'b', true, true, afterMs(50));
+          element.newCharacter(2,  'c', true, true, afterMs(50));
+          element.newCharacter(3,  'd', true, true, afterMs(60));
+          element.newCharacter(4,  'e', true, true, afterMs(60));
+          element.newCharacter(5,  'f', true, true, afterMs(70));
+          element.newCharacter(6,  'g', true, true, afterMs(150)); // Peak
+          element.newCharacter(7,  'h', true, true, afterMs(140));
+          element.newCharacter(8,  'i', true, true, afterMs(120));
+          element.newCharacter(9,  'j', true, true, afterMs(60)); // Valley
+          element.newCharacter(10, 'k', true, true, afterMs(150)); // Peak
+          element.newCharacter(11, 'l', true, true, afterMs(125));
+          element.newCharacter(12, 'm', true, true, afterMs(110));
+          element.newCharacter(13, 'n', true, true, afterMs(110));
+          element.newCharacter(14, 'o', true, true, afterMs(100));
+          element.newCharacter(15, 'p', true, true, afterMs(80));
+          element.newCharacter(16, 'q', true, true, afterMs(125)); // Peak
+          element.newCharacter(17, 'r', true, true, afterMs(150));
+          element.newCharacter(18, 's', true, true, afterMs(1000)); // Peak
+          element.newCharacter(19, 't', true, true, afterMs(100)); // Valley
+          element.newCharacter(20, 'u', true, true, afterMs(110));
+          element.newCharacter(21, 'v', true, true, afterMs(115));
+          element.newCharacter(22, 'w', true, true, afterMs(110));
+          element.newCharacter(23, 'x', true, true, afterMs(90));
+          element.newCharacter(24, 'y', true, true, afterMs(80));
+          element.newCharacter(25, 'z', true, true, afterMs(70));
+          
+          const expected = [
+            ["Time", "Duration", {"role":"tooltip"}, {"role":"annotation"}],
+            [0,0,"a",null],
+            [50,50,"b",null],
+            [100,50,"c",null],
+            [160,60,"d",null],
+            [220,60,"e",null],
+            [290,70,"f","f"],
+            [440,150,"g",null],
+            [580,140,"h",null],
+            [700,120,"i",null],
+            [760,60,"j",null],
+            [910,150,"k",null],
+            [1035,125,"l","l"],
+            [1145,110,"m",null],
+            [1255,110,"n",null],
+            [1355,100,"o",null],
+            [1435,80,"p",null],
+            [1560,125,"q",null],
+            [1710,150,"r","r"],
+            [2710,1000,"s",null],
+            [2810,100,"t",null],
+            [2920,110,"u",null],
+            [3035,115,"v",null],
+            [3145,110,"w","w"],
+            [3235,90,"x",null],
+            [3315,80,"y",null],
+            [3385,70,"z",null]
+          ];
+          expect(element.chartScatterData()).to.deep.equal(expected);
+        });
+        
+        test('[stats] line chart', function() {
+          var element = fixture('DefaultFixture');
+          const content = `abcdefghijklmnopqrstuvwxyz`;
+          element.init(content);
+
+          // Enter the full text
+          element.newCharacter(0,  'a', true, true, afterMs(0));
+          element.newCharacter(1,  'b', true, true, afterMs(50));
+          element.newCharacter(2,  'c', true, true, afterMs(50));
+          element.newCharacter(3,  'd', true, true, afterMs(60));
+          element.newCharacter(4,  'e', true, true, afterMs(60));
+          element.newCharacter(5,  'f', true, true, afterMs(70));
+          element.newCharacter(6,  'g', true, true, afterMs(150)); // Peak
+          element.newCharacter(7,  'h', true, true, afterMs(140));
+          element.newCharacter(8,  'i', true, true, afterMs(120));
+          element.newCharacter(9,  'j', true, true, afterMs(60)); // Valley
+          element.newCharacter(10, 'k', true, true, afterMs(150)); // Peak
+          element.newCharacter(11, 'l', true, true, afterMs(125));
+          element.newCharacter(12, 'm', true, true, afterMs(110));
+          element.newCharacter(13, 'n', true, true, afterMs(110));
+          element.newCharacter(14, 'o', true, true, afterMs(100));
+          element.newCharacter(15, 'p', true, true, afterMs(80));
+          element.newCharacter(16, 'q', true, true, afterMs(125)); // Peak
+          element.newCharacter(17, 'r', true, true, afterMs(150));
+          element.newCharacter(18, 's', true, true, afterMs(1000)); // Peak
+          element.newCharacter(19, 't', true, true, afterMs(100)); // Valley
+          element.newCharacter(20, 'u', true, true, afterMs(110));
+          element.newCharacter(21, 'v', true, true, afterMs(115));
+          element.newCharacter(22, 'w', true, true, afterMs(110));
+          element.newCharacter(23, 'x', true, true, afterMs(90));
+          element.newCharacter(24, 'y', true, true, afterMs(80));
+          element.newCharacter(25, 'z', true, true, afterMs(70));
+          
+          const expected = [
+            ["Time", "WPM", {"role":"tooltip"}, {"role":"annotation"}],
+            // No value before the 5th entered character
+            [ 220, 273, "e", null],
+            [ 290, 261, "f", "f" ], // Peak detected
+            [ 440, 194, "g", null],
+            [ 580, 200, "h", null],
+            [ 700, 214, "i", null],
+            [ 760, 273, "j", null],
+            [ 910, 194, "k", "k" ], // Peak detected
+            [1035, 211, "l", null],
+            [1145, 222, "m", null],
+            [1255, 222, "n", null],
+            [1355, 231, "o", null],
+            [1435, 250, "p", "p" ],
+            [1560, 211, "q", null],
+            [1710, 194, "r", null],
+            [2710, 52,  "s", null],
+            [2810, 231, "t", null],
+            [2920, 222, "u", "u" ],
+            [3035, 218, "v", null],
+            [3145, 222, "w", null],
+            [3235, 240, "x", null],
+            [3315, 250, "y", null],
+            [3385, 261, "z", "z" ]
+          ];
+          expect(element.chartLineData()).to.deep.equal(expected);
         });
 
 

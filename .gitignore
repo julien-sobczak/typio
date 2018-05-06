@@ -1,4 +1,5 @@
 .firebaserc
+.typio_history
 /build/
 env/
 /content/github/*.zip

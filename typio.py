@@ -375,6 +375,10 @@ class TypioPrompt:
         local_file = self.CONTENT_DIR + '/github/' + entry.slug + '.zip'
         local_dir = self.CONTENT_DIR + '/github/' + entry.slug
 
+        if not os.path.exists(local_file):
+            print("Archive '%s' does not exists. Cloned repository?" % Colors.file(local_file))
+            return
+        
         # Do nothing if the target folder is already present
         if os.path.isdir(local_dir):
             print("Folder '%s' already exists." % Colors.file(local_dir))
@@ -906,7 +910,7 @@ class TypioPrompt:
                     if path in stats_per_file:
                         props += '[%s,%s]' % (
                             stats_per_file[path]['commits'], 
-                            stats_per_file[path]['active_days'])
+                            stats_per_file[path]['activeDays'])
                     current_node[filename] = props
                     
             for dirName, subdirList, fileList in os.walk(sources_dir):
@@ -1041,6 +1045,17 @@ class TypioPrompt:
 
 
     ##
+    ## Command 'refresh'
+    ##
+
+    def refresh_github(self, entry):
+        self.delete_github(entry)
+        self.get_github(entry)
+        self.clean_github(entry)
+        self.metadata_github(entry)
+        
+
+    ##
     ## Prompt
     ##
 
@@ -1055,7 +1070,7 @@ class TypioPrompt:
         def get_bottom_toolbar_tokens(cli):
             return [(Token.Toolbar, ' TAB for completion')]
 
-        operatorsCommands = ['archive', 'clean', 'delete', 'download', 'extract', 'get', 'inspect', 'metadata', 'unarchive']
+        operatorsCommands = ['archive', 'clean', 'delete', 'download', 'extract', 'get', 'inspect', 'metadata', 'unarchive', 'refresh']
         entries = ['all', 'gutenberg', 'github'] + self.catalog.get_entry_names()
 
         g = create_grammar()

@@ -229,9 +229,13 @@
       #screen.ended-false #fabHeatmap { display: none;  }
       #screen.ended-true  #fabHeatmap { display: block; }
       
-      #screen.ended-false #fabRestart { display: none;  }
+      #screen.ended-false #fabRestart { display: block;  }
       #screen.ended-true  #fabRestart { display: block; }
 
+      #screen.ended-false #fabRewind { display: block;  }
+      #screen.ended-true  #fabRewind { display: none;  }
+      
+      #screen.paused-true #editorFabs { display: none; }
 
       /*
        * statistics
@@ -342,12 +346,14 @@
       <div id="pauseDialog" class="theme-transparent">
         <h1>Are you sleeping?</h1>
         <div class="fabs">
+          <paper-fab icon="autorenew" title="Restart" on-click="restart"></paper-fab>
           <paper-fab icon="av:play-arrow" title="Resume" on-click="_resumeClicked"></paper-fab>
         </div>
       </div>
 
-      <div class="fabs">
+      <div id="editorFabs" class="fabs">
         <paper-fab id="fabHeatmap" icon="maps:map" title="Heatmap" on-click="showHeatmap"></paper-fab>
+        <paper-fab id="fabRewind" icon="av:replay-10" title="Rewind" on-click="rewind"></paper-fab>
         <paper-fab id="fabRestart" icon="autorenew" title="Restart" on-click="restart"></paper-fab>
       </div>
       
@@ -836,6 +842,11 @@
         this.paused = false;
         this.$.stats.resumeTimer();
       }
+      
+      rewind(numberCharacters = 10) {
+        this.$.editor.backward(numberCharacters);
+        this.$.stats.rewind(numberCharacters);
+      }
 
       _characterEntered(e, detail) {
         // Update stats
@@ -1033,6 +1044,10 @@
         if (this.paused) this.resume();
         if (this.started) return;
         this.$.readyScreen.start();
+      }
+      
+      backable() {
+        this.rewind();
       }
       
       

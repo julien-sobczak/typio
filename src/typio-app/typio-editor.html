@@ -353,21 +353,30 @@
       /**
        * Move backward to the previous editable character.
        */
-      backward() {
-        if (this.position == 0) return; // Do nothing if at start
+      backward(n = 1) {
+        if (this.position == 0) return;
+        
+        for (let i = 0; i < n; i++) {
+          
+          if (this.position == 0) break; // Do nothing if at start
 
-        do {
-          this._unselect();
-          this._backwardOneCharacter();
+          do {
+            this._unselect();
+            this._backwardOneCharacter();
 
-          if (this.error && this.position === this.positionError) {
-            this.error = false;
-            this.positionError = undefined;
-            this.unannotateGlobal('error');
-            this.unannotate('char-invalid', 'wrong');
-          }
-        } while (this.hasAnnotation('ignorable'));
-
+            if (this.error && this.position === this.positionError) {
+              this.error = false;
+              this.positionError = undefined;
+              this.unannotateGlobal('error');
+              this.unannotate('char-invalid', 'wrong');
+            }
+          } while (this.hasAnnotation('ignorable') && this.position > 0);
+        }
+        
+        if (this.hasAnnotation('ignorable')) { // Oops, we are on an ignorable character
+          this.advance();
+        }
+        
         if (this.position >= 0) {
           this._select();
         }

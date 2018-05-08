@@ -118,6 +118,7 @@
     </app-route>
 
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+enter" on-keys-pressed="start"></iron-a11y-keys>
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+shift+home" on-keys-pressed="back"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+i" on-keys-pressed="goToIntro"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+e" on-keys-pressed="goToDrillEditor"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+d" on-keys-pressed="goToDrillSession"></iron-a11y-keys>
@@ -143,8 +144,8 @@
     </app-drawer>
     
     <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
-      <typio-intro-screen name="intro"></typio-intro-screen>
-      <typio-catalog-screen name="catalog" on-entry-selected="_initCodeEditor" route="{{subroute}}"></typio-catalog-screen>
+      <typio-intro-screen id="intro" name="intro"></typio-intro-screen>
+      <typio-catalog-screen id="catalog" name="catalog" on-entry-selected="_initCodeEditor" route="{{subroute}}"></typio-catalog-screen>
       <typio-practice-screen id="editor" name="editor" route="{{route}}"></typio-practice-screen>
       <typio-drill-runner-screen id="drillRunner" name="drillRunner" route="{{subroute}}"></typio-drill-runner-screen>
       <typio-drill-creator-screen id="drillCreator" name="drillCreator" route="{{subroute}}"></typio-drill-creator-screen>
@@ -283,8 +284,34 @@
       }
       
       start() {
-        if (this.route.path === '/editor') {
-          this.$.editor.startable();
+        let screen = this._currentScreen();
+        if (screen.startable) {
+          screen.startable();
+        }
+      }
+      
+      back() {
+        let screen = this._currentScreen();
+        if (screen.backable) {
+          screen.backable();
+        }
+      }
+      
+      _currentScreen() {
+        switch (this.route.path) {
+          case '/intro':
+            return this.$.intro;
+          case '/catalog':
+            return this.$.catalog;
+          case '/editor':
+            return this.$.editor;
+          case '/drillRunner':
+            return this.$.drillRunner;
+          case '/drillCreator':
+            return this.$.drillCreator;
+          default:
+            // Do not break each time we add a new page
+            return undefined;
         }
       }
       

@@ -28,27 +28,27 @@
 
     <test-fixture id="ScrollCodeFixture">
       <template>
-        <typio-editor id="editor" type="code" mode="scroll" class="three-lines" debug></typio-editor>
+        <typio-editor id="editor" type="code" mode="scroll" class="three-lines"></typio-editor>
       </template>
     </test-fixture>
     <test-fixture id="CompactScrollCodeFixture">
       <template>
-        <typio-editor id="editor" type="code" mode="scroll" class="one-line" debug></typio-editor>
+        <typio-editor id="editor" type="code" mode="scroll" class="one-line"></typio-editor>
       </template>
     </test-fixture>
     <test-fixture id="PageCodeFixture">
       <template>
-        <typio-editor id="editor" type="code" mode="page" class="three-lines" debug></typio-editor>
+        <typio-editor id="editor" type="code" mode="page" class="three-lines"></typio-editor>
       </template>
     </test-fixture>
     <test-fixture id="CompactPageCodeFixture">
       <template>
-        <typio-editor id="editor" type="code" mode="page" class="one-line" debug></typio-editor>
+        <typio-editor id="editor" type="code" mode="page" class="one-line"></typio-editor>
       </template>
     </test-fixture>
     <test-fixture id="ScrollLiteratureFixture">
       <template>
-        <typio-editor id="editor" type="literature" mode="scroll" debug></typio-editor>
+        <typio-editor id="editor" type="literature" mode="scroll"></typio-editor>
       </template>
     </test-fixture>
     
@@ -56,9 +56,17 @@
     
     class ContentBuilder {
       
-      constructor(content) {
-        this.content = content;
-        this.classes = new Array(content.length);
+      constructor() {
+        this.content = '';
+        this.classes = new Array();
+      }
+      
+      append(text, ...annotations) {
+        this.content += text;
+        for (let i = 0; i < text.length; i++) {
+          this.classes.push(annotations);
+        }
+        return this;
       }
       
       annotate(index, ...classes) {
@@ -123,6 +131,47 @@
           press('"'); // instead of curved closing double quote
           expect(editor._i).to.equal(19);
           expect(editor.error).to.be.false;
+          expect(editor.ended).to.be.true;
+        });
+        
+        test('[input] rewind', function() {
+          editor = fixture('ScrollLiteratureFixture');
+          editor.content = "always move on" 
+          editor.reset();
+          editor.start();
+          
+          expect(editor.position).to.equal(0);
+          pressText("always");
+          expect(editor.position).to.equal(6);
+          pressText(" mode");
+          expect(editor.position).to.equal(11);
+          expect(editor.error).to.be.true;
+          editor.backward(4);
+          expect(editor.position).to.equal(7);
+          expect(editor.error).to.be.false;
+          pressText("move");
+          expect(editor.position).to.equal(11);
+          expect(editor.error).to.be.false;
+          pressText(" on");
+          expect(editor._i).to.equal(13);
+          expect(editor.error).to.be.false;
+          expect(editor.ended).to.be.true;
+        });
+        
+        test('[input] rewind with ignorable characters', function() {
+          editor = fixture('ScrollLiteratureFixture');
+          [editor.content, editor.classes] = new ContentBuilder().
+            append("import sys\n", "ignorable").
+            append("print 'Hello'").
+            build()
+          editor.reset();
+          editor.start();
+          
+          expect(editor.position).to.equal(11);
+          pressText("print");
+          editor.backward(10);
+          expect(editor.position).to.equal(11); // Do not go back too far
+          pressText("print 'Hello'");
           expect(editor.ended).to.be.true;
         });
         

@@ -87,7 +87,7 @@
           element.newCharacter(8, 'i', true, true, afterMs(500));
           element.newCharacter(9, 'j', true, true, afterMs(500));
           element.stopTimer(afterMs(1000));
-          assert.equal(element.summary.wpm, 20);
+          assert.equal(element.summary.wpm, 24);
         });
 
         test('[stats] with ignorable characters', function() {
@@ -119,7 +119,7 @@
           element.newCharacter(8, 'i', true, true, afterMs(500));
           element.newCharacter(9, 'j', true, true, afterMs(500));
           element.stopTimer(afterMs(1000));
-          assert.equal(element.summary.wpm, 20);
+          assert.equal(element.summary.wpm, 24);
         });
 
         test('[stats] check summary statistics', function(done) {
@@ -153,7 +153,7 @@
             assert.equal(element.enteredCharacters, 6);
             assert.equal(element.summary.unproductiveKeystrokeOverhead, 20);
             assert.equal(element.summary.elapsedTimeInS, 6);
-            assert.equal(element.summary.wpm, 10);
+            assert.equal(element.summary.wpm, 11);
 
             done();
           });
@@ -517,7 +517,7 @@ return 0;
           element.newCharacter( 9, 'i', true,  true,  afterMs(125));
           element.newCharacter(10, 'j', true,  true,  afterMs(125));
           element.newCharacter(11, 'k', true,  true,  afterMs(125));
-          assert.equal(element.currentWpm, 96);
+          assert.equal(element.currentWpm, 105);
           element.newCharacter(12, 'l', true,  true,  afterMs(125));
           element.newCharacter(13, 'm', true,  true,  afterMs(125));
           element.newCharacter(14, 'n', true,  true,  afterMs(125));
@@ -528,6 +528,42 @@ return 0;
           assert.equal(element._totalTimeInPause, 2000 + 10000 + 2000 + 5000);
           assert.equal(element.summary.elapsedTimeInMs, 16 * 125);
           assert.equal(element.summary.wpm, 90);
+        });
+        
+        test('[rewind] clear last entries', function() {
+          var element = fixture('DefaultFixture');
+          const content = "0123456789";
+          element.init(content);
+
+          // Simulate key press using realistic values.
+          element.startTimer(afterMs(0));
+          element.newCharacter(0, '0', true,  true,  afterMs(125));
+          element.newCharacter(1, '1', true,  true,  afterMs(125));
+          element.newCharacter(2, '2', true,  true,  afterMs(125));
+          element.newCharacter(3, '3', true,  true,  afterMs(250));
+          element.newCharacter(4, '5', false, false, afterMs(250)); // do not count
+          element.newCharacter(4, '4', true,  true,  afterMs(250));
+          expect(element.elapsedTimeInMs).to.equal(1125); 
+          element.rewind(2);
+          expect(element.elapsedTimeInMs).to.equal(375);
+          element.newCharacter(3, '3', true,  true,  afterMs(125));
+          element.newCharacter(4, '4', true,  true,  afterMs(125));
+          element.newCharacter(5, '5', true,  true,  afterMs(250));
+          element.newCharacter(6, '6', true,  true,  afterMs(250));
+          element.newCharacter(7, '7', true,  true,  afterMs(250));
+          expect(element.elapsedTimeInMs).to.equal(1375);
+          element.rewind(3);
+          expect(element.elapsedTimeInMs).to.equal(625);
+          element.newCharacter(5, '5', true,  true,  afterMs(125));
+          element.newCharacter(6, '6', true,  true,  afterMs(125));
+          element.newCharacter(7, '7', true,  true,  afterMs(125));
+          element.newCharacter(8, '8', true,  true,  afterMs(125));
+          element.newCharacter(9, '9', true,  true,  afterMs(125));
+          element.calculateSummaryStatistics();
+          
+          // WPM should not be affected by pause
+          assert.equal(element.summary.elapsedTimeInMs, 10 * 125); // only shortest duration remains after rewinding
+          assert.equal(element.summary.wpm, 96);
         });
         
         

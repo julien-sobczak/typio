@@ -53,6 +53,16 @@
             readOnly: true,
             value: 0
           },
+          
+          /**
+           * The elasped time ignore pauses, rewinding.
+           * This value should be used to calculate the WPM.
+           */
+          elapsedTimeInMs: {
+            type: Number,
+            readOnly: true,
+            value: 0
+          },
 
           /**
            * The timestamp of the first entered characters.
@@ -82,6 +92,16 @@
            * The timestamp when the last pause was ended.
            */
           _lastResumeTimestamp: {
+            type: Date,
+            value: null
+          },
+          
+          /**
+           * The timestamp to consider when calculating the duration of a new character.
+           * Normally, this is the timestamp of the last accepted character, but
+           * this could be another timestamp for example the resume timestamp after a pause.
+           */
+          _lastReferenceTimestamp: {
             type: Date,
             value: null
           },
@@ -193,11 +213,13 @@
       
       reset() {
         this._setTotalCharacters(0);
+        this._setElapsedTimeInMs(0);
         this._setTotalEditableCharacters(0);
         this._setEnteredCharacters(0);
         this._setCurrentWpm(0);
         this._startTimestamp = null;
         this._endTimestamp = null;
+        this._lastReferenceTimestamp = null;
         this._lastPauseTimestamp = null;
         this._lastResumeTimestamp = null;
         this._totalTimeInPause = 0;
@@ -245,6 +267,7 @@
 
       startTimer(timestamp = new Date()) {
         this._startTimestamp = timestamp;
+        this._lastReferenceTimestamp = timestamp;
       }
       
       pauseTimer(timestamp = new Date()) {
@@ -261,6 +284,7 @@
           this.startTimer();
         } else {
           this._lastResumeTimestamp = timestamp;
+          this._lastReferenceTimestamp = timestamp;
           this._totalTimeInPause += this._lastResumeTimestamp - this._lastPauseTimestamp; 
         }
       }
@@ -279,38 +303,77 @@
 
       newCharacter(index, character, valid, accepted, timestamp = new Date()) {
         // startTimer() is optional. If not called, we trigger the watch on first character.
-        if (!this._startTimestamp) this._startTimestamp = timestamp;
+        if (!this._startTimestamp) this.startTimer(timestamp);
         // stopTimer() is optional. If called, it will overriden this value. Otherwise, 
         // we consider the last entered input timestamp.
         this._endTimestamp = timestamp;
         
         if (character === 'Enter') character = '\\n';
         
-        // Determine the duration to type the character
-        let durationInMs = timestamp - this._startTimestamp;
-        for (let i = this._inputs.length - 1; i >= 0; i--) {
-          if (this._lastResumeTimestamp && this._inputs[i].timestamp < this._lastResumeTimestamp) {
-            // There was a pause!
-            durationInMs = timestamp - this._lastResumeTimestamp;
-            break;
-          } else if (this._inputs[i].accepted === true) {
-            durationInMs = timestamp - this._inputs[i].timestamp;
-            break;
-          }
-        }
-        
+        let durationInMs = timestamp - this._lastReferenceTimestamp;
         this._inputs.push({
           'index': index,
           'character': character,
           'valid': valid,
           'accepted': accepted,
           'timestamp': timestamp,
-          'durationInMs':  durationInMs,
+          'durationInMs': durationInMs,
         });
         this._setEnteredCharacters(this.enteredCharacters + 1);
         this._setCurrentWpm(this._calculateCurrentWpm());
+        
+        if (accepted) {
+          this._lastReferenceTimestamp = timestamp;
+          this._setElapsedTimeInMs(this.elapsedTimeInMs + durationInMs);
+        }
       }
-
+      
+      
+      //
+      // Misc features
+      //
+      
+      /**
+       * Clear the stats for the last n valid characters.
+       */
+      rewind(numberOfCharacters = 5) {
+        let lastInput = this._inputs[this._inputs.length -1];
+        if (numberOfCharacters > lastInput.index) {
+          // Just reset everything...
+          this.reset();
+          return;
+        } 
+        
+        let remaining = numberOfCharacters;
+        let lastAcceptedTimestamp = undefined;
+        
+        let i = this._inputs.length - 1;
+        while (i >= 0 && remaining) {
+          lastInput = this._inputs.pop();
+          if (lastInput.accepted) {
+            if (!lastAcceptedTimestamp) {
+              lastAcceptedTimestamp = lastInput.timestamp;
+            }
+            remaining--;
+          }
+          i--;
+          
+          // The next character duration should start from now
+          if (lastAcceptedTimestamp) {
+            this._lastReferenceTimestamp = lastAcceptedTimestamp;
+          } else {
+            this._lastReferenceTimestamp = this._startTimestamp;
+          }
+          
+          if (lastInput.accepted) {
+            this._setElapsedTimeInMs(this.elapsedTimeInMs - lastInput.durationInMs);
+          }
+          
+          this._setEnteredCharacters(this.enteredCharacters - 1);
+        }
+        this._setCurrentWpm(this._calculateCurrentWpm());
+      }
+      
 
       //
       // Intervals
@@ -359,7 +422,7 @@
         if (this.enteredCharacters < 10) {
           return 0;
         }
-        return TypioStats._wpm(this.enteredCharacters, this._calculateElapsedTimeInMs());
+        return TypioStats._wpm(this.enteredCharacters, this.elapsedTimeInMs);
       }
 
 
@@ -379,7 +442,7 @@
           'theoricalWpm': this._calculateTheoricalWpm(),
           'unproductiveKeystrokeOverhead': this._calculateUnproductiveKeystrokeOverhead(),
           'elapsedTimeInS': this._calculateElapsedTimeInS(),
-          'elapsedTimeInMs': this._calculateElapsedTimeInMs(),
+          'elapsedTimeInMs': this.elapsedTimeInMs,
         });
       }
       
@@ -407,7 +470,7 @@
       
       _calculateEffectiveWpm() {
         // see https://en.wikipedia.org/wiki/Words_per_minute for official definition
-        return TypioStats._wpm(this.totalEditableCharacters, this._calculateElapsedTimeInMs());
+        return TypioStats._wpm(this.totalEditableCharacters, this.elapsedTimeInMs);
       }
       
       _calculateTheoricalWpm() {
@@ -439,21 +502,9 @@
       }
 
       _calculateElapsedTimeInS() {
-        let end = this._endTimestamp;
-        if (!end) {
-          end = new Date();
-        }
-        return TypioStats.durationInS(this._startTimestamp, end - this._totalTimeInPause);
+        return Math.round(this.elapsedTimeInMs / 1000);
       }
       
-      _calculateElapsedTimeInMs() {
-        let end = this._endTimestamp;
-        if (!end) {
-          end = new Date();
-        }
-        return TypioStats.durationInMs(this._startTimestamp, end - this._totalTimeInPause);
-      }
-  
 
       //
       // Difficulties

@@ -10,6 +10,7 @@
 <link rel="import" href="/src/typio-app/typio-stats.html">
 <link rel="import" href="/src/typio-app/typio-keyboard.html">
 <link rel="import" href="/src/typio-app/typio-hands.html">
+<link rel="import" href="/src/typio-app/typio-sleep-tracker.html">
 <link rel="import" href="/src/typio-app/typio-editor.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
 
@@ -285,6 +286,32 @@
       }
       
       
+      /*
+       * Sleep Dialog 
+       */
+       
+      #pauseDialog {
+        display: none;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: var(--typio-bg-color);
+        color: white;
+        z-index: 300;
+      }
+      #screen.paused-true #pauseDialog {
+        display: block;
+      }
+      #pauseDialog h1 {
+        position: absolute;
+        text-align: center;
+        font-size: 250%;
+        font-weight: bold;
+        top: 40%;
+        width: 100%;
+      }
 
     </style>
 
@@ -302,14 +329,22 @@
     <!-- Get stats about practice session -->
     <typio-stats id="stats"></typio-stats>
 
+    <typio-sleep-tracker id="sleepTracker" on-sleep-detected="_sleepDetected" debug></typio-sleep-tracker>
 
-    <div id="screen" class$="initialized-[[initialized]] showChart-{{showChart}} mode-{{mode}} started-{{started}} ended-{{ended}} theme-{{theme}}">
+    <div id="screen" class$="initialized-[[initialized]] showChart-{{showChart}} mode-{{mode}} started-{{started}} paused-{{paused}} ended-{{ended}} theme-{{theme}}">
 
       <template is="dom-if" if="{{resource}}">
         <div id="resourceName">
           <strong>[[resource]]</strong> | [[resourceItem]]
         </div>
       </template>
+      
+      <div id="pauseDialog" class="theme-transparent">
+        <h1>Are you sleeping?</h1>
+        <div class="fabs">
+          <paper-fab icon="av:play-arrow" title="Resume" on-click="_resumeClicked"></paper-fab>
+        </div>
+      </div>
 
       <div class="fabs">
         <paper-fab id="fabHeatmap" icon="maps:map" title="Heatmap" on-click="showHeatmap"></paper-fab>
@@ -356,6 +391,7 @@
           data-content$="[[_content]]"
           on-character-entered="_characterEntered"
           on-typing-ended="_typingEnded"
+          paused$="[[paused]]"
           profile>
       </typio-editor>
       
@@ -547,7 +583,7 @@
 
           paused: {
             type: Boolean,
-            value: true
+            value: false
           },
 
           ended: {
@@ -745,18 +781,23 @@
         // Reset globals
         this.initialized = false;
         this.started = false;
-        this.paused = true;
+        this.paused = false;
         this.ended = false;
 
         // Reset ready-screen
         this.$.readyScreen.hidden = false;
       }
+      
+      
+      //
+      // Listeners
+      //
 
       /**
        * Called when the user has validated the ready screen.
        */
       start(e, detail) {
-        console.log('[typio-editor] starting', detail);
+        console.log('[typio-practice-screen] starting', detail);
         this.initialized = true;
         
         this._content = detail.content;
@@ -764,6 +805,7 @@
         
         this.showChart = this.$.readyScreen.showChart;
         this.theme = detail.theme;
+        this.mode = detail.mode;
         this.$.editor.theme = detail.theme;
         this.$.editor.mode = detail.mode;
         this.$.editor.content = this._content;
@@ -774,14 +816,25 @@
         if (detail.fontSize) this.$.editor.fontSize = detail.fontSize;
         if (detail.preserveSpacing) this.$.editor.preserveSpacing = detail.preserveSpacing;
         
-        console.log('[typio-editor] launching editor...');
+        console.log('[typio-practice-screen] launching editor...');
         this.$.editor.start();
+        this.$.sleepTracker.start();
       }
       
       cancel() {
         if (this.started) {
           this.$.editor.cancel();
         }
+      }
+      
+      pause() {
+        this.paused = true;
+        this.$.stats.pauseTimer();
+      }
+      
+      resume() {
+        this.paused = false;
+        this.$.stats.resumeTimer();
       }
 
       _characterEntered(e, detail) {
@@ -791,6 +844,7 @@
           this.started = true;
         }
         this.$.stats.newCharacter(detail.index, detail.character, detail.valid, detail.accepted);
+        this.$.sleepTracker.newActivity();
         this.currentWpm = this.$.stats.currentWpm;
         
         // Update charts
@@ -802,6 +856,7 @@
       _typingEnded() {
         // Show stats
         this.$.stats.stopTimer();
+        this.$.sleepTracker.stop();
         this.statsSummary = this.$.stats.summary;
         this.mostDifficultKeys = this.$.stats.mostDifficultKeys(3);
         this.mostDifficultKeyCombinations = this.$.stats.mostDifficultKeyCombinations(3);
@@ -892,7 +947,15 @@
           this._chartEventsListened = true;
         }
       }
-
+      
+      _sleepDetected(event, detail) {
+        this.pause();
+      }
+      
+      _resumeClicked(event, detail) {
+        this.resume();
+      }
+      
 
       // 
       // Heatmap
@@ -963,14 +1026,19 @@
       }   
       
       //
-      // Utils
+      // Shortcuts
       //
       
-      shortcutStart() {
+      startable() {
+        if (this.paused) this.resume();
         if (this.started) return;
         this.$.readyScreen.start();
       }
       
+      
+      //
+      // Utils
+      //
       
       static dynamicPaperColor(paperColor, actualValue, maxValue) {
         if (actualValue === 0) {

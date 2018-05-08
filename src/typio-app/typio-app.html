@@ -68,9 +68,10 @@
         margin-left: 24px;
       }
       app-header {
-        @apply --layout-fixed-top;
         color: #fff;
         box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+        position: sticky;
+        top: 0;
         z-index: 100;
         --app-header-background-rear-layer: {
           background-color: #ef6c00;
@@ -283,7 +284,7 @@
       
       start() {
         if (this.route.path === '/editor') {
-          this.$.editor.shortcutStart();
+          this.$.editor.startable();
         }
       }
       

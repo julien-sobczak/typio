@@ -186,18 +186,18 @@
           assert.isUndefined(element.chartSteppedAreaRows()[0][1]); // not enough entered characters
 
           element.newCharacter(4, 'c', true, true, afterMs(1500));
-          assert.equal(element.chartSteppedAreaRows()[0][1], '18'); // enough characters to calculate the WPM
+          assert.equal(element.chartSteppedAreaRows()[0][1], '14'); // enough characters to calculate the WPM
 
           element.newCharacter(6, 'd', true, true, afterMs(1000));
-          assert.equal(element.chartSteppedAreaRows()[0][1], '18'); // previous interval is preserved
+          assert.equal(element.chartSteppedAreaRows()[0][1], '14'); // previous interval is preserved
           assert.isUndefined(element.chartSteppedAreaRows()[1][1]); // but not enough entered characters for new interval
 
           element.newCharacter(8, 'e', true, true, afterMs(2000));
           assert.isUndefined(element.chartSteppedAreaRows()[1][1]); // Still not enough entered characters for new interval
 
           element.newCharacter(9, 'f', true, true, afterMs(500));
-          assert.equal(element.chartSteppedAreaRows()[0][1], '18');
-          assert.equal(element.chartSteppedAreaRows()[1][1], '12'); // It's OK!
+          assert.equal(element.chartSteppedAreaRows()[0][1], '14');
+          assert.equal(element.chartSteppedAreaRows()[1][1], '10'); // It's OK!
 
           element.stopTimer(afterMs(0));
         });
@@ -494,6 +494,42 @@ return 0;
           assert.equal(element.summary.theoricalWpm, 120);
         });
         
+        test('[pause] remove sleep time', function() {
+          var element = fixture('DefaultFixture');
+          const content = "abcdefghijklmno";
+          element.init(content);
+
+          // Simulate key press using realistic values.
+          element.startTimer(afterMs(0));
+          element.newCharacter( 0, 'a', true,  true,  afterMs(125));
+          element.newCharacter( 1, 'b', true,  true,  afterMs(125));
+          element.pauseTimer(afterMs(2000));
+          element.resumeTimer(afterMs(10000));
+          element.newCharacter( 2, 'c', true,  true,  afterMs(125));
+          element.newCharacter( 3, 'd', true,  true,  afterMs(125));
+          element.pauseTimer(afterMs(2000));
+          element.resumeTimer(afterMs(5000));
+          element.newCharacter( 4, 'e', true,  true,  afterMs(125));
+          element.newCharacter( 5, 'f', true,  true,  afterMs(125));
+          element.newCharacter( 6, 'g', true,  true,  afterMs(125));
+          element.newCharacter( 7, 'h', true,  true,  afterMs(125));
+          element.newCharacter( 8, 'h', true,  true,  afterMs(125));
+          element.newCharacter( 9, 'i', true,  true,  afterMs(125));
+          element.newCharacter(10, 'j', true,  true,  afterMs(125));
+          element.newCharacter(11, 'k', true,  true,  afterMs(125));
+          assert.equal(element.currentWpm, 96);
+          element.newCharacter(12, 'l', true,  true,  afterMs(125));
+          element.newCharacter(13, 'm', true,  true,  afterMs(125));
+          element.newCharacter(14, 'n', true,  true,  afterMs(125));
+          element.newCharacter(15, 'o', true,  true,  afterMs(125));
+          element.calculateSummaryStatistics();
+          
+          // WPM should not be affected by pause
+          assert.equal(element._totalTimeInPause, 2000 + 10000 + 2000 + 5000);
+          assert.equal(element.summary.elapsedTimeInMs, 16 * 125);
+          assert.equal(element.summary.wpm, 90);
+        });
+        
         
         //
         // Charts
@@ -514,16 +550,16 @@ return 0;
         
           const expected = [
             [{"label":"Progress","type":"string"},{"label":"WPM","type":"number"},{"type":"string","role":"annotation"},{"type":"string","role":"style"}],
-            ["72", 72, "great", ""],
-            ["72", 72, "great", ""],
-            ["72", 72, "great", ""],
-            ["36", 36, "", ""],
-            ["36", 36, "", ""],
-            ["36", 36, "", ""],
-            ["36", 36, "", ""],
-            ["24", 24, "", ""],
-            ["24", 24, "", ""],
-            ["19", 19, "", ""],
+            ["111",111,"fantastic!",""],
+            ["65",65,"great",""],
+            ["49",49,"",""],
+            ["39",39,"",""],
+            ["33",33,"",""],
+            ["28",28,"",""],
+            ["25",25,"",""],
+            ["22",22,"",""],
+            ["20",20,"",""],
+            ["18",18,"",""]
           ];
           expect(element.chartSteppedAreaData()).to.deep.equal(expected);
         });

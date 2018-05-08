@@ -69,6 +69,30 @@
             type: Date,
             value: null
           },
+          
+          /**
+           * The timestanp when thet last pause was started.
+           */
+          _lastPauseTimestamp: {
+            type: Date,
+            value: null
+          },
+          
+          /**
+           * The timestamp when the last pause was ended.
+           */
+          _lastResumeTimestamp: {
+            type: Date,
+            value: null
+          },
+          
+          /** 
+           * Total number of ms spent during pause
+           */
+          _totalTimeInPause: {
+            type: Number,
+            value: 0
+          },
 
           /**
            * The current WPM.
@@ -174,6 +198,9 @@
         this._setCurrentWpm(0);
         this._startTimestamp = null;
         this._endTimestamp = null;
+        this._lastPauseTimestamp = null;
+        this._lastResumeTimestamp = null;
+        this._totalTimeInPause = 0;
         this._ended = false;
 
         this._editables = [];
@@ -219,17 +246,29 @@
       startTimer(timestamp = new Date()) {
         this._startTimestamp = timestamp;
       }
+      
+      pauseTimer(timestamp = new Date()) {
+        // We consider the pause started just after the last entered character
+        if (this._inputs.length > 0) {
+         this._lastPauseTimestamp = this._inputs[this._inputs.length - 1].timestamp;
+       } else {
+         this._lastPauseTimestamp = timestamp;
+       }
+      }
+      
+      resumeTimer(timestamp = new Date()) {
+        if (!this._startTimestamp) {
+          this.startTimer();
+        } else {
+          this._lastResumeTimestamp = timestamp;
+          this._totalTimeInPause += this._lastResumeTimestamp - this._lastPauseTimestamp; 
+        }
+      }
 
       stopTimer(timestamp = new Date()) {
         this._endTimestamp = timestamp;
         this._ended = true;        
         this.calculateSummaryStatistics();
-      }
-
-      resumeTimer() {
-        if (!this._startTimestamp) {
-          this.startTimer();
-        }
       }
 
 
@@ -246,13 +285,20 @@
         this._endTimestamp = timestamp;
         
         if (character === 'Enter') character = '\\n';
+        
+        // Determine the duration to type the character
         let durationInMs = timestamp - this._startTimestamp;
         for (let i = this._inputs.length - 1; i >= 0; i--) {
-          if (this._inputs[i].accepted === true) {
+          if (this._lastResumeTimestamp && this._inputs[i].timestamp < this._lastResumeTimestamp) {
+            // There was a pause!
+            durationInMs = timestamp - this._lastResumeTimestamp;
+            break;
+          } else if (this._inputs[i].accepted === true) {
             durationInMs = timestamp - this._inputs[i].timestamp;
             break;
           }
         }
+        
         this._inputs.push({
           'index': index,
           'character': character,
@@ -313,7 +359,7 @@
         if (this.enteredCharacters < 10) {
           return 0;
         }
-        return Math.round(this.enteredCharacters / this._calculateElapsedTimeInS() * 60.0 / 5);
+        return TypioStats._wpm(this.enteredCharacters, this._calculateElapsedTimeInMs());
       }
 
 
@@ -397,7 +443,7 @@
         if (!end) {
           end = new Date();
         }
-        return TypioStats.durationInS(this._startTimestamp, end);
+        return TypioStats.durationInS(this._startTimestamp, end - this._totalTimeInPause);
       }
       
       _calculateElapsedTimeInMs() {
@@ -405,7 +451,7 @@
         if (!end) {
           end = new Date();
         }
-        return TypioStats.durationInMs(this._startTimestamp, end);
+        return TypioStats.durationInMs(this._startTimestamp, end - this._totalTimeInPause);
       }
   
 
@@ -649,26 +695,21 @@
 
         for (let i = 0; i <= currentInterval; i++) {
           // we determine WPM for this range
-          let firstTimestamp = undefined;
-          let lastTimestamp = undefined;
+          let intervalDurationMs = 0;
           let characterCount = 0;
           for (let j = 0; j < this._inputs.length; j++) {
             let input = this._inputs[j];
             if (this.intervals[input.index] != i) continue; // not the same interval
             if (input.accepted) {
               characterCount++;
-            }
-            if (!firstTimestamp) {
-              firstTimestamp = input.timestamp;
-            } else {
-              lastTimestamp = input.timestamp;
+              intervalDurationMs += input.durationInMs;
             }
           }
 
           if (characterCount >= this.minCharactersPerInterval) {
             // We wait at least 3 characters before displaying the WPM
             // to avoid diplaying peaks at the start of each interval
-            let wpm = Math.round(characterCount / TypioStats.durationInS(firstTimestamp, lastTimestamp) * 60.0 / 5);
+            let wpm = TypioStats._wpm(characterCount, intervalDurationMs);
             result[i][0] = isFinite(wpm) ? '' + wpm : '-';
             result[i][1] = wpm;
             result[i][2] = (wpm > this.WPM_FANTASTIC) ? 'fantastic!' : (wpm > this.WPM_WOW) ? 'wow' : (wpm > this.WPM_GREAT) ? 'great' : '';

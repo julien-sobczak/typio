@@ -51,7 +51,7 @@
 
           paused: {
             type: Boolean,
-            value: true
+            value: false
           },
           
           started: {
@@ -127,21 +127,18 @@
         // reset ready-screen
         this.initialized = false;
         this.started = false;
-        this.paused = true;
+        this.paused = false;
         this.ended = false;
       }
 
       _removeKeysListeners() {
         if (this._keydownListener) {
-          console.log("remove 'keydown' listener");
           document.removeEventListener('keydown', this._keydownListener);
         }
         if (this._keyupListener) {
-          console.log("remove 'keyup' listener");
           document.removeEventListener('keyup', this._keyupListener, false);
         }
         if (this._keypressListener) {
-          console.log("remove 'keypress' listener");
           document.removeEventListener('keypress', this._keypressListener, false);
         }
       }
@@ -219,7 +216,7 @@
        * Pause the practice session.
        */
       resume() {
-        this.paused = false;
+        if (this.started) this.paused = true;
       }
       
       /**
@@ -234,7 +231,7 @@
        * Called after each key press.
        */
       _checkInput(event, keyName) {
-        if (!this.started || this.ended) {
+        if (!this.started || this.paused || this.ended) {
           // ignore input outside practice sessions
           return;
         }
@@ -313,6 +310,7 @@
           "line": line,
           "character": TypioEditor.keyNameToChar(character),
           "keyName": keyName, 
+          "keyCode": event.code, 
           "valid": valid, 
           "accepted": accepted,         
         }
@@ -392,7 +390,7 @@
         }
 
         this._advanceOneCharacter();
-        while (!this.endOfFile() && this.hasAnnotation('ignorable')) { console.log('advance'); this._advanceOneCharacter(); }
+        while (!this.endOfFile() && this.hasAnnotation('ignorable')) { this._advanceOneCharacter(); }
         this._select();
       }
       
@@ -409,7 +407,7 @@
         // Check if a new line have been triggered
         if (this._triggerNewLine) {
           this._currentLine++;
-          console.log("Triggering new line...", this.mode);
+          if (this.debug) console.log("Triggering new line...", this.mode);
           // FIXME what to do instead?
           //if (this.mode === 'scroll') this._scrollEditor();
           //if (this.mode === 'page') this._updatePage();

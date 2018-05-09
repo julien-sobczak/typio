@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>typio-sleep-tracker test</title>
+
+    <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+    <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+
+    <link rel="import" href="../../src/typio-app/typio-keyboard-tracker.html">
+  </head>
+  <body>
+
+    <test-fixture id="DefaultFixture">
+      <template>
+        <typio-keyboard-tracker></typio-keyboard-tracker>
+      </template>
+    </test-fixture>
+
+    <script>
+    
+      suite('typio-keyboard-tracker', function() {
+
+        // 
+        // Interaction utils
+        //
+
+        function press(key, code, modifiers = []) {
+          let keys = key;
+          if (!Array.isArray(keys)) {
+            keys = [key]
+          } 
+
+          keys.forEach(key => MockInteractions.keyEventOn(document, 'keypress', code, [], key));
+        }
+        
+        teardown('clear records', function() {
+          TypioKeyboardTracker.reset();  
+        });
+        
+        test('[record] memorize all characters', function() {
+          tracker = fixture('DefaultFixture');
+          
+          press('a', 'A');
+          press('B', 'B');
+          press('b', 'B');
+          press('ç', 'Comma');
+          press(',', 'Comma');
+          press('<', 'Comma');
+          
+          expect(tracker.keysForCode('A')).to.have.deep.members(['a']);
+          expect(tracker.keysForCode('B')).to.have.deep.members(['B', 'b']);
+          expect(tracker.keysForCode('Comma')).to.have.deep.members(['ç', ',', '<']);
+          expect(tracker.keysForCode('Enter')).to.be.undefined;
+          
+          expect(tracker.keysWithSameCode('a')).to.have.deep.members(['a']);
+          expect(tracker.keysWithSameCode('A')).to.be.undefined;
+          expect(tracker.keysWithSameCode('b')).to.have.deep.members(['B', 'b']);
+          expect(tracker.keysWithSameCode(',')).to.have.deep.members(['ç', ',', '<']);
+          expect(tracker.keysWithSameCode('Enter')).to.be.undefined;
+          
+          // Allow an array
+          expect(tracker.keysWithSameCode([','])).to.have.deep.members(['ç', ',', '<']);
+          expect(tracker.keysWithSameCode([',', '<'])).to.have.deep.members(['ç', ',', '<']);
+          
+          // Same but exclude the keys passed in parameters
+          expect(tracker.otherKeysWithSameCode([','])).to.have.deep.members(['ç', '<']);
+          expect(tracker.otherKeysWithSameCode([',', '<'])).to.have.deep.members(['ç']);
+        });
+        
+        test('[record] could detect layout switches', function() {
+          tracker = fixture('DefaultFixture');
+          
+          press('ç', 'Comma');
+          expect(tracker.keysForCode('Comma')).to.have.deep.members(['ç']);
+          
+          press('ç', 'C'); // could only be possible if the user has switch the layout => reset everything
+          expect(tracker.keysForCode('Comma')).to.be.undefined;
+          expect(tracker.keysForCode('C')).to.have.deep.members(['ç']);
+        });
+
+      });
+    </script>
+
+
+  </body>
+</html>

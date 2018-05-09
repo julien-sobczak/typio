@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
+<link rel="import" href="/src/typio-app/typio-keyboard-tracker.html">
 
 <dom-module id="typio-keyboard">
   <template>
@@ -90,7 +91,8 @@
       }
       .key .label.label-default,
       .key .label.label-shift,
-      .key .label.label-altgr {
+      .key .label.label-altgr,
+      .key .label.label-extra {
         font-size: 100%;
         border-radius: 50%;
         width: calc((var(--calculated-typio-key-size) / 2));
@@ -104,6 +106,9 @@
       .key .label.label-altgr {
         left: calc((var(--calculated-typio-key-size) / 2));
         top: calc((var(--calculated-typio-key-size) / 2));
+      }
+      .key .label.label-extra {
+        left: calc((var(--calculated-typio-key-size) / 2));
       }
       
       /* There a block for ISO and another one for ANSI. We hide the useless one. */
@@ -151,6 +156,8 @@
       }
       
     </style>
+    
+      <typio-keyboard-tracker id="keyboardTracker"></typio-keyboard-tracker>
 
       <div id="keyboard" on-click="_keyClicked" class$="keyboard {{size}} {{norm}} {{layout}} clickable-{{clickable}}">
         
@@ -177,64 +184,64 @@
          --><span class="key key-f12 key-static"><span class="label label-default">F12</span></span>
           </div>
           <div class="row">
-            <span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-1"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-2"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-3"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-4"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-5"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-6"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-7"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-8"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-9"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-0"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
+            <span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-1"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-2"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-3"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-4"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-5"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-6"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-7"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-8"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-9"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-0"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
          --><span class="key key-x2 key-static"><span class="label label-default">Backspace</span></span>
           </div>
           <div class="row">
             <span class="key key-x15 key-static"><span class="label label-default">&#11134;</span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-x15"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span>
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-x15"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span>
           </div>
           <div class="row">
             <span class="key key-x175 key-static"><span class="label label-default">Caps</span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
          --><span class="key key-x225 key-static"><span class="label label-default">Enter</span></span>
           </div>
           <div class="row">
             <span id="shiftLeft" class="key key-x225 key-static"><span class="label label-default">&#8679;</span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
          --><span id="shiftRight" class="key key-x275 key-static"><span class="label label-default">&#8679;</span></span>
           </div>
           <div class="row">
@@ -272,66 +279,66 @@
          --><span class="key key-f12 key-static"><span class="label label-default">F12</span></span>
           </div>
           <div class="row">
-            <span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-1"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-2"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-3"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-4"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-5"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-6"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-7"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-8"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-9"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key key-0"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
+            <span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-1"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-2"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-3"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-4"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-5"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-6"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-7"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-8"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-9"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key key-0"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
          --><span class="key key-x2 key-static"><span class="label label-default">Backspace</span></span>
           </div>
           <div class="row">
             <span class="key key-x15 key-static"><span class="label label-default">&#11134;</span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
          --><span id="enterIsoTop" class="key key-x15 key-static"><span class="label label-default">Enter</span></span>
           </div>
           <div class="row">
             <span class="key key-x175 key-static"><span class="label label-default">Caps</span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
          --><span id="enterIsoBottom" class="key key-x125 key-static"><span class="label label-default"></span></span>
           </div>
           <div class="row">
             <span id="shiftLeft" class="key key-x125 key-static"><span class="label label-default">&#8679;</span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
-         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
+         --><span class="key"><span class="label label-default"></span><span class="label label-shift"></span><span class="label label-altgr"></span><span class="label label-extra"></span></span><!--
          --><span id="shiftRight" class="key key-x275 key-static"><span class="label label-default">&#8679;</span></span>
           </div>
           <div class="row">
@@ -504,7 +511,7 @@
           //
           
           /**
-           * Key a hashtable to quickly access a key element (CSS class `key`)
+           * Hashtable to quickly access a key element (CSS class `key`)
            * from a character literal. 
            */
           _keyElementPerCharacter: {
@@ -632,6 +639,20 @@
                     altGr: true,
                 });
                 keyElement.querySelector('.label-altgr').innerHTML = letters[2];
+                lettersOnKey++;
+              }
+              
+              // Does there is another letters on this key? 
+              // We use the component `typio-keyboard-tracker` to know it.
+              let extras = this.$.keyboardTracker.otherKeysWithSameCode(letters);
+              if (extras && extras.length > 0) {
+                let extra = extras[0];
+                this._keyElementPerCharacter.set(extra, {
+                    keys: [keyElement],
+                    shift: false,
+                    altGr: false,
+                });
+                keyElement.querySelector('.label-extra').innerHTML = extra;
                 lettersOnKey++;
               }
             }

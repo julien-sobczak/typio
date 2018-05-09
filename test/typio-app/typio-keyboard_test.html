@@ -9,6 +9,7 @@
     <link rel="import" href="../../bower_components/polymer/polymer-element.html">
     <script src="../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../bower_components/web-component-tester/browser.js"></script>
+    <script src="../../bower_components/iron-test-helpers/mock-interactions.js"></script>
 
     <link rel="import" href="../../src/typio-app/typio-keyboard.html">
   </head>
@@ -75,6 +76,19 @@
       } 
 
       suite('typio-keyboard', function() {
+        
+        // 
+        // Interaction utils
+        //
+
+        function press(key, code, modifiers = []) {
+          let keys = key;
+          if (!Array.isArray(keys)) {
+            keys = [key]
+          } 
+
+          keys.forEach(key => MockInteractions.keyEventOn(document, 'keypress', code, [], key));
+        }
   
         test('[norm] ansi vs iso', function() {
           const isoKeyboard = fixture('QwertyIsoFixture');
@@ -232,6 +246,27 @@
             expect(colorE).is.equal('rgb(0, 0, 255)');
             expect(colorR).is.equal('rgb(255, 255, 255)');
             
+            done();
+          });
+        });
+        
+        test('[colorize] support unknown characters', function(done) {
+          const keyboard = fixture('QwertyAnsiFixture');
+
+          press('ç', 'Comma'); // ç is not defined in the standard layout
+          press(',', 'Comma');
+          
+          let allColorizedCharacters = []; 
+          
+          // Could select one key
+          keyboard.labelizeKeyboard(); // required because the layout has already been defined
+          keyboard.colorize(character => {
+            allColorizedCharacters.push(character);
+            return false;
+          });
+          
+          flush(function() {
+            expect(allColorizedCharacters).to.include('ç');
             done();
           });
         });

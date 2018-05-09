@@ -1,0 +1,154 @@
+  <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="typio-keyboard-tracker">
+  <script>
+
+    /**
+     * Track every keypress event to detect the character present on the physical keyboard.
+     * For example, in QWERTY International, you can press the letter 'ç' using AltGr+COMMA.
+     *
+     * To avoid specifying every imaginable layout, we try to augment the standard layouts
+     * (Qwerty, Dvorak, Colemak) by listening to key event and watch the `code` property.
+     *
+     * @customElement
+     * @polymer
+     * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+     */
+    class TypioKeyboardTracker extends Polymer.Element {
+
+      static get is() { return 'typio-keyboard-tracker'; }
+      static get properties() {
+        return {
+
+          //
+          // Developer options
+          //
+          
+          debug: {
+            type: Boolean,
+            value: false
+          },
+
+        };
+      }
+      
+      ready() {
+        super.ready();
+        TypioKeyboardTracker.reset();
+        this._listen();        
+      }
+      
+      _listen() {
+        this._keypressListener = event => {
+          const keyName = event.key;
+
+          if (keyName === 'Control') {
+            // not alert when only Control key is pressed.
+            return;
+          }
+
+          if (event.ctrlKey) {
+            // Even though event.key is not 'Control' (i.e. 'a' is pressed),
+            // event.ctrlKey may be true if Ctrl key is pressed at the time.
+            return;
+          } 
+        
+          this._record(event);
+          
+          // listen silently. Do no prevent event propagation
+          return;
+        };
+        document.addEventListener('keypress', this._keypressListener, false);
+      }
+
+      _record(event) {
+        let key = event.key;
+        let code = event.code;
+        
+        if (!key || !code) return;
+        
+        if (TypioKeyboardTracker.codePerKey.has(key) && 
+            TypioKeyboardTracker.codePerKey.get(key) !== code) {
+          // Layout switch detected
+          TypioKeyboardTracker.reset();
+        }
+        
+        if (!TypioKeyboardTracker.codePerKey.has(key)) {
+          TypioKeyboardTracker.codePerKey.set(key, code);
+        }
+        
+        if (!TypioKeyboardTracker.keysPerCode.has(code)) {
+          TypioKeyboardTracker.keysPerCode.set(code, [key]);
+        } else if (!TypioKeyboardTracker.keysPerCode.get(code).includes(key)) {
+          TypioKeyboardTracker.keysPerCode.get(code).push(key);
+        }
+      }
+      
+      /**
+       * Return all keys sharing the same code.
+       */
+      keysForCode(code) {
+        if (!TypioKeyboardTracker.keysPerCode.has(code)) {
+          return undefined;
+        } 
+        return TypioKeyboardTracker.keysPerCode.get(code);
+      }
+      
+      /**
+       * Return all keys sharing the same code from any one of these keys.
+       */
+      keysWithSameCode(keys) {
+        if (!keys) return undefined;
+        
+        if (!Array.isArray(keys)) {
+          keys = [keys];
+        }
+        
+        for (let key of keys) {
+          if (!TypioKeyboardTracker.codePerKey.has(key)) {
+            continue;
+          }
+          const code = TypioKeyboardTracker.codePerKey.get(key);
+          return TypioKeyboardTracker.keysPerCode.get(code);
+        }
+        
+        return undefined;
+      }
+      
+      /**
+       * Return all keys sharing the same code from any one of these keys,
+       * but remove from results the keys passed in parameters..
+       */
+      otherKeysWithSameCode(keys) {
+        if (!keys) return undefined;
+        
+        if (!Array.isArray(keys)) {
+          keys = [keys];
+        }
+        
+        let allKeys = this.keysWithSameCode(keys);
+        if (allKeys === undefined) {
+          return undefined;
+        }
+        
+        // We need to remove key present in `keys`
+        let result = [];
+        for (let key of allKeys) {
+          if (!keys.includes(key)) {
+            result.push(key);
+          }
+        }
+        
+        return result;
+      }
+      
+      static reset() {
+        TypioKeyboardTracker.keysPerCode = new Map();
+        TypioKeyboardTracker.codePerKey = new Map();
+      }
+
+    }
+    window.customElements.define(TypioKeyboardTracker.is, TypioKeyboardTracker);
+
+  </script>
+</dom-module>

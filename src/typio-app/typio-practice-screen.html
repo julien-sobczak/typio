@@ -344,7 +344,7 @@
       </template>
       
       <div id="pauseDialog" class="theme-transparent">
-        <h1>Are you sleeping?</h1>
+        <h1><!-- Are you sleeping? --></h1>
         <div class="fabs">
           <paper-fab icon="autorenew" title="Restart" on-click="restart"></paper-fab>
           <paper-fab icon="av:play-arrow" title="Resume" on-click="_resumeClicked"></paper-fab>
@@ -535,7 +535,7 @@
            */
           content: {
             type: String,
-            value: 'import sys\n\ndef main():\n  print("Hello World")  # Greeting message\n  sys.exit(0)\n',
+            value: 'import sys\n\ndef main():\n  print("Hello çWorld")  # Greeting message\n  sys.exit(0)\n',
             //value: 'var (\n  toto    string\n  spirou  boolean\n)\n',
             //value: 'this is a very very very very very very very very very very very very very very very very very long line'
           },
@@ -983,6 +983,7 @@
           }
         });
 
+        this.$.keyboard.labelizeKeyboard();
         this.$.keyboard.colorize(c => {
           if (!responseTimePerKey.has(c)) return false;
           const stats = responseTimePerKey.get(c);

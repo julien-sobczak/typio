@@ -135,7 +135,7 @@
         z-index: 500;
       }
       #heatmap #keyboard {
-        position: absolute;
+        position: fixed;
         bottom: 200px;
         left: 50%;
         /* Using default size, the compact keyboard measures 576px x 192px */
@@ -143,7 +143,7 @@
         margin-left: calc(-1 * 576px / 2);
       }
       #heatmap #hands {
-        position: absolute;
+        position: fixed;
         bottom: 0;
         left: 50%;
         margin-left: calc(-1 * 576px / 2);
@@ -333,7 +333,7 @@
     <!-- Get stats about practice session -->
     <typio-stats id="stats"></typio-stats>
 
-    <typio-sleep-tracker id="sleepTracker" on-sleep-detected="_sleepDetected" debug></typio-sleep-tracker>
+    <typio-sleep-tracker id="sleepTracker" on-sleep-detected="_sleepDetected"></typio-sleep-tracker>
 
     <div id="screen" class$="initialized-[[initialized]] showChart-{{showChart}} mode-{{mode}} started-{{started}} paused-{{paused}} ended-{{ended}} theme-{{theme}}">
 
@@ -375,7 +375,7 @@
             <span>Most difficult keys</span>
             <ul id="keys">
               <template is="dom-repeat" items="{{mostDifficultKeys}}">
-              <li><span class="key">[[item.character]]</span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
+              <li><span class="key" inner-h-t-m-l="[[item.character]]"></span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
               </template>
             </ul>
           </div>
@@ -397,8 +397,7 @@
           data-content$="[[_content]]"
           on-character-entered="_characterEntered"
           on-typing-ended="_typingEnded"
-          paused$="[[paused]]"
-          profile>
+          paused$="[[paused]]">
       </typio-editor>
       
       <div id="heatmap">
@@ -461,7 +460,7 @@
 
       <google-chart id="miniChart"
         type="stepped-area"
-        options="[[chartOptions]]"
+        options="[[minichartOptions]]"
         cols="[[chartCols]]"
         rows='[]'>
       </google-chart>
@@ -535,7 +534,7 @@
            */
           content: {
             type: String,
-            value: 'import sys\n\ndef main():\n  print("Hello çWorld")  # Greeting message\n  sys.exit(0)\n',
+            value: 'import sys\n\ndef main():\n  print("Hello World")  # Greeting message\n  sys.exit(0)\n',
             //value: 'var (\n  toto    string\n  spirou  boolean\n)\n',
             //value: 'this is a very very very very very very very very very very very very very very very very very long line'
           },
@@ -569,7 +568,22 @@
             type: String,
             value: 'light'
           },
-
+          
+          
+          // 
+          // Display settings
+          //
+          
+          /**
+           * To improve latency when typing, we do not refresh the stats
+           * after each key press. We use this variable to keep the last
+           * position when the last refresh occured.
+           */
+          _lastPositionWhenRefresh: {
+            type: Number,
+            value: null,
+          },
+          
 
           //
           // State management
@@ -657,6 +671,35 @@
                 backgroundColor: {strokeWidth: 0}
               },
               hAxis: { textPosition: "in", textStyle: { color: "black", bold: true, auraColor: "none" } },
+              vAxis: {
+                textPosition: "in",
+                minValue: 0,
+                maxValue: 200,
+                gridlines: { "count": 0 }
+              },
+              colors: ["#009ee3"],
+              lineWidth: 2,
+              annotations: { textStyle: { color: "orange"} }
+            }
+          },
+          
+          minichartOptions: {
+            type: Object,
+            readOnly: true,
+            value: {
+              backgroundColor: { fill:'transparent' },
+              title: "WPM",
+              legend: "none",
+              fontName: "Cutive",
+              areaOpacity: 1,
+              tooltip: {trigger: "none"},
+              chartArea: {
+                left: 0,
+                top: 0,
+                width: "100%",
+                backgroundColor: {strokeWidth: 0}
+              },
+              hAxis: { textPosition: "out", textStyle: { color: "black", bold: true, auraColor: "none" } },
               vAxis: {
                 textPosition: "in",
                 minValue: 0,
@@ -789,6 +832,7 @@
         this.started = false;
         this.paused = false;
         this.ended = false;
+        this._lastPositionWhenRefresh = 0;
 
         // Reset ready-screen
         this.$.readyScreen.hidden = false;
@@ -825,6 +869,8 @@
         console.log('[typio-practice-screen] launching editor...');
         this.$.editor.start();
         this.$.sleepTracker.start();
+        this.$.chart.rows = this.$.stats.chartSteppedAreaRows();
+        this.$.chart.redraw();
       }
       
       cancel() {
@@ -858,10 +904,14 @@
         this.$.sleepTracker.newActivity();
         this.currentWpm = this.$.stats.currentWpm;
         
-        // Update charts
-        this.$.chart.style.display = 'block !important';
-        this.$.chart.rows = this.$.stats.chartSteppedAreaRows();
-        this.$.chart.redraw();
+        // Update charts when necessary
+        let refreshThreshold = Math.min(20, Math.floor(this.$.stats.totalCharacters / 20)); // At least twice per interval and every 10 characters
+        if (this.$.stats.enteredCharacters - this._lastPositionWhenRefresh > refreshThreshold) {
+          this.$.chart.style.display = 'block !important'; // bug otherwise
+          this.$.chart.rows = this.$.stats.chartSteppedAreaRows();
+          this.$.chart.redraw();
+          this._lastPositionWhenRefresh = this.$.stats.enteredCharacters;
+        }
       }
 
       _typingEnded() {

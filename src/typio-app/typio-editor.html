@@ -247,6 +247,8 @@
         let character = this.character();
         let line = this._currentLine;
         
+        let shouldAdvance = false;
+        
         if (this.debug) {
           console.log('Expected: [' + this.character() + '] (' + this.character().charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + '), valid=' + this._isValid(this.element(), keyName) + ', position=' + this.position + ', error=' + this.error + ', positionError=' + this.positionError);
         }
@@ -291,7 +293,7 @@
           if (!this.error) {
             this._countValid++;
           }
-          this.advance();
+          shouldAdvance = true;
           
         } else {
           valid = false;
@@ -299,7 +301,7 @@
           this.positionError = this.position;
           this.annotate('char-invalid', 'wrong');
           this.annotateGlobal('error');
-          this.advance();
+          shouldAdvance = true;
         }
 
         // Notify about entered input
@@ -315,6 +317,10 @@
           "accepted": accepted,         
         }
         this.dispatchEvent(new CustomEvent('character-entered', {detail: detail, bubbles: true, composed: true}));
+        
+        if (shouldAdvance) {
+          this.advance();
+        }
         
         if (this.profile) {
           console.log('[typio-editor] checking input done in ' + (performance.now() - startTime) + 'ms');

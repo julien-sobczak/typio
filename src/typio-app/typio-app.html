@@ -117,8 +117,10 @@
         tail="{{subroute}}">
     </app-route>
 
-    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+enter" on-keys-pressed="start"></iron-a11y-keys>
-    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+left" on-keys-pressed="back"></iron-a11y-keys>
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+enter" on-keys-pressed="actionStart"></iron-a11y-keys>
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+left" on-keys-pressed="actionBack"></iron-a11y-keys>
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="alt++" on-keys-pressed="actionMore"></iron-a11y-keys>
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="alt+-" on-keys-pressed="actionLess"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+i" on-keys-pressed="goToIntro"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+e" on-keys-pressed="goToDrillEditor"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+d" on-keys-pressed="goToDrillSession"></iron-a11y-keys>
@@ -283,17 +285,31 @@
         this.set('route.path', '/catalog');
       }
       
-      start() {
+      actionStart() {
         let screen = this._currentScreen();
-        if (screen.startable) {
-          screen.startable();
+        if (screen.actionStart) {
+          screen.actionStart();
         }
       }
       
-      back() {
+      actionBack() {
         let screen = this._currentScreen();
-        if (screen.backable) {
-          screen.backable();
+        if (screen.actionBack) {
+          screen.actionBack();
+        }
+      }
+      
+      actionMore() {
+        let screen = this._currentScreen();
+        if (screen.actionMore) {
+          screen.actionMore();
+        }
+      }
+      
+      actionLess() {
+        let screen = this._currentScreen();
+        if (screen.actionLess) {
+          screen.actionLess();
         }
       }
       

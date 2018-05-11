@@ -126,78 +126,77 @@
        * Heatmap
        */
        
-      #heatmap {
+      #advancedStats {
         position: fixed;
         height: 100%;
         width: 100%;
         background-color: rgba(255,255,255,0.95);
         display: none; /* Only revealed after a practice session */
+        overflow-y: scroll;
         z-index: 500;
       }
-      #heatmap #keyboard {
-        position: fixed;
-        bottom: 200px;
+      #advancedStats #keyboardAndHands {
+        width: 100%;
+        position: relative;
+        height: 550px;
+      }
+      #advancedStats #keyboard {
+        position: absolute;
+        bottom: 230px;
         left: 50%;
         /* Using default size, the compact keyboard measures 576px x 192px */
         margin-top: calc(-1 * 192px / 2);
         margin-left: calc(-1 * 576px / 2);
       }
-      #heatmap #hands {
-        position: fixed;
-        bottom: 0;
+      #advancedStats #hands {
+        position: absolute;
+        bottom: 50px;
         left: 50%;
         margin-left: calc(-1 * 576px / 2);
       }
       
-      #heatmap paper-icon-button {
-        position: absolute;
-        bottom: 1in;
-        right: 1in;
-      }
       
-      /* List of graphs displayed in heatmap */
-      
-      #steppedAreaChart {
-        position: fixed;
-        height: 150px;
-        width: 250px;
-        top: 150px;
-        left: 50%;
-        margin-left: -600px;
-      }
-
-      #heatmapChart {
-        position: fixed;
-        height: 150px;
-        width: 250px;
-        top: 150px;
-        left: 50%;
-        margin-left: -300px;
-      }
-      
-      #scatterChart {
-        position: fixed;
-        height: 150px;
-        width: 250px;
-        top: 150px;
-        left: 50%;
-        margin-left: 0;
-      }
-      
-      #lineChart {
-        position: fixed;
-        height: 150px;
-        width: 250px;
-        top: 150px;
-        left: 50%;
-        margin-left: 300px;
-      }
-      
-      #mostDifficultWords {
-        position: fixed;
+      paper-card.stats {
+        box-sizing: border-box;
+        background-color: white;
+        margin: 30px;
+        padding: 0;
+        color: black;
         width: 500px;
-        right: 0;
-        bottom: 0;
+        height: 350px;
+        flex: 0 0 auto;
+        
+        --paper-card-header-text: {
+          font-size: 100%;
+        }
+        --paper-card-content: {
+          padding: 10px 25px;
+          position: relative;
+          height: 250px;
+        }
+      }
+      
+      paper-card.stats table {
+        width: 100%;
+        height: 200px;
+        overflow-y: scroll;
+      }
+      paper-card.stats table thead tr {
+        background-color: var(--typio-bg-color);
+        color: white;
+        font-style: italic;
+        font-weight: normal;
+      }
+      paper-card.stats table tbody tr {
+        border-bottom: 1px solid black;
+      }
+      paper-card.stats table tbody tr:nth-child(2n) {
+        background-color: #EEE;
+      }
+      paper-card.stats table td.text {
+        font-family: var(--typio-viewer-font-family);
+        font-size: 90%;
+        text-align: left;
       }
 
     
@@ -226,8 +225,8 @@
         display: block;
       }
       
-      #screen.ended-false #fabHeatmap { display: none;  }
-      #screen.ended-true  #fabHeatmap { display: block; }
+      #screen.ended-false #fabStats { display: none;  }
+      #screen.ended-true  #fabStats { display: block; }
       
       #screen.ended-false #fabRestart { display: block;  }
       #screen.ended-true  #fabRestart { display: block; }
@@ -352,7 +351,7 @@
       </div>
 
       <div id="editorFabs" class="fabs">
-        <paper-fab id="fabHeatmap" icon="maps:map" title="Heatmap" on-click="showHeatmap"></paper-fab>
+        <paper-fab id="fabStats" icon="maps:map" title="Statistics" on-click="showAdvancedStats"></paper-fab>
         <paper-fab id="fabRewind" icon="av:replay-10" title="Rewind" on-click="rewind"></paper-fab>
         <paper-fab id="fabRestart" icon="autorenew" title="Restart" on-click="restart"></paper-fab>
       </div>
@@ -371,22 +370,6 @@
               <li>Unproductive keystroke overhead: [[statsSummary.unproductiveKeystrokeOverhead]]%</li>
             </ul>
           </div>
-          <div>
-            <span>Most difficult keys</span>
-            <ul id="keys">
-              <template is="dom-repeat" items="{{mostDifficultKeys}}">
-              <li><span class="key" inner-h-t-m-l="[[item.character]]"></span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
-              </template>
-            </ul>
-          </div>
-          <div>
-            <span>Most difficult key combinations</span>
-            <ul id="keyCombinations">
-              <template is="dom-repeat" items="{{mostDifficultKeyCombinations}}">
-              <li><span class="key" inner-h-t-m-l="[[item.fromCharacter]]"></span> &rarr; <span class="key" inner-h-t-m-l="[[item.toCharacter]]"></span><span class="elapsedTime">[[item.averageInMs]] ms</span></li>
-              </template>
-            </ul>
-          </div>
         </div>        
       </div>
 
@@ -400,54 +383,137 @@
           paused$="[[paused]]">
       </typio-editor>
       
-      <div id="heatmap">
-        <typio-keyboard id="keyboard" mixed-cases></typio-keyboard>
-        <typio-hands id="hands"></typio-hands>
+      <div id="advancedStats">
         
-        <google-chart id="steppedAreaChart"
-          type="stepped-area"
-          options="[[steppedAreaOptions]]"
-          data="[[steppedAreaData]]">
-        </google-chart>
+        <paper-card heading="WPM per interval" class="stats">
+          <div class="card-content">
+            <google-chart id="steppedAreaChart"
+              type="stepped-area"
+              options="[[steppedAreaOptions]]"
+              data="[[steppedAreaData]]">
+            </google-chart>
+          </div>
+          <div class="card-actions">
+            <paper-icon-button icon="icons:help"></paper-icon-button>
+          </div>
+        </paper-card>  
         
-        <google-chart id="heatmapChart"
-          type="bar"
-          options='[[heatmapOptions]]'
-          data='[[heatmapData]]'>
-        </google-chart>
-
-        <google-chart id="scatterChart"
-          type="scatter"
-          options='[[scatterOptions]]'
-          data='[[scatterData]]'>
-        </google-chart>
+        <paper-card heading="Heatmap" class="stats">
+          <div class="card-content">
+            <google-chart id="heatmapChart"
+              type="bar"
+              options='[[heatmapOptions]]'
+              data='[[heatmapData]]'>
+            </google-chart>
+          </div>
+          <div class="card-actions">
+            <paper-icon-button icon="icons:help"></paper-icon-button>
+          </div>
+        </paper-card>  
+          
+        <paper-card heading="WPM" class="stats">
+          <div class="card-content">
+            <google-chart id="scatterChart"
+              type="scatter"
+              options='[[scatterOptions]]'
+              data='[[scatterData]]'>
+            </google-chart>
+          </div>
+          <div class="card-actions">
+            <paper-icon-button icon="icons:help"></paper-icon-button>
+          </div>
+        </paper-card>  
+      
+        <paper-card heading="WPM" class="stats">
+          <div class="card-content">
+            <google-chart id="lineChart"
+              type="line"
+              options='[[lineOptions]]'
+              data='[[lineData]]'>
+            </google-chart>
+          </div>
+          <div class="card-actions">
+            <paper-icon-button icon="icons:help"></paper-icon-button>
+          </div>
+        </paper-card>  
+          
+        <paper-card heading="Most difficult words" class="stats">
+          <div class="card-content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Text</th><th>WPM</th>
+                </tr>
+              </thead>
+              <tbody>
+              <template is="dom-repeat" items="{{mostDifficultWords}}">
+                <tr>
+                  <td class="text" inner-h-t-m-l="[[item.word]]"></td><td>[[item.wpm]]</td>
+                </tr>
+              </template>
+              </tbody>
+            </table>
+          </div>     
+          <div class="card-actions">
+            <paper-icon-button icon="icons:help"></paper-icon-button>
+          </div>       
+          <paper-fab icon="av:play-arrow" title="Generate Drill" on-click="_generateDrillWords" class="relative" mini></paper-fab>
+        </paper-card>
         
-        <google-chart id="lineChart"
-          type="line"
-          options='[[lineOptions]]'
-          data='[[lineData]]'>
-        </google-chart>
+        <paper-card heading="Most difficult characters" class="stats">
+          <div class="card-content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Character</th><th>Elapsed time</th>
+                </tr>
+              </thead>
+              <tbody>
+              <template is="dom-repeat" items="{{mostDifficultKeys}}">
+                <tr>
+                  <td class="text"><span inner-h-t-m-l="[[item.characterFormatted]]"></span></td><td>[[item.averageInMs]] ms</td>
+                </tr>
+              </template>
+              </tbody>
+            </table>
+          </div>     
+          <div class="card-actions">
+            <paper-icon-button icon="icons:help"></paper-icon-button>
+          </div>       
+          <paper-fab icon="av:play-arrow" title="Generate Drill" on-click="_generateDrillCharacters" class="relative" mini></paper-fab>
+        </paper-card>
         
-        <div id="mostDifficultWords">
-          <span>Most difficult words</span>
-          <table>
-            <thead>
-              <tr>
-                <th>Text</th><th>WPM</th>
-              </tr>
-            </thead>
-            <tbody>
-            <template is="dom-repeat" items="{{mostDifficultWords}}">
-              <tr>
-                <td class="text" inner-h-t-m-l="[[item.word]]"></td><td>[[item.wpm]]</td>
-              </tr>
-            </template>
-            </tbody>
-          </table>
-        </div>
+        <paper-card heading="Most difficult character combinations" class="stats">
+          <div class="card-content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Character to character</th><th>Elapsed time</th>
+                </tr>
+              </thead>
+              <tbody>
+              <template is="dom-repeat" items="{{mostDifficultKeyCombinations}}">
+                <tr>
+                  <td class="text"><span inner-h-t-m-l="[[item.fromCharacterFormatted]]"></span> &rarr; <span inner-h-t-m-l="[[item.toCharacterFormatted]]"></span></td><td>[[item.averageInMs]] ms</td>
+                </tr>
+              </template>
+              </tbody>
+            </table>
+          </div>     
+          <div class="card-actions">
+            <paper-icon-button icon="icons:help"></paper-icon-button>
+          </div>       
+          <paper-fab icon="av:play-arrow" title="Generate Drill" on-click="_generateDrillCharacterCombinations" class="relative" mini></paper-fab>
+        </paper-card>
+        
+        
+        <div id="keyboardAndHands">
+          <typio-keyboard id="keyboard" mixed-cases></typio-keyboard>
+          <typio-hands id="hands"></typio-hands>
+        </div>  
         
         <div class="fabs">
-          <paper-fab id="fabHeatmap" icon="close" title="Close" on-click="hideHeatmap"></paper-fab>
+          <paper-fab id="fabHeatmap" icon="close" title="Close" on-click="hideAdvancedStats"></paper-fab>
         </div>
       </div>
 
@@ -624,8 +690,8 @@
             readOnly: true,
             value: {
               legend: "none",
-              width: 250,
-              height: 150,
+              width: 450,
+              height: 200,
               theme: 'maximized',
               backgroundColor: { fill: 'transparent' },
               fontName: "Cutive",
@@ -731,8 +797,8 @@
             readOnly: true,
             value: {
               orientation: 'horizontal',
-              width: 250,
-              height: 150,
+              width: 450,
+              height: 200,
               legend: { position: 'none' },
               bar: { groupWidth: '100%' },
               bars: 'horizontal',
@@ -762,8 +828,8 @@
             type: Object,
             readOnly: true,
             value: {
-              width: 250,
-              height: 150,
+              width: 450,
+              height: 200,
               legend: { position: 'none' },
               theme: 'maximized',
               colors: ["#009ee3"],
@@ -790,8 +856,8 @@
             type: Object,
             readOnly: true,
             value: {
-              width: 250,
-              height: 150,
+              width: 450,
+              height: 200,
               legend: { position: 'none' },
               theme: 'maximized',
               colors: ["#009ee3"],
@@ -919,8 +985,8 @@
         this.$.stats.stopTimer();
         this.$.sleepTracker.stop();
         this.statsSummary = this.$.stats.summary;
-        this.mostDifficultKeys = this.$.stats.mostDifficultKeys(3);
-        this.mostDifficultKeyCombinations = this.$.stats.mostDifficultKeyCombinations(3);
+        this.mostDifficultKeys = this.$.stats.mostDifficultKeys(10);
+        this.mostDifficultKeyCombinations = this.$.stats.mostDifficultKeyCombinations(10);
         this.mostDifficultWords = this.$.stats.mostDifficultWords(this._difficultWordOptions());
         
         // Show mini chart
@@ -1019,10 +1085,10 @@
       
 
       // 
-      // Heatmap
+      // Advanced Statistics
       // 
       
-      showHeatmap() {
+      showAdvancedStats() {
         const responseTimes = this.$.stats.getResponseTimeKeys();
         const responseTimePerKey = new Map();
         let worstInMs = 0;
@@ -1080,27 +1146,95 @@
           thumb:        TypioPracticeScreen.dynamicRedColor(fingerRepartition.rightHand.thumb, maxFingerCount),
         });
         
-        this.$.heatmap.style.display = 'block';
+        this.$.advancedStats.style.display = 'block';
       }
       
-      hideHeatmap() {
-        this.$.heatmap.style.display = 'none';
+      hideAdvancedStats() {
+        this.$.advancedStats.style.display = 'none';
       }   
       
       //
       // Shortcuts
       //
       
-      startable() {
+      actionStart() {
         if (this.paused) this.resume();
         if (this.started) return;
         this.$.readyScreen.start();
       }
       
-      backable() {
+      actionBack() {
         this.rewind();
       }
       
+      actionMore() {
+        if (this.ended) this.showAdvancedStats();
+      }
+      
+      actionLess() {
+        if (this.ended) this.hideAdvancedStats();
+      }      
+      
+      
+      //
+      // Statistics
+      //
+      
+      _generateDrillWords() {
+        const detail = {
+          drill: {
+            type: 'static',
+            text: this.mostDifficultWords.map(e => e.word), 
+            limit: this.mostDifficultWords.length, 
+            random: true,
+          },
+          redirectUri: '/editor'
+        };
+        this.dispatchEvent(new CustomEvent('drill-session-requested', {detail: detail, bubbles: true, composed: true}));
+      }
+      
+      _generateDrillCharacters() {
+        let keys = [];
+        let weights = [];
+        for (let item of this.mostDifficultKeys) {
+          if (/\s/.test(item.character)) continue;
+          keys.push(item.character);
+          weights.push(item.averageInMs);
+        }
+
+        const detail = {
+          drill: {
+            type: 'basic',
+            keys: keys, 
+            weights: weights, 
+            preserveSpacing: false,
+          },
+          redirectUri: '/editor'
+        };
+        this.dispatchEvent(new CustomEvent('drill-session-requested', {detail: detail, bubbles: true, composed: true}));
+      }
+      
+      _generateDrillCharacterCombinations() {
+        let keys = [];
+        let weights = [];
+        for (let item of this.mostDifficultKeyCombinations) {
+          if (/\s/.test(item.fromCharacter)) continue;
+          if (/\s/.test(item.toCharacter)) continue;
+          keys.push(item.fromCharacter + item.toCharacter);
+          weights.push(item.averageInMs);
+        }
+
+        const detail = {
+          drill: {
+            type: 'basic',
+            keys: keys, 
+            weights: weights,
+            preserveSpacing: false, 
+          },
+          redirectUri: '/editor'
+        };
+        this.dispatchEvent(new CustomEvent('drill-session-requested', {detail: detail, bubbles: true, composed: true}));
+      }
       
       //
       // Utils

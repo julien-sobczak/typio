@@ -228,18 +228,21 @@
             const third = characters[2];
 
             assert.equal(first.character, 'a');
+            assert.equal(first.characterFormatted, 'a');
             assert.equal(first.minInMs, 5);
             assert.equal(first.maxInMs, 20);
             assert.equal(first.occurrences, 4);
             assert.equal(first.averageInMs, 11);
 
             assert.equal(second.character, 'b');
+            assert.equal(second.characterFormatted, 'b');
             assert.equal(second.minInMs, 5);
             assert.equal(second.maxInMs, 10);
             assert.equal(second.occurrences, 4);
             assert.equal(second.averageInMs, 6);
 
-            assert.equal(third.character, '&empty;');
+            assert.equal(third.character, ' ');
+            assert.equal(third.characterFormatted, '&empty;');
             assert.equal(third.minInMs, 2);
             assert.equal(third.maxInMs, 4);
             assert.equal(third.occurrences, 2);

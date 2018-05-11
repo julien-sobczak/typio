@@ -531,7 +531,8 @@
           if (!input.valid) continue; // We are only interested in valid character
           if (!result.has(input.character)) {
             result.set(input.character, {
-              character: TypioStats._formatCharacter(input.character),
+              character: input.character,
+              characterFormatted: TypioStats._formatCharacter(input.character),
               totalInMs: 0,
               averageInMs: 0,
               minInMs: Number.MAX_VALUE,
@@ -590,8 +591,10 @@
             const key = prevCharacter + '->' + input.character;
             if (!result.has(key)) {
               result.set(key, {
-                fromCharacter: TypioStats._formatCharacter(prevCharacter),
-                toCharacter: TypioStats._formatCharacter(input.character),
+                fromCharacter: prevCharacter,
+                fromCharacterFormatted: TypioStats._formatCharacter(prevCharacter),
+                toCharacter: input.character,
+                toCharacterFormatted: TypioStats._formatCharacter(input.character),
                 totalInMs: 0,
                 averageInMs: 0,
                 minInMs: Number.MAX_VALUE,

@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-stats.html">
@@ -67,7 +68,7 @@
       <div class="fabs">
         <paper-fab id="fabStart" class="theme-light" title="Start" icon="chevron-right" on-click="start"></paper-fab>
         <paper-fab id="fabRestart" class="theme-light" title="Restart" icon="autorenew" on-click="restart"></paper-fab>
-        <paper-fab id="fabRenew" class="theme-light" title="Renew" icon="autorenew" on-click="renew"></paper-fab>
+        <paper-fab id="fabRenew" class="theme-light" title="Renew" icon="av:shuffle" on-click="renew"></paper-fab>
         <paper-fab id="fabClose" class="theme-light" icon="close" title="Close" on-click="close"></paper-fab>
       </div>
       
@@ -80,7 +81,7 @@
           on-character-entered="_characterEntered"
           on-typing-ended="_typingEnded"
           font-size="large"
-          preserve-spacing>
+          preserve-spacing$="[[preserveSpacing]]">
       </typio-editor>
     
       <div id="results"><span class="wpm">[[wpm]] WPM</span></div>
@@ -121,6 +122,14 @@
             type: String
           },
           
+          /** 
+           * See `typio-viewer` property.
+           */
+          preserveSpacing: {
+            type: Boolean,
+            value: true, /* Be conservative */
+          },
+          
           /**
            * Route where to redirect after the session has ended.
            */
@@ -155,6 +164,11 @@
       
       _drillChanged() {
         if (!this.drill) return;
+        if (this.drill.preserveSpacing === false) {
+          this.preserveSpacing = false
+        } else if (this.drill.preserveSpacing === true) {
+          this.preserveSpacing = true;
+        } // else the default is applied
         this.content = TypioDrillCreatorScreen.generateDrill(this.drill);
         this.$.editor.refresh();
       }
@@ -164,6 +178,7 @@
         this.started = false;
         this.paused = true;
         this.ended = false;
+        this.preserveSpacing = true;
       }
       
       /** Launch the drill session. */
@@ -171,7 +186,7 @@
         this.started = true;
         this.$.editor.start();
         this.$.stats.reset();
-        this.$.stats.editableCharacters = Array(this.content.length).fill(true); // all characters are editable in drill type
+        this.$.stats.init(this.content);
         this.$.stats.startTimer();
       }
       
@@ -194,13 +209,22 @@
       }
       
       _characterEntered(e, detail) {
-        this.$.stats.newCharacter(detail.character, detail.keyName, detail.valid, detail.accepted);
+        this.$.stats.newCharacter(detail.index, detail.character, detail.valid, detail.accepted);
       }
       
       _typingEnded(e, detail) {
         this.$.stats.stopTimer();
         this.ended = true;
         this.wpm = this.$.stats.summary.wpm;
+      }
+      
+    
+      // 
+      // Shortcuts
+      // 
+      
+      actionStart() {
+        this.start();
       }
 
     }

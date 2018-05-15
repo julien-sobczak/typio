@@ -1,0 +1,227 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="/src/typio-app/shared-styles.html">
+
+<dom-module id="typio-speech-bubble">
+  <template>
+    <style include="shared-styles">
+
+      :host {
+        box-sizing: border-box;
+        
+        --effective-color:        var(--typio-speech-bubble-color, #00aabb);
+        --effective-pointer-size: var(--typio-speech-bubble-pointer-size, 20px);
+      }
+      
+      .speech-bubble {
+      	position: relative;
+      	background: var(--effective-color);
+      	border-radius: var(--typio-speech-bubble-border-radius, .4em);
+        padding: 5%;
+      }
+
+      .speech-bubble:after {
+        content: '';
+      	position: absolute;
+      	border: var(--effective-pointer-size) solid transparent;
+      }
+      
+      /* Left Pointer Triangle */
+      
+      .speech-bubble.side-bottom.pointer-triangle-left:after {
+      	bottom: 0;
+      	left: 50%;
+      	width: 0;
+      	height: 0;
+      	border-top-color: var(--effective-color);
+      	border-bottom: 0;
+      	border-left: 0;
+      	margin-left: calc(-1 * var(--effective-pointer-size) / 2);
+      	margin-bottom: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      .speech-bubble.side-top.pointer-triangle-left:after {
+      	top: 0;
+      	left: 50%;
+      	width: 0;
+      	height: 0;
+      	border-bottom-color: var(--effective-color);
+      	border-top: 0;
+      	border-left: 0;
+      	margin-left: calc(-1 * var(--effective-pointer-size) / 2);
+      	margin-top: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      .speech-bubble.side-right.pointer-triangle-left:after {
+      	right: 0;
+      	top: 50%;
+      	width: 0;
+      	height: 0;
+      	border-left-color: var(--effective-color);
+      	border-right: 0;
+      	border-bottom: 0;
+      	margin-top: calc(-1 * var(--effective-pointer-size) / 2);
+      	margin-right: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      .speech-bubble.side-left.pointer-triangle-left:after {
+        left: 0;
+        top: 50%;
+        width: 0;
+        height: 0;
+        border-right-color: var(--effective-color);
+        border-left: 0;
+        border-bottom: 0;
+        margin-top: calc(-1 * var(--effective-pointer-size) / 2);
+        margin-left: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      
+      /* Right Pointer Triangle */
+      
+      .speech-bubble.side-bottom.pointer-triangle-right:after {
+      	bottom: 0;
+      	left: 50%;
+      	width: 0;
+      	height: 0;
+      	border-top-color: var(--effective-color);
+      	border-bottom: 0;
+      	border-right: 0;
+      	margin-left: calc(-1 * var(--effective-pointer-size) / 2);
+      	margin-bottom: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      .speech-bubble.side-top.pointer-triangle-right:after {
+      	top: 0;
+      	left: 50%;
+      	width: 0;
+      	height: 0;
+      	border-bottom-color: var(--effective-color);
+      	border-top: 0;
+      	border-right: 0;
+      	margin-left: calc(-1 * var(--effective-pointer-size) / 2);
+      	margin-top: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      .speech-bubble.side-right.pointer-triangle-right:after {
+      	right: 0;
+      	top: 50%;
+      	width: 0;
+      	height: 0;
+      	border-left-color: var(--effective-color);
+      	border-right: 0;
+      	border-top: 0;
+      	margin-top: calc(-1 * var(--effective-pointer-size) / 2);
+      	margin-right: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      .speech-bubble.side-left.pointer-triangle-right:after {
+      	left: 0;
+      	top: 50%;
+      	width: 0;
+      	height: 0;
+      	border-right-color: var(--effective-color);
+      	border-left: 0;
+      	border-top: 0;
+      	margin-top: calc(-1 * var(--effective-pointer-size) / 2);
+      	margin-left: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      /* Symmetrical Pointer Triangle */
+      
+      .speech-bubble.side-bottom.pointer-triangle-symmetrical:after {
+      	bottom: 0;
+      	left: 50%;
+      	width: 0;
+      	height: 0;
+      	border-top-color: var(--effective-color);
+      	border-bottom: 0;
+      	margin-left: calc(-1 * var(--effective-pointer-size));
+      	margin-bottom: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      .speech-bubble.side-top.pointer-triangle-symmetrical:after {
+      	top: 0;
+      	left: 50%;
+      	width: 0;
+      	height: 0;
+      	border-bottom-color: var(--effective-color);
+      	border-top: 0;
+      	margin-left: calc(-1 * var(--effective-pointer-size));
+      	margin-top: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      .speech-bubble.side-right.pointer-triangle-symmetrical:after {
+        right: 0;
+        top: 50%;
+        width: 0;
+        height: 0;
+        border-left-color: var(--effective-color);
+        border-right: 0;
+        margin-top: calc(-1 * var(--effective-pointer-size));
+        margin-right: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      .speech-bubble.side-left.pointer-triangle-symmetrical:after {
+        left: 0;
+        top: 50%;
+        width: 0;
+        height: 0;
+        border-right-color: var(--effective-color);
+        border-left: 0;
+        margin-top: calc(-1 * var(--effective-pointer-size));
+        margin-left: calc(-1 * var(--effective-pointer-size));
+      }
+      
+      
+            
+    </style>
+
+    <div class$="speech-bubble side-[[side]] pointer-triangle-[[pointerTriangle]]">
+      <slot></slot>  
+    </div>
+
+  </template>
+
+  <script>
+  
+    /**
+     * CSS only speech bubbles based on Lea Verou implementation.
+     *
+     * @customElement
+     * @polymer
+     * @see https://leaverou.github.io/bubbly/
+     */
+    class TypioSpeechBubble extends Polymer.Element {
+      
+      static get is() { return 'typio-speech-bubble'; }
+      static get properties() {
+        return {
+          
+          /**
+           * Where is the pointer?
+           *
+           * Allowed values: `top`, `right`, `bottom`, `left`.
+           */
+          side: {
+            type: String,
+            value: 'top'
+          },
+          
+          /**
+           * Which format has the pointer?
+           *
+           * Allowed values: `symmetrical`, `left`, `right`.
+           */
+          pointerTriangle: {
+            type: String,
+            value: 'left'
+          },
+          
+        };        
+      }
+      
+    }
+
+    window.customElements.define(TypioSpeechBubble.is, TypioSpeechBubble);
+  </script>
+</dom-module>

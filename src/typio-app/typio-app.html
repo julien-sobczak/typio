@@ -30,7 +30,8 @@
        * We use sliding animations to pass from one screen to another one.
        */
 
-      iron-pages > * {
+
+      iron-pages > .full-screen {
         position: fixed;
         width: 100%;
         height: 100%;
@@ -147,10 +148,10 @@
     
     <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
       <typio-intro-screen id="intro" name="intro"></typio-intro-screen>
-      <typio-catalog-screen id="catalog" name="catalog" on-entry-selected="_initCodeEditor" route="{{subroute}}"></typio-catalog-screen>
-      <typio-practice-screen id="editor" name="editor" route="{{route}}"></typio-practice-screen>
-      <typio-drill-runner-screen id="drillRunner" name="drillRunner" route="{{subroute}}"></typio-drill-runner-screen>
-      <typio-drill-creator-screen id="drillCreator" name="drillCreator" route="{{subroute}}"></typio-drill-creator-screen>
+      <typio-catalog-screen id="catalog" name="catalog" class="full-screen" on-entry-selected="_initCodeEditor" route="{{subroute}}"></typio-catalog-screen>
+      <typio-practice-screen id="editor" name="editor" class="full-screen" route="{{route}}"></typio-practice-screen>
+      <typio-drill-runner-screen id="drillRunner" name="drillRunner" class="full-screen" route="{{subroute}}"></typio-drill-runner-screen>
+      <typio-drill-creator-screen id="drillCreator" name="drillCreator" class="full-screen" route="{{subroute}}"></typio-drill-creator-screen>
     </intro-pages>
 
   </template>

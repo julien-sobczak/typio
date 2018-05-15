@@ -1,19 +1,26 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
+<link rel="import" href="/src/typio-app/typio-speech-bubble.html">
 <link rel="import" href="/src/typio-app/typio-button.html">
 
 <dom-module id="typio-intro-screen">
   <template>
     <style include="shared-styles">
-
+    
       section {
-        display: table;
-        position: relative;
         background-color: white;
+      }
+      
+      #intro {
+        position: relative;
+        width: 100%;
+        height: 100vh;
       }
 
       /*
@@ -219,11 +226,97 @@
        typio-button {
          display: inline-block;
        }
-
-
+       
+       
+       #intro typio-speech-bubble {
+         display: none;
+         position: absolute;
+         font-size: 20px;
+         text-align: center;
+         color: white;
+         width: 400px;
+         font-weight: bold;
+         
+         --typio-speech-bubble-color: var(--typio-bg-color);
+       }
+       #intro typio-speech-bubble footer {
+         font-weight: normal;
+       }
+       
+       typio-speech-bubble#bubbleTouchTyping {
+         top: 40vh;
+         left: 50%;
+         margin-left: 200px;
+       }
+       typio-speech-bubble#bubbleDeliberatePractice {
+         top: calc(40vh + 50px);
+         left: 50%;
+         margin-left: -600px;
+       }
+       
+       #faq {
+         position: relative;
+         max-width: 800px;
+         margin: 0 auto;
+         overflow: hidden;
+       }
+       
+       #faq h3 {
+         text-align: center;
+         font-size: 30px;
+         margin-top: 30px;
+         margin-bottom: 30px;
+       }
+       
+       #faq typio-speech-bubble {
+         clear: both;
+         margin: 25px 0 10px;
+         line-height: 2em;         
+       }
+       #faq typio-speech-bubble p {
+         margin: 20px 0;
+       }
+       #faq typio-speech-bubble.question {
+         --typio-speech-bubble-color: var(--typio-bg-color);
+         color: white;
+         float: left;
+         width: 50%;
+         font-size: 125%;
+       }
+       
+       #faq typio-speech-bubble.answer {
+         --typio-speech-bubble-color: #EEE;
+         color: black;
+         float: right;
+         width: 75%;
+         font-size: 90%;
+       }
+       
+       #faq typio-speech-bubble.answer strong {
+         font-size: 110%;
+       }
+       
+       em.appname {
+         font-family: var(--logo-font-family);
+         font-style: normal;
+       }
+       
+       footer#legal {
+         margin-top: 50px;
+         height: 100px;
+         text-align: center;
+         padding: 25px;
+         font-family: var(--logo-font-family);
+         color: gray;
+       }
+       footer#legal .name {
+         color: var(--typio-bg-color);
+       }
+       
     </style>
 
     <section id="intro">
+      
       <h1>
         <div><span id="t" class="letter">T</span><span class="wave"></span></div>
         <div><span id="y" class="letter">Y</span><span class="wave"></span></div>
@@ -232,11 +325,105 @@
         <div><span id="o" class="letter">O</span><span class="wave"></span></div>
       </h1>
       <h2><span id="title" class="title"></span></h2>
+      
+      <typio-speech-bubble id="bubbleTouchTyping" side="left" pointer-triangle="right">
+        <blockquote cite="https://www.google.fr/search?q=touch+typing+definition">
+          Type using all one's fingers and without looking at the keys.
+          <footer>— <cite>Google</cite></footer>
+        </blockquote>
+      </typio-speech-bubble>
+      <typio-speech-bubble id="bubbleDeliberatePractice" side="right" pointer-triangle="left">
+        <blockquote cite="https://peakthebook.com/index.html">
+          Deliberate practice involves stepping outside your comfort zone and trying activities beyond your current abilities.
+          <footer>— <cite>Peak, written by Anders Ericsson</cite></footer>
+        </blockquote>
+      </typio-speech-bubble>
 
       <div id="continue" class="buttons">
-        <a href="/catalog"><typio-button>&#9166; Continue</typio-button></a>
+        <a on-click="scrollContinue"><typio-button><iron-icon icon="expand-more"></iron-icon>  Discover</typio-button></a>
+        <a href="/editor"><typio-button><iron-icon icon="av:play-arrow"></iron-icon>  Try</typio-button></a>
+        <a href="/catalog"><typio-button><iron-icon icon="view-list"></iron-icon>  Browse Catalog</typio-button></a>
       </div>
     </section>
+    
+    <section id="faq" name="faq">
+      
+      <h3>F.A.Q.</h3>
+
+      <typio-speech-bubble class="question" side="bottom" pointer-triangle="left">
+        Why <em class="appname">Typio</em>?
+      </typio-speech-bubble>
+      <typio-speech-bubble class="answer" side="top" pointer-triangle="right">
+        <p>
+          <strong><em class="appname">Typio</em> provide all of statistics to detect weak spots and create custom drills to focus on them.</strong>
+        </p>
+        <p>
+          There are many sites to practice touch typing: 
+          <a href="play.typeracer.com/">TypeRacer</a>, 
+          <a href="https://www.nitrotype.com/">Nitro Type</a>, 
+          <a href="http://app.typrx.com/">typrX</a>. 
+          They are great for compete against other typists, but to improve, 
+          studies reveal that we need to focus on the toughest aspects, 
+          and constantly get outside of our comfort zone. 
+          So, I decided to create <em class="appname">Typio</em> to fill this gap.
+        </p>        
+      </typio-speech-bubble>
+
+      <typio-speech-bubble class="question" side="bottom" pointer-triangle="left">
+        Could I learn touch typing using <em class="appname">Typio</em>?
+      </typio-speech-bubble>
+      <typio-speech-bubble class="answer" side="top" pointer-triangle="right">
+        <p>
+          <strong>Not recommended. <em class="appname">Typio</em> is for typists that already touch type and want to improve their typing speed.</strong>
+        </p>
+        <p>
+          <em class="appname">Typio</em> helps them to identify their weaknesses and fixes them by using custom drills. 
+          You could find excellent ressources online to learn touch typing. Personally, I learned on <a href="https://www.typingclub.com/">TypingClub</a> (supports Qwerty and Dvorak).
+          Once can touch type over 50 WPM, you can comeback on <em class="appname">Typio</em> to reach the next level.
+        </p>
+      </typio-speech-bubble>
+      
+      <typio-speech-bubble class="question" side="bottom" pointer-triangle="left">
+        How <em class="appname">Typio</em> differs from other sites?
+      </typio-speech-bubble>
+      <typio-speech-bubble class="answer" side="top" pointer-triangle="right">
+        <p>
+          <strong>Practice on <em class="appname">Typio</em>. Compete on TypeRacer.</strong>
+        </p>
+        <p>
+          Unlike popular sites such as <a href="play.typeracer.com/">TypeRacer</a> 
+          or <a href="https://www.nitrotype.com/">Nitro Type</a>, you can't compete with others on <em class="appname">Typio</em>.
+          <em class="appname">Typio</em> is used best alone competing against yourself (a criteria of deliberate practice). 
+          As such, <em class="appname">Typio</em> is the perfect complement to these sites. You improve your typing skill alone on <em class="appname">Typio</em>, and compete against others on TypeRacer to evaluate your progress.
+        </p>
+        <p>
+          There exists specialized applications to touch type on books, code. Some applications even allow you to paste your own content (<a href="https://www.keybr.com/">keybr.com</a>). Many of them required a premium account.
+          <em class="appname">Typio</em> aims to gather all of this in the same application, with a unique interface across all sources, and always the rich set of statistics, freely accessible. 
+          With <em class="appname">Typio</em>, you can currently touch type books, code, quotes, tongue twisters, using more than ten different languages.
+        </p>
+      </typio-speech-bubble>
+      
+      <typio-speech-bubble class="question" side="bottom" pointer-triangle="left">
+        Is <em class="appname">Typio</em> free?
+      </typio-speech-bubble>
+      <typio-speech-bubble class="answer" side="top" pointer-triangle="right">
+        <p>
+          <strong><em class="appname">Typio</em> is completely free and will always be.</strong>
+        </p>
+        <p>
+          I develop <em class="appname">Typio</em> as a side project on my spare time. I profoundly think a skill as important as touch typing should be accessible to everyone.
+          Currently, <em class="appname">Typio</em> is hosted on Google Cloud Platform using the Firebase free plan. Moreover, <em class="appname">Typio</em> code is published under the MIT license and is accessible from <a href="https://github.com/julien-sobczak/typio">GitHub</a>. 
+          If you don't want to use the online version, you can easily start locally the application on your machine.
+        </p>
+      </typio-speech-bubble>
+      
+    </section>
+    
+    <footer id="legal">
+        <span class="legal-notice">@ 2017-2018 Copyright <span class="name">Julien Sobczak</span></span>        
+        <!-- TODO add share buttons on Twitter, Reddit -->
+    </footer>
+    
 
   </template>
 
@@ -270,6 +457,8 @@
 
         let title = this.$.title;
         let intro = this.$.intro;
+        let bubbleTouchTyping = this.$.bubbleTouchTyping;
+        let bubbleDeliberatePractice = this.$.bubbleDeliberatePractice;
 
         intro.classList.add('loaded');
 
@@ -286,11 +475,44 @@
               intro.classList.add('completed');
 
               // Add links to explain key terms
-              setTimeout(() => title.innerHTML = 'Practice <a href="#">Touch Typing</a> <br><a href="#">Deliberately</a>', 1000);
+              setTimeout(() => {
+                // Override content to add links
+                const newSubtitle = document.createDocumentFragment();
+
+                const linkTouchTyping = document.createElement("a");
+                linkTouchTyping.innerHTML = 'Touch Typing';
+                linkTouchTyping.addEventListener("click", () => {
+                  const display = bubbleTouchTyping.style.display;
+                  bubbleTouchTyping.style.display = display === "block" ? "none" : "block";
+                })
+                const linkDeliberatePractice = document.createElement("a");
+                linkDeliberatePractice.innerHTML = 'Deliberately';
+                linkDeliberatePractice.addEventListener("click", () => {
+                  const display = bubbleDeliberatePractice.style.display;
+                  bubbleDeliberatePractice.style.display = display === "block" ? "none" : "block";
+                })
+
+                newSubtitle.appendChild(document.createTextNode("Practice "));
+                newSubtitle.appendChild(linkTouchTyping);
+                newSubtitle.appendChild(document.createTextNode(" "));
+                newSubtitle.appendChild(document.createElement("br"));
+                newSubtitle.appendChild(linkDeliberatePractice);
+
+                title.innerHTML = "";
+                title.appendChild(newSubtitle);
+                
+                bubbleTouchTyping.style.display = "block";
+                bubbleDeliberatePractice.style.display = "block";
+              }, 1000);
+              
             }
           });
 
         }, 2000);
+      }
+      
+      scrollContinue() {
+        window.scrollTo(0, window.innerHeight);
       }
 
     }

@@ -4,6 +4,8 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../bower_components/iron-icons/hardware-icons.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../bower_components/paper-range-slider/paper-range-slider.html">
 
@@ -61,7 +63,7 @@
       #controls {
         position: absolute;
         left: 50px;
-        top: 80px;
+        top: 30px;
         padding: 20px;
       }
 
@@ -89,7 +91,7 @@
       #selection {
         position: absolute;
         right: 50px;
-        top: 80px;
+        top: 30px;
         padding: 20px;
         width: 400px;
       }
@@ -120,7 +122,11 @@
     <section id="settings" class$="hidden-[[hidden]] type-[[type]]">
       
       <div class="fabs">
-        <paper-fab title="Start" icon="chevron-right" on-click="start"></paper-fab>
+        <paper-fab id="fabStart" icon="chevron-right" on-click="start"></paper-fab>
+        <paper-tooltip for="fabStart" position="left">
+          <span class="description">Start</span>
+          <span class="shortcut"><iron-icon icon="hardware:keyboard"></iron-icon> Ctrl + Enter</span>
+        </paper-tooltip>
       </div>
     
       <div id="controls">

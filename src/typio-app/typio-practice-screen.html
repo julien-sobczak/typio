@@ -4,7 +4,10 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/google-chart/google-chart.html">
 <link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/hardware-icons.html">
 
 <link rel="import" href="/src/typio-app/typio-ready-screen.html">
 <link rel="import" href="/src/typio-app/typio-stats.html">
@@ -343,17 +346,43 @@
       </template>
       
       <div id="pauseDialog" class="theme-transparent">
-        <h1><!-- Are you sleeping? --></h1>
+        <h1>Are you sleeping?</h1>
         <div class="fabs">
-          <paper-fab icon="autorenew" title="Restart" on-click="restart"></paper-fab>
-          <paper-fab icon="av:play-arrow" title="Resume" on-click="_resumeClicked"></paper-fab>
+          <paper-fab id="fabRestartAfterPause" icon="autorenew" on-click="restart"></paper-fab>
+          <paper-tooltip for="fabRestartAfterPause" position="left">
+            <span class="description">Resume from the start</span>
+          </paper-tooltip>
+          <paper-fab id="fabResume" icon="av:play-arrow" on-click="_resumeClicked"></paper-fab>
+          <paper-tooltip for="fabResume" position="left">
+            <span class="description">Resume where you left off</span>
+            <span class="shortcut"><iron-icon icon="hardware:keyboard"></iron-icon> Ctrl + Enter</span>
+          </paper-tooltip>
         </div>
       </div>
 
       <div id="editorFabs" class="fabs">
-        <paper-fab id="fabStats" icon="maps:map" title="Statistics" on-click="showAdvancedStats"></paper-fab>
-        <paper-fab id="fabRewind" icon="av:replay-10" title="Rewind" on-click="rewind"></paper-fab>
-        <paper-fab id="fabRestart" icon="autorenew" title="Restart" on-click="restart"></paper-fab>
+        <paper-fab id="fabStats" icon="maps:map" on-click="showAdvancedStats"></paper-fab>
+        <paper-tooltip for="fabStats" position="left">
+          <span class="description">Show advanced statistics</span>
+          <span class="shortcut"><iron-icon icon="hardware:keyboard"></iron-icon> Alt + +</span>
+        </paper-tooltip>
+        
+        <paper-fab id="fabRewind" icon="av:replay-10" on-click="rewind"></paper-fab>
+        <paper-tooltip for="fabRewind" position="left">
+          <span class="description">Rewind ten characters</span>
+          <span class="shortcut"><iron-icon icon="hardware:keyboard"></iron-icon> Ctrl + left</span>
+        </paper-tooltip>
+        
+        <paper-fab id="fabPause" icon="av:pause" on-click="pause"></paper-fab>
+        <paper-tooltip for="fabPause" position="left">
+          <span class="description">Pause the session</span>
+          <span class="shortcut"><iron-icon icon="hardware:keyboard"></iron-icon> Ctrl + P</span>
+        </paper-tooltip>
+        
+        <paper-fab id="fabRestart" icon="autorenew" on-click="restart"></paper-fab>
+        <paper-tooltip for="fabRestart" position="left">
+          <span class="description">Restart using same content</span>
+        </paper-tooltip>
       </div>
       
       <div id="statsPanel">
@@ -1161,6 +1190,10 @@
         if (this.paused) this.resume();
         if (this.started) return;
         this.$.readyScreen.start();
+      }
+      
+      actionPause() {
+        if (this.started && !this.paused) this.pause();
       }
       
       actionBack() {

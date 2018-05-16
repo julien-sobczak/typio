@@ -135,6 +135,40 @@
         /* See https://material.io/guidelines/material-design/elevation-shadows.html#elevation-shadows-elevation-android for guidelines */
         @apply(--shadow-elevation-6dp);
       }
+      
+      
+      /* Tooltip */
+      
+      paper-tooltip {
+        
+        /* Make it fast and basic */
+        --paper-tooltip-background: #404040;
+        --paper-tooltip-opacity: 0.9;
+        --paper-tooltip-delay-in: 0;
+        --paper-tooltip-delay-out: 0;
+        --paper-tooltip-duration-in: 0;
+        --paper-tooltip-duration-out: 0;
+        
+        --paper-tooltip: {
+          font-size: 14px;
+          padding: 6px 10px;  
+          text-align: center;  
+          line-height: 1.5em;    
+        }
+      }
+      paper-tooltip .description {
+        display: block;
+        font-weight: bold;
+      }
+      paper-tooltip .shortcut iron-icon {
+        margin: 0 5px;
+      }
+      paper-tooltip .shortcut {
+        font-size: 80%;
+        font-family: var(--typio-viewer-font-family);
+      }
+      
+      
 
       /* TODO refactor */
                          paper-fab                                 { background-color: var(--typio-bg-color); }

@@ -9,6 +9,7 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-icons/hardware-icons.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 
 <link rel="import" href="/src/typio-app/shared-styles.html">
 <link rel="import" href="/src/typio-app/typio-intro-screen.html">
@@ -30,7 +31,6 @@
        * We use sliding animations to pass from one screen to another one.
        */
 
-
       iron-pages > .full-screen {
         position: fixed;
         width: 100%;
@@ -38,19 +38,7 @@
         margin: 0;
       }
 
-      /*
-      TODO uncomment this to renable animations between screens
-    
-      typio-catalog.iron-selected {
-        animation-duration: 0.2s;
-        animation-name: slide-from-top;
-      }
-      typio-drill-creator.iron-selected {
-        animation-duration: 0.2s;
-        animation-name: slide-from-bottom;
-      }
-      */
-      
+
       /*
        * Menu
        */
@@ -68,6 +56,7 @@
       paper-icon-button + [main-title] {
         margin-left: 24px;
       }
+      
       app-header {
         color: #fff;
         box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
@@ -78,16 +67,27 @@
           background-color: #ef6c00;
         };
       }
+      app-header.menu-false {
+        display: none;
+      }
+      
+      
       app-drawer {
         z-index: 50;
+        --app-drawer-width: 450px;
+      }
+            
+      /* Drawer Menu */
+      
+      app-drawer#drawerMenu {
         --app-drawer-scrim-background: rgba(255, 255, 255, 0.8);
         --app-drawer-content-container: {
+          @apply --shadow-elevation-16dp;
+          margin-top: 64px;
           background-color: white;
         }
       }
-      app-drawer nav {
-        margin-top: 100px;
-      }
+      
       app-drawer nav ul {
         list-style-type: none;
       }
@@ -103,9 +103,96 @@
         text-decoration: none;
         color: inherit;
       }
+            
+      /* Drawer Shortcuts */
       
-      app-header.menu-false {
-        display: none;
+      app-drawer#drawerShortcuts {
+        text-align: left;
+        
+        --app-drawer-scrim-background: rgba(255, 255, 255, 0);
+        --app-drawer-content-container: {
+          @apply --shadow-elevation-16dp;
+          margin-top: 64px;
+          background-color: white;
+        }
+      }
+      
+      app-drawer#drawerShortcuts header {
+        min-height: 62px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-bottom: 1px solid #e8e8e8;
+        font-size: 18px;
+        font-weight: 900;
+        text-align: left;
+        position: relative;
+      }
+      
+      app-drawer#drawerShortcuts header p {
+        font-weight: 500;
+        font-size: 14px;
+        color: #717274;
+        margin-top: 4px;
+        line-height: 24px;  
+      }
+      
+      app-drawer#drawerShortcuts #closeShortcuts {
+        position: absolute;
+        top: 40px;
+        right: 20px;
+      }
+      
+      app-drawer h4 {
+        color: var(--typio-bg-color);
+        margin-top: 15px;
+        font-size: 18px;
+        font-weight: 900;
+        margin-bottom: 4px;
+      }
+      
+      app-drawer#drawerShortcuts table {
+        width: 100%;
+      }
+      app-drawer#drawerShortcuts table td {
+        border-top: 1px solid #e8e8e8;
+        padding: 6px 0;
+      }
+      app-drawer#drawerShortcuts table td.description {
+        text-align: left;
+      }
+      app-drawer#drawerShortcuts table td.shortcut {
+        text-align: right;
+      }
+      
+      app-drawer#drawerShortcuts #listShortcuts {
+        padding: 15px;
+      }
+      
+      .key.slim {
+        height: 20px;
+        margin: -3px 2px 0;
+        padding: 2px 6px;
+        line-height: 14px;
+        font-size: 12px;
+      }
+
+      .key {
+        background: #e8e8e8;
+        padding: 2px 8px;
+        font-size: 13px;
+        font-weight: 400;
+        min-width: 24px;
+        height: 27px;
+        margin: 0 2px;
+        border-radius: 5px;
+        color: #2c2d30;
+        border: 1px solid #a0a0a2;
+        box-shadow: 0 1px 0 #a0a0a2;
+        text-shadow: none;
+        display: inline-block;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 21px;
       }
 
     </style>
@@ -118,32 +205,88 @@
         tail="{{subroute}}">
     </app-route>
 
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+shift+s" on-keys-pressed="_toggleDrawerShortcuts"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+enter" on-keys-pressed="actionStart"></iron-a11y-keys>
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+shift+space" on-keys-pressed="actionPause"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+left" on-keys-pressed="actionBack"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="alt++" on-keys-pressed="actionMore"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="alt+-" on-keys-pressed="actionLess"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+i" on-keys-pressed="goToIntro"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+e" on-keys-pressed="goToDrillEditor"></iron-a11y-keys>
-    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+d" on-keys-pressed="goToDrillSession"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+p" on-keys-pressed="goToPracticeSession"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+c" on-keys-pressed="goToCatalog"></iron-a11y-keys>
     
     <app-header effects="waterfall" class$="menu-{{menuVisible}}">
       <app-toolbar>
-        <paper-icon-button icon="menu" on-click="_toggleDrawer"></paper-icon-button>
+        <paper-icon-button icon="menu" on-click="_toggleDrawerMenu"></paper-icon-button>
         <a href="/intro">TYPIO</a>
         <div main-title></div>
-        <paper-icon-button icon="hardware:keyboard"></paper-icon-button>
-        <a href="/catalog"><paper-icon-button icon="close"></paper-icon-button></a>
+        <paper-icon-button icon="hardware:keyboard" on-click="_toggleDrawerShortcuts"></paper-icon-button>
       </app-toolbar>
     </app-header>
-    <app-drawer id="drawer" swipe-open>
+    <app-drawer id="drawerMenu" swipe-open>
       <nav>
         <ul>
-          <li><paper-icon-button icon="view-module"></paper-icon-button> <a href="/catalog">Consult the catalog</a></li>
-          <li><paper-icon-button icon="create"></paper-icon-button> <a href="/drillCreator">Create a drill</a></li>
+          <li><paper-icon-button icon="home"></paper-icon-button> <a href="/intro" on-click="_toggleDrawerMenu">Home</a></li>
+          <li><paper-icon-button icon="view-module"></paper-icon-button> <a href="/catalog" on-click="_toggleDrawerMenu">Consult the catalog</a></li>
+          <li><paper-icon-button icon="create"></paper-icon-button> <a href="/drillCreator" on-click="_toggleDrawerMenu">Create a drill</a></li>
         </ul>
       </nav>
+    </app-drawer>
+    <app-drawer id="drawerShortcuts" align="end" swipe-open>
+      <div style="height: 100%; overflow: auto;">
+        <header>
+          <h3>Keyboard Shortcuts</h3>
+          <paper-icon-button id="closeShortcuts" icon="close" on-click="_toggleDrawerShortcuts"></paper-icon-button>
+          <p>Press <span class="key slim">Ctrl</span><span class="key slim">Shift</span><span class="key slim">s</span> to toggle this panel</p>
+        </header>
+        <div id="listShortcuts">
+
+          <h4>General</h4>
+          <table>
+            <tr>
+              <td class="description">Start</td>
+              <td class="shortcut"><span class="key">Ctrl</span><span class="key">Enter</span></td>
+            </tr>
+          </table>
+          
+          <h4>Editor <span class="key slim">Ctrl</span><span class="key slim">Alt</span><span class="key slim">p</span></h4>
+          <table>
+            <tr>
+              <td class="description">Start the session</td>
+              <td class="shortcut"><span class="key">Ctrl</span><span class="key">Enter</span></td>
+            </tr>
+            <tr>
+              <td class="description">Rewind</td>
+              <td class="shortcut"><span class="key">Ctrl</span><span class="key">Left</span></td>
+            </tr>
+            <tr>
+              <td class="description">Show all statistics</td>
+              <td class="shortcut"><span class="key">Alt</span><span class="key">+</span></td>
+            </tr>
+            <tr>
+              <td class="description">Hide all statistics</td>
+              <td class="shortcut"><span class="key">Alt</span><span class="key">-</span></td>
+            </tr>
+            <tr>
+              <td class="description">Pause</td>
+              <td class="shortcut"><span class="key">Ctrl</span><span class="key">Shift</span><span class="key">Space</span></td>
+            </tr>
+          </table>
+          
+          <h4>Catalog <span class="key slim">Ctrl</span><span class="key slim">Alt</span><span class="key slim">c</span></h4>
+          <table>
+            <tr>
+              <td class="description">Pick the content <iron-icon icon="help" title="Search across the catalog to find an item matching the criteria"></iron-icon></td>
+              <td class="shortcut"><span class="key">Ctrl</span><span class="key">Enter</span></td>
+            </tr>
+          </table>
+          
+          
+          <h4>Drill Creator<span class="key slim">Ctrl</span><span class="key slim">Alt</span><span class="key slim">d</span></h4>
+          
+        </div>
+      </div>
     </app-drawer>
     
     <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
@@ -292,6 +435,13 @@
           screen.actionStart();
         }
       }
+
+      actionPause() {
+        let screen = this._currentScreen();
+        if (screen.actionPause) {
+          screen.actionPause();
+        }
+      }
       
       actionBack() {
         let screen = this._currentScreen();
@@ -332,8 +482,12 @@
         }
       }
       
-      _toggleDrawer() {
-        this.$.drawer.toggle();
+      _toggleDrawerMenu() {
+        this.$.drawerMenu.toggle();
+      }
+      
+      _toggleDrawerShortcuts() {
+        this.$.drawerShortcuts.toggle();
       }
       
 

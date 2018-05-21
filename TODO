@@ -1,0 +1,17 @@
+Must to have:
+- chore(github): regenerate metadata to add file frequencies
+- feat(intro): add component typio-ballon
+- feat(intro): introduce Typio
+
+Nice to have:
+- feat(typio-catalog-drills): add edit button
+- feat(typio-drill-creator): implement save
+- feat(typio-fab): wrap paper-fab to allow a submenu
+- feat(typio-editor): print the stats for each keys in the heatmap
+
+feat(stats): classify typing errors among categories: Omission 65.2%, Insertion 4.7%, Replacement 2.8%, Interchange 2.2%, Chatter 22.5%(Overlapped), Other errors 17.6% 
+  1) Omission: Errors that skip characters of the text. This is the most common type of error that is made by a well trained typist, since her touch, is lighter than that of the less trained. They will be occasionally too light to go over the threshold of the key. These errors are found more frequently in faster sequences.
+  2) Insertion: Error that inserts extra characters that are not in the text.
+  3) Replacement: Error that hits an irrelevant key in place of a proper one. The most likely key to be mishit is the key adjacent to the proper one.
+  4) Interchanging: Error that hits a key pair in the reverse order. This appears to be a result of the peculiarity of individual typists.
+  5) Chattering: Error that a certain key is doubly typed. This error is characteristic of some electric typewriters. It often occurs together with the omission of the next character, which indicates that it occurs when the second key is hit while the first is still being depressed. The chattering itself may be due to too sensitively made keys, or to the trembling of fingers, or both. 

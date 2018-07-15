@@ -20,36 +20,36 @@
             type: Number,
             value: 5000
           },
-          
-          /** 
+
+          /**
            * The timmestamp when the last activity was reported.
            */
           lastActivity: {
             type: Date,
             readOnly: true
           },
-          
+
           //
           // Private properties
           //
-          
-          /** 
+
+          /**
            * The beginning of the tracking.
            */
           _startTimestamp: {
             type: Date,
             value: undefined
           },
-          
+
           /**
-           * The end of the last tracking. 
-           * `undefined` is the tracking is in progress. 
+           * The end of the last tracking.
+           * `undefined` is the tracking is in progress.
            */
           _endTimestamp: {
             type: Date,
             value: undefined
           },
-          
+
           /**
            * True when the tracking is over.
            */
@@ -57,12 +57,12 @@
             type: Boolean,
             value: false
           },
-          
-          
+
+
           //
           // Developer options
           //
-          
+
           debug: {
             type: Boolean,
             value: false
@@ -71,7 +71,7 @@
         };
       }
 
-      
+
       //
       // Timer
       //
@@ -93,14 +93,14 @@
       newActivity(timestamp = new Date()) {
         if (this.debug) console.log('[typio-sleep-tracker] new activity');
         if (!this._startTimestamp) this._startTimestamp = timestamp;
-        
+
         // Cancel previous timeout because a new activity is reported before it triggers
         if (this._timeoutID) {
           window.clearTimeout(this._timeoutID);
         }
-        
+
         this._setLastActivity(timestamp);
-        
+
         // Be notified if nothing happen after the inactivity timeout
         this._timeoutID = window.setTimeout(() => {
           if (this._ended) return;

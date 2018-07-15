@@ -21,14 +21,14 @@
     </test-fixture>
 
     <script>
-    
+
       class ContentBuilder {
-        
+
         constructor() {
           this.content = '';
           this.classes = new Array();
         }
-        
+
         append(text, ...annotations) {
           this.content += text;
           for (let i = 0; i < text.length; i++) {
@@ -36,35 +36,35 @@
           }
           return this;
         }
-        
+
         annotate(index, ...classes) {
           this.classes[index] = classes;
           return this;
         }
-        
+
         build() {
           return [this.content, this.classes];
         }
       }
-    
+
       /*
        * We use a global timer to avoid having to define time in each time.
        */
       let timer = undefined;
-      
+
       suite('typio-stats', function() {
 
         /** Define the reference time (the start time of the session). */
         setup(function() {
           timer = new Date("2017-12-19T12:42:01.000Z");
         });
-        
+
         /** Convenient method to only expose the duration between two key presses. */
         function afterMs(durationInMs) {
           timer = new Date(timer.getTime() + durationInMs);
           return timer;
         }
-        
+
         test('[stats] enter a character at regular interval', function() {
           var element = fixture('DefaultFixture');
           element.init("abcdefghij");
@@ -303,7 +303,7 @@
           });
 
         });
-        
+
         test('[mostDifficultWords] return the most difficult words', function() {
           var element = fixture('DefaultFixture');
           element.init("ceci est une phrase");
@@ -316,7 +316,7 @@
           element.newCharacter( 2, 'c', true,  true,  afterMs(210));
           element.newCharacter( 3, 'i', true,  true,  afterMs(150)); // == 950 ms / 4 characters
           element.newCharacter( 4, ' ', true,  true,  afterMs(50));
-          element.newCharacter( 5, 'e', true,  true,  afterMs(150)); 
+          element.newCharacter( 5, 'e', true,  true,  afterMs(150));
           element.newCharacter( 6, 's', true,  true,  afterMs(160));
           element.newCharacter( 7, 't', true,  true,  afterMs(90));  // = 400 ms / 3 characters
           element.newCharacter( 8, ' ', true,  true,  afterMs(400));
@@ -331,7 +331,7 @@
           element.newCharacter(17, 's', true,  true,  afterMs(150));
           element.newCharacter(18, 'e', true,  true,  afterMs(130)); // 670 ms / 6 characters
           element.stopTimer();
-          
+
           const results = element.mostDifficultWords();
           const expected = [
             { word: 'ceci',   durationInMs: 970, wpm: 49, annotations: null },
@@ -354,12 +354,12 @@
           element.newCharacter(1, 'o', true, true, afterMs(200));
           element.newCharacter(2, 't', true, true, afterMs(200));
           element.stopTimer();
-          
+
           const results = element.mostDifficultWords();
           expect(results[0].word).to.equal('mot');
           expect(results[0].annotations).to.deep.equal([['word', 'capital'], ['word'], ['word']]);
         });
-        
+
         test('[mostDifficultWords] could limit results and filter on word size', function() {
           var element = fixture('DefaultFixture');
           element.init('un court exemple');
@@ -382,13 +382,13 @@
           element.newCharacter(14, 'l', true, true, afterMs(400));
           element.newCharacter(15, 'e', true, true, afterMs(400));
           element.stopTimer();
-          
+
           const results = element.mostDifficultWords({n: 1, minWordSize: 3});
           expect(results.length).to.equal(1);
           expect(results[0].word).to.equal('exemple');
           expect(results[0].wpm).to.equal(30);
         });
-        
+
         test('[mostDifficultWords] could customize the word delimiters', function() {
           var element = fixture('DefaultFixture');
           element.init('et, donc, oui; (non)');
@@ -415,7 +415,7 @@
           element.newCharacter(18, 'n', true, true, afterMs(500));
           element.newCharacter(19, ')', true, true, afterMs(500));
           element.stopTimer();
-          
+
           const results = element.mostDifficultWords({wordDelimiters: '[\\s(),;.]'});
           const expected = [
             { word: 'non',  durationInMs: 1500, wpm: 24, annotations: null },
@@ -424,7 +424,7 @@
           ];
           expect(results).to.deep.equal(expected);
         });
-        
+
         test('[mostDifficultWords] search instructions', function() {
           var element = fixture('DefaultFixture');
           let content = `
@@ -441,7 +441,7 @@ return 0;
             increasingDurationInMs += 20;
             element.newCharacter(i, content[i], true, true, afterMs(increasingDurationInMs));
           }
-          
+
           const results = element.mostDifficultWords({wordDelimiters: '\n'});
           const expected = [
             { word: "return 0;",            durationInMs: 8820,  wpm: 12, annotations: null },
@@ -451,12 +451,12 @@ return 0;
           ];
           expect(results).to.deep.equal(expected);
         });
-        
-        
+
+
         //
         // Timer
-        // 
-        
+        //
+
         test('[timer] start and stop are optional', function() {
           var element = fixture('DefaultFixture');
           element.init("ab");
@@ -465,20 +465,20 @@ return 0;
           element.newCharacter(0, 'a', true, true, afterMs(10));
           element.newCharacter(1, 'b', true, true, afterMs(5));
           element.calculateSummaryStatistics();
-          
+
           assert.equal(element.summary.wpm, 4800);
           assert.equal(element.summary.elapsedTimeInMs, 5);
         });
-        
+
         test('[stats] theorical WPM', function() {
           var element = fixture('DefaultFixture');
           element.init("abcde");
 
           // Simulate key press using realistic values. For example, 100 WPM:
-          // = 500 characters entered in one minute 
-          // = 8 characters every second 
+          // = 500 characters entered in one minute
+          // = 8 characters every second
           // = 125ms between each key press
-          
+
           element.newCharacter(0, 'a', true,  true,  afterMs(0));
           element.newCharacter(1, 'c', false, false, afterMs(125));
           element.newCharacter(1, 'b', true,  true,  afterMs(125));
@@ -489,14 +489,14 @@ return 0;
           element.newCharacter(3, 'd', true,  true,  afterMs(125));
           element.newCharacter(4, 'e', true,  true,  afterMs(125));
           element.calculateSummaryStatistics();
-          
+
           // Effective WPM = 1 second / 5 characters = 60 WPM
           // Theorical WPM = 0.125 * 5 milliseconds / 5 characters = 120 WPM
-          
+
           assert.equal(element.summary.wpm, 60);
           assert.equal(element.summary.theoricalWpm, 120);
         });
-        
+
         test('[pause] remove sleep time', function() {
           var element = fixture('DefaultFixture');
           const content = "abcdefghijklmno";
@@ -526,13 +526,13 @@ return 0;
           element.newCharacter(14, 'n', true,  true,  afterMs(125));
           element.newCharacter(15, 'o', true,  true,  afterMs(125));
           element.calculateSummaryStatistics();
-          
+
           // WPM should not be affected by pause
           assert.equal(element._totalTimeInPause, 2000 + 10000 + 2000 + 5000);
           assert.equal(element.summary.elapsedTimeInMs, 16 * 125);
           assert.equal(element.summary.wpm, 90);
         });
-        
+
         test('[rewind] clear last entries', function() {
           var element = fixture('DefaultFixture');
           const content = "0123456789";
@@ -546,7 +546,7 @@ return 0;
           element.newCharacter(3, '3', true,  true,  afterMs(250));
           element.newCharacter(4, '5', false, false, afterMs(250)); // do not count
           element.newCharacter(4, '4', true,  true,  afterMs(250));
-          expect(element.elapsedTimeInMs).to.equal(1125); 
+          expect(element.elapsedTimeInMs).to.equal(1125);
           element.rewind(2);
           expect(element.elapsedTimeInMs).to.equal(375);
           element.newCharacter(3, '3', true,  true,  afterMs(125));
@@ -563,17 +563,17 @@ return 0;
           element.newCharacter(8, '8', true,  true,  afterMs(125));
           element.newCharacter(9, '9', true,  true,  afterMs(125));
           element.calculateSummaryStatistics();
-          
+
           // WPM should not be affected by pause
           assert.equal(element.summary.elapsedTimeInMs, 10 * 125); // only shortest duration remains after rewinding
           assert.equal(element.summary.wpm, 96);
         });
-        
-        
+
+
         //
         // Charts
-        //        
-        
+        //
+
         test('[stats] stepped area chart', function() {
           var element = fixture('DefaultFixture');
           const content = `abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`;
@@ -586,7 +586,7 @@ return 0;
             element.newCharacter(i, c, true, true, afterMs(increasingDuration));
           }
           element.stopTimer();
-        
+
           const expected = [
             [{"label":"Progress","type":"string"},{"label":"WPM","type":"number"},{"type":"string","role":"annotation"},{"type":"string","role":"style"}],
             ["111",111,"fantastic!",""],
@@ -602,7 +602,7 @@ return 0;
           ];
           expect(element.chartSteppedAreaData()).to.deep.equal(expected);
         });
-        
+
         test('[stats] stacked bar chart', function() {
           var element = fixture('DefaultFixture');
           const content = `
@@ -626,7 +626,7 @@ return 0;
             let increasingDuration = 100 + i;
             element.newCharacter(i, c, true, true, afterMs(increasingDuration));
           }
-          
+
           const expected = [
             ["Interval","0-10%",{"role":"style"},"10-20%",{"role":"style"},"20-30%",{"role":"style"},"30-40%",{"role":"style"},"40-50%",{"role":"style"},"50-60%",{"role":"style"},"60-70%",{"role":"style"},"70-80%",{"role":"style"},"80-90%",{"role":"style"},"90-100%",{"role":"style"},{"role":"annotation"}],
             ["",10,"#01579B",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",10,"white",""],
@@ -642,7 +642,7 @@ return 0;
           ];
           expect(element.chartStackedBarData()).to.deep.equal(expected);
         });
-        
+
         test('[stats] scatter chart', function() {
           var element = fixture('DefaultFixture');
           const content = `abcdefghijklmnopqrstuvwxyz`;
@@ -675,7 +675,7 @@ return 0;
           element.newCharacter(23, 'x', true, true, afterMs(90));
           element.newCharacter(24, 'y', true, true, afterMs(80));
           element.newCharacter(25, 'z', true, true, afterMs(70));
-          
+
           const expected = [
             ["Time", "Duration", {"role":"tooltip"}, {"role":"annotation"}],
             [0,0,"a",null],
@@ -707,7 +707,7 @@ return 0;
           ];
           expect(element.chartScatterData()).to.deep.equal(expected);
         });
-        
+
         test('[stats] line chart', function() {
           var element = fixture('DefaultFixture');
           const content = `abcdefghijklmnopqrstuvwxyz`;
@@ -740,7 +740,7 @@ return 0;
           element.newCharacter(23, 'x', true, true, afterMs(90));
           element.newCharacter(24, 'y', true, true, afterMs(80));
           element.newCharacter(25, 'z', true, true, afterMs(70));
-          
+
           const expected = [
             ["Time", "WPM", {"role":"tooltip"}, {"role":"annotation"}],
             // No value before the 5th entered character

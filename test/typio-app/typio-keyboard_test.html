@@ -20,19 +20,19 @@
         <typio-keyboard norm="ansi" layout="qwerty"></typio-keyboard>
       </template>
     </test-fixture>
-    
+
     <test-fixture id="QwertyIsoFixture">
       <template>
         <typio-keyboard norm="iso" layout="qwerty"></typio-keyboard>
       </template>
     </test-fixture>
-    
+
     <test-fixture id="DvorakAnsiFixture">
       <template>
         <typio-keyboard norm="ansi" layout="dvorak"></typio-keyboard>
       </template>
     </test-fixture>
-    
+
     <test-fixture id="ColemakAnsiFixture">
       <template>
         <typio-keyboard norm="ansi" layout="colemak"></typio-keyboard>
@@ -44,40 +44,40 @@
         <typio-keyboard norm="iso" layout="azerty"></typio-keyboard>
       </template>
     </test-fixture>
-    
+
     <test-fixture id="AzertyAnsiFixture">
       <template>
         <typio-keyboard norm="ansi" layout="azerty"></typio-keyboard>
       </template>
     </test-fixture>
-    
+
     <test-fixture id="MixedCasesFixture">
       <template>
         <typio-keyboard mixed-cases></typio-keyboard>
       </template>
     </test-fixture>
-    
+
     <test-fixture id="ClickableFixture">
       <template>
         <typio-keyboard clickable></typio-keyboard>
       </template>
     </test-fixture>
-    
+
     <test-fixture id="ClickableMixedCasesFixture">
       <template>
         <typio-keyboard clickable mixed-cases></typio-keyboard>
       </template>
     </test-fixture>
-    
+
     <script>
-    
+
       function $cssProperty(fixture, cssSelector, cssProperty) {
         return window.getComputedStyle(fixture.shadowRoot.querySelector(cssSelector)).getPropertyValue(cssProperty);
-      } 
+      }
 
       suite('typio-keyboard', function() {
-        
-        // 
+
+        //
         // Interaction utils
         //
 
@@ -85,11 +85,11 @@
           let keys = key;
           if (!Array.isArray(keys)) {
             keys = [key]
-          } 
+          }
 
           keys.forEach(key => MockInteractions.keyEventOn(document, 'keypress', code, [], key));
         }
-  
+
         test('[norm] ansi vs iso', function() {
           const isoKeyboard = fixture('QwertyIsoFixture');
           const ansiKeyboard = fixture('QwertyAnsiFixture');
@@ -105,14 +105,14 @@
           const ansiKey1 = ansiKeyboard.shadowRoot.querySelector('.block-main.norm-ansi > .row:nth-child(3) > .key:nth-child(14) .label-default').innerHTML;
           expect(isoKey1).to.eql('\\');
           expect(isoKey1).to.eql(ansiKey1);
-          
+
           // The shift key is splitted in two keys on ISO layout
           const isoRowShift = isoKeyboard.shadowRoot.querySelectorAll('.block-main.norm-iso > .row:nth-child(5) > .key');
           const ansiRowShift = ansiKeyboard.shadowRoot.querySelectorAll('.block-main.norm-ansi > .row:nth-child(5) > .key');
           expect(isoRowShift.length).to.eql(ansiRowShift.length + 1);
           expect(isoRowShift[1].querySelector('.label-default').innerHTML).to.eql('\\');
         });
-        
+
         // Extract the default key labels from a row (1-based index)
         function letters(keyboard, norm, rowNumber) {
           let letters = [];
@@ -121,12 +121,12 @@
               forEach(k => letters.push(k.innerHTML));
           return letters;
         }
-        
+
         // Same as letters function but return the HTML elements instead
         function keys(keyboard, norm, rowNumber) {
           return keyboard.shadowRoot.querySelectorAll(`.block-main.norm-${norm} > .row:nth-child(${rowNumber}) > .key`);
         }
-        
+
         test('[layout] qwerty', function() {
           const keyboard = fixture('QwertyAnsiFixture');
 
@@ -135,13 +135,13 @@
           const row2 = letters(keyboard, 'ansi', 3);
           const row3 = letters(keyboard, 'ansi', 4);
           const row4 = letters(keyboard, 'ansi', 5);
-          
+
           expect(row1).to.eql(["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
           expect(row2).to.eql(["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\"]);
           expect(row3).to.eql(["A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'"]);
           expect(row4).to.eql(["Z", "X", "C", "V", "B", "N", "M", ",", ".", "/"]);
         });
-        
+
         test('[layout] dvorak', function() {
           const keyboard = fixture('DvorakAnsiFixture');
 
@@ -150,13 +150,13 @@
           const row2 = letters(keyboard, 'ansi', 3);
           const row3 = letters(keyboard, 'ansi', 4);
           const row4 = letters(keyboard, 'ansi', 5);
-          
+
           expect(row1).to.eql(["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "[", "]"] );
           expect(row2).to.eql(["'", ",", ".", "P", "Y", "F", "G", "C", "R", "L", "/", "=", "\\"]);
           expect(row3).to.eql(["A", "O", "E", "U", "I", "D", "H", "T", "N", "S", "-"]);
           expect(row4).to.eql([";", "Q", "J", "K", "X", "B", "M", "W", "V", "Z"]);
         });
-        
+
         test('[layout] colemak', function() {
           const keyboard = fixture('ColemakAnsiFixture');
 
@@ -165,13 +165,13 @@
           const row2 = letters(keyboard, 'ansi', 3);
           const row3 = letters(keyboard, 'ansi', 4);
           const row4 = letters(keyboard, 'ansi', 5);
-          
+
           expect(row1).to.eql(["`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "="]);
           expect(row2).to.eql(["Q", "W", "F", "P", "G", "J", "L", "U", "Y", ";", "[", "]", "\\"]);
           expect(row3).to.eql(["A", "R", "S", "T", "D", "H", "N", "E", "I", "O", "'"]);
           expect(row4).to.eql(["Z", "X", "C", "V", "B", "K", "M", ",", ".", "/"]);
         });
-        
+
         test('[layout] azerty', function() {
           const keyboard = fixture('AzertyIsoFixture');
 
@@ -180,13 +180,13 @@
           const row2 = letters(keyboard, 'iso', 3);
           const row3 = letters(keyboard, 'iso', 4);
           const row4 = letters(keyboard, 'iso', 5);
-          
+
           expect(row1).to.eql(["", "&amp;", "é", "\"", "'", "(", "-", "è", "_", "ç", "à", ")", "="]);
           expect(row2).to.eql(["A", "Z", "E", "R", "T", "Y", "U", "I", "O", "P", "^", "$"]);
           expect(row3).to.eql(["Q", "S", "D", "F", "G", "H", "J", "K", "L", "M", "%", "µ"]);
           expect(row4).to.eql(["&lt;", "W", "X", "C", "V", "B", "N", ",", ";", ":", "!"]);
         });
-        
+
         test('[pressKeys] infinite duration', function(done) {
           const keyboard = fixture('QwertyAnsiFixture');
 
@@ -194,9 +194,9 @@
           keyboard.pressKeys('Q', duration = 0);
           keyboard.pressKeys('E', duration = 0);
 
-          // Could select several keys, even mixing cases 
+          // Could select several keys, even mixing cases
           keyboard.pressKeys(['a', 'S'], duration = 0);
-          
+
           flush(function() {
             const rowQWERTY = keys(keyboard, 'ansi', 3);
             const letterQ = rowQWERTY[1];
@@ -205,7 +205,7 @@
             expect(letterQ.classList.contains('pressed')).is.true;
             expect(letterW.classList.contains('pressed')).is.false;
             expect(letterE.classList.contains('pressed')).is.true;
-            
+
             const rowASDFG = keys(keyboard, 'ansi', 4);
             const letterA = rowASDFG[1];
             const letterS = rowASDFG[2];
@@ -213,11 +213,11 @@
             expect(letterA.classList.contains('pressed')).is.true;
             expect(letterS.classList.contains('pressed')).is.true;
             expect(letterD.classList.contains('pressed')).is.false;
-            
+
             done();
           });
         });
-        
+
         test('[colorize] rgb', function(done) {
           const keyboard = fixture('QwertyAnsiFixture');
 
@@ -228,49 +228,49 @@
               if (character == 'E') return 'blue';
               return false;
           });
-          
+
           flush(function() {
             const rowQWERTY = keys(keyboard, 'ansi', 3);
             const letterQ = rowQWERTY[1];
             const letterW = rowQWERTY[2];
             const letterE = rowQWERTY[3];
             const letterR = rowQWERTY[4];
-            
+
             const colorQ = window.getComputedStyle(letterQ).getPropertyValue('background-color');
             const colorW = window.getComputedStyle(letterW).getPropertyValue('background-color');
             const colorE = window.getComputedStyle(letterE).getPropertyValue('background-color');
             const colorR = window.getComputedStyle(letterR).getPropertyValue('background-color');
-            
+
             expect(colorQ).is.equal('rgb(255, 0, 0)');
             expect(colorW).is.equal('rgb(0, 128, 0)');
             expect(colorE).is.equal('rgb(0, 0, 255)');
             expect(colorR).is.equal('rgb(255, 255, 255)');
-            
+
             done();
           });
         });
-        
+
         test('[colorize] support unknown characters', function(done) {
           const keyboard = fixture('QwertyAnsiFixture');
 
           press('ç', 'Comma'); // ç is not defined in the standard layout
           press(',', 'Comma');
-          
-          let allColorizedCharacters = []; 
-          
+
+          let allColorizedCharacters = [];
+
           // Could select one key
           keyboard.labelizeKeyboard(); // required because the layout has already been defined
           keyboard.colorize(character => {
             allColorizedCharacters.push(character);
             return false;
           });
-          
+
           flush(function() {
             expect(allColorizedCharacters).to.include('ç');
             done();
           });
         });
-        
+
         test('[mixedCases] print lowercase and uppercase characters', function() {
           const keyboard = fixture('MixedCasesFixture');
 
@@ -280,7 +280,7 @@
           expect(letterQ.querySelector('.label-default').innerHTML).is.equal('q');
           expect(letterQ.querySelector('.label-shift').innerHTML).is.equal('Q');
         });
-        
+
         test('[clickable] trigger callback on key click', function(done) {
           const keyboard = fixture('ClickableFixture');
 
@@ -289,12 +289,12 @@
             expect(e.detail.character).is.equal('Q');
             done();
           })
-          
+
           // Trigger a click
           const letterQ = keys(keyboard, 'ansi', 3)[1];
           letterQ.click();
         });
-        
+
         test('[clickable] support click on all labels', function(done) {
           const keyboard = fixture('ClickableMixedCasesFixture');
 
@@ -303,91 +303,91 @@
             expect(e.detail.character).is.equal('!');
             done();
           })
-          
+
           // Trigger a click
           const letterExclamationPoint = keys(keyboard, 'ansi', 2)[1];
           letterExclamationPoint.querySelector('.label-shift').click();
         });
-        
+
         test('[fingerFromCharacter] return the right hand and the right finger', function() {
           const keyboard = fixture('QwertyIsoFixture');
-          
+
           expect(TypioKeyboard.fingerFromCharacter('Q').hand).is.equal('left');
           expect(TypioKeyboard.fingerFromCharacter('Q').finger).is.equal('littleFinger');
-          
+
           // lowercase is supported
           expect(TypioKeyboard.fingerFromCharacter('q').hand).is.equal('left');
           expect(TypioKeyboard.fingerFromCharacter('q').finger).is.equal('littleFinger');
-          
+
           expect(TypioKeyboard.fingerFromCharacter('W').hand).is.equal('left');
           expect(TypioKeyboard.fingerFromCharacter('w').finger).is.equal('ringFinger');
-          
+
           expect(TypioKeyboard.fingerFromCharacter('E').hand).is.equal('left');
           expect(TypioKeyboard.fingerFromCharacter('e').finger).is.equal('middleFinger');
-          
+
           expect(TypioKeyboard.fingerFromCharacter('R').hand).is.equal('left');
           expect(TypioKeyboard.fingerFromCharacter('r').finger).is.equal('indexFinger');
-          
+
           expect(TypioKeyboard.fingerFromCharacter('T').hand).is.equal('left');
           expect(TypioKeyboard.fingerFromCharacter('t').finger).is.equal('indexFinger');
-          
+
           expect(TypioKeyboard.fingerFromCharacter('Y').hand).is.equal('right');
           expect(TypioKeyboard.fingerFromCharacter('y').finger).is.equal('indexFinger');
-          
+
           // Ignore unknown character (ç)
           expect(TypioKeyboard.fingerFromCharacter('ç')).is.undefined;
         });
-        
+
         test('[fingerFromCharacter] support different layouts', function() {
           const keyboard = fixture('AzertyAnsiFixture');
-          
+
           // In Qwerty (default)
           expect(TypioKeyboard.fingerFromCharacter('W', layout = 'qwerty').hand).is.equal('left');
           expect(TypioKeyboard.fingerFromCharacter('w', layout = 'qwerty').finger).is.equal('ringFinger');
-                    
+
           // Differs from Azerty:
           expect(TypioKeyboard.fingerFromCharacter('W', layout = 'azerty').hand).is.equal('left');
           expect(TypioKeyboard.fingerFromCharacter('w', layout = 'azerty').finger).is.equal('littleFinger');
-          
+
           expect(TypioKeyboard.fingerFromCharacter('Z', layout = 'azerty').hand).is.equal('left');
           expect(TypioKeyboard.fingerFromCharacter('z', layout = 'azerty').finger).is.equal('ringFinger');
-          
+
           expect(TypioKeyboard.fingerFromCharacter('M', layout = 'azerty').hand).is.equal('right');
           expect(TypioKeyboard.fingerFromCharacter('m', layout = 'azerty').finger).is.equal('littleFinger');
-          
+
           expect(TypioKeyboard.fingerFromCharacter('M', layout = 'qwerty').hand).is.equal('right');
           expect(TypioKeyboard.fingerFromCharacter('m', layout = 'qwerty').finger).is.equal('indexFinger');
         });
-        
+
         test('[fingersFromText] calculate the repartition among fingers', function() {
           const keyboard = fixture('QwertyIsoFixture');
-          
+
           const repartition = TypioKeyboard.fingersFromText('QWERTYqwerty UIOPuiop[]{}');
-          
+
           expect(repartition.leftHand.littleFinger).is.equal(2);  // Q and q
           expect(repartition.leftHand.ringFinger).is.equal(2);    // W and w
           expect(repartition.leftHand.middleFinger).is.equal(2);  // E and e
           expect(repartition.leftHand.indexFinger).is.equal(4);   // R, r, T and t
           expect(repartition.leftHand.thumb).is.equal(1);         // SPC
-          
+
           expect(repartition.rightHand.thumb).is.equal(0);
-          expect(repartition.rightHand.indexFinger).is.equal(4);   // Y, y, U and u 
+          expect(repartition.rightHand.indexFinger).is.equal(4);   // Y, y, U and u
           expect(repartition.rightHand.middleFinger).is.equal(2);  // I and i
           expect(repartition.rightHand.ringFinger).is.equal(2);    // O and o
           expect(repartition.rightHand.littleFinger).is.equal(6);  // P, p, [, {, ], amd }
         });
-        
+
         test('[fingersFromText] support different layouts', function() {
           const keyboard = fixture('AzertyAnsiFixture');
-          
+
           const repartition = TypioKeyboard.fingersFromText('AzErTy', layout = 'azerty');
-          
+
           expect(repartition.leftHand.littleFinger).is.equal(1);  // A
           expect(repartition.leftHand.ringFinger).is.equal(1);    // z
           expect(repartition.leftHand.middleFinger).is.equal(1);  // E
           expect(repartition.leftHand.indexFinger).is.equal(2);   // r and T
           expect(repartition.leftHand.thumb).is.equal(0);
-          
+
           expect(repartition.rightHand.thumb).is.equal(0);
           expect(repartition.rightHand.indexFinger).is.equal(1);   // y
           expect(repartition.rightHand.middleFinger).is.equal(0);
@@ -396,7 +396,7 @@
         });
 
       });
-      
+
     </script>
 
   </body>

@@ -44,11 +44,11 @@
         margin-left: 20px;
         margin-right: 20px;
       }
-      
+
       /*
        * Drill
        */
-       
+
        #drills {
         @apply --layout-horizontal;
         @apply --layout-wrap;
@@ -64,14 +64,14 @@
         color: white;
         width: 450px;
         flex: 0 0 auto;
-        
+
         --paper-card-content: {
           padding: 0;
           position: relative;
           height: 100%;
         }
       }
-      
+
       .drill .heading {
         padding: 5px 20px;
         text-align: left;
@@ -99,21 +99,21 @@
         border-radius: 5px;
         background-color: rgba(255, 255, 255, 0.5);
       }
-      
+
       .drill .body {
         padding: 25px;
       }
-      
+
       .drill ul.keys {
         text-align: left;
         margin: 25px auto;
         padding: 0;
       }
-      
+
       li.key {
         list-style-type: none;
       }
-      .key { 
+      .key {
         --key-size: 0.30in;
         line-height: 1;
         box-sizing: border-box;
@@ -128,7 +128,7 @@
         border-radius: 2px;
         text-align: left;
       }
-      
+
       .sample {
         display: inline-block;
         width: 100%;
@@ -159,14 +159,14 @@
     </style>
 
     <iron-ajax url="/data/drills.json" auto last-response="{{drills}}"></iron-ajax>
-    
+
     <div class="theme-transparent">
 
       <div class="fabs">
         <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
         <paper-fab icon="create" title="New" on-click="newDrill"></paper-fab>
       </div>
-      
+
       <div class="selection">
         <div class="entry">
           <a href="/catalog/menu">
@@ -177,17 +177,17 @@
       </div>
 
       <div id="drills">
-        
+
         <template is="dom-repeat" items="{{drills}}" as="drill">
           <paper-card class="drill" heading="" class="{{drill.type}}">
             <div class="card-content theme-light">
-              
+
               <div class="heading">
                 <span class="type">{{drill.type}}</span>
                 <h3 class="title">{{drill.name}}</h3>
                 <p class="description">{{drill.description}}</p>
               </div>
-              
+
               <div class="body">
                 <template is="dom-if" if="{{isEquals(drill.type, 'basic')}}">
                   <ul class="keys">
@@ -196,21 +196,21 @@
                     </template>
                   </ul>
                 </template>
-                
+
                 <div class="sample">
                   <iron-icon icon="autorenew" on-click="_reloadSample"></iron-icon>
                   <pre class="content">{{sample(drill)}}</pre>
                 </div>
               </body>
-              
+
               <paper-fab icon="av:play-arrow" title="Go" on-click="validateDrill" class="theme-light relative" mini></paper-fab>
-              
-            </div>            
-          </paper-card>  
+
+            </div>
+          </paper-card>
         </template>
-      
+
       </div>
-      
+
     </div>
 
   </template>
@@ -226,7 +226,7 @@
       static get is() { return 'typio-catalog-drills'; }
       static get properties() {
         return {
-          
+
           /**
            * JSON representing the file `drills.json`.
            */
@@ -242,22 +242,22 @@
       _onDrillsLoaded() {
         if (!this.drills) return;
       }
-      
-      
+
+
       isEquals(actual, expected) {
         return actual === expected;
       }
-      
-      
+
+
       static _escapeHTML(text) {
         return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       }
-      
+
       sample(drill) {
         const content = TypioDrillCreatorScreen.generateDrill(drill);
         return TypioCatalogDrills._escapeHTML(content);
       }
-      
+
       /**
        * Generate a new sample for the drill.
        */
@@ -275,7 +275,7 @@
         };
         this.dispatchEvent(new CustomEvent('drill-session-requested', {detail: detail, bubbles: true, composed: true}));
       }
-      
+
       newDrill(e, details) {
         window.history.pushState({}, null, '/drillCreator');
         window.dispatchEvent(new CustomEvent('location-changed'));

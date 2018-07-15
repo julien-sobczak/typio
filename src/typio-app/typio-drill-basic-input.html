@@ -4,7 +4,7 @@
 <link rel="import" href="../../bower_components/iron-icons/hardware-icons.html">
 <link rel="import" href="/src/typio-app/typio-keyboard.html">
 <link rel="import" href="/src/typio-app/shared-styles.html">
-
+ 
 <dom-module id="typio-drill-basic-input">
   <template>
     <style include="shared-styles">
@@ -13,7 +13,7 @@
         display: block;
         text-align: center;
       }
-      
+
       typio-keyboard {
         --typio-key-size: 0.50in;
       }
@@ -23,25 +23,25 @@
         --secondary-text-color: white;
         --paper-input-container-color: white;
         --paper-input-container-focus-color: var(--typio-bg-color);
-        
+
         width: 90%;
         margin: 0 auto;
         text-align: left;
       }
-            
+
     </style>
-    
-    <p class="instructions"><iron-icon icon="help"></iron-icon> 
+
+    <p class="instructions"><iron-icon icon="help"></iron-icon>
       Enter the sample characters to use to generate the drill.
       Press the same character multiple times to make it more frequent in the generated drills.
     </p>
-    
+
     <paper-input id="input" label="Characters" value="{{characters}}">
       <iron-icon icon="hardware:keyboard" slot="prefix"></iron-icon>
     </paper-input>
-    
+
     <typio-keyboard id="keyboard" mixed-cases clickable on-key-clicked="_registerClickedKey"></typio-keyboard>
-    
+
   </template>
 
   <script>
@@ -53,7 +53,7 @@
       static get is() { return 'typio-drill-basic-input'; }
       static get properties() {
         return {
-          
+
           /**
            * Characters as entered by the user. The order is preserved.
            */
@@ -62,25 +62,25 @@
             value: "test",
             observer: "_charactersChanged"
           },
-          
+
         };
       }
-      
+
       ready() {
         super.ready();
       }
-      
-      
+
+
       //
       // Actions
       //
-      
+
       _registerClickedKey(e, detail) {
         this.characters += detail.character;
       }
-      
+
       _charactersChanged() {
-        
+
         // Count each character
         const lettersCount = new Map();
         for (let i = 0; i < this.characters.length; i++) {
@@ -88,18 +88,18 @@
           let newCount = lettersCount.get(character) || 0;
           lettersCount.set(character, newCount + 1);
         }
-        
+
         // Determine maximum occurrence
         let maxCount = 0;
         lettersCount.forEach((count, character) => {
           if (count > maxCount) maxCount = count;
         })
-        
+
         // Calculate the array used by dom-repeat
         this.$.keyboard.colorize(c => {
           // Ignore untyped characters
           if (!lettersCount.has(c)) return false;
-          
+
           const count = lettersCount.get(c);
           let ratio = Math.floor(count * 100 / maxCount / 10); // [0,10)
           if (ratio == 0) ratio = 1;
@@ -107,10 +107,10 @@
           // See https://material.io/guidelines/style/color.html#color-color-palette
           return 'var(--paper-green-' + (ratio * 100) + ')';
         });
-        
-        this.lettersCount = lettersCount;        
+
+        this.lettersCount = lettersCount;
       }
-      
+
       getInput() {
         return new Promise((resolve, reject) => {
           const keys = [];
@@ -119,14 +119,14 @@
             keys.push(key);
             weights.push(count);
           }
-          
+
           resolve({
             keys: keys,
             weights: weights,
-          });      
+          });
         });
       }
-      
+
     }
 
     window.customElements.define(TypioDrillBasicInput.is, TypioDrillBasicInput);

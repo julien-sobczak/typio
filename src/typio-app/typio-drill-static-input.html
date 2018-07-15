@@ -12,27 +12,27 @@
         display: block;
         text-align: center;
       }
-      
+
       paper-textarea#input {
         --primary-text-color: var(--typio-bg-color);
         --secondary-text-color: white;
         --paper-input-container-color: white;
         --paper-input-container-focus-color: var(--typio-bg-color);
-        
+
         width: 90%;
         margin: 0 auto;
         text-align: left;
       }
-      
+
     </style>
-    
-    <p class="instructions"><iron-icon icon="help"></iron-icon> 
+
+    <p class="instructions"><iron-icon icon="help"></iron-icon>
       Enter the sample characters to use to generate the drill.
       Press the same character multiple times to make it more frequent in the generated drills.
     </p>
-    
+
     <paper-textarea value="{{content}}"></paper-textarea>
-    
+
   </template>
 
   <script>
@@ -44,15 +44,15 @@
       static get is() { return 'typio-drill-static-input'; }
       static get properties() {
         return {
-          
+
           "content": {
               type: String,
               value: "Your static content here..."
           },
-          
+
         };
       }
-      
+
       getInput() {
         return new Promise((resolve, reject) => {
           const text = []
@@ -62,13 +62,13 @@
               text.push(line);
             }
           });
-          
+
           resolve({
             text: text,
           });
         });
       }
-      
+
     }
 
     window.customElements.define(TypioDrillStaticInput.is, TypioDrillStaticInput);

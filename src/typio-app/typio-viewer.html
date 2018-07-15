@@ -15,24 +15,24 @@
       #content {
         height: 100%;
         width: 100%;
-        
+
         overflow-y: hidden;
         overflow-x: visible;
-        
+
         @apply --typio-viewer-content;
       }
-      
+
       #content.initialized-false {
         display: none;
       }
       #content.initialized-true {
         display: block;
       }
-      
+
       /*
        * Type support
        */
-      
+
       pre[data-type="literature"] {
         font-family: var(--typio-viewer-font-family);
       }
@@ -48,7 +48,7 @@
         font-size: 150%;
         letter-spacing: 3px;
         line-height: 2em;
-        outline: none !important; 
+        outline: none !important;
       }
 
 
@@ -163,12 +163,12 @@
         outline: none !important;
         color: black !important;
       }
-      
+
       /*
        * Controls
        */
-      
-      
+
+
       #pageControls {
         position: absolute;
         bottom: 0;
@@ -187,20 +187,20 @@
       #pageControls.controls-true {
         display: block;
       }
-      
+
     </style>
 
 
     <div id="content" class$="type-[[type]] mode-[[mode]] theme-[[theme]]">
       <pre id="editor" data-type$="[[type]]" class$="preserveSpacing-[[preserveSpacing]] fontSize-[[fontSize]]">[[_content]]</pre>
-    </div> 
+    </div>
     <div id="pageControls" class$="controls-[[controls]]">
       <paper-icon-button on-click="moveToFirstPage" icon="first-page"></paper-icon-button>
       <paper-icon-button on-click="moveToPreviousPage" icon="chevron-left"></paper-icon-button>
       <paper-icon-button on-click="moveToNextPage" icon="chevron-right"></paper-icon-button>
       <paper-icon-button on-click="moveToLastPage" icon="last-page"></paper-icon-button>
-    </div>     
-      
+    </div>
+
   </template>
 
   <script>
@@ -217,7 +217,7 @@
       static get properties() {
         return {
 
-          // 
+          //
           // User input properties
           //
 
@@ -228,7 +228,7 @@
             type: String,
             value: "code"
           },
-          
+
           /**
            * The content to touch type. (required)
            *
@@ -239,25 +239,25 @@
             type: String,
             value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n'
           },
-          
+
           /**
            * Additional CSS classes to append to each character.
-           * The array should have the same size as the property `content`. 
+           * The array should have the same size as the property `content`.
            */
           classes: {
             type: Array,
             value: undefined
           },
-          
+
           /**
            * Performance optimisation.
-           * No need to decorate each character with its own tag in read-only mode. 
+           * No need to decorate each character with its own tag in read-only mode.
            */
           noCursorOptimization: {
             type: Boolean,
             value: false
           },
-          
+
           /**
            * Editor code style.
            * Name should match a CSS resource name /css/prism-{{theme}}.css.
@@ -266,7 +266,7 @@
             type: String,
             value: 'light'
           },
-          
+
           /**
            * The mode to use when text to type exceed the size of the window.
            *
@@ -285,11 +285,11 @@
             value: true
           },
 
-          
+
           //
           // Editor inner working properties
           //
-          
+
           /**
            * The preprocessed content to touch type. Could be different from `content` if long lines are detected for example.
            */
@@ -309,7 +309,7 @@
               type: Number,
               value: 0
           },
-          
+
           // Line number of the first line on screen.
           _firstLine: {
               type: Number,
@@ -320,15 +320,15 @@
           //
           // Styling
           //
-          
+
           /**
-           * If false, 	Sequences of whitespace will collapse into a single whitespace. 
+           * If false, 	Sequences of whitespace will collapse into a single whitespace.
            */
           preserveSpacing: {
             type: Boolean,
             value: true
           },
-          
+
           /**
            * Size of text. Allowed values: 'normal', 'large'.
            */
@@ -336,8 +336,8 @@
             type: String,
             value: 'normal'
           },
-          
-          
+
+
           //
           // Developer options
           //
@@ -349,7 +349,7 @@
             type: Boolean,
             value: false
           },
-          
+
           /**
            * Log executing timings.
            */
@@ -357,28 +357,28 @@
             type: Boolean,
             value: false
           },
-          
+
         };
       }
-      
+
       static get observers() {
         return [
           '_contentChanged(content, classes)',
         ]
       }
-      
-      
-      // 
+
+
+      //
       // Getters/Setters
       //
-      
+
       /**
        * Return the current position (zero-based index) in the content.
-       */ 
+       */
       get position() {
         return this._i;
       }
-      
+
       /**
        * Update the position. The visible lines are automatically updated to reflect this change.
        */
@@ -391,29 +391,29 @@
         const previousLine = this._currentLine;
         this._currentLine = this._content.substring(0, i + 1).split('\n').length - 1;
         if (this._content[this._i] === '\n') this._currentLine--;
-        
+
         if (previousLine !== undefined && this._currentLine !== previousLine) { // optimization
           if (this.mode === 'scroll') this._scroll();
           if (this.mode === 'page') this._updatePage();
         }
       }
-      
-      
+
+
       //
       // Listeners
       //
-      
+
       _contentChanged() {
         console.log('[typio-viewer] content changed to', this._content.substring(0, 50) + '...');
         this._content = this.content;
         this.reset();
       }
-    
-    
+
+
       //
       // State management
       //
-      
+
       /**
        * Called this method to reset the editor (ex: retry).
        */
@@ -425,12 +425,12 @@
         // Refresh editor
         this._parse();
       }
-      
-      
-      // 
+
+
+      //
       // Parsing
       //
-      
+
       /**
        * Parse the selected content to determine tokens.
        */
@@ -448,7 +448,7 @@
         this._firstLine = 0;
         this._length = this._content.length;
         this.numberLines = this._content.split('\n').length;
-        
+
         if (this.profile) {
           console.log('[typio-viewer] lexical parser ... done in ' + (performance.now() - startTime) + 'ms');
         }
@@ -470,19 +470,19 @@
         while (i < this._length) {
 
           let span = document.createElement('span');
-          span.classList.add('character'); // add common classes here 
+          span.classList.add('character'); // add common classes here
           if (classes && classes[i]) {
             span.classList.add(...classes[i]);
-          } 
+          }
           if (!this.noCursorOptimization && intervals) {
             span.classList.add('interval-' + intervals[i]);
           }
-          
+
           let spanText = '';
-          let spanHTML = '';  
-          
+          let spanHTML = '';
+
           do {
-            
+
             let charTxt = this._content[i]; // The original character
             let charName = charTxt;         // The name as returned by the keypress/keyup event (see key property)
             let charPrint = charTxt;        // The character print on screen
@@ -505,7 +505,7 @@
               charName = 'Enter';
               charPrint = ' <strong>&#9166;</strong> \n';
               span.classList.add('print-on-focus');
-              
+
               // Allow user to press space or nothing for continuation return line
               if (logicalLines && lineNumber + 1 < logicalLines.length && !logicalLines[lineNumber + 1]) {
                 span.classList.add('allowSpace', 'optional');
@@ -516,25 +516,25 @@
             } else {
               newLine = false;
             }
-            
+
             spanText += charName;
             spanHTML += charPrint;
             i++;
-            
+
           // Optimization: sometimes, we don't need to create a span for each character.
           // If several character share the same classes, just create a single span
           // to reduce DOM parsing.
           } while (this.noCursorOptimization && i < this._length && (!classes || TypioViewer.sameArrays(classes[i - 1], classes[i])));
-          
+
           span.dataset.text = spanText;
           span.innerHTML = spanHTML;
           fragment.appendChild(span);
         }
-        
+
         if (this.profile) {
           console.log('[typio-viewer] DOM construction done in ' + (performance.now() - startTime) + 'ms');
         }
-        
+
         this.$.editor.innerHTML = '';
         this.$.editor.appendChild(fragment);
 
@@ -556,89 +556,89 @@
       cursor() {
         return this._characters[this._i];
       }
-      
+
       /**
       * Return if the user reaches the end position.
        */
       endOfFile() {
         return this._i + 1 >= this._length;
       }
-      
+
       /**
        * Return the character DOMElement (span) representing the ith character (zero-based index).
        */
       elementAt(i) {
         return this._characters[i];
       }
-      
+
       /**
        * Return the element at the current position.
        */
       element() {
         return this.elementAt(this._i);
       }
-      
+
       /**
        * Return the string representation of the ith character.
        */
       characterAt(i) {
         return this.elementAt(i).dataset.text;
       }
-      
+
       /**
        * Return the character at the current position.
        */
       character() {
         return this.characterAt(this._i);
       }
-      
-      
+
+
       //
       // Annotations
       //
-      
+
       /**
        * Return an array containing all the annotations for a given character.
        */
       annotationsAt(i) {
         return [...this.elementAt(i).classList];
       }
-      
+
       /**
        * Return the annotations at the current position.
        */
       annotations() {
         return this.annotationsAt(this._i);
       }
-      
+
       /**
        * Add one or several annotations to the ith character.
        */
       annotateAt(i, ...annotations) {
         this.elementAt(i).classList.add(annotations);
       }
-      
+
       /**
        * Add one or several annotations to the current character.
        */
       annotate(annotations) {
         this.annotateAt(this._i, annotations);
       }
-      
+
       /**
        * Remove one or several annotations to the ith character.
        */
       unannotateAt(i, ...annotations) {
         this.elementAt(i).classList.remove(annotations);
       }
-      
+
       /**
        * Remove one or several annotations to the current character.
        */
       unannotate(annotations) {
         this.unannotateAt(this._i, annotations);
       }
-      
+
       /**
        * Add one or several annotations to all characters.
        */
@@ -647,7 +647,7 @@
           this._characters[i].classList.add(annotations);
         }
       }
-      
+
       /**
        * Remove one or several annotations to all characters.
        */
@@ -656,47 +656,47 @@
           this._characters[i].classList.remove(annotations);
         }
       }
-      
+
       /**
        * Return if the current character is annotated with the given annotation.
        */
       hasAnnotation(annotation) {
         return this.annotations().includes(annotation);
       }
-      
+
       /**
        * Return if the ith character is annotated with the given annotation.
        */
       hasAnnotationAt(i, annotation) {
         return this.annotationsAt(i).includes(annotation);
       }
-      
+
       /**
        * Return if the specified character is annotated with the given annotation.
        */
       hasAnnotationElement(element, annotation) {
         return element.classList.contains(annotation);
       }
-            
+
       /**
        * Annotate the editor instead of the current character.
        */
       annotateGlobal(annotations) {
         this.$.editor.classList.add(annotations);
       }
-      
+
       /**
        * Unannotate the editor instead of the current character.
        */
       unannotateGlobal(annotations) {
         this.$.editor.classList.remove(annotations);
       }
-      
+
       //
       // Highlighting
       //
-      
-      
+
+
       /**
        * Highlight the ith character.
        */
@@ -706,16 +706,16 @@
         }
         for (let i = start; i < end; i++) {
           this.highlightAt(i);
-        }        
+        }
       }
-      
+
       /**
        * Annotate all the content.
        */
       highlightAll() {
         this.annotateAll('highlight');
       }
-      
+
       /**
        * Unannotate all the content.
        */
@@ -739,23 +739,23 @@
 
       /**
        * Unhighlight the ith character.
-       */ 
+       */
       unhighlightAt(i) {
         this.unannotateAt(i, 'highlight');
       }
-      
+
       /**
        * Unhighlight the current character.
-       */ 
+       */
       unhighlight() {
         this.unhighlightAt(this._i);
       }
-      
-      
+
+
       //
       // Stats
       //
-            
+
       /**
        * Return the number of lines that can be displayed on the screen.
        * Could be less than the number of content lines when it can fit on screen.
@@ -764,14 +764,14 @@
       numberLinesOnScreen() {
         return TypioViewer.countLines(this.$.editor);
       }
-      
+
       /**
        * Return the current line number (one-based index).
        */
       lineNumber() {
         return this._currentLine + 1;
       }
-      
+
       /**
        * Return the current page number (one-based index).
        */
@@ -780,15 +780,15 @@
         let pageNumber = 1;
         if (this._currentLine >= numberLinesOnScreen) {
           pageNumber = Math.ceil(this._currentLine / numberLinesOnScreen);
-          if (this._currentLine % numberLinesOnScreen === 0) { 
-            pageNumber++; 
+          if (this._currentLine % numberLinesOnScreen === 0) {
+            pageNumber++;
           }
         }
         return pageNumber;
       }
-      
-      
-      /** 
+
+
+      /**
        * Return the indices of the lines on screen. Ex: [0, 1, 2] if only the first three lines are visible.
        */
       linesOnScreen() {
@@ -796,16 +796,16 @@
         const numberLinesOnScreen = this.numberLinesOnScreen();
         const lastLineIndex = Math.min(this.numberLines, this._firstLine + numberLinesOnScreen);
         for (let i = this._firstLine; i < lastLineIndex; i++) {
-          lineIndices.push(i + 1); 
+          lineIndices.push(i + 1);
         }
         return lineIndices;
       }
-      
-      
+
+
       //
       // Mode management
       //
-      
+
       /**
        * Scroll to position the current line on screen
        * For performance reason, this method only need to be called after each newline character.
@@ -843,8 +843,8 @@
         this._firstLine = lineNumber;
         this.$.editor.style.marginTop = lineNumber * -1.5 + 'em'; // see #editor line-height property
       }
-      
-      
+
+
       //
       // Page controls
       //
@@ -895,12 +895,12 @@
           this._scrollToLine(this._currentLine);
         }
       }
-      
-      
+
+
       //
       // Utils
       //
-      
+
       /**
        * Determine the number of text lines inside an HTML element.
        *
@@ -915,7 +915,7 @@
         //console.log('countLines', divHeight, lineHeight)
         return parseInt(divHeight / lineHeight);
       }
-      
+
       /**
        * Compare two arrays to determine if they contain the same elements in the same order.
        */
@@ -933,7 +933,7 @@
     }
     window.customElements.define(TypioViewer.is, TypioViewer);
 
-  
+
 
   </script>
 </dom-module>

@@ -12,7 +12,7 @@
     <script src="../../bower_components/iron-test-helpers/mock-interactions.js"></script>
 
     <link rel="import" href="../../src/typio-app/typio-editor.html">
-    
+
     <style>
       typio-editor.one-line {
         font-size: 12px;
@@ -51,16 +51,16 @@
         <typio-editor id="editor" type="literature" mode="scroll"></typio-editor>
       </template>
     </test-fixture>
-    
+
     <script>
-    
+
     class ContentBuilder {
-      
+
       constructor() {
         this.content = '';
         this.classes = new Array();
       }
-      
+
       append(text, ...annotations) {
         this.content += text;
         for (let i = 0; i < text.length; i++) {
@@ -68,59 +68,59 @@
         }
         return this;
       }
-      
+
       annotate(index, ...classes) {
         this.classes[index] = classes;
         return this;
       }
-      
+
       build() {
         return [this.content, this.classes];
       }
     }
-    
+
     suite('typio-editor', function() {
-      
+
         let editor = undefined;
-        
-        // 
+
+        //
         // Interaction utils
         //
-        
+
         function press(key, modifiers = []) {
           let keys = key;
           if (!Array.isArray(keys)) {
             keys = [key]
-          } 
-        
+          }
+
           keys.forEach(key => MockInteractions.keyEventOn(editor, 'keypress', undefined, [], key));
         }
-        
+
         function pressText(text) {
           text.split('').forEach(l => press(l));
         }
-        
+
         function pressEnter() {
           press('Enter');
         }
-        
+
         function pressBackspace() {
           press('Backspace');
         }
-        
-        
+
+
         teardown('remove key listeners', function() {
           // Be sure key listeners are removed after each practice session
           editor.end();
         });
-        
-                
+
+
         test('[input] accept basic quotes instead of curved quotes', function() {
           editor = fixture('ScrollLiteratureFixture');
-          editor.content = "‘single’ or “double”" 
+          editor.content = "‘single’ or “double”"
           editor.reset();
           editor.start();
-          
+
           expect(editor.position).to.equal(0);
           press("'"); // instead of curved opening simple quote
           press(["s", "i", "n", "g", "l", "e"]);
@@ -133,13 +133,13 @@
           expect(editor.error).to.be.false;
           expect(editor.ended).to.be.true;
         });
-        
+
         test('[input] rewind', function() {
           editor = fixture('ScrollLiteratureFixture');
-          editor.content = "always move on" 
+          editor.content = "always move on"
           editor.reset();
           editor.start();
-          
+
           expect(editor.position).to.equal(0);
           pressText("always");
           expect(editor.position).to.equal(6);
@@ -157,7 +157,7 @@
           expect(editor.error).to.be.false;
           expect(editor.ended).to.be.true;
         });
-        
+
         test('[input] rewind with ignorable characters', function() {
           editor = fixture('ScrollLiteratureFixture');
           [editor.content, editor.classes] = new ContentBuilder().
@@ -166,7 +166,7 @@
             build()
           editor.reset();
           editor.start();
-          
+
           expect(editor.position).to.equal(11);
           pressText("print");
           editor.backward(10);
@@ -174,43 +174,43 @@
           pressText("print 'Hello'");
           expect(editor.ended).to.be.true;
         });
-        
+
         test('[input] support continuation lines', function() {
           editor = fixture('ScrollLiteratureFixture');
           editor.content = "a long\n  line"; // need to set classes (continuation, indent, ignorable, ...)
           editor.logicalLines = [true, false];
           editor.classes = [[], [], [], [], [], [], [], ['ignorable'], ['ignorable'], [], [], [], []];
-          
+
           // User don't have to press indent after a continuation line
           editor.reset();
           editor.start();
           expect(editor.position).to.equal(0);
-          pressText("a long"); 
+          pressText("a long");
           pressEnter(editor);
           pressText('line');
           expect(editor.ended).to.be.true;
-          
+
           // User could press a space instead of a new line
           editor.reset();
-          editor.start();          
+          editor.start();
           expect(editor.position).to.equal(0);
-          pressText("a long line"); 
+          pressText("a long line");
           expect(editor.ended).to.be.true;
-          
+
           // User could press a space instead of a new line
           editor.reset();
-          editor.start();          
+          editor.start();
           expect(editor.position).to.equal(0);
-          pressText("a longline"); 
+          pressText("a longline");
           expect(editor.ended).to.be.true;
         });
-        
+
         test('[code] check line number progresses as text is entered', function() {
           editor = fixture('ScrollCodeFixture');
           editor.content = `i = 1
 i++
-print(i)`; 
-          
+print(i)`;
+
           editor.reset();
           editor.start();
           expect(editor.position).to.equal(0);
@@ -232,16 +232,16 @@ print(i)`;
           expect(editor.lineNumber()).to.equal(3);
           expect(editor.ended).to.be.true;
         });
-        
+
         test('[code] continue on errors', function() {
           editor = fixture('ScrollCodeFixture');
-          editor.content = `i++`; 
-          
+          editor.content = `i++`;
+
           // Let's see what happen when the user make a mistake and no mistake is allowed.
           editor.continueOnErrors = false;
           editor.reset();
           editor.start();
-          
+
           expect(editor.position).to.equal(0);
           pressText("i");
           expect(editor.error).is.false;
@@ -252,12 +252,12 @@ print(i)`;
           expect(editor.error).is.true;
           expect(editor.positionError).is.equal(1); // error still present
           expect(editor.ended).to.be.false; // need to fix the error to finish
-          
+
           // Let's do the same but allow errors this time.
           editor.continueOnErrors = true;
           editor.reset();
           editor.start();
-          
+
           expect(editor.position).to.equal(0);
           pressText("i");
           expect(editor.error).is.false;
@@ -268,12 +268,12 @@ print(i)`;
           expect(editor.error).is.true;
           expect(editor.positionError).is.equal(1); // error still present
           expect(editor.ended).to.be.true; // <------- but allow to finish!
-          
+
           // Let's restart the first scenario but try to fix the error
           editor.continueOnErrors = false;
           editor.reset();
           editor.start();
-          
+
           expect(editor.position).to.equal(0);
           pressText("i");
           expect(editor.error).is.false;
@@ -287,9 +287,9 @@ print(i)`;
           pressText("+");
           expect(editor.ended).to.be.true; // we reaches the end this time
         });
-        
+
       });
-      
+
     </script>
 
   </body>

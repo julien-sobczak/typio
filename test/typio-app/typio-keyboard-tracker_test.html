@@ -22,10 +22,10 @@
     </test-fixture>
 
     <script>
-    
+
       suite('typio-keyboard-tracker', function() {
 
-        // 
+        //
         // Interaction utils
         //
 
@@ -33,51 +33,51 @@
           let keys = key;
           if (!Array.isArray(keys)) {
             keys = [key]
-          } 
+          }
 
           keys.forEach(key => MockInteractions.keyEventOn(document, 'keypress', code, [], key));
         }
-        
+
         teardown('clear records', function() {
-          TypioKeyboardTracker.reset();  
+          TypioKeyboardTracker.reset();
         });
-        
+
         test('[record] memorize all characters', function() {
           tracker = fixture('DefaultFixture');
-          
+
           press('a', 'A');
           press('B', 'B');
           press('b', 'B');
           press('ç', 'Comma');
           press(',', 'Comma');
           press('<', 'Comma');
-          
+
           expect(tracker.keysForCode('A')).to.have.deep.members(['a']);
           expect(tracker.keysForCode('B')).to.have.deep.members(['B', 'b']);
           expect(tracker.keysForCode('Comma')).to.have.deep.members(['ç', ',', '<']);
           expect(tracker.keysForCode('Enter')).to.be.undefined;
-          
+
           expect(tracker.keysWithSameCode('a')).to.have.deep.members(['a']);
           expect(tracker.keysWithSameCode('A')).to.be.undefined;
           expect(tracker.keysWithSameCode('b')).to.have.deep.members(['B', 'b']);
           expect(tracker.keysWithSameCode(',')).to.have.deep.members(['ç', ',', '<']);
           expect(tracker.keysWithSameCode('Enter')).to.be.undefined;
-          
+
           // Allow an array
           expect(tracker.keysWithSameCode([','])).to.have.deep.members(['ç', ',', '<']);
           expect(tracker.keysWithSameCode([',', '<'])).to.have.deep.members(['ç', ',', '<']);
-          
+
           // Same but exclude the keys passed in parameters
           expect(tracker.otherKeysWithSameCode([','])).to.have.deep.members(['ç', '<']);
           expect(tracker.otherKeysWithSameCode([',', '<'])).to.have.deep.members(['ç']);
         });
-        
+
         test('[record] could detect layout switches', function() {
           tracker = fixture('DefaultFixture');
-          
+
           press('ç', 'Comma');
           expect(tracker.keysForCode('Comma')).to.have.deep.members(['ç']);
-          
+
           press('ç', 'C'); // could only be possible if the user has switch the layout => reset everything
           expect(tracker.keysForCode('Comma')).to.be.undefined;
           expect(tracker.keysForCode('C')).to.have.deep.members(['ç']);

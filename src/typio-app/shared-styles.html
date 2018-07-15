@@ -19,13 +19,13 @@
         --typio-bg-color: #009ee3;
         --typio-secondary-color: var(--paper-orange-500);
         --typio-viewer-font-family: 'Droid Sans Mono', monospace;
-        
+
         --typio-letter-blue-color: #19F;
         --typio-letter-yellow-color: #EA0;
         --typio-letter-orange-color: #E62;
         --typio-letter-red-color: #C25;
         --typio-letter-green-color: LimeGreen;
-        
+
         /*
          * See here for the list of available colors:
          * https://github.com/PolymerElements/paper-styles/blob/master/color.html
@@ -55,9 +55,9 @@
       /*
        * Form elements
        */
-      
+
       /* paper-card */
-      
+
       paper-card {
         @apply --shadow-elevation-2dp;
       }
@@ -67,10 +67,10 @@
       paper-card a {
         text-decoration: none;
       }
-     
-      
+
+
       /* paper-button */
-      
+
       paper-button {
         /* Font */
         -webkit-font-smoothing: antialiased;
@@ -84,10 +84,10 @@
       paper-button:hover {
         background-color: var(--typio-secondary-color);
       }
-      
+
 
       /* paper-range-slider */
-      
+
       paper-range-slider {
         --paper-range-slider-width: 400px;
         --paper-range-slider-knob-color:              var(--typio-bg-color);
@@ -103,8 +103,8 @@
         margin-bottom: 15px;
         display: block;
       }
-      
-      
+
+
       /* paper-tab */
       .fabs {
         z-index: 500;
@@ -112,13 +112,13 @@
         right: 50px;
         bottom: 25px;
       }
-      
+
       .fabs paper-fab {
         display: block;
         margin-top: 25px;
         margin-bottom: 25px;
       }
-      
+
       paper-fab.relative,
       * > a:nth-child(1) paper-fab.relative {
         position: absolute;
@@ -130,17 +130,17 @@
         left: -20px;
         bottom: -20px;
       }
-            
+
       paper-fab:hover {
         /* See https://material.io/guidelines/material-design/elevation-shadows.html#elevation-shadows-elevation-android for guidelines */
         @apply(--shadow-elevation-6dp);
       }
-      
-      
+
+
       /* Tooltip */
-      
+
       paper-tooltip {
-        
+
         /* Make it fast and basic */
         --paper-tooltip-background: #404040;
         --paper-tooltip-opacity: 0.9;
@@ -148,12 +148,12 @@
         --paper-tooltip-delay-out: 0;
         --paper-tooltip-duration-in: 0;
         --paper-tooltip-duration-out: 0;
-        
+
         --paper-tooltip: {
           font-size: 14px;
-          padding: 6px 10px;  
-          text-align: center;  
-          line-height: 1.5em;    
+          padding: 6px 10px;
+          text-align: center;
+          line-height: 1.5em;
         }
       }
       paper-tooltip .description {
@@ -167,8 +167,8 @@
         font-size: 80%;
         font-family: var(--typio-viewer-font-family);
       }
-      
-      
+
+
 
       /* TODO refactor */
                          paper-fab                                 { background-color: var(--typio-bg-color); }
@@ -177,10 +177,10 @@
                          paper-fab[aria-disabled=true]             { background-color: rgba(0,0,0,0.2); }
       .theme-transparent paper-fab.theme-light[aria-disabled=true] { background-color: silver; }
       .theme-transparent paper-fab[aria-disabled=true]             { background-color: rgba(0,0,0,0.2); }
-      
-      
+
+
       /* General */
-      
+
       p.instructions {
         margin: 20px 0;
         padding: 20px;

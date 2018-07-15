@@ -21,7 +21,7 @@
     </test-fixture>
 
     <script>
-    
+
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -30,24 +30,24 @@
        * We use a global timer to avoid having to define time in each time.
        */
       let timer = undefined;
-      
+
       suite('typio-sleep-tracker', function() {
 
         /** Define the reference time (the start time of the session). */
         setup(function() {
           timer = new Date("2017-12-19T12:42:01.000Z");
         });
-        
+
         /** Convenient method to only expose the duration between two key presses. */
         function afterMs(durationInMs) {
           timer = new Date(timer.getTime() + durationInMs);
           return timer;
         }
-        
+
         test('[event] trigger no event when user is typing', function(done) {
           let element = fixture('DefaultFixture');
           this.timeout(1000);
-          
+
           // Listen
           element.addEventListener('sleep-detected', function(event) {
             done(new Error("No event should have been published"));
@@ -57,23 +57,23 @@
           sleep(50).then(() => {
             element.newActivity(afterMs(50));
             sleep(50).then(() => {
-              element.newActivity(afterMs(50));  
+              element.newActivity(afterMs(50));
               sleep(50).then(() => {
                 element.newActivity(afterMs(50));
                 element.stop(afterMs(0));
               });
             });
           });
-          
+
           // Let enough time for event to trigger (if bug)
           setTimeout(done, 300);
         });
-        
+
         test('[event] detect pause', function(done) {
           let element = fixture('DefaultFixture');
           element.inactivityThresholdInMs = 200;
           this.timeout(1000);
-          
+
           // Listen
           element.addEventListener('sleep-detected', function(event) {
             assert.equal(event.detail.durationInMs, 200);
@@ -84,24 +84,24 @@
           sleep(100).then(() => {
             element.newActivity(afterMs(100));
             sleep(150).then(() => {
-              element.newActivity(afterMs(150));  
+              element.newActivity(afterMs(150));
               sleep(300).then(() => {
                 element.newActivity(afterMs(300));
                 element.stop(afterMs(0));
               });
             });
           });
-          
+
         });
-        
-        
+
+
         test('[event] detect multiple successive pauses', function(done) {
           let element = fixture('DefaultFixture');
           element.inactivityThresholdInMs = 100;
           this.timeout(1000);
-          
+
           let countSleep = 0;
-          
+
           // Listen
           element.addEventListener('sleep-detected', function(event) {
             countSleep++;
@@ -112,19 +112,19 @@
           setTimeout(() => element.newActivity(afterMs(200)), 250); // pause
           setTimeout(() => element.newActivity(afterMs(50)),  300);
           setTimeout(() => element.newActivity(afterMs(200)), 500); // pause
-          setTimeout(() => element.stop(afterMs(0)), 500); 
-          
+          setTimeout(() => element.stop(afterMs(0)), 500);
+
           setTimeout(() => {
             assert.equal(countSleep, 2);
             done();
-          }, 750);                    
+          }, 750);
         });
-        
+
         test('[event] custom threshold', function(done) {
           let element = fixture('DefaultFixture');
           element.inactivityThresholdInMs = 500;
           this.timeout(1000);
-          
+
           // Listen
           element.addEventListener('sleep-detected', function(event) {
             done(new Error("No event should have been published"));
@@ -134,11 +134,11 @@
           setTimeout(() => element.newActivity(afterMs(50)),   50);
           setTimeout(() => element.newActivity(afterMs(400)), 450); // no pause
           setTimeout(() => element.newActivity(afterMs(50)),  500);
-          setTimeout(() => element.stop(afterMs(0)), 500); 
-          
+          setTimeout(() => element.stop(afterMs(0)), 500);
+
           setTimeout(done, 750); // Let enough time to detect bug
         });
-        
+
         // + add new test to test custom duration
 
       });

@@ -86,7 +86,7 @@
       /*
        * Form
        */
-       
+
       paper-checkbox {
         display: block;
         align-self: center;
@@ -110,7 +110,7 @@
         background-color: rgba(0,0,0,0.5);
         font-weight: bold;
       }
-      
+
       paper-checkbox .subtitle {
         display: block;
         font-size: 0.8em;
@@ -121,14 +121,14 @@
     </style>
 
     <iron-ajax url="/content/quotes/en.json" auto last-response="{{quotes}}"></iron-ajax>
-    
+
     <div class$="type step[[step]] theme-transparent">
-      
+
       <div class="fabs">
         <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
         <paper-fab icon="av:play-arrow" title="Validate" disabled="{{_selectionEmpty}}" on-click="validate"></paper-fab>
       </div>
-      
+
       <div class="selection">
         <div class="entry">
           <a href="/catalog/menu">
@@ -159,11 +159,11 @@
             <span class="subtitle">
               {{quote.author}}
             </span>
-          </paper-checkbox>        
+          </paper-checkbox>
         </template>
       </div>
 
-      <div class="step step3">        
+      <div class="step step3">
       </div>
 
     </div>
@@ -189,7 +189,7 @@
       static get is() { return 'typio-catalog-quote'; }
       static get properties() {
         return {
-          
+
 
           /**
            * Current step in the workflow.
@@ -198,7 +198,7 @@
             type: Number,
             value: 1
           },
-          
+
           /**
            * Sorted list of quotes present in `content/quotes/en.json`.
            */
@@ -207,15 +207,15 @@
             value: [],
             observer: '_onLoadQuotes'
           },
-          
+
           /**
            * Sorted list of tags associated with `quotes`.
            */
           tags: {
             type: Array,
             value: []
-          },          
-          
+          },
+
           /**
            * Print the loader if true.
            */
@@ -223,7 +223,7 @@
             type: Boolean,
             value: false
           },
-          
+
           /**
            * Selection of quotes.
            */
@@ -231,7 +231,7 @@
             type: Array,
             value: [],
           },
-          
+
           /**
            * False as soon as one quote is selected in `selection`.
            */
@@ -239,7 +239,7 @@
             type: Boolean,
             value: true
           }
-          
+
         };
       }
 
@@ -248,9 +248,9 @@
        */
       _onLoadQuotes() {
         if (!this.quotes || this.quotes.length == 0) return;
-        
+
         this.tags = [];
-        
+
         // Traverse the quotes to extract tags.
         let foundTags = [];
         let tags = []
@@ -273,10 +273,10 @@
               });
             }
           })
-          
+
         });
         this.tags = tags.sort((a,b) => a.count > b.count ? -1 : a.count < b.count ? 1 : 0);
-        
+
         this.isLoading = false;
       }
 
@@ -297,7 +297,7 @@
             quotes.push(quote);
           }
         });
-        
+
         // Sort by tag author
         return quotes.sort((a,b) => a.author.localeCompare(b.author));
       }
@@ -324,7 +324,7 @@
         }
         this._selectionEmpty = this.selection.length == 0;
       }
-      
+
       validate() {
         this.step = 3;
 
@@ -336,7 +336,7 @@
         };
         this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
       }
-      
+
       _selectionToContent() {
         let content = "";
         this.selection.forEach(quote => {
@@ -379,7 +379,7 @@
 
         let quotes = this._getQuotes(this.selectedTag);
         this.selection.push(quotes[getRandomInt(quotes.length)]);
-        
+
         console.log('[typio-catalog-quote] Using randomly selected quote ' + this.selectedQuote + ' (' + this.selectedTag + ')');
 
         let detail = {

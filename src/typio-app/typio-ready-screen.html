@@ -120,7 +120,7 @@
     </typio-parser>
 
     <section id="settings" class$="hidden-[[hidden]] type-[[type]]">
-      
+
       <div class="fabs">
         <paper-fab id="fabStart" icon="chevron-right" on-click="start"></paper-fab>
         <paper-tooltip for="fabStart" position="left">
@@ -128,7 +128,7 @@
           <span class="shortcut"><iron-icon icon="hardware:keyboard"></iron-icon> Ctrl + Enter</span>
         </paper-tooltip>
       </div>
-    
+
       <div id="controls">
         <h2><iron-icon icon="settings"></iron-icon> Customize</h2>
         <div class="control type-code">
@@ -170,10 +170,10 @@
       </div>
 
       <div id="content">
-        <typio-viewer id="viewer" 
-            type="[[type]]" 
-            mode="page" 
-            no-cursor-optimization 
+        <typio-viewer id="viewer"
+            type="[[type]]"
+            mode="page"
+            no-cursor-optimization
             profile>
         </typio-viewer>
       </div>
@@ -341,7 +341,7 @@
 
         };
       }
-      
+
       static get observers() {
         return [
           '_contentChanged(type, language, content)',
@@ -354,7 +354,7 @@
         // Unable to find a way to attach the listener using a DOM attribute...
         this._listenSlider();
       }
-      
+
       /**
        * Called when the main content changes..
        */
@@ -363,27 +363,27 @@
         this.selection = this.content;
         this._parseContent();
       }
-      
+
       /**
        * Called when one of the criteria change.
        */
       _criteriaChanged() {
         console.log('[typio-ready-screen] criteria changed');
-        this._parseContent();  
+        this._parseContent();
       }
-      
+
       _parseContent() {
         this.$.parser.parse();
         this.logicalLines = this.$.parser.logicalLines;
         this.classes = this.$.parser.classes;
         this.selection = this.$.parser.targetContent;
-        
+
         // Update viewer (BUG when using databinding...)
         this.$.viewer.classes = this.$.parser.classes;
         this.$.viewer.logicalLines = this.$.parser.logicalLines;
         this.$.viewer.content = this.$.parser.targetContent;
       }
-      
+
 
       /**
        * Called when the user limit the content length using the slider.

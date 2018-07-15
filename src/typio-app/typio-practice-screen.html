@@ -36,11 +36,11 @@
         background: #272822;
         color: white;
       }
-      
+
       /*
        * Editor
        */
-       
+
       typio-editor {
         display: block;
         width: 1000px;
@@ -69,7 +69,7 @@
         padding: 1in;
         transition: width 0.5s, height 0.5s;
       }
-      
+
       /*
        * Main chart
        */
@@ -123,12 +123,12 @@
       #screen.ended-true #miniChart {
         display: block !important;
       }
-      
-      
+
+
       /*
        * Heatmap
        */
-       
+
       #advancedStats {
         position: fixed;
         height: 100%;
@@ -157,8 +157,8 @@
         left: 50%;
         margin-left: calc(-1 * 576px / 2);
       }
-      
-      
+
+
       paper-card.stats {
         box-sizing: border-box;
         background-color: white;
@@ -168,7 +168,7 @@
         width: 500px;
         height: 350px;
         flex: 0 0 auto;
-        
+
         --paper-card-header-text: {
           font-size: 100%;
         }
@@ -178,7 +178,7 @@
           height: 250px;
         }
       }
-      
+
       paper-card.stats table {
         width: 100%;
         height: 200px;
@@ -202,7 +202,7 @@
         text-align: left;
       }
 
-    
+
 
       #resourceName {
         position: fixed;
@@ -227,16 +227,16 @@
       #screen.initialized-true {
         display: block;
       }
-      
+
       #screen.ended-false #fabStats { display: none;  }
       #screen.ended-true  #fabStats { display: block; }
-      
+
       #screen.ended-false #fabRestart { display: block;  }
       #screen.ended-true  #fabRestart { display: block; }
 
       #screen.ended-false #fabRewind { display: block;  }
       #screen.ended-true  #fabRewind { display: none;  }
-      
+
       #screen.paused-true #editorFabs { display: none; }
 
       /*
@@ -252,12 +252,12 @@
          font-weight: bold;
          font-size: 1.7em;
        }
-       
+
        #statsPanel #table {
          margin-bottom: 25px;
        }
 
-       #statsInProgress, 
+       #statsInProgress,
        #statsFinished {
          display: none;
        }
@@ -290,12 +290,12 @@
         border-radius: 3px;
         box-shadow: 2px 2px gray;
       }
-      
-      
+
+
       /*
-       * Sleep Dialog 
+       * Sleep Dialog
        */
-       
+
       #pauseDialog {
         display: none;
         position: fixed;
@@ -331,7 +331,7 @@
         mode="{{mode}}"
         on-ready="start">
     </typio-ready-screen>
-    
+
     <!-- Get stats about practice session -->
     <typio-stats id="stats"></typio-stats>
 
@@ -344,7 +344,7 @@
           <strong>[[resource]]</strong> | [[resourceItem]]
         </div>
       </template>
-      
+
       <div id="pauseDialog" class="theme-transparent">
         <h1>Are you sleeping?</h1>
         <div class="fabs">
@@ -366,28 +366,28 @@
           <span class="description">Show advanced statistics</span>
           <span class="shortcut"><iron-icon icon="hardware:keyboard"></iron-icon> Alt + +</span>
         </paper-tooltip>
-        
+
         <paper-fab id="fabRewind" icon="av:replay-10" on-click="rewind"></paper-fab>
         <paper-tooltip for="fabRewind" position="left">
           <span class="description">Rewind ten characters</span>
           <span class="shortcut"><iron-icon icon="hardware:keyboard"></iron-icon> Ctrl + left</span>
         </paper-tooltip>
-        
+
         <paper-fab id="fabPause" icon="av:pause" on-click="pause"></paper-fab>
         <paper-tooltip for="fabPause" position="left">
           <span class="description">Pause the session</span>
           <span class="shortcut"><iron-icon icon="hardware:keyboard"></iron-icon> Ctrl + P</span>
         </paper-tooltip>
-        
+
         <paper-fab id="fabRestart" icon="autorenew" on-click="restart"></paper-fab>
         <paper-tooltip for="fabRestart" position="left">
           <span class="description">Restart using same content</span>
         </paper-tooltip>
       </div>
-      
+
       <div id="statsPanel">
         <span id="statsInProgress" class="wpm">[[currentWpm]] WPM</span>
-        
+
         <div id="statsFinished">
           <div>
             <span>WPM <strong>[[statsSummary.wpm]]</strong> in [[statsSummary.elapsedTimeInS]]s</span>
@@ -399,21 +399,21 @@
               <li>Unproductive keystroke overhead: [[statsSummary.unproductiveKeystrokeOverhead]]%</li>
             </ul>
           </div>
-        </div>        
+        </div>
       </div>
 
-      <typio-editor id="editor" 
-          data-type$="[[type]]" 
-          data-theme$="[[theme]]" 
-          data-mode$="[[mode]]" 
+      <typio-editor id="editor"
+          data-type$="[[type]]"
+          data-theme$="[[theme]]"
+          data-mode$="[[mode]]"
           data-content$="[[_content]]"
           on-character-entered="_characterEntered"
           on-typing-ended="_typingEnded"
           paused$="[[paused]]">
       </typio-editor>
-      
+
       <div id="advancedStats">
-        
+
         <paper-card heading="WPM per interval" class="stats">
           <div class="card-content">
             <google-chart id="steppedAreaChart"
@@ -425,8 +425,8 @@
           <div class="card-actions">
             <paper-icon-button icon="icons:help"></paper-icon-button>
           </div>
-        </paper-card>  
-        
+        </paper-card>
+
         <paper-card heading="Heatmap" class="stats">
           <div class="card-content">
             <google-chart id="heatmapChart"
@@ -438,8 +438,8 @@
           <div class="card-actions">
             <paper-icon-button icon="icons:help"></paper-icon-button>
           </div>
-        </paper-card>  
-          
+        </paper-card>
+
         <paper-card heading="WPM" class="stats">
           <div class="card-content">
             <google-chart id="scatterChart"
@@ -451,8 +451,8 @@
           <div class="card-actions">
             <paper-icon-button icon="icons:help"></paper-icon-button>
           </div>
-        </paper-card>  
-      
+        </paper-card>
+
         <paper-card heading="WPM" class="stats">
           <div class="card-content">
             <google-chart id="lineChart"
@@ -464,8 +464,8 @@
           <div class="card-actions">
             <paper-icon-button icon="icons:help"></paper-icon-button>
           </div>
-        </paper-card>  
-          
+        </paper-card>
+
         <paper-card heading="Most difficult words" class="stats">
           <div class="card-content">
             <table>
@@ -482,13 +482,13 @@
               </template>
               </tbody>
             </table>
-          </div>     
+          </div>
           <div class="card-actions">
             <paper-icon-button icon="icons:help"></paper-icon-button>
-          </div>       
+          </div>
           <paper-fab icon="av:play-arrow" title="Generate Drill" on-click="_generateDrillWords" class="relative" mini></paper-fab>
         </paper-card>
-        
+
         <paper-card heading="Most difficult characters" class="stats">
           <div class="card-content">
             <table>
@@ -505,13 +505,13 @@
               </template>
               </tbody>
             </table>
-          </div>     
+          </div>
           <div class="card-actions">
             <paper-icon-button icon="icons:help"></paper-icon-button>
-          </div>       
+          </div>
           <paper-fab icon="av:play-arrow" title="Generate Drill" on-click="_generateDrillCharacters" class="relative" mini></paper-fab>
         </paper-card>
-        
+
         <paper-card heading="Most difficult character combinations" class="stats">
           <div class="card-content">
             <table>
@@ -528,19 +528,19 @@
               </template>
               </tbody>
             </table>
-          </div>     
+          </div>
           <div class="card-actions">
             <paper-icon-button icon="icons:help"></paper-icon-button>
-          </div>       
+          </div>
           <paper-fab icon="av:play-arrow" title="Generate Drill" on-click="_generateDrillCharacterCombinations" class="relative" mini></paper-fab>
         </paper-card>
-        
-        
+
+
         <div id="keyboardAndHands">
           <typio-keyboard id="keyboard" mixed-cases></typio-keyboard>
           <typio-hands id="hands"></typio-hands>
-        </div>  
-        
+        </div>
+
         <div class="fabs">
           <paper-fab id="fabHeatmap" icon="close" title="Close" on-click="hideAdvancedStats"></paper-fab>
         </div>
@@ -559,7 +559,7 @@
         cols="[[chartCols]]"
         rows='[]'>
       </google-chart>
-      
+
     </div>
 
   </template>
@@ -638,7 +638,7 @@
           //
           // Settings
           //
-           
+
           /**
            * Allow user to continue typing when an error is detected.
            */
@@ -646,7 +646,7 @@
             type: Boolean,
             value: false
           },
-          
+
           /**
            * Show a real-time graph while user is typing.
            */
@@ -654,7 +654,7 @@
             type: Boolean,
             value: true
           },
-          
+
           /**
            * Editor code style.
            * Name should match a CSS resource name /css/prism-{{theme}}.css.
@@ -663,12 +663,12 @@
             type: String,
             value: 'light'
           },
-          
-          
-          // 
+
+
+          //
           // Display settings
           //
-          
+
           /**
            * To improve latency when typing, we do not refresh the stats
            * after each key press. We use this variable to keep the last
@@ -678,7 +678,7 @@
             type: Number,
             value: null,
           },
-          
+
 
           //
           // State management
@@ -689,7 +689,7 @@
             type: Boolean,
             value: false
           },
-          
+
           /** True as soon as the user had pressed his first key. */
           started: {
             type: Boolean,
@@ -711,7 +711,7 @@
           // Google Chart Configurations
           // See https://developers.google.com/chart/interactive/docs/gallery/steppedareachart
           //
-          
+
           // stepped-area chart
 
           steppedAreaOptions: {
@@ -741,13 +741,13 @@
               annotations: { textStyle: { color: "orange"} }
             }
           },
-          
+
           steppedAreaData: {
             type: Array,
             readOnly: true,
             value: undefined
           },
-          
+
           chartOptions: {
             type: Object,
             readOnly: true,
@@ -777,7 +777,7 @@
               annotations: { textStyle: { color: "orange"} }
             }
           },
-          
+
           minichartOptions: {
             type: Object,
             readOnly: true,
@@ -806,7 +806,7 @@
               annotations: { textStyle: { color: "orange"} }
             }
           },
-          
+
           chartCols: {
             type: Array,
             readOnly: true,
@@ -818,9 +818,9 @@
               // see https://developers.google.com/chart/interactive/docs/roles?hl=en for the role property of columns
             ]
           },
-          
+
           // heatmap chart
-          
+
           heatmapOptions: {
             type: Object,
             readOnly: true,
@@ -834,7 +834,7 @@
               isStacked: 'percent',
               theme: 'maximized',
               colors: ["#009ee3"],
-              vAxis: { 
+              vAxis: {
                 textPosition: 'none'
               },
               hAxis: {
@@ -844,15 +844,15 @@
               tooltip: { trigger: "none" },
             }
           },
-          
+
           heatmapData: {
             type: Array,
             readOnly: true,
             value: undefined
           },
-          
+
           // scatter chart
-          
+
           scatterOptions: {
             type: Object,
             readOnly: true,
@@ -862,7 +862,7 @@
               legend: { position: 'none' },
               theme: 'maximized',
               colors: ["#009ee3"],
-              vAxis: { 
+              vAxis: {
                 textPosition: 'none'
               },
               hAxis: {
@@ -872,15 +872,15 @@
               annotations: { textStyle: { color: "black"} },
             }
           },
-          
+
           scatterData: {
             type: Array,
             readOnly: true,
             value: undefined
           },
-          
+
           // line chart
-          
+
           lineOptions: {
             type: Object,
             readOnly: true,
@@ -890,7 +890,7 @@
               legend: { position: 'none' },
               theme: 'maximized',
               colors: ["#009ee3"],
-              vAxis: { 
+              vAxis: {
                 textPosition: 'none'
               },
               hAxis: {
@@ -906,7 +906,7 @@
             readOnly: true,
             value: undefined
           },
-          
+
         };
       }
 
@@ -932,8 +932,8 @@
         // Reset ready-screen
         this.$.readyScreen.hidden = false;
       }
-      
-      
+
+
       //
       // Listeners
       //
@@ -944,10 +944,10 @@
       start(e, detail) {
         console.log('[typio-practice-screen] starting', detail);
         this.initialized = true;
-        
+
         this._content = detail.content;
         this.$.stats.init(detail.content, detail.classes);
-        
+
         this.showChart = this.$.readyScreen.showChart;
         this.theme = detail.theme;
         this.mode = detail.mode;
@@ -957,33 +957,33 @@
         this.$.editor.classes = detail.classes;
         this.$.editor.logicalLines = detail.logicalLines;
         this._intervals = this.$.stats.intervals;
-        
+
         if (detail.fontSize) this.$.editor.fontSize = detail.fontSize;
         if (detail.preserveSpacing) this.$.editor.preserveSpacing = detail.preserveSpacing;
-        
+
         console.log('[typio-practice-screen] launching editor...');
         this.$.editor.start();
         this.$.sleepTracker.start();
         this.$.chart.rows = this.$.stats.chartSteppedAreaRows();
         this.$.chart.redraw();
       }
-      
+
       cancel() {
         if (this.started) {
           this.$.editor.cancel();
         }
       }
-      
+
       pause() {
         this.paused = true;
         this.$.stats.pauseTimer();
       }
-      
+
       resume() {
         this.paused = false;
         this.$.stats.resumeTimer();
       }
-      
+
       rewind(numberCharacters = 10) {
         this.$.editor.backward(numberCharacters);
         this.$.stats.rewind(numberCharacters);
@@ -998,7 +998,7 @@
         this.$.stats.newCharacter(detail.index, detail.character, detail.valid, detail.accepted);
         this.$.sleepTracker.newActivity();
         this.currentWpm = this.$.stats.currentWpm;
-        
+
         // Update charts when necessary
         let refreshThreshold = Math.min(20, Math.floor(this.$.stats.totalCharacters / 20)); // At least twice per interval and every 10 characters
         if (this.$.stats.enteredCharacters - this._lastPositionWhenRefresh > refreshThreshold) {
@@ -1017,22 +1017,22 @@
         this.mostDifficultKeys = this.$.stats.mostDifficultKeys(10);
         this.mostDifficultKeyCombinations = this.$.stats.mostDifficultKeyCombinations(10);
         this.mostDifficultWords = this.$.stats.mostDifficultWords(this._difficultWordOptions());
-        
+
         // Show mini chart
         this._updateCharts();
-        
+
         // Highlight errors
         this.$.editor.showMispellings();
         this.$.editor.moveToFirstPage();
-        
-        this.ended = true; // trigger changes on screen        
+
+        this.ended = true; // trigger changes on screen
       }
-      
+
       _difficultWordOptions() {
         const delimitersPerType = new Map();
         delimitersPerType.set('code', '\n');
         delimitersPerType.set('literature', '[\\s(),;.!?:"\']');
-        
+
         let options = {
           n: 10
         }
@@ -1041,7 +1041,7 @@
         }
         return options;
       }
-      
+
       _updateCharts() {
         this._updateMiniChart();
         this._updateSteppedAreaChart();
@@ -1056,20 +1056,20 @@
           this.$.miniChart.rows[i][2] = ''; // remove annotations
         }
         this.$.miniChart.redraw();
-        
+
         this.listenChartEvents();
       }
-      
+
       _updateSteppedAreaChart() {
         this._setSteppedAreaData(this.$.stats.chartSteppedAreaData());
         this.$.steppedAreaChart.redraw();
       }
-      
+
       _updateHeatmapChart() {
         this._setHeatmapData(this.$.stats.chartStackedBarData());
         this.$.heatmapChart.redraw();
       }
-      
+
       _updateScatterChart() {
         this._setScatterData(this.$.stats.chartScatterData());
         this.$.scatterChart.redraw();
@@ -1093,7 +1093,7 @@
             }
 
             let column = selection[0].row;
-            
+
             // Highlight the characters belonging to the selected interval
             let startIndex = this._intervals.indexOf(column);
             let endIndex = this._intervals.lastIndexOf(column);
@@ -1103,25 +1103,25 @@
           this._chartEventsListened = true;
         }
       }
-      
+
       _sleepDetected(event, detail) {
         this.pause();
       }
-      
+
       _resumeClicked(event, detail) {
         this.resume();
       }
-      
 
-      // 
+
+      //
       // Advanced Statistics
-      // 
-      
+      //
+
       showAdvancedStats() {
         const responseTimes = this.$.stats.getResponseTimeKeys();
         const responseTimePerKey = new Map();
         let worstInMs = 0;
-        responseTimes.forEach(keyStats => { 
+        responseTimes.forEach(keyStats => {
           responseTimePerKey.set(keyStats.character, keyStats);
           if (keyStats.averageInMs > worstInMs) {
             worstInMs = keyStats.averageInMs;
@@ -1132,21 +1132,21 @@
         this.$.keyboard.colorize(c => {
           if (!responseTimePerKey.has(c)) return false;
           const stats = responseTimePerKey.get(c);
-          
+
           // We compare the response time with the worst response time to determine the color
           // We only want to highlight the worse keys, even if the user is typing slowy every key.
           const ratio = Math.floor(stats.averageInMs * 100 / worstInMs / 10.1); // Note between 0 and 10 exclusive
           // close to 10 = reddish
           // close to 0 = yellowish
-          
+
           const ignoreBelowRatio = 2;
-          if (ratio < ignoreBelowRatio) return false; 
-          
+          if (ratio < ignoreBelowRatio) return false;
+
           // See https://material.io/guidelines/style/color.html#color-color-palette
           return 'var(--paper-red-' + ((ratio - ignoreBelowRatio) * 100) + ')';
         });
-        
-        
+
+
         const fingerRepartition = TypioKeyboard.fingersFromText(this._content);
         const maxFingerCount = Math.max(
           fingerRepartition.leftHand.littleFinger,
@@ -1174,58 +1174,58 @@
           indexFinger:  TypioPracticeScreen.dynamicRedColor(fingerRepartition.rightHand.indexFinger, maxFingerCount),
           thumb:        TypioPracticeScreen.dynamicRedColor(fingerRepartition.rightHand.thumb, maxFingerCount),
         });
-        
+
         this.$.advancedStats.style.display = 'block';
       }
-      
+
       hideAdvancedStats() {
         this.$.advancedStats.style.display = 'none';
-      }   
-      
+      }
+
       //
       // Shortcuts
       //
-      
+
       actionStart() {
         if (this.paused) this.resume();
         if (this.started) return;
         this.$.readyScreen.start();
       }
-      
+
       actionPause() {
         if (this.started && !this.paused) this.pause();
       }
-      
+
       actionBack() {
         this.rewind();
       }
-      
+
       actionMore() {
         if (this.ended) this.showAdvancedStats();
       }
-      
+
       actionLess() {
         if (this.ended) this.hideAdvancedStats();
-      }      
-      
-      
+      }
+
+
       //
       // Statistics
       //
-      
+
       _generateDrillWords() {
         const detail = {
           drill: {
             type: 'static',
-            text: this.mostDifficultWords.map(e => e.word), 
-            limit: this.mostDifficultWords.length, 
+            text: this.mostDifficultWords.map(e => e.word),
+            limit: this.mostDifficultWords.length,
             random: true,
           },
           redirectUri: '/editor'
         };
         this.dispatchEvent(new CustomEvent('drill-session-requested', {detail: detail, bubbles: true, composed: true}));
       }
-      
+
       _generateDrillCharacters() {
         let keys = [];
         let weights = [];
@@ -1238,15 +1238,15 @@
         const detail = {
           drill: {
             type: 'basic',
-            keys: keys, 
-            weights: weights, 
+            keys: keys,
+            weights: weights,
             preserveSpacing: false,
           },
           redirectUri: '/editor'
         };
         this.dispatchEvent(new CustomEvent('drill-session-requested', {detail: detail, bubbles: true, composed: true}));
       }
-      
+
       _generateDrillCharacterCombinations() {
         let keys = [];
         let weights = [];
@@ -1260,32 +1260,32 @@
         const detail = {
           drill: {
             type: 'basic',
-            keys: keys, 
+            keys: keys,
             weights: weights,
-            preserveSpacing: false, 
+            preserveSpacing: false,
           },
           redirectUri: '/editor'
         };
         this.dispatchEvent(new CustomEvent('drill-session-requested', {detail: detail, bubbles: true, composed: true}));
       }
-      
+
       //
       // Utils
       //
-      
+
       static dynamicPaperColor(paperColor, actualValue, maxValue) {
         if (actualValue === 0) {
           return 'inherit'; // let blank if no value
         }
-        
+
         let paperValue = Math.floor(actualValue * 100 / maxValue / 10) * 100;
         if (paperValue > 900) {
           paperValue = 900;
         }
-        
+
         return `var(--paper-${paperColor}-${paperValue})`;
       }
-      
+
       static dynamicRedColor(actualValue, maxValue) {
         return TypioPracticeScreen.dynamicPaperColor('red', actualValue, maxValue);
       }

@@ -56,7 +56,7 @@
       paper-icon-button + [main-title] {
         margin-left: 24px;
       }
-      
+
       app-header {
         color: #fff;
         box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
@@ -70,15 +70,15 @@
       app-header.menu-false {
         display: none;
       }
-      
-      
+
+
       app-drawer {
         z-index: 50;
         --app-drawer-width: 450px;
       }
-            
+
       /* Drawer Menu */
-      
+
       app-drawer#drawerMenu {
         --app-drawer-scrim-background: rgba(255, 255, 255, 0.8);
         --app-drawer-content-container: {
@@ -87,7 +87,7 @@
           background-color: white;
         }
       }
-      
+
       app-drawer nav ul {
         list-style-type: none;
       }
@@ -103,12 +103,12 @@
         text-decoration: none;
         color: inherit;
       }
-            
+
       /* Drawer Shortcuts */
-      
+
       app-drawer#drawerShortcuts {
         text-align: left;
-        
+
         --app-drawer-scrim-background: rgba(255, 255, 255, 0);
         --app-drawer-content-container: {
           @apply --shadow-elevation-16dp;
@@ -116,7 +116,7 @@
           background-color: white;
         }
       }
-      
+
       app-drawer#drawerShortcuts header {
         min-height: 62px;
         padding: 15px;
@@ -127,21 +127,21 @@
         text-align: left;
         position: relative;
       }
-      
+
       app-drawer#drawerShortcuts header p {
         font-weight: 500;
         font-size: 14px;
         color: #717274;
         margin-top: 4px;
-        line-height: 24px;  
+        line-height: 24px;
       }
-      
+
       app-drawer#drawerShortcuts #closeShortcuts {
         position: absolute;
         top: 40px;
         right: 20px;
       }
-      
+
       app-drawer h4 {
         color: var(--typio-bg-color);
         margin-top: 15px;
@@ -149,7 +149,7 @@
         font-weight: 900;
         margin-bottom: 4px;
       }
-      
+
       app-drawer#drawerShortcuts table {
         width: 100%;
       }
@@ -163,11 +163,11 @@
       app-drawer#drawerShortcuts table td.shortcut {
         text-align: right;
       }
-      
+
       app-drawer#drawerShortcuts #listShortcuts {
         padding: 15px;
       }
-      
+
       .key.slim {
         height: 20px;
         margin: -3px 2px 0;
@@ -215,7 +215,7 @@
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+e" on-keys-pressed="goToDrillEditor"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+p" on-keys-pressed="goToPracticeSession"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+c" on-keys-pressed="goToCatalog"></iron-a11y-keys>
-    
+
     <app-header effects="waterfall" class$="menu-{{menuVisible}}">
       <app-toolbar>
         <paper-icon-button icon="menu" on-click="_toggleDrawerMenu"></paper-icon-button>
@@ -249,7 +249,7 @@
               <td class="shortcut"><span class="key">Ctrl</span><span class="key">Enter</span></td>
             </tr>
           </table>
-          
+
           <h4>Editor <span class="key slim">Ctrl</span><span class="key slim">Alt</span><span class="key slim">p</span></h4>
           <table>
             <tr>
@@ -273,7 +273,7 @@
               <td class="shortcut"><span class="key">Ctrl</span><span class="key">Shift</span><span class="key">Space</span></td>
             </tr>
           </table>
-          
+
           <h4>Catalog <span class="key slim">Ctrl</span><span class="key slim">Alt</span><span class="key slim">c</span></h4>
           <table>
             <tr>
@@ -281,14 +281,14 @@
               <td class="shortcut"><span class="key">Ctrl</span><span class="key">Enter</span></td>
             </tr>
           </table>
-          
-          
+
+
           <h4>Drill Creator<span class="key slim">Ctrl</span><span class="key slim">Alt</span><span class="key slim">d</span></h4>
-          
+
         </div>
       </div>
     </app-drawer>
-    
+
     <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
       <typio-intro-screen id="intro" name="intro"></typio-intro-screen>
       <typio-catalog-screen id="catalog" name="catalog" class="full-screen" on-entry-selected="_initCodeEditor" route="{{subroute}}"></typio-catalog-screen>
@@ -331,7 +331,7 @@
               return {};
             }
           },
-          
+
           /**
            * Top-Menu visible?
            */
@@ -339,19 +339,19 @@
             type: Boolean,
             value: true
           },
-          
-          
-          // 
+
+
+          //
           // Shortcuts management
           //
-          
+
           target: {
             type: Object,
             value: function() {
               return document.body;
             }
           },
-          
+
         };
       }
 
@@ -362,10 +362,10 @@
         if (!this.route.path || this.route.path === '/') {
           this.set('route.path', '/intro');
         }
-        
+
         this.addEventListener('drill-session-requested', this.drillSessionRequested);
       }
-      
+
 
 
       /**
@@ -382,12 +382,12 @@
 
         // Hide the menu when displaying introduction page
         this.menuVisible = this._selectedPage !== 'intro';
-        
+
         // Cancel the editor to stop listening keypress
         if (oldPageData && oldPageData.view === 'editor') {
           this.$.editor.cancel();
         }
-        
+
         if (map[pageData.view] != null) {
           Polymer.AppLayout.scroll({ top: map[pageData.view], behavior: 'silent' });
         } else if (this.isAttached) {
@@ -408,11 +408,11 @@
         this.$.editor.reset();
         this.set('route.path', '/editor');
       }
-      
+
       //
       // Navigation
       //
-      
+
       goToIntro() {
         this.set('route.path', '/intro');
       }
@@ -428,7 +428,7 @@
       goToCatalog() {
         this.set('route.path', '/catalog');
       }
-      
+
       actionStart() {
         let screen = this._currentScreen();
         if (screen.actionStart) {
@@ -442,28 +442,28 @@
           screen.actionPause();
         }
       }
-      
+
       actionBack() {
         let screen = this._currentScreen();
         if (screen.actionBack) {
           screen.actionBack();
         }
       }
-      
+
       actionMore() {
         let screen = this._currentScreen();
         if (screen.actionMore) {
           screen.actionMore();
         }
       }
-      
+
       actionLess() {
         let screen = this._currentScreen();
         if (screen.actionLess) {
           screen.actionLess();
         }
       }
-      
+
       _currentScreen() {
         switch (this.route.path) {
           case '/intro':
@@ -481,20 +481,20 @@
             return undefined;
         }
       }
-      
+
       _toggleDrawerMenu() {
         this.$.drawerMenu.toggle();
       }
-      
+
       _toggleDrawerShortcuts() {
         this.$.drawerShortcuts.toggle();
       }
-      
 
-      // 
+
+      //
       // Events (sychronize screens)
       //
-      
+
       drillSessionRequested(e) {
         let detail = e.detail;
         this.$.drillRunner.reset();

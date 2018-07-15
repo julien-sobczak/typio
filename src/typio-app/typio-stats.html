@@ -53,7 +53,7 @@
             readOnly: true,
             value: 0
           },
-          
+
           /**
            * The elasped time ignore pauses, rewinding.
            * This value should be used to calculate the WPM.
@@ -79,7 +79,7 @@
             type: Date,
             value: null
           },
-          
+
           /**
            * The timestanp when thet last pause was started.
            */
@@ -87,7 +87,7 @@
             type: Date,
             value: null
           },
-          
+
           /**
            * The timestamp when the last pause was ended.
            */
@@ -95,7 +95,7 @@
             type: Date,
             value: null
           },
-          
+
           /**
            * The timestamp to consider when calculating the duration of a new character.
            * Normally, this is the timestamp of the last accepted character, but
@@ -105,8 +105,8 @@
             type: Date,
             value: null
           },
-          
-          /** 
+
+          /**
            * Total number of ms spent during pause
            */
           _totalTimeInPause: {
@@ -167,7 +167,7 @@
           //
           // Summary statistics
           //
-          
+
           summary: {
             type: Object,
             readOnly: true,
@@ -210,7 +210,7 @@
 
         this.reset();
       }
-      
+
       reset() {
         this._setTotalCharacters(0);
         this._setElapsedTimeInMs(0);
@@ -229,12 +229,12 @@
         this._inputs = [];
         this.intervals = [];
       }
-      
+
       init(content, classes = undefined) {
         this.content = content;
         this.classes = classes;
-        
-        // Be sure `classes` is valid 
+
+        // Be sure `classes` is valid
         if (!classes) {
           this.classes = new Array();
           for (let i = 0; i < this.content.length; i++) {
@@ -269,7 +269,7 @@
         this._startTimestamp = timestamp;
         this._lastReferenceTimestamp = timestamp;
       }
-      
+
       pauseTimer(timestamp = new Date()) {
         // We consider the pause started just after the last entered character
         if (this._inputs.length > 0) {
@@ -278,20 +278,20 @@
          this._lastPauseTimestamp = timestamp;
        }
       }
-      
+
       resumeTimer(timestamp = new Date()) {
         if (!this._startTimestamp) {
           this.startTimer();
         } else {
           this._lastResumeTimestamp = timestamp;
           this._lastReferenceTimestamp = timestamp;
-          this._totalTimeInPause += this._lastResumeTimestamp - this._lastPauseTimestamp; 
+          this._totalTimeInPause += this._lastResumeTimestamp - this._lastPauseTimestamp;
         }
       }
 
       stopTimer(timestamp = new Date()) {
         this._endTimestamp = timestamp;
-        this._ended = true;        
+        this._ended = true;
         this.calculateSummaryStatistics();
       }
 
@@ -304,12 +304,12 @@
       newCharacter(index, character, valid, accepted, timestamp = new Date()) {
         // startTimer() is optional. If not called, we trigger the watch on first character.
         if (!this._startTimestamp) this.startTimer(timestamp);
-        // stopTimer() is optional. If called, it will overriden this value. Otherwise, 
+        // stopTimer() is optional. If called, it will overriden this value. Otherwise,
         // we consider the last entered input timestamp.
         this._endTimestamp = timestamp;
-        
+
         if (character === 'Enter') character = '\\n';
-        
+
         let durationInMs = timestamp - this._lastReferenceTimestamp;
         this._inputs.push({
           'index': index,
@@ -321,18 +321,18 @@
         });
         this._setEnteredCharacters(this.enteredCharacters + 1);
         this._setCurrentWpm(this._calculateCurrentWpm());
-        
+
         if (accepted) {
           this._lastReferenceTimestamp = timestamp;
           this._setElapsedTimeInMs(this.elapsedTimeInMs + durationInMs);
         }
       }
-      
-      
+
+
       //
       // Misc features
       //
-      
+
       /**
        * Clear the stats for the last n valid characters.
        */
@@ -342,11 +342,11 @@
           // Just reset everything...
           this.reset();
           return;
-        } 
-        
+        }
+
         let remaining = numberOfCharacters;
         let lastAcceptedTimestamp = undefined;
-        
+
         let i = this._inputs.length - 1;
         while (i >= 0 && remaining) {
           lastInput = this._inputs.pop();
@@ -357,23 +357,23 @@
             remaining--;
           }
           i--;
-          
+
           // The next character duration should start from now
           if (lastAcceptedTimestamp) {
             this._lastReferenceTimestamp = lastAcceptedTimestamp;
           } else {
             this._lastReferenceTimestamp = this._startTimestamp;
           }
-          
+
           if (lastInput.accepted) {
             this._setElapsedTimeInMs(this.elapsedTimeInMs - lastInput.durationInMs);
           }
-          
+
           this._setEnteredCharacters(this.enteredCharacters - 1);
         }
         this._setCurrentWpm(this._calculateCurrentWpm());
       }
-      
+
 
       //
       // Intervals
@@ -386,7 +386,7 @@
         // Dispatch uniformly editable characters among intervals.
         const charactersPerInterval = Math.max(Math.floor(this.totalEditableCharacters / this.numberOfIntervals), 1);
         // = change interval when `charactersPerInterval` has been entered in the current interval
-        
+
         let currentInterval = 0;
         let countEditableCharactersInCurrentInterval = 0;
         for (let editable of this._editables) {
@@ -411,12 +411,12 @@
         }
         return countEditables;
       }
-      
-      
+
+
       //
       // WPM
       //
-      
+
       // Current WPM value. Unlike wpm(), this method could be call anytime.
       _calculateCurrentWpm() {
         if (this.enteredCharacters < 10) {
@@ -434,9 +434,9 @@
         this._setSummary({
           // Export in progress stats
           'totalCharacters': this.totalCharacters,
-          'totalEditableCharacters': this.totalEditableCharacters, 
+          'totalEditableCharacters': this.totalEditableCharacters,
           'enteredCharacters': this.enteredCharacters,
-          
+
           // and calculate global stats
           'wpm': this._calculateEffectiveWpm(),
           'theoricalWpm': this._calculateTheoricalWpm(),
@@ -445,37 +445,37 @@
           'elapsedTimeInMs': this.elapsedTimeInMs,
         });
       }
-      
+
       /*
        * Zoom: Effective vs theorical WPM
        * --------------------------------
        *
        * Example: the user should type "abc". Consider this sequence of keypresses:
        *
-       * 'a' after 1s -> OK 
+       * 'a' after 1s -> OK
        * 'c' after 2s -> KO
        * 'b' after 3s -> OK (but 3s lost due to mistyping)
        * 'b' after 1s -> KO
        * 'a' after 3s -> KO
        * 'c' after 2s -> OK (but 5s lost due to mistyping)
-       * Total time: 12s 
+       * Total time: 12s
        *
        * The effective WPM reports the total time (12s).
-       * The theorical WPM reports the total time minus the lost time with 
+       * The theorical WPM reports the total time minus the lost time with
        * due to mistyping (12s - 3s - 5s = 4s)
-       * 
-       * The theorical WPM is the WPM as if the first bad character 
+       *
+       * The theorical WPM is the WPM as if the first bad character
        * was correct for each mispelling.
        */
-      
+
       _calculateEffectiveWpm() {
         // see https://en.wikipedia.org/wiki/Words_per_minute for official definition
         return TypioStats._wpm(this.totalEditableCharacters, this.elapsedTimeInMs);
       }
-      
+
       _calculateTheoricalWpm() {
         let durationInMs = 0;
-        
+
         let i = 0;
         const totalInputs = this._inputs.length;
         while (i < totalInputs) {
@@ -490,10 +490,10 @@
             i++;
           } else {
             durationInMs += input.durationInMs;
-          }          
+          }
           i++;
         }
-        
+
         return TypioStats._wpm(this.totalEditableCharacters, durationInMs);
       }
 
@@ -504,7 +504,7 @@
       _calculateElapsedTimeInS() {
         return Math.round(this.elapsedTimeInMs / 1000);
       }
-      
+
 
       //
       // Difficulties
@@ -560,7 +560,7 @@
           return subresult;
         }
       }
-      
+
       getResponseTimeKeys() {
         return this.mostDifficultKeys(0);
       }
@@ -620,7 +620,7 @@
         // Sort in reverse order by average time and return only the first N results.
         return new Array(...result.values()).sort((a, b) => b.averageInMs - a.averageInMs).slice(0, n);
       }
-      
+
       /**
        * Return the most difficult words from the most difficult to the easier.
        */
@@ -628,15 +628,15 @@
         if (!Array.isArray(wordDelimiters)) {
           wordDelimiters = [wordDelimiters];
         }
-        
+
         let words = [];
         let currentWord = undefined;
         let currentAnnotations = undefined;
         let currentDurationInMs = undefined;
-        
+
         let addWord = function(word, annotations, durationInMs) {
           if (currentWord.length >= minWordSize) {
-            
+
             let emptyAnnotations = true;
             for (let annotation of annotations) {
               if (annotation.length) {
@@ -644,7 +644,7 @@
                 break;
               }
             }
-            
+
             words.push({
                 word: word,
                 durationInMs: durationInMs,
@@ -653,7 +653,7 @@
             });
           }
         }
-        
+
         for (let i = 0; i < this._inputs.length; i++) {
           let input = this._inputs[i];
           if (!input.accepted) continue;
@@ -664,44 +664,44 @@
               break;
             }
           }
-          
+
           if (currentWord) { // word in progress
             if (isWordDelimiter) { // end of word
               addWord(currentWord, currentAnnotations, currentDurationInMs);
-              
+
               // reset for next word
               currentWord = undefined;
               currentAnnotations = undefined;
               currentDurationInMs = undefined;
-            } else { 
+            } else {
               currentWord += input.character;
               currentAnnotations.push(this.classes[input.index]);
               currentDurationInMs += input.durationInMs;
             }
           } else { // new word?
-            
-            if (isWordDelimiter || input.character.match('\\s')) continue; 
-            
+
+            if (isWordDelimiter || input.character.match('\\s')) continue;
+
             currentWord = input.character;
             currentAnnotations = [this.classes[input.index]];
             currentDurationInMs = input.durationInMs;
           }
         }
-        
+
         if (currentWord) { // do not forget last word
-          addWord(currentWord, currentAnnotations, currentDurationInMs);  
+          addWord(currentWord, currentAnnotations, currentDurationInMs);
         }
-        
+
         words.sort((a, b) => a.wpm - b.wpm);
-        
+
         return words.slice(0, n);
       }
-      
-      
+
+
       //
       // Charts
       //
-      
+
       /**
        * Return Google Chart compliant data for a stepped-area graph.
        *
@@ -709,7 +709,7 @@
        */
       chartSteppedAreaData() {
         let data = [];
-        
+
         let heading = [
             {"label": "Progress", "type": "string"},
             {"label": "WPM",      "type": "number"},
@@ -717,10 +717,10 @@
             {"type": "string",    "role": "style"}
             // see https://developers.google.com/chart/interactive/docs/roles?hl=en for the role property of columns
         ];
-        
+
         data.push(heading);
         data.push(...this.chartSteppedAreaRows());
-        
+
         return data;
       }
 
@@ -773,11 +773,11 @@
         if (!this._ended) {
           result[currentInterval][3] = "color: Gold";
         }
-        
+
         return result;
       }
 
-      
+
       /**
        * Return Google Chart compliant data for a stacked bar graph.
        *
@@ -786,7 +786,7 @@
       chartStackedBarData() {
         // Colors are based on Light Blue material colors
         // https://material.io/guidelines/style/color.html#color-color-palette
-        
+
         const colors = ['white', '#E1F5FE', '#B3E5FC', '#81D4FA', '#4FC3F7', '#29B6F6', '#03A9F4', '#039BE5', '#0288D1', '#0277BD', '#01579B'];
 
         let data = [];
@@ -800,16 +800,16 @@
          *   ['', 20, "#333", 20, "#555", 20, "#666", 20, "#222", 20, "#111", '']
          * ]
          */
-         
+
         // We need to calculate percentiles to determine the vertical labels
-         
+
         // See http://www.dummies.com/education/math/statistics/how-to-calculate-percentiles-in-statistics/ for percentile formula
         let allDurationsInMs = [];
         for (let input of this._inputs) {
           allDurationsInMs.push(input.durationInMs);
-        } 
+        }
         allDurationsInMs.sort((a, b) => a - b);
-        
+
         const p10 = allDurationsInMs[Math.round(10 * allDurationsInMs.length / 100)];
         const p20 = allDurationsInMs[Math.round(20 * allDurationsInMs.length / 100)];
         const p30 = allDurationsInMs[Math.round(30 * allDurationsInMs.length / 100)];
@@ -819,21 +819,21 @@
         const p70 = allDurationsInMs[Math.round(70 * allDurationsInMs.length / 100)];
         const p80 = allDurationsInMs[Math.round(80 * allDurationsInMs.length / 100)];
         const p90 = allDurationsInMs[Math.round(90 * allDurationsInMs.length / 100)];
-        
+
         // Heading
         let heading = [
-          'Interval', 
-          '0-10%',   { role: 'style' }, 
-          '10-20%',  { role: 'style' }, 
-          '20-30%',  { role: 'style' }, 
-          '30-40%',  { role: 'style' }, 
-          '40-50%',  { role: 'style' }, 
-          '50-60%',  { role: 'style' }, 
-          '60-70%',  { role: 'style' }, 
-          '70-80%',  { role: 'style' }, 
-          '80-90%',  { role: 'style' }, 
-          '90-100%', { role: 'style' }, 
-          { role: 'annotation' } 
+          'Interval',
+          '0-10%',   { role: 'style' },
+          '10-20%',  { role: 'style' },
+          '20-30%',  { role: 'style' },
+          '30-40%',  { role: 'style' },
+          '40-50%',  { role: 'style' },
+          '50-60%',  { role: 'style' },
+          '60-70%',  { role: 'style' },
+          '70-80%',  { role: 'style' },
+          '80-90%',  { role: 'style' },
+          '90-100%', { role: 'style' },
+          { role: 'annotation' }
         ];
         data.push(heading);
 
@@ -846,7 +846,7 @@
           for (let input of this._inputs) {
             if (!input.accepted) continue; // only valid character are pertinent
             if (this.intervals[input.index] !== r) continue; // restrict to current interval
-            
+
             if (input.durationInMs < p10) counts[0] += 1;
             else if (input.durationInMs < p20) counts[1] += 1;
             else if (input.durationInMs < p30) counts[2] += 1;
@@ -856,24 +856,24 @@
             else if (input.durationInMs < p70) counts[6] += 1;
             else if (input.durationInMs < p80) counts[7] += 1;
             else if (input.durationInMs < p90) counts[8] += 1;
-            else counts[9] += 1;         
-            
-            totalCharacterInInterval++;   
-          } 
+            else counts[9] += 1;
+
+            totalCharacterInInterval++;
+          }
 
           for (let c = 0; c < 10; c++) {
             // How many character in this interval for this repartition?
             row.push(10); // All cells have the same height. The color is used to represent the repartition.
             row.push(colors[Math.max(Math.floor(counts[c] * 100 / totalCharacterInInterval / 10, 9))]); // Generate a number between 0 and 9 and seeks after the corresponding color
-          } 
+          }
           row.push('');
-          
+
           data.push(row);
         }
-        
+
         return data;
       }
-      
+
       /**
        * Google Chart scatter chart compliant data.
        *
@@ -881,22 +881,22 @@
        */
       chartScatterData() {
         let data = [['Time', 'Duration', { role: 'tooltip'}, { role: 'annotation'}]];
-        
+
         // Ratio between two successive WPM values to be considered as peak or valley
         const peakRatio = 1.5;
         // Minimum number of points without annotations
         const minPointsBetweenTwoAnnotations = 4;
-        
+
         let totalDurationInMs = 0;
         let lastDurationInMs = undefined;
         let lastAnnotationIndex = 0;
-        
+
         for (let i = 0; i < this._inputs.length; i++) {
           let input = this._inputs[i];
           if (!input.accepted) continue;
           totalDurationInMs += input.durationInMs;
           let annotation = null;
-          
+
           if (i > lastAnnotationIndex + minPointsBetweenTwoAnnotations) {
             // Try to detect peak and valley
             let min = Math.min(lastDurationInMs, input.durationInMs);
@@ -906,23 +906,23 @@
               lastAnnotationIndex = i;
             }
           }
-          
+
           lastDurationInMs = input.durationInMs;
-          
+
           data.push([totalDurationInMs, input.durationInMs, input.character, annotation]);
         }
-        
+
         return data;
       }
-      
+
       chartLineData() {
-        let data = [['Time', 'WPM', {role: 'tooltip'}, {role: 'annotation'}]]; 
-        
+        let data = [['Time', 'WPM', {role: 'tooltip'}, {role: 'annotation'}]];
+
         // Ratio between two successive WPM values to be considered as peak or valley
         const peakRatio = 1.5;
         // Minimum number of points without annotations
         const minPointsBetweenTwoAnnotations = 4;
-        
+
         let totalDurationInMs = 0;
         let lastWpms = [];
         let lastInstantWpm = undefined;
@@ -930,17 +930,17 @@
 
         for (let i = 0; i < this._inputs.length; i++) {
           let input = this._inputs[i];
-          
+
           if (!input.accepted) continue;
           totalDurationInMs += input.durationInMs;
-          
+
           lastWpms.push(input.durationInMs);
-          
+
           if (lastWpms.length < 5) continue; // Need at least 5 charactersr to calculate the WPM
-          
+
           let instantWpm = TypioStats._wpm(5, lastWpms[0] + lastWpms[1] + lastWpms[2] + lastWpms[3] + lastWpms[4]);
           let annotation = null;
-          
+
           if (i > lastAnnotationIndex + minPointsBetweenTwoAnnotations) {
             // Try to detect peak and valley
             let min = Math.min(lastInstantWpm, instantWpm);
@@ -950,13 +950,13 @@
               lastAnnotationIndex = i;
             }
           }
-          
+
           data.push([totalDurationInMs, instantWpm, input.character, annotation]);
-          
+
           lastInstantWpm = instantWpm;
           lastWpms.pop();
         }
-        
+
         return data;
       }
 
@@ -964,7 +964,7 @@
       //
       // Utils
       //
-      
+
       static _wpm(countCharacters, durationInMs) {
         const wpm = Math.round(countCharacters / (durationInMs / 1000) * 60.0 / 5);
         if (isFinite(wpm)) {
@@ -973,7 +973,7 @@
           return 0;
         }
       }
-      
+
       static _formatCharacter(c) {
         if (c === ' ') return '&empty;';
         if (c === '\n') return '&#9166;';
@@ -983,7 +983,7 @@
       static durationInS(start, end) {
         return Math.round((end - start) / 1000);
       }
-      
+
       static durationInMs(start, end) {
         return end - start;
       }

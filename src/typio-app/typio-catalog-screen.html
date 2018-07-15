@@ -46,7 +46,7 @@
         margin-left: 25px;
         margin-right: 25px;
       }
-      
+
       paper-card {
         --paper-card-background-color: rgba(0, 0, 0, 0.5);
 
@@ -74,7 +74,7 @@
           min-height: 220px;
         }
       }
-      
+
     </style>
 
     <app-route
@@ -88,23 +88,23 @@
 
     <section id="catalog" class="theme-transparent">
       <h3>Practice</h3>
-      
+
       <div class="content">
-        
-        <iron-pages selected="{{routeData.view}}" attr-for-selected="name" fallback-selection="menu">      
+
+        <iron-pages selected="{{routeData.view}}" attr-for-selected="name" fallback-selection="menu">
           <div name="menu">
-            
+
             <div class="fabs">
               <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
             </div>
-            
+
             <paper-card heading="Literature" alt="Gutenberg">
               <div class="card-content">
                 For everyone who want to practice while rediscovering the classics of literature.
                 <a tabindex="1" href="/catalog/literature"><paper-fab icon="folder-open" title="Discover" class="theme-light relative" mini></paper-fab></a>
-              </div>              
+              </div>
             </paper-card>
-            
+
             <!-- https://cdn-images-1.medium.com/max/800/1*70aOJ1osE9C8cVZUkmH95g.png -->
             <paper-card heading="Code" alt="GitHub">
               <div class="card-content">
@@ -112,14 +112,14 @@
                 <a tabindex="1" href="/catalog/code"><paper-fab icon="folder-open" title="Discover" class="theme-light relative" mini></paper-fab></a>
               </div>
             </paper-card>
-            
+
             <paper-card heading="Quotes" alt="uebersetzung">
               <div class="card-content">
                 For everyone who want to combine touch typing with inspiration.
                 <a tabindex="1" href="/catalog/quote"><paper-fab icon="folder-open" title="Discover" class="theme-light relative" mini></paper-fab></a>
               </div>
             </paper-card>
-            
+
             <paper-card heading="Tongue twisters" alt="Goodreads">
               <div class="card-content">
                 For everyone who want to enter funny sentences while practicing.
@@ -134,21 +134,21 @@
                 <a tabindex="1" href="/drillCreator"><paper-fab icon="create" title="Create" class="theme-light relative" mini></paper-fab></a>
               </div>
             </paper-card>
-  
+
           </div>
-          
+
           <!-- List of available catalogs -->
           <typio-catalog-literature id="catalogLiterature" name="literature" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-literature>
           <typio-catalog-code id="catalogCode" name="code" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-code>
           <typio-catalog-quote id="catalogQuote" name="quote" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-quote>
           <typio-catalog-tongue-twister id="catalogTongueTwister" name="tongue-twister" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-tongue-twister>
           <typio-catalog-drills id="catalogDrills" name="drills" catalog="[[catalog]]" route="{{subroute}}"></typio-catalog-drills>
-          <!-- Add new catalog here... --> 
-          
+          <!-- Add new catalog here... -->
+
         </iron-pages>
-        
+
       </div>
-      
+
     </section>
 
   </template>
@@ -170,7 +170,7 @@
       static get is() { return 'typio-catalog-screen'; }
       static get properties() {
         return {
-          
+
           //
           // Routing management
           //
@@ -182,8 +182,8 @@
           routeData: {
             type: Object
           },
-          
-          // 
+
+          //
           // Data management
           //
 
@@ -196,20 +196,20 @@
 
         };
       }
-        
+
       /**
        * Traverse the catalog matching already selected criteria to find a resource
        * (a file, a chapter, ...).
        */
       surpriseMe() {
         // Determine the type
-        
-        const types = ['code', 'literature', 'quote']; 
+
+        const types = ['code', 'literature', 'quote'];
         let selectedType = this.routeData.view;
         if (!types.includes(selectedType)) { // Menu or unsupported type
           selectedType = types[getRandomInt(types.length)];
         }
-        
+
         if (selectedType === 'code') {
           this.$.catalogCode.surpriseMe();
         } else if (selectedType === 'literature') {
@@ -219,9 +219,9 @@
         }
         // Add new type here
       }
-      
+
     }
-    
+
     function getRandomInt(max) {
       return Math.floor(Math.random() * Math.floor(max));
     }

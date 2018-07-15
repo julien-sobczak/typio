@@ -24,7 +24,7 @@
           //
           // Inputs
           //
-          
+
           // Mandatory properties
 
           /**
@@ -58,7 +58,7 @@
             type: String,
             value: 'import sys\n\ndef main():\n  print("Hello World")\n  sys.exit(0)\n'
           },
-          
+
           // Optional properties
 
           /**
@@ -96,17 +96,17 @@
             type: Array,
             value: []
           },
-          
+
           /**
-           * The content to display 
-           * (could be different from `content` for example 
+           * The content to display
+           * (could be different from `content` for example
            * when there are long lines that does not fit on screen).
            */
           targetContent: {
             type: String
           },
-          
-          
+
+
           //
           // Developer flags
           //
@@ -115,7 +115,7 @@
             type: Boolean,
             value: false
           },
-          
+
           profile: {
             type: Boolean,
             value: false
@@ -126,12 +126,12 @@
 
       parse() {
         const startTime = performance.now();
-        
+
         this._preprocess();
         if (this.profile) {
           console.log('[typio-viewer] preprocessing done in ' + (performance.now() - startTime) + 'ms');
-        }      
-        
+        }
+
         let length = this.targetContent.length;
         let classes = this._emptyClasses();
 
@@ -139,7 +139,7 @@
         if (this.profile) {
           console.log('[typio-viewer] spacing analysis done after ' + (performance.now() - startTime) + 'ms');
         }
-        
+
         if (this.type === 'code') {
           this._determineTokens(classes);
           this._determineAdvancedTokens(classes);
@@ -147,18 +147,18 @@
             console.log('[typio-viewer] tokenization done after ' + (performance.now() - startTime) + 'ms');
           }
         }
-        
+
         this._determineIgnorables(classes);
         if (this.profile) {
           console.log('[typio-viewer] ignorable analysis done after ' + (performance.now() - startTime) + 'ms');
         }
-        
+
         // Set output properties
         this.classes = classes;
-        
+
         if (this.profile) {
           console.log('[typio-viewer] preprocessing done in ' + (performance.now() - startTime) + 'ms');
-        } 
+        }
       }
 
       _emptyClasses() {
@@ -301,7 +301,7 @@
 
       _determineIgnorables(classes) {
         const len = this.targetContent.length;
-        
+
         // First, ignore comments
         if (this.ignoreComments) {
           for (let i = 0; i < len; i++) {
@@ -336,7 +336,7 @@
             }
           }
         }
-        
+
         // Second, ignore indent
         if (this.ignoreIndents) {
           for (let i = 0; i < len; i++) {
@@ -418,14 +418,14 @@
             }
           }
         }
-        
+
         // Otherwise, mark as editable
         for (let i = 0; i < len; i++) {
           if (!classes[i].includes('ignorable')) {
             classes[i].push('editable');
           }
         }
-        
+
         // Be sure each editable line end with an editable new line
         let countEditableCurrentLine = 0;
         for (let i = 0; i < len; i++) {
@@ -439,7 +439,7 @@
             countEditableCurrentLine++;
           }
         }
-        
+
       }
 
 
@@ -478,7 +478,7 @@
           }
         }
         txt = newLines.join('\n');
-        
+
         this.targetContent = txt;
         this.logicalLines = logicalLines;
       }

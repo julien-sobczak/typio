@@ -86,7 +86,7 @@
       /*
        * Form
        */
-       
+
       paper-checkbox {
         display: block;
         align-self: center;
@@ -110,7 +110,7 @@
         background-color: rgba(0,0,0,0.5);
         font-weight: bold;
       }
-      
+
       paper-checkbox .subtitle {
         display: block;
         font-size: 0.8em;
@@ -122,14 +122,14 @@
 
     <iron-ajax auto url="{{_urlContent}}" handle-as="json" on-response="_onLoadTongueTwisters"></iron-ajax>
     <iron-ajax auto url="{{_urlContentSurprise}}" handle-as="json" on-response="_onTongueTwistersSurpriseLoaded"></iron-ajax>
-    
+
     <div class$="type step[[step]] theme-transparent">
-      
+
       <div class="fabs">
         <paper-fab icon="av:shuffle" title="Surprise Me" on-click="surpriseMe"></paper-fab>
         <paper-fab icon="av:play-arrow" title="Validate" disabled="{{_selectionEmpty}}" on-click="validate"></paper-fab>
       </div>
-      
+
       <div class="selection">
         <div class="entry">
           <a href="/catalog/menu">
@@ -159,11 +159,11 @@
             <span class="subtitle">
               {{tongueTwister.source}}
             </span>
-          </paper-checkbox>        
+          </paper-checkbox>
         </template>
       </div>
 
-      <div class="step step3">        
+      <div class="step step3">
       </div>
 
     </div>
@@ -189,7 +189,7 @@
       static get is() { return 'typio-catalog-tongue-twister'; }
       static get properties() {
         return {
-          
+
           /**
            * JSON representing the file `catalog.json`.
            */
@@ -206,22 +206,22 @@
             type: Number,
             value: 1
           },
-          
+
           /**
            * Sorted list of languages present in `catalog.json`.
            */
           spokenLanguages: {
             type: Array,
             value: []
-          },  
-          
+          },
+
           /**
            * The selected language among the 'spokenLanguages' list
            */
           selectedSpokenLanguage: {
             type: String
           },
-          
+
           /**
            * Sorted list of tongueTwisters present in `content/tongue-twisters/<en>.json`.
            */
@@ -229,7 +229,7 @@
             type: Array,
             value: []
           },
-          
+
           /**
            * Print the loader if true.
            */
@@ -237,7 +237,7 @@
             type: Boolean,
             value: false
           },
-          
+
           /**
            * Selection of tongue twisters.
            */
@@ -245,7 +245,7 @@
             type: Array,
             value: [],
           },
-          
+
           /**
            * False as soon as one tongue twister is selected in `selection`.
            */
@@ -253,7 +253,7 @@
             type: Boolean,
             value: true
           },
-          
+
           /**
            * URL to download the tongue twister for a given language.
            */
@@ -261,11 +261,11 @@
             type: String,
             value: null
           },
-          
+
         };
       }
-      
-      
+
+
       _onLoadCatalog() {
         if (!this.catalog) return;
 
@@ -297,7 +297,7 @@
         });
         this.spokenLanguages = newSpokenLanguages.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
       }
-      
+
       /**
        * Called when the user select a spoken language.
        */
@@ -308,7 +308,7 @@
         this.isLoading = true;
         this.step = 4;
       }
-      
+
       _getLanguageUrl(spokenLanguage) {
         // Traverse the retrieve the language.
         for (let i = 0; i < this.catalog.length; i++) {
@@ -318,11 +318,11 @@
           if (entry.type === 'tongue-twister' && entry.language === spokenLanguage) {
             return entry.url;
           }
-        }     
-           
-        return undefined;   
+        }
+
+        return undefined;
       }
-      
+
       /**
        * Called when the `/content/tongue-twisters/en.json` has finished loaded.
        */
@@ -355,7 +355,7 @@
         }
         this._selectionEmpty = this.selection.length == 0;
       }
-      
+
       validate() {
         this.step = 2;
 
@@ -367,7 +367,7 @@
         };
         this.dispatchEvent(new CustomEvent('entry-selected', {detail: detail, bubbles: true, composed: true}));
       }
-      
+
       _selectionToContent() {
         let content = "";
         this.selection.forEach(tongueTwister => {
@@ -407,19 +407,19 @@
         if (!this.selectedSpokenLanguage) {
           this.selectedSpokenLanguage = this.spokenLanguages[getRandomInt(this.spokenLanguages.length)].name;
         }
-        
+
         this._urlContentSurprise = null; // force refresh
         this._urlContentSurprise = this._getLanguageUrl(this.selectedSpokenLanguage);
         this.isLoading = true;
         this.step = 2;
       }
-      
+
       _onTongueTwistersSurpriseLoaded(e, data) {
         this.isLoading = false;
         this.tongueTwisters = data.response;
-        
+
         this.selection.push(this.tongueTwisters[getRandomInt(this.tongueTwisters.length)]);
-        this.validate();      
+        this.validate();
       }
 
     }

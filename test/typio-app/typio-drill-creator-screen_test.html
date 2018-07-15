@@ -24,93 +24,93 @@
       function countChar(str, c) {
           return (str.match(new RegExp(c, 'g'))||[]).length
       }
-    
+
       suite('typio-drill-creator-screen', function() {
 
         //
-        // Static drill 
+        // Static drill
         //
-        
+
         test('[static drill] basic usage', function() {
           const content = TypioDrillCreatorScreen.generateStaticDrill({text: "azerty"});
-          
+
           // Should return the same value
           expect(content).to.eql("azerty");
         });
-        
+
         test('[static drill] limit the number of selected textes', function() {
           const content = TypioDrillCreatorScreen.generateStaticDrill({
-            "text": ["azerty", "qwerty", "colemak", "dvorak"], 
-            "random": false, 
+            "text": ["azerty", "qwerty", "colemak", "dvorak"],
+            "random": false,
             "limit": 2
           });
-          
+
           // Should return the same value
           expect(content).to.equal("azerty\nqwerty");
         });
-        
+
         test('[static drill] limit to 5 results by default', function() {
           const content = TypioDrillCreatorScreen.generateStaticDrill({
             "text": ["azerty", "qwerty", "colemak", "dvorak", "international qwerty", "bepo"]
           });
-          
+
           // Should return the same value
           expect(content.split('\n').length).to.equal(5);
         });
-        
-        // 
+
+        //
         // Basic drill
         //
-        
+
         test('[basic drill] basic usage', function() {
           const len = 10;
           const content = TypioDrillCreatorScreen.generateBasicDrill({
-            keys: ['a', 'b'], 
+            keys: ['a', 'b'],
             // weigths are optional
             length: len,
           });
-          
-          // Should contains only the given characters 
+
+          // Should contains only the given characters
           expect(countChar(content, 'a') + countChar(content, 'b')).to.eql(len);
         });
-        
+
         test('[basic drill] with weights', function() {
           const len = 10;
           const content = TypioDrillCreatorScreen.generateBasicDrill({
-            keys: ['a', 'b'], 
-            weights: [1, 2], 
+            keys: ['a', 'b'],
+            weights: [1, 2],
             length: len,
           });
-          
-          // Should contains only the given characters 
+
+          // Should contains only the given characters
           expect(countChar(content, 'a') + countChar(content, 'b')).to.eql(len);
         });
-        
+
         test('[basic drill] weights influence the repartition', function() {
           const len = 10;
           const content = TypioDrillCreatorScreen.generateBasicDrill({
-            keys: ['a', 'b'], 
-            weights: [1, 100], 
+            keys: ['a', 'b'],
+            weights: [1, 100],
             length: len
           });
-          
-          // Should contains only the given characters 
+
+          // Should contains only the given characters
           expect(countChar(content, 'a') < countChar(content, 'b')).to.eql(true, "Due to weights, it should have be a lot more 'b' than 'a'");
         });
-        
+
         //
         // Program drill
         //
-        
+
         test('[program drill] evaluate and capture the output', function() {
           const program = 'window.alert("Hello World");'
           const content = TypioDrillCreatorScreen.generateProgramDrill({
             javascriptCode: program
           });
-          
+
           expect(content).to.eql("Hello World");
         });
-        
+
         test('[program drill] amouts example', function() {
           const program = `
           var number;
@@ -144,36 +144,36 @@
           }
           window.alert('.');
           window.alert(mathRandomInt(10, 99));`;
-          
+
           const content = TypioDrillCreatorScreen.generateProgramDrill({
             javascriptCode: program
           });
-          
+
           console.log(content);
           expect(/\$\d+(,\d{3}){3,10}[.][1-9][0-9]/.test(content)).to.be.true;
         });
-        
+
         //
         // Regex drill
         //
-        
+
         test('[regex drill] hello world', function() {
           const content = TypioDrillCreatorScreen.generateRegexDrill({
             regexes: {
               'DRILL': /hello world/
             }
           });
-          
+
           expect(content).to.eql("hello world");
         });
-        
+
         test('[regex drill] strings are supported', function() {
           const content = TypioDrillCreatorScreen.generateRegexDrill({
             regexes: {
               'DRILL': "hello world"
             }
           });
-          
+
           expect(content).to.eql("hello world");
         });
 
@@ -190,11 +190,11 @@
               "DRILL":                   "JSON_OBJECT"
             }
           });
-          
-          console.log(content); 
+
+          console.log(content);
           expect(() => JSON.parse(content)).not.to.throw()
         });
-        
+
         test('[regex drill] nested function calls', function() {
           const content = TypioDrillCreatorScreen.generateRegexDrill({
             regexes: {
@@ -203,11 +203,11 @@
               "DRILL":           "FUNCTION_CALL"
             }
           });
-          
-          console.log(content); 
+
+          console.log(content);
           expect(content[content.length - 1]).is.equal(')');
         });
-        
+
         test('[regex drill] html tags', function() {
           const content = TypioDrillCreatorScreen.generateRegexDrill({
             regexes: {
@@ -218,8 +218,8 @@
               "DRILL":        "(PARENT){5,10}"
             }
           });
-          
-          console.log(content); 
+
+          console.log(content);
           expect(content[0]).is.equal('<');
           expect(content[content.length - 1]).is.equal('>');
         });

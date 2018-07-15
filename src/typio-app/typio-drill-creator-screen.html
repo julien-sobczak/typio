@@ -22,34 +22,34 @@
       :host {
         background-color: #666;
       }
-      
+
       section {
         padding: 50px;
         width: 100%;
         height: 100%
         overflow-y: scroll;
       }
-      
+
       #form {
         max-width: 1000px;
         margin: 25px auto;
       }
-      
+
       paper-input {
         --primary-text-color: var(--typio-bg-color);
         --secondary-text-color: white;
         --paper-input-container-color: white;
         --paper-input-container-focus-color: var(--typio-bg-color);
         --paper-font-subhead_-_font-size: 140%;
-        
+
         width: 600px;
         margin: 0 auto;
       }
-      
+
       paper-radio-group {
         margin: 50px auto;
       }
-      
+
       paper-radio-button {
         --paper-radio-button-unchecked-color:	rgba(0,0,0,0.5);
         --paper-radio-button-unchecked-ink-color: rgba(0,0,0,0.5);
@@ -77,7 +77,7 @@
         font-size: 0.8em;
         margin-top: 2px;
       }
-      
+
       /* Hide all types by default. We will revealed when user select one type. */
       typio-drill-static-input,
       typio-drill-basic-input,
@@ -89,23 +89,23 @@
       #creator.type-basic   typio-drill-basic-input   { display: block; }
       #creator.type-program typio-drill-program-input { display: block; }
       #creator.type-regex   typio-drill-regex-input   { display: block; }
-      
+
     </style>
-    
+
     <section id="creator" class$="type-{{drill.type}}">
-      
+
       <div class="fabs">
-        <!-- TODO enable when  authenticated 
+        <!-- TODO enable when  authenticated
         <paper-fab icon="create" title="Create" on-click="create"></paper-fab>
         -->
         <paper-fab icon="av:play-arrow" title="Try" on-click="tryIt"></paper-fab>
       </div>
 
       <div id="form">
-        <!-- Common properties --> 
+        <!-- Common properties -->
         <paper-input id="name" label="Name" value="[[drill.name]]"></paper-input>
         <paper-input id="description" label="Description" value="[[drill.description]]"></paper-input>
-        
+
         <paper-radio-group selected="{{drill.type}}">
           <paper-radio-button name="static">
             Static
@@ -124,21 +124,21 @@
             <span class="subtitle">For the craziest ones</span>
           </paper-radio-button>
         </paper-radio-group>
-      
+
         <!-- Specific configuration -->
         <typio-drill-static-input id="inputStatic" name="static"></typio-drill-static-input>
         <typio-drill-basic-input id="inputBasic" name="basic"></typio-drill-basic-input>
         <typio-drill-program-input id="inputProgram" name="program"></typio-drill-program-input>
         <typio-drill-regex-input id="inputRegex" name="regex"></typio-drill-regex-input>
-        
+
       </div>
-      
+
     </section>
 
   </template>
 
   <script>
-  
+
 
     /**
      * @customElement
@@ -149,15 +149,15 @@
       static get is() { return 'typio-drill-creator-screen'; }
       static get properties() {
         return {
-            
-          /** 
+
+          /**
            * Which type of drill to use.
            */
           type: {
             type: String,
             value: 'static'
           },
-          
+
           /**
            * Drill to create or edit.
            */
@@ -167,32 +167,32 @@
               type: 'static'
             }
           }
-          
+
         };
       }
-      
+
       //
       // Events
       //
-      
+
       tryIt() {
         let inputPromise = undefined;
-        
+
         switch (this.drill.type) {
-          case 'static': 
+          case 'static':
             inputPromise = this.$.inputStatic.getInput();
             break;
-          case 'basic': 
+          case 'basic':
             inputPromise = this.$.inputBasic.getInput();
             break;
-          case 'program': 
+          case 'program':
             inputPromise = this.$.inputProgram.getInput();
             break;
-          case 'regex': 
+          case 'regex':
             inputPromise = this.$.inputRegex.getInput();
-            break;                          
+            break;
         }
-        
+
         inputPromise.then(input => {
           this.drill = Object.assign(this.drill, input);
           const detail = {
@@ -201,14 +201,14 @@
           };
           this.dispatchEvent(new CustomEvent('drill-session-requested', {detail: detail, bubbles: true, composed: true}));
         });
-        
+
       }
-      
+
       //
       // Utils
       //
-      
-      
+
+
       static generateDrill(drill) {
         switch (drill.type) {
           case 'static':
@@ -229,16 +229,16 @@
         if (!Array.isArray(text)) {
           text = [text];
         }
-        
+
         if (random) {
           // Shuffle the entries
           text = text.map((a) => [Math.random(), a]).sort((a, b) => a[0] - b[0]).map((a) => a[1]);
         }
-        
+
         if (text.length > limit) {
           text = text.slice(0, limit);
         }
-        
+
         if (text.length == 1) {
           return text[0];
         } else {
@@ -254,24 +254,24 @@
         //
         // We build an array contains all keys. Each key is duplicated to reflect
         // its weight:
-        // 
+        //
         //   generateStaticDrill(['a', 'b'], [2. 1]);
         //   # letters = ['a', 'a', 'b']
         //
         // Then, we generate n random numbers (between 0 and the length of `letters`).
         // For each generated number, we append the letter at this index.
-        
+
         if (!weights.length) {
           weights = Array(keys.length).fill(1);
         }
-        
+
         let letters = []
         for (let i = 0; i < keys.length; i++) {
           for (let j = 0; j < weights[i]; j++) {
               letters.push(keys[i]);
           }
         }
-        
+
         let getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
         let content = "";
         for (let i = 0; i < length; i++) {
@@ -279,49 +279,49 @@
         }
         return content;
       }
-      
+
       /**
        * Generates a content following the program drill definition.
        */
       static generateProgramDrill({ javascriptCode = ""}) {
         return TypioDrillProgramInput.evaluate(javascriptCode);
       }
-      
+
       /**
        * Generates a content following the regex drill definition.
        */
       static generateRegexDrill({regexes = {}}) {
-        
+
         // Interpret + as {1,5} and * as {0,5}
         const maxForRepetitionals = 5;
-        
+
         let iterations = 0; // safeguard condition
-        
+
         // From lodash
         function isString(val) {
           return typeof val === 'string' || ((!!val && typeof val === 'object') && Object.prototype.toString.call(val) === '[object String]');
         }
-        
+
         // Convert all regexes to string
         let stringRegexes = new Map();
         for (let regexName of Object.keys(regexes)) {
           let regexValue = regexes[regexName];
           stringRegexes.set(regexName, isString(regexValue) ? regexValue : regexValue.source);
         }
-        
+
         function generateFromRegex(regex) {
           if (iterations++ > 10000) throw "Too many recursion";
-          
+
            let randexp = new RandExp(new RegExp(regex));
           randexp.max = maxForRepetitionals;
           let generation = randexp.gen();
-          
+
           // generation contains inner REGEX to replace?
-          let replacementDuringIteration = true;          
+          let replacementDuringIteration = true;
           while (replacementDuringIteration) {
             replacementDuringIteration = false;
-            
-            for (let regexName of stringRegexes.keys()) {  
+
+            for (let regexName of stringRegexes.keys()) {
               if (generation.includes(regexName)) {
                 let replacement = generateFromRegex(stringRegexes.get(regexName));
                 generation = generation.replace(regexName, replacement);
@@ -329,13 +329,13 @@
               }
             }
           }
-          
+
           return generation;
-        }       
-        
+        }
+
         return generateFromRegex(stringRegexes.get('DRILL'));
       }
-      
+
       create() {
         // TODO
       }

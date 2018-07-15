@@ -16,14 +16,14 @@
       :host {
         display: block;
       }
-      
+
       #screen.ended-true typio-editor {
         display: none;
       }
       #screen.ended-false #results {
         display: none;
       }
-      
+
       typio-editor {
         display: block;
         width: 1000px;
@@ -47,7 +47,7 @@
       .ended-false #fabRestart {
         display: none;
       }
-      
+
       #results {
         position: fixed;
         width: 300px;
@@ -60,22 +60,22 @@
       #results .wpm {
         font-weight: bold;
       }
-      
+
     </style>
-    
+
     <div id="screen" class$="started-{{started}} ended-{{ended}} theme-transparent">
-      
+
       <div class="fabs">
         <paper-fab id="fabStart" class="theme-light" title="Start" icon="chevron-right" on-click="start"></paper-fab>
         <paper-fab id="fabRestart" class="theme-light" title="Restart" icon="autorenew" on-click="restart"></paper-fab>
         <paper-fab id="fabRenew" class="theme-light" title="Renew" icon="av:shuffle" on-click="renew"></paper-fab>
         <paper-fab id="fabClose" class="theme-light" icon="close" title="Close" on-click="close"></paper-fab>
       </div>
-      
+
       <typio-stats id="stats"></typio-stats>
 
-      <typio-editor id="editor" 
-          type="drill" 
+      <typio-editor id="editor"
+          type="drill"
           mode="scroll"
           content$="[[content]]"
           on-character-entered="_characterEntered"
@@ -83,10 +83,10 @@
           font-size="large"
           preserve-spacing$="[[preserveSpacing]]">
       </typio-editor>
-    
+
       <div id="results"><span class="wpm">[[wpm]] WPM</span></div>
-    </div>  
-    
+    </div>
+
   </template>
 
   <script>
@@ -117,19 +117,19 @@
             },
             observer: '_drillChanged'
           },
-          
+
           content: {
             type: String
           },
-          
-          /** 
+
+          /**
            * See `typio-viewer` property.
            */
           preserveSpacing: {
             type: Boolean,
             value: true, /* Be conservative */
           },
-          
+
           /**
            * Route where to redirect after the session has ended.
            */
@@ -159,9 +159,9 @@
       }
 
       ready() {
-        super.ready();         
+        super.ready();
       }
-      
+
       _drillChanged() {
         if (!this.drill) return;
         if (this.drill.preserveSpacing === false) {
@@ -172,7 +172,7 @@
         this.content = TypioDrillCreatorScreen.generateDrill(this.drill);
         this.$.editor.refresh();
       }
-      
+
       /** Reinit the component. */
       reset() {
         this.started = false;
@@ -180,7 +180,7 @@
         this.ended = false;
         this.preserveSpacing = true;
       }
-      
+
       /** Launch the drill session. */
       start() {
         this.started = true;
@@ -189,40 +189,40 @@
         this.$.stats.init(this.content);
         this.$.stats.startTimer();
       }
-      
+
       /** Restart the drill using the same content. */
       restart() {
         this.ended = false;
         this.start();
       }
-      
+
       /** Restart the drill using a newly generated content. */
       renew() {
         this.content = TypioDrillCreatorScreen.generateDrill(this.drill);
         this.restart();
       }
-      
+
       /** Go back to previous screen. */
       close() {
         window.history.pushState({}, null, this.redirectUri);
         window.dispatchEvent(new CustomEvent('location-changed'));
       }
-      
+
       _characterEntered(e, detail) {
         this.$.stats.newCharacter(detail.index, detail.character, detail.valid, detail.accepted);
       }
-      
+
       _typingEnded(e, detail) {
         this.$.stats.stopTimer();
         this.ended = true;
         this.wpm = this.$.stats.summary.wpm;
       }
-      
-    
-      // 
+
+
+      //
       // Shortcuts
-      // 
-      
+      //
+
       actionStart() {
         this.start();
       }

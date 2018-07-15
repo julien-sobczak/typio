@@ -19,11 +19,11 @@
         <typio-catalog-code></typio-catalog-code>
       </template>
     </test-fixture>
-    
+
     <script>
-    
+
     suite('typio-catalog-code', function() {
-  
+
         test('[_uncompressMetadata] flat format', function() {
           const metadata = {
             "format": "flat",
@@ -48,11 +48,11 @@
               }
             ]
           };
-          
+
           // Nothing to do in flat format
-          expect(TypioCatalogCode._uncompressMetadata(metadata)).to.deep.equal(metadata);           
+          expect(TypioCatalogCode._uncompressMetadata(metadata)).to.deep.equal(metadata);
         });
-        
+
         test('[_uncompressMetadata] compressed format', function() {
           const actual = {
             "format": "compressed",
@@ -104,13 +104,13 @@
               }
             ]
           };
-          
+
           // Should be the same as flat format
-          expect(TypioCatalogCode._uncompressMetadata(actual)).to.deep.equal(expected);           
+          expect(TypioCatalogCode._uncompressMetadata(actual)).to.deep.equal(expected);
         });
-        
+
       });
-      
+
     </script>
 
   </body>

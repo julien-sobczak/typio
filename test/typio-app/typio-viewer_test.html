@@ -12,7 +12,7 @@
     <script src="../../bower_components/iron-test-helpers/mock-interactions.js"></script>
 
     <link rel="import" href="../../src/typio-app/typio-viewer.html">
-    
+
     <style>
       typio-viewer.one-line {
         font-size: 12px;
@@ -51,34 +51,34 @@
         <typio-viewer id="viewer" type="literature" mode="scroll" debug></typio-viewer>
       </template>
     </test-fixture>
-    
+
     <script>
-    
+
     class ContentBuilder {
-      
+
       constructor(content) {
         this.content = content;
         this.classes = new Array(content.length);
       }
-      
+
       annotate(index, ...classes) {
         this.classes[index] = classes;
         return this;
       }
-      
+
       build() {
         return [this.content, this.classes];
       }
     }
-    
+
     suite('typio-viewer', function() {
-      
+
         let viewer = undefined;
-        
+
         //
         // Scroll mode
         //
-  
+
         test('[scroll] single line', function() {
           viewer = fixture('ScrollCodeFixture');
           [viewer.content, viewer.classes] = new ContentBuilder("  print('Hello World')").
@@ -88,13 +88,13 @@
 
           expect(viewer.numberLines).to.equal(1);
           expect(viewer.annotationsAt(1)).to.not.include('ignorable');
-          expect(viewer.numberLinesOnScreen()).to.equal(3); 
+          expect(viewer.numberLinesOnScreen()).to.equal(3);
           expect(viewer.linesOnScreen()).to.eql([1]);
-          
+
           expect(viewer.annotationsAt(0)).to.include('ignorable');
           expect(viewer.annotationsAt(1)).to.not.include('ignorable');
         });
-        
+
         test('[scroll] content longer than screen size', function() {
           viewer = fixture('ScrollCodeFixture');
           viewer.content = `print('Hello')
@@ -104,34 +104,34 @@ print('Ola')
 print('Buongiorno')`;
           viewer.refresh();
 
-          expect(viewer.numberLinesOnScreen()).to.equal(3); 
-          
-          // Initial position     
+          expect(viewer.numberLinesOnScreen()).to.equal(3);
+
+          // Initial position
           expect(viewer.position).to.equal(-1);
           expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
-          
+
           // Move inside the first line
           viewer.position = "print('H".length - 1;
           expect(viewer.character()).to.equal('H');
           expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
-          
+
           // Move to second line
           viewer.position = "print('Hello')\np".length - 1;
           expect(viewer.linesOnScreen()).to.eql([1, 2, 3]); // Try to keep the previous line if enough space
-          
+
           // Move to third line
           viewer.position = "print('Hello')\nprint('Bonjour')\np".length - 1;
           expect(viewer.linesOnScreen()).to.eql([2, 3, 4]);
-          
+
           // Move to penultimate line
           viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\np".length - 1;
-          expect(viewer.linesOnScreen()).to.eql([3, 4, 5]); 
-          
+          expect(viewer.linesOnScreen()).to.eql([3, 4, 5]);
+
           // Move to last line
           viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\nprint('Ola')\np".length - 1;
           expect(viewer.linesOnScreen()).to.eql([3, 4, 5]); // Useless to advance
         });
-        
+
         test('[scroll] content longer but only one line on sceen', function() {
           viewer = fixture('CompactScrollCodeFixture');
           viewer.content = `print('Hello')
@@ -141,38 +141,38 @@ print('Ola')
 print('Buongiorno')`;
           viewer.refresh();
 
-          expect(viewer.numberLinesOnScreen()).to.equal(1); 
-          
-          // Initial position     
+          expect(viewer.numberLinesOnScreen()).to.equal(1);
+
+          // Initial position
           expect(viewer.position).to.equal(-1);
           expect(viewer.linesOnScreen()).to.eql([1]);
-          
+
           // Move inside the first line
           viewer.position = "print('H".length - 1;
           expect(viewer.character()).to.equal('H');
           expect(viewer.linesOnScreen()).to.eql([1]);
-          
+
           // Move to second line
           viewer.position = "print('Hello')\np".length - 1;
           expect(viewer.linesOnScreen()).to.eql([2]);
-          
+
           // Move to third line
           viewer.position = "print('Hello')\nprint('Bonjour')\np".length - 1;
           expect(viewer.linesOnScreen()).to.eql([3]);
-          
+
           // Move to penultimate line
           viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\np".length - 1;
           expect(viewer.linesOnScreen()).to.eql([4]);
-          
+
           // Move to last line
           viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\nprint('Ola')\np".length - 1;
           expect(viewer.linesOnScreen()).to.eql([5]);
         });
-        
+
         //
         // Page mode
         //
-        
+
         test('[page] single line', function() {
           viewer = fixture('PageCodeFixture');
           [viewer.content, viewer.classes] = new ContentBuilder("  print('Hello World')").
@@ -180,12 +180,12 @@ print('Buongiorno')`;
             build();
           viewer.refresh();
 
-          expect(viewer.numberLinesOnScreen()).to.equal(3);      
+          expect(viewer.numberLinesOnScreen()).to.equal(3);
           expect(viewer.linesOnScreen()).to.eql([1]);
           expect(viewer.annotationsAt(0)).to.include('ignorable');
           expect(viewer.annotationsAt(1)).to.not.include('ignorable');
         });
-        
+
         test('[page] content longer than screen size', function() {
           viewer = fixture('PageCodeFixture');
           viewer.content = `print('Hello')
@@ -195,34 +195,34 @@ print('Ola')
 print('Buongiorno')`;
           viewer.refresh();
 
-          expect(viewer.numberLinesOnScreen()).to.equal(3); 
-          
-          // Initial position     
+          expect(viewer.numberLinesOnScreen()).to.equal(3);
+
+          // Initial position
           expect(viewer.position).to.equal(-1);
           expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
-          
+
           // Move inside the first line
           viewer.position = "print('H".length - 1;
           expect(viewer.character()).to.equal('H');
           expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
-          
+
           // Move to second line
           viewer.position = "print('Hello')\np".length - 1;
           expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
-          
+
           // Move to third line
           viewer.position = "print('Hello')\nprint('Bonjour')\np".length - 1;
           expect(viewer.linesOnScreen()).to.eql([1, 2, 3]);
-          
+
           // Move to penultimate line
           viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\np".length - 1;
-          expect(viewer.linesOnScreen()).to.eql([4, 5]); 
-          
+          expect(viewer.linesOnScreen()).to.eql([4, 5]);
+
           // Move to last line
           viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\nprint('Ola')\np".length - 1;
           expect(viewer.linesOnScreen()).to.eql([4, 5]);
         });
-        
+
         test('[page] content longer but only one line on sceen', function() {
           viewer = fixture('CompactPageCodeFixture');
           viewer.content = `print('Hello')
@@ -232,44 +232,44 @@ print('Ola')
 print('Buongiorno')`;
           viewer.refresh();
 
-          expect(viewer.numberLinesOnScreen()).to.equal(1); 
-          
-          // Initial position     
+          expect(viewer.numberLinesOnScreen()).to.equal(1);
+
+          // Initial position
           expect(viewer.position).to.equal(-1);
           expect(viewer.pageNumber()).to.equal(1);
           expect(viewer.linesOnScreen()).to.eql([1]);
-          
+
           // Move inside the first line
           viewer.position = "print('H".length - 1;
           expect(viewer.character()).to.equal('H');
           expect(viewer.pageNumber()).to.equal(1);
           expect(viewer.linesOnScreen()).to.eql([1]);
-          
+
           // Move to second line
           viewer.position = "print('Hello')\np".length - 1;
           expect(viewer.pageNumber()).to.equal(2);
           expect(viewer.linesOnScreen()).to.eql([2]);
-          
+
           // Move to third line
           viewer.position = "print('Hello')\nprint('Bonjour')\np".length - 1;
           expect(viewer.pageNumber()).to.equal(3);
           expect(viewer.linesOnScreen()).to.eql([3]);
-          
+
           // Move to penultimate line
           viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\np".length - 1;
           expect(viewer.pageNumber()).to.equal(4);
           expect(viewer.linesOnScreen()).to.eql([4]);
-          
+
           // Move to last line
           viewer.position = "print('Hello')\nprint('Bonjour')\nprint('Guten tag')\nprint('Ola')\np".length - 1;
           expect(viewer.pageNumber()).to.equal(5);
           expect(viewer.linesOnScreen()).to.eql([5]);
         });
-        
-        // 
+
+        //
         // Page controls
         //
-        
+
         test('[page] move across single-line pages', function() {
           viewer = fixture('CompactPageCodeFixture');
           viewer.content = `print('Hello')
@@ -279,8 +279,8 @@ print('Ola')
 print('Buongiorno')`;
           viewer.refresh();
 
-          expect(viewer.numberLinesOnScreen()).to.equal(1); 
-          
+          expect(viewer.numberLinesOnScreen()).to.equal(1);
+
           expect(viewer.pageNumber()).to.equal(1);
           viewer.moveToPreviousPage();
           expect(viewer.pageNumber()).to.equal(1);
@@ -311,8 +311,8 @@ print('Buongiorno')`;
           viewer.moveToPage(6);
           expect(viewer.pageNumber()).to.equal(5);
         });
-        
-        
+
+
         test('[page] move across multi-line pages', function() {
           viewer = fixture('PageCodeFixture');
           viewer.content = `print('Hello')
@@ -324,8 +324,8 @@ print('Buenos días')
 print('Aloha')`;
           viewer.refresh();
 
-          expect(viewer.numberLinesOnScreen()).to.equal(3); 
-          
+          expect(viewer.numberLinesOnScreen()).to.equal(3);
+
           expect(viewer.pageNumber()).to.equal(1);
           viewer.moveToPreviousPage();
           expect(viewer.pageNumber()).to.equal(1);
@@ -346,7 +346,7 @@ print('Aloha')`;
           viewer.moveToPage(4);
           expect(viewer.pageNumber()).to.equal(3);
         });
-        
+
         test('[annotations] allow defining the annotations', function() {
           viewer = fixture('PageCodeFixture');
           viewer.content = `print('Hello')`;
@@ -355,23 +355,23 @@ print('Aloha')`;
           viewer.annotateAll('disabled');
           expect(viewer.annotationsAt(0)).to.includes('disabled');
           expect(viewer.annotationsAt(5)).to.includes('disabled');
-          
+
           viewer.annotateAt(5, 'parenthesis');
           expect(viewer.annotationsAt(0)).to.not.includes('parenthesis');
           expect(viewer.annotationsAt(5)).to.includes('parenthesis');
-          
+
           viewer.unannotateAll('disabled');
           expect(viewer.annotationsAt(0)).to.not.includes('disabled');
           expect(viewer.annotationsAt(5)).to.not.includes('disabled');
           expect(viewer.annotationsAt(5)).to.includes('parenthesis');
-  
+
           viewer.unannotateAt(5, 'parenthesis');
           expect(viewer.annotationsAt(5)).to.not.includes('disabled');
-          
+
           // Could remove unknown annotations
           viewer.unannotateAt(5, 'unknown');
         });
-        
+
         test('[misc] use symbols for special characters', function() {
           viewer = fixture('ScrollLiteratureFixture');
           viewer.content = "a long\n  line";
@@ -383,7 +383,7 @@ print('Aloha')`;
           expect(viewer.elementAt(6).textContent.trim()).to.equal('⏎');
           expect(viewer.elementAt(7).textContent.trim()).to.equal('⮑');
         });
-        
+
         test('[highlighting] allow user to highlight some characters', function() {
           viewer = fixture('ScrollCodeFixture');
           viewer.content = "print('Hello')";
@@ -418,9 +418,9 @@ print('Aloha')`;
           expect(viewer.annotationsAt(5)).to.not.includes('highlight'); // cleared
           expect(viewer.annotationsAt(8)).to.not.includes('highlight');
         });
-        
+
       });
-      
+
     </script>
 
   </body>

@@ -93,7 +93,7 @@ public class Main {
 }`;
           parser.parse();
           const index = indexOf(parser.content);
-          
+
           expect(parser.classes[index(2, 1)]).to.include.members(['module', 'ignorable']); // [p]ackage
           expect(parser.classes[index(4, 1)]).to.include.members(['module', 'ignorable']); // [i]mport
         });
@@ -182,10 +182,10 @@ public class Main {
    * Multi-line Javadoc comment
    */
   public void main(String []args) {
-            
+
     System.out.println("Java");
   }
-  
+
 }`;
           parser.parse();
           const index = indexOf(parser.content);
@@ -200,9 +200,7 @@ public class Main {
           // Ignore blank lines
           expect(parser.classes[index(3,  1)]).to.include.members(['backslash', 'ignorable']);
           expect(parser.classes[index(5,  1)]).to.include.members(['backslash', 'ignorable']);
-          expect(parser.classes[index(10, 9)]).to.include.members(['indent', 'ignorable']);
-          expect(parser.classes[index(13, 1)]).to.include.members(['indent', 'ignorable']);
-          expect(parser.classes[index(13, 3)]).to.include.members(['backslash', 'ignorable']);
+          expect(parser.classes[index(13, 1)]).to.include.members(['backslash', 'ignorable']);
 
           // But do not ignore backslash (on on-empty lines)
           expect(parser.classes[index(6,  6)]).to.include.members(['backslash', 'editable']);
@@ -267,7 +265,7 @@ public class Main {
 DOCKER_GRAPHDRIVER := $(if $(DOCKER_GRAPHDRIVER),$(DOCKER_GRAPHDRIVER),$(shell docker info 2>&1 | grep "Storage Driver" | sed s/.*: //))
 `
           parser.parse();
-          
+
           const expectedContent = `
 .PHONY: all binary dynbinary build cross deb help init-go-pkg-cache install manpages rpm run shell t
         est test-docker-py test-integration test-unit validate win
@@ -369,7 +367,7 @@ def main():
             }
           }
         });
-        
+
         test('[code] ignore nothing', function() {
           var parser = fixture('DefaultFixture');
 
@@ -386,10 +384,10 @@ print(i)}`;
           parser.parse();
           const index = indexOf(parser.content);
 
-          expect(parser.classes[index(1, 7)]).to.include.members(['backslash']); 
-          expect(parser.classes[index(1, 7)]).to.not.include.members(['ignorable']); 
+          expect(parser.classes[index(1, 7)]).to.include.members(['backslash']);
+          expect(parser.classes[index(1, 7)]).to.not.include.members(['ignorable']);
         });
-        
+
         test('[code] mix ignore and line comments', function() {
           var parser = fixture('DefaultFixture');
 
@@ -405,14 +403,14 @@ print(i)}`;
 
 def main():
   print("Hello World")  # Greeting message
-  sys.exit(0)`; 
+  sys.exit(0)`;
           parser.parse();
           // The newline after the comment should not be ignorable.
-          
+
           const index = indexOf(parser.content);
 
-          expect(parser.classes[index(4, 43)]).to.include.members(['backslash']); 
-          expect(parser.classes[index(4, 43)]).to.not.include.members(['ignorable']); 
+          expect(parser.classes[index(4, 43)]).to.include.members(['backslash']);
+          expect(parser.classes[index(4, 43)]).to.not.include.members(['ignorable']);
         });
 
       });

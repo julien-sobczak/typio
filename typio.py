@@ -132,11 +132,11 @@ class Entry:
     @property
     def origin(self):
         return self.data['origin']
-       
+
     @property
     def type(self):
         return self.data['type']
-   
+
     @property
     def slug(self):
         if self.type == 'code' and self.origin == 'github':
@@ -333,7 +333,7 @@ class TypioPrompt:
 
     def download_github(self, entry, clone=True):
         print('Retrieving source code from Github...')
-        
+
         if not clone:
             local_file = self.CONTENT_DIR + '/github/' + entry.slug + '.zip'
             self._download_file(entry.download_url, local_file)
@@ -378,7 +378,7 @@ class TypioPrompt:
         if not os.path.exists(local_file):
             print("Archive '%s' does not exists. Cloned repository?" % Colors.file(local_file))
             return
-        
+
         # Do nothing if the target folder is already present
         if os.path.isdir(local_dir):
             print("Folder '%s' already exists." % Colors.file(local_dir))
@@ -428,7 +428,7 @@ class TypioPrompt:
         if os.path.isdir(extracted_tmp_dir):
             shutil.rmtree(extracted_tmp_dir)
             print("Delete successfully folder '%s'." % Colors.file(extracted_tmp_dir))
-    
+
         if os.path.isfile(metadata_file):
             os.remove(metadata_file)
             print("Delete successfully file '%s'." % Colors.file(metadata_file))
@@ -462,10 +462,10 @@ class TypioPrompt:
         count_file = 0
         count_directory = 0
         size = 0
-        
+
         local_dir = self.CONTENT_DIR + '/github/' + entry.slug
         tmp_dir = '/tmp' + '/github/' + entry.slug + '/'
-        
+
         # Check if repository was cloned
         if os.path.exists(tmp_dir) and os.path.isdir(tmp_dir):
             sources_dir = tmp_dir
@@ -515,7 +515,7 @@ class TypioPrompt:
 
         local_dir = self.CONTENT_DIR + '/github/' + entry.slug
         tmp_dir = '/tmp' + '/github/' + entry.slug + '/'
-        
+
         # Check if repository was cloned
         if os.path.exists(tmp_dir) and os.path.isdir(tmp_dir):
             sources_dir = tmp_dir
@@ -523,7 +523,7 @@ class TypioPrompt:
         else:
             sources_dir = local_dir
             cloned = False
-            
+
         for dirName, subdirList, fileList in os.walk(sources_dir):
             for fname in fileList:
                 aname = os.path.join(dirName, fname)        # absolute name
@@ -767,12 +767,12 @@ class TypioPrompt:
 
     def metadata_github(self, entry):
         metadata = entry.data.copy()  # We copy all metadata found in catalog.json
-        
+
         format = 'compressed'  # Supported formats: 'flat', 'compressed'
-        
+
         local_dir = self.CONTENT_DIR + '/github/' + entry.slug
         tmp_dir = '/tmp' + '/github/' + entry.slug
-        
+
         # Check if repository was cloned
         if os.path.exists(tmp_dir) and os.path.isdir(tmp_dir):
             sources_dir = tmp_dir
@@ -780,7 +780,7 @@ class TypioPrompt:
         else:
             sources_dir = local_dir
             cloned = False
-                    
+
         def stats(project_path):
             """Get stats about most changed files ("Hot files")."""
 
@@ -788,7 +788,7 @@ class TypioPrompt:
             p = re.compile('^\s*(.+?)\s*[.]*\s*(\d+)\s+(\d+)\s*$')
             print('Determining the change frequency for each file...')
             result = subprocess.run('(cd %s && git effort)' % project_path, shell=True, stdout=subprocess.PIPE)
-            
+
             for line in result.stdout.decode('utf-8').split('\n'):
                 m = p.match(line)
                 if m:
@@ -797,11 +797,11 @@ class TypioPrompt:
                         "commits": int(commits),
                         "activeDays": int(active_days),
                     }
-                    
+
             return stats
-            
+
         stats_per_file = stats(sources_dir)
-                
+
         if format == 'flat':
             # {
             #   <metadata>
@@ -823,7 +823,7 @@ class TypioPrompt:
             #   ]
             # }
             format_json = False
-                        
+
             metadata['format'] = "flat"
             metadata['files'] = []        # and add files metadata
 
@@ -849,7 +849,7 @@ class TypioPrompt:
                             file_metadata['commits'] = stats_per_file[rname]['commits']
                             file_metadata['active_days'] = stats_per_file[rname]['active_days']
                         metadata['files'].append(file_metadata)
-                        
+
 
         elif format == 'compressed':
             # (formatted only for description purposes)
@@ -876,7 +876,7 @@ class TypioPrompt:
             #   ]
             # }
             format_json = False
-            
+
             metadata['format'] = 'compressed'
             metadata['files'] = {}
 
@@ -885,7 +885,7 @@ class TypioPrompt:
                 current_node = metadata['files']
                 for part in path.split('/'):
                     folder = part + '/'
-                    if folder not in current_node: 
+                    if folder not in current_node:
                         current_node[folder] = {}
                     current_node = current_node[folder]
 
@@ -897,10 +897,10 @@ class TypioPrompt:
                 folders = folders[0:-1]
                 for folder in folders:
                     folder = folder + '/'
-                    if folder not in current_node: 
+                    if folder not in current_node:
                         current_node[folder] = {}
                     current_node = current_node[folder]
-                    
+
                 extension = os.path.splitext(filename)[1]
                 if extension and not is_binary(aname):  # Ignore folders
                     nb_lines = sum(1 for line in open(aname))
@@ -909,10 +909,10 @@ class TypioPrompt:
                     props = "%s@%s#%s" % (extension, size, nb_lines)
                     if path in stats_per_file:
                         props += '[%s,%s]' % (
-                            stats_per_file[path]['commits'], 
+                            stats_per_file[path]['commits'],
                             stats_per_file[path]['activeDays'])
                     current_node[filename] = props
-                    
+
             for dirName, subdirList, fileList in os.walk(sources_dir):
                 for dname in subdirList:
                     aname = os.path.join(dirName, dname)        # absolute name
@@ -923,13 +923,13 @@ class TypioPrompt:
                     rname = aname.replace(sources_dir + '/', '')  # relative name
                     #print(rname)
                     append_file(rname)
-                    
+
         # Save metadata
         metadata_path = local_dir + '.json'
         with open(metadata_path, 'w') as f:
             pretty_priting_options = {'sort_keys': True, 'indent': 4, 'separators': (',', ': ')}
             if format_json:
-                options = pretty_priting_options  
+                options = pretty_priting_options
             else:
                 options = {}
             json.dump(metadata, f, ensure_ascii=False, **options)
@@ -1053,7 +1053,7 @@ class TypioPrompt:
         self.get_github(entry)
         self.clean_github(entry)
         self.metadata_github(entry)
-        
+
 
     ##
     ## Prompt

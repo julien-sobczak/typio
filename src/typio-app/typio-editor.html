@@ -20,10 +20,10 @@
       static get properties() {
         return {
 
-          // 
+          //
           // + typio-viewer properties
           //
-          
+
           // Override
           controls: {
             type: Boolean,
@@ -38,7 +38,7 @@
             type: Boolean,
             value: false
           },
-          
+
 
           //
           // State management
@@ -53,7 +53,7 @@
             type: Boolean,
             value: false
           },
-          
+
           started: {
             type: Boolean,
             value: false
@@ -63,8 +63,8 @@
             type: Boolean,
             value: false
           },
-          
-          
+
+
           //
           // Error management
           //
@@ -77,8 +77,8 @@
       	    type: Boolean,
       	    value: false
       	  },
-          
-          /** 
+
+          /**
            * The position where the error is located. (0-based index)
            * Returns `undefined` if `error` is false.
            */
@@ -91,20 +91,20 @@
           //
           // Editor inner working properties
           //
-          
+
           // The index of the latest valid entered character
           _countValid: {
             type: Number,
             value: 0
-          },          
-          
+          },
+
         };
       }
-      
+
       ready() {
         super.ready();
         this.reset();
-        this._addKeysListeners(); 
+        this._addKeysListeners();
       }
 
       /**
@@ -112,17 +112,17 @@
        */
       reset() {
         super.reset();
-        
+
         // reset editor styles
         this.unhighlightAll();
         this.unannotateAll('disabled');
         this.unannotateGlobal('error');
         this.hideMispellings();
-        
+
         // reset variables
         this.error = false;
         this.positionError = undefined;
-        this._countValid = 0;        
+        this._countValid = 0;
 
         // reset ready-screen
         this.initialized = false;
@@ -142,7 +142,19 @@
           document.removeEventListener('keypress', this._keypressListener, false);
         }
       }
-      
+
+
+      /*
+      MacOS key sequence
+      editor:136 keydown KeyboardEvent {isTrusted: true, key: "Shift", code: "ShiftLeft", location: 1, ctrlKey: false, …}
+      editor:136 keydown KeyboardEvent {isTrusted: true, key: "Dead", code: "Quote", location: 0, ctrlKey: false, …}
+      editor:136 keyup KeyboardEvent {isTrusted: true, key: "Dead", code: "Quote", location: 0, ctrlKey: false, …}
+      editor:136 keyup KeyboardEvent {isTrusted: true, key: "Shift", code: "ShiftLeft", location: 1, ctrlKey: false, …}
+      editor:136 keydown KeybocardEvent {isTrusted: true, key: " ", code: "Space", location: 0, ctrlKey: false, …}
+      editor:136 keypress KeyboardEvent {isTrusted: true, key: " ", code: "Space", location: 0, ctrlKey: false, …}
+      editor:136 keyup KeyboardEvent {isTrusted: true, key: " ", code: "Space", location: 0, ctrlKey: false, …}
+      */
+
       _addKeysListeners() {
         // We listen for tab character (match any number of consecutive characters)
         this._keydownListener = event => {
@@ -151,15 +163,19 @@
           if (event.key !== 'Tab') return; // we are only interested by tabular character
           event.preventDefault();
           event.stopPropagation();
-          this._checkInput(event, event.key);
+          this._checkInput(event.code, event.key);
           return false;
         };
         document.addEventListener('keydown', this._keydownListener);
-                
+
         // We listen keyup for nonprintable characters
         this._keyupListener = event => {
           //console.log('keyup', event);
           if (!this.started || this.ended || event.ctrlKey) return;
+          if (event.key === 'Dead') {
+            this._deadKeyActive = true;
+            this_.deadKeyName = event.key;
+          }
           if (event.key === 'Backspace') {
             this.backward();
           }
@@ -170,7 +186,14 @@
         this._keypressListener = event => {
           //console.log('keypress', event);
           if (!this.started || this.ended) return;
+
           const keyName = event.key;
+
+          if (this._deadKeyActive) {
+            event = this._deadEvent;
+            this._deadKeyActive = false;
+            keyName = event.code; // "Quote"
+          }
 
           if (keyName === 'Control') {
             // not alert when only Control key is pressed.
@@ -182,14 +205,14 @@
             // event.ctrlKey may be true if Ctrl key is pressed at the time.
             ;
           } else {
-            this._checkInput(event, keyName);
+            this._checkInput(event.code, keyName);
             event.preventDefault();
             return false;
           }
         };
         document.addEventListener('keypress', this._keypressListener, false);
       }
-      
+
       /**
        * Called when the user has validated the ready screen.
        */
@@ -201,12 +224,12 @@
 
         // refresh the viewer
         super.refresh();
-        
+
         this.initialized = true;
         this.annotateAll('disabled');
         this.advance();
       }
-      
+
       cancel() {
         console.log('[typio-editor] cancelled');
         this.ended = true;
@@ -218,7 +241,7 @@
       resume() {
         if (this.started) this.paused = true;
       }
-      
+
       /**
        * Marks the end of the typing session.
        */
@@ -230,53 +253,53 @@
       /**
        * Called after each key press.
        */
-      _checkInput(event, keyName) {
+      _checkInput(keyCode, keyName) {
         if (!this.started || this.paused || this.ended) {
           // ignore input outside practice sessions
           return;
         }
-        
+
         if (this.paused) {
           this.resume();
         }
-        
+
         const startTime = performance.now();
-        
+
         let valid = undefined;
         let position = this.position;
         let character = this.character();
         let line = this._currentLine;
-        
+
         let shouldAdvance = false;
-        
+
         if (this.debug) {
           console.log('Expected: [' + this.character() + '] (' + this.character().charCodeAt(0) + '), Got: [' + keyName + '] (' + keyName.charCodeAt(0) + '), valid=' + this._isValid(this.element(), keyName) + ', position=' + this.position + ', error=' + this.error + ', positionError=' + this.positionError);
         }
-        
+
         // Allow optional character to be passed
-        if (this.hasAnnotation('optional') && 
+        if (this.hasAnnotation('optional') &&
               !this._isValid(this.element(), keyName) &&
                this._isValid(this._nextNonIgnorableElement(), keyName)) {
           this.advance();
         }
-        
+
         if (keyName === 'Tab' && this._canAdvance()) {
           // advance to the next nonspace character
           while (this.hasAnnotation('space')) {
-            this.advance(); 
+            this.advance();
           }
-          
+
         } else if (this._isValid(this.element(), keyName)) {
           valid = true;
           this.unannotate('disabled');
-          
+
           if (this.error && this.positionError == this.position) {
             console.log('[bug] remove error');
             this.unannotate('char-invalid', 'wrong');
             this.error = false;
             this.positionError = undefined;
           }
-          
+
           if (this.continueOnErrors) {
             this.unannotate('char-invalid');
           } else if (this.error && !this.continueOnErrors) {
@@ -294,7 +317,7 @@
             this._countValid++;
           }
           shouldAdvance = true;
-          
+
         } else {
           valid = false;
           this.error = true;
@@ -311,17 +334,17 @@
           "indexValid": this._countValid,
           "line": line,
           "character": TypioEditor.keyNameToChar(character),
-          "keyName": keyName, 
-          "keyCode": event.code, 
-          "valid": valid, 
-          "accepted": accepted,         
+          "keyName": keyName,
+          "keyCode": keyCode,
+          "valid": valid,
+          "accepted": accepted,
         }
         this.dispatchEvent(new CustomEvent('character-entered', {detail: detail, bubbles: true, composed: true}));
-        
+
         if (shouldAdvance) {
           this.advance();
         }
-        
+
         if (this.profile) {
           console.log('[typio-editor] checking input done in ' + (performance.now() - startTime) + 'ms');
         }
@@ -329,16 +352,16 @@
 
       _isValid(character, keyName) {
         if (character == undefined) return false;
-        
+
         const expectedCharacter = character.dataset.text;
-        
+
         // nominal case
         if (keyName === expectedCharacter) {
           return true;
         }
-        
+
         // Manage exceptions:
-        
+
         // Curved quotes are not typeable => allow simple quote
         if (keyName === "'" && (expectedCharacter === '‘' || expectedCharacter === '’')) {
           return true;
@@ -346,24 +369,24 @@
         if (keyName === '"' && (expectedCharacter === '“' || expectedCharacter === '”')) {
           return true;
         }
-        
+
         // Allow space for some indentation characters
         if (keyName === ' ' && this.hasAnnotationElement(character, "allowSpace")) {
           return true;
         }
-        
+
         // Nothing matches
         return false;
       }
-      
+
       /**
        * Move backward to the previous editable character.
        */
       backward(n = 1) {
         if (this.position == 0) return;
-        
+
         for (let i = 0; i < n; i++) {
-          
+
           if (this.position == 0) break; // Do nothing if at start
 
           do {
@@ -378,11 +401,11 @@
             }
           } while (this.hasAnnotation('ignorable') && this.position > 0);
         }
-        
+
         if (this.hasAnnotation('ignorable')) { // Oops, we are on an ignorable character
           this.advance();
         }
-        
+
         if (this.position >= 0) {
           this._select();
         }
@@ -408,7 +431,7 @@
         while (!this.endOfFile() && this.hasAnnotation('ignorable')) { this._advanceOneCharacter(); }
         this._select();
       }
-      
+
       _canAdvance() {
         return !this.error || this.continueOnErrors;
       }
@@ -466,17 +489,17 @@
         this.unannotate('char-active', 'char-invalid');
         this.annotate('disabled');
       }
-      
+
       showMispellings() {
         this.annotateGlobal('highlight-mistyping');
         this.controls = true;
       }
-      
+
       hideMispellings() {
         this.unannotateGlobal('highlight-mistyping');
         this.controls = false;
       }
-      
+
       /**
        * Return the next character which doesn't have the `ignorable` annotation.
        */
@@ -490,13 +513,137 @@
           }
         }
       }
-      
+
       static keyNameToChar(keyName) {
         if (keyName === 'Enter') return '\n';
         // Add specific cases here
         return keyName;
       }
-      
+
+      /**
+       * Conenience method returns corresponding value for given keyName or keyCode.
+       *
+       * @param {Mixed} keyCode {Number} or keyName {String}
+       * @return {Number}
+       */
+      static keyNameToCode(keyName) {
+        // Source: http://jsfiddle.net/vWx8V/
+        // http://stackoverflow.com/questions/5603195/full-list-of-javascript-keycodes
+
+        if (!TypioEditor.keyNameToCode.codes) {
+          // populate dictionary
+
+          var codes = exports.code = exports.codes = {
+            'backspace': 8,
+            'tab': 9,
+            'enter': 13,
+            'shift': 16,
+            'ctrl': 17,
+            'alt': 18,
+            'pause/break': 19,
+            'caps lock': 20,
+            'esc': 27,
+            'space': 32,
+            'page up': 33,
+            'page down': 34,
+            'end': 35,
+            'home': 36,
+            'left': 37,
+            'up': 38,
+            'right': 39,
+            'down': 40,
+            'insert': 45,
+            'delete': 46,
+            'command': 91,
+            'left command': 91,
+            'right command': 93,
+            'numpad *': 106,
+            'numpad +': 107,
+            'numpad -': 109,
+            'numpad .': 110,
+            'numpad /': 111,
+            'num lock': 144,
+            'scroll lock': 145,
+            'my computer': 182,
+            'my calculator': 183,
+            ';': 186,
+            '=': 187,
+            ',': 188,
+            '-': 189,
+            '.': 190,
+            '/': 191,
+            '`': 192,
+            '[': 219,
+            '\\': 220,
+            ']': 221,
+            "'": 222
+          }
+
+          // Helper aliases
+
+          var aliases = exports.aliases = {
+            'windows': 91,
+            '⇧': 16,
+            '⌥': 18,
+            '⌃': 17,
+            '⌘': 91,
+            'ctl': 17,
+            'control': 17,
+            'option': 18,
+            'pause': 19,
+            'break': 19,
+            'caps': 20,
+            'return': 13,
+            'escape': 27,
+            'spc': 32,
+            'spacebar': 32,
+            'pgup': 33,
+            'pgdn': 34,
+            'ins': 45,
+            'del': 46,
+            'cmd': 91
+          }
+
+          /*!
+           * Programatically add the following
+           */
+
+          // lower case chars
+          for (i = 97; i < 123; i++) codes[String.fromCharCode(i)] = i - 32
+
+          // numbers
+          for (var i = 48; i < 58; i++) codes[i - 48] = i
+
+          // function keys
+          for (i = 1; i < 13; i++) codes['f'+i] = i + 111
+
+          // numpad keys
+          for (i = 0; i < 10; i++) codes['numpad '+i] = i + 96
+
+          // Add aliases
+          for (var alias in aliases) {
+            codes[alias] = aliases[alias]
+          }
+
+          TypioEditor.keyNameToCode.codes = codes;
+        }
+
+        const codes = TypioEditor.keyNameToCode.codes;
+
+        // check codes
+        var foundNamedKey = codes[keyName.toLowerCase()]
+        if (foundNamedKey) return foundNamedKey
+
+        // check aliases
+        var foundNamedKey = aliases[keyName.toLowerCase()]
+        if (foundNamedKey) return foundNamedKey
+
+        // weird character?
+        if (keyName.length === 1) return keyName.charCodeAt(0)
+
+        return undefined
+      }
+
     }
     window.customElements.define(TypioEditor.is, TypioEditor);
 

@@ -188,8 +188,41 @@
         display: block;
       }
 
+      /*
+       * Typio Editor specific
+       */
+
+      #input {
+        /*
+          We could only focus() an element that belong to the DOM.
+          So, we can't use display:none and use the opacity attribute instead.
+        */
+        opacity: 0;
+        height: 0;
+        margin-left: -100%;
+        /* Only one of these attributes is enough to make the element disappears. */
+      }
+
     </style>
 
+    <!-- Hack for dead keys support on MacOS. Read content for details. -->
+    <pre id="input" contenteditable>
+      <p>
+        When using a keyboard with dead keys (i.e. the Qwerty International Layout) on MacOS,
+        the <code>keypress</code> event is not triggered on characters resulting from a dead key composition.
+        We need to check for <code>compositionend</code> event instead
+        (Note: on Windows and Linux, both <code>keypress</code> and <code>compositionend</code> are published).
+      </p>
+      <p>
+        Only editable elements trigger this event. So, we use this <code>pre</code> element
+        with the special attribute <code>contenteditable</code> to capture composition events.
+        (see <a href="https://developer.mozilla.org/en-US/docs/Web/Events/compositionend">here</a>)
+      </p>
+      <p>
+        On Typio, the full code listing is already displayed on the user don't really enter the text on an input.
+        We fake this by focusing a hidden <code>input</code> element.
+      </p>
+    </pre>
 
     <div id="content" class$="type-[[type]] mode-[[mode]] theme-[[theme]]">
       <pre id="editor" data-type$="[[type]]" class$="preserveSpacing-[[preserveSpacing]] fontSize-[[fontSize]]">[[_content]]</pre>

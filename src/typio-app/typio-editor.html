@@ -133,29 +133,55 @@
 
       _removeKeysListeners() {
         if (this._keydownListener) {
-          document.removeEventListener('keydown', this._keydownListener);
+          this.$.input.removeEventListener('keydown', this._keydownListener);
         }
         if (this._keyupListener) {
-          document.removeEventListener('keyup', this._keyupListener, false);
+          this.$.input.removeEventListener('keyup', this._keyupListener, false);
         }
         if (this._keypressListener) {
-          document.removeEventListener('keypress', this._keypressListener, false);
+          this.$.input.removeEventListener('keypress', this._keypressListener, false);
         }
       }
 
-
-      /*
-      MacOS key sequence
-      editor:136 keydown KeyboardEvent {isTrusted: true, key: "Shift", code: "ShiftLeft", location: 1, ctrlKey: false, …}
-      editor:136 keydown KeyboardEvent {isTrusted: true, key: "Dead", code: "Quote", location: 0, ctrlKey: false, …}
-      editor:136 keyup KeyboardEvent {isTrusted: true, key: "Dead", code: "Quote", location: 0, ctrlKey: false, …}
-      editor:136 keyup KeyboardEvent {isTrusted: true, key: "Shift", code: "ShiftLeft", location: 1, ctrlKey: false, …}
-      editor:136 keydown KeybocardEvent {isTrusted: true, key: " ", code: "Space", location: 0, ctrlKey: false, …}
-      editor:136 keypress KeyboardEvent {isTrusted: true, key: " ", code: "Space", location: 0, ctrlKey: false, …}
-      editor:136 keyup KeyboardEvent {isTrusted: true, key: " ", code: "Space", location: 0, ctrlKey: false, …}
-      */
-
       _addKeysListeners() {
+
+        /*
+         * We need to listen various key events to manage all corner cases:
+         * - keydown to catch Tab
+         * - keyup to catch Backspace
+         * - keypress to catch all visible characters
+         *
+         * Problem with dead keys (ex: ` on US International Qwerty Layout):
+         * `keypress` event is not triggered for dead keys on MacOS.
+         * An alternative solution is to listen for `input` event but it only
+         * works only on editable element. So, when the user is ready, we focus an
+         * hidden input element to receive events. On MacOs, the input element for
+         * dead keys is triggered before the space character is pressed to end
+         * the composition (the inputType is 'insertCompositionText' on MacOS).
+         * So, we memorize the pressed key and wait for a `compositionend` event
+         * to record the character generated using the dead key combinaison.
+         *
+         * Note: Use https://w3c.github.io/uievents/tools/key-event-viewer.html to test key events
+         *
+         * Example of difference between OS:
+         *
+         * MacOS key sequence: (only keydown, keyup, and keypress events)
+         * - keydown  KeyboardEvent {isTrusted: true, key: "Shift", code: "ShiftLeft", location: 1, ctrlKey: false, …}
+         * - keydown  KeyboardEvent {isTrusted: true, key: "Dead", code: "Quote", location: 0, ctrlKey: false, …}
+         * - keyup    KeyboardEvent {isTrusted: true, key: "Dead", code: "Quote", location: 0, ctrlKey: false, …}
+         * - keyup    KeyboardEvent {isTrusted: true, key: "Shift", code: "ShiftLeft", location: 1, ctrlKey: false, …}
+         * - keydown  KeyboardEvent {isTrusted: true, key: " ", code: "Space", location: 0, ctrlKey: false, …}
+         * - keypress KeyboardEvent {isTrusted: true, key: " ", code: "Space", location: 0, ctrlKey: false, …}
+         * - keyup    KeyboardEvent {isTrusted: true, key: " ", code: "Space", location: 0, ctrlKey: false, …}
+         *
+         * Linux key sequence: (only keydown, keyup, and keypress events)
+         * - keydown  KeyboardEvent {isTrusted: true, key: "Dead", code: "Quote", location: 0, ctrlKey: false, …}
+         * - keydown  KeyboardEvent {isTrusted: true, key: " ", code: "Space", location: 0, ctrlKey: false, …}
+         * - keypress KeyboardEvent {isTrusted: true, key: "'", code: "Space", location: 0, ctrlKey: false, …}
+         * - keyup    KeyboardEvent {isTrusted: true, key: "Dead", code: "Quote", location: 0, ctrlKey: false, …}
+         * - keyup    KeyboardEvent {isTrusted: true, key: " ", code: "Space", location: 0, ctrlKey: false, …}
+         */
+
         // We listen for tab character (match any number of consecutive characters)
         this._keydownListener = event => {
           //console.log('keydown', event);
@@ -163,37 +189,27 @@
           if (event.key !== 'Tab') return; // we are only interested by tabular character
           event.preventDefault();
           event.stopPropagation();
-          this._checkInput(event.code, event.key);
+          this._checkInput(event.key);
           return false;
         };
-        document.addEventListener('keydown', this._keydownListener);
+        this.$.input.addEventListener('keydown', this._keydownListener);
 
         // We listen keyup for nonprintable characters
         this._keyupListener = event => {
           //console.log('keyup', event);
           if (!this.started || this.ended || event.ctrlKey) return;
-          if (event.key === 'Dead') {
-            this._deadKeyActive = true;
-            this_.deadKeyName = event.key;
-          }
           if (event.key === 'Backspace') {
             this.backward();
           }
         };
-        document.addEventListener('keyup', this._keyupListener, false);
+        this.$.input.addEventListener('keyup', this._keyupListener, false);
 
-        // ... and keypress for printable ones (keypress support dead keys)
+        // ... and keypress for printable ones (keypress support dead keys on Linux and Windows but not MacOS)
         this._keypressListener = event => {
           //console.log('keypress', event);
           if (!this.started || this.ended) return;
 
           const keyName = event.key;
-
-          if (this._deadKeyActive) {
-            event = this._deadEvent;
-            this._deadKeyActive = false;
-            keyName = event.code; // "Quote"
-          }
 
           if (keyName === 'Control') {
             // not alert when only Control key is pressed.
@@ -204,13 +220,63 @@
             // Even though event.key is not 'Control' (i.e. 'a' is pressed),
             // event.ctrlKey may be true if Ctrl key is pressed at the time.
             ;
-          } else {
-            this._checkInput(event.code, keyName);
+          } else if (keyName === 'Enter' || keyName === 'Tab') {
+            this._checkInput(keyName);
             event.preventDefault();
             return false;
           }
         };
-        document.addEventListener('keypress', this._keypressListener, false);
+        this.$.input.addEventListener('keypress', this._keypressListener, false);
+
+        this.$.input.addEventListener('compositionend', event => {
+          //console.log('compositionend', event);
+          if (!this.started || this.ended || !this._compositionData) return;
+          this._checkInput(this._compositionData);
+          this._compositionData = undefined;
+          event.preventDefault();
+
+          return false;
+        }, false);
+
+        this.$.input.addEventListener('input', event => {
+          //console.log('input', event);
+          if (!this.started || this.ended) return;
+          if (event.inputType !== 'insertText' &&
+              event.inputType !== 'insertCompositionText') return;
+          if (!event.data) return;
+
+          const keyName = event.data;
+
+          if (event.inputType === 'insertText') {
+            this._checkInput(keyName);
+            this._compositionData = undefined;
+          } else if (event.inputType === 'insertCompositionText') {
+            this._compositionData = keyName; // Will wait for `compositionend` event before checking input
+          }
+
+          event.preventDefault();
+
+          return false;
+        }, false);
+
+        // Be sure focus stay on input element while session is in progress
+        this.$.input.addEventListener('focusout', event => {
+            // refocus if practice session is still started
+            //console.log('focusout', this.started);
+            if (this.started) {
+              console.log('focused')
+              this.$.input.focus();
+            }
+        }, false);
+
+        document.addEventListener('click', event => {
+            // refocus if practice session is still started
+            //console.log('click', this.started);
+            if (this.started) {
+              console.log('focused')
+              this.$.input.focus();
+            }
+        }, false);
       }
 
       /**
@@ -220,6 +286,7 @@
         console.debug('[typio-core-editor] start with', this._content);
         this.initialized = true;
         this.started = true;
+        this.$.input.focus();
         this.numberLines = this._content.split('\n').length;
 
         // refresh the viewer
@@ -233,13 +300,17 @@
       cancel() {
         console.log('[typio-editor] cancelled');
         this.ended = true;
+        this.$.input.blur();
       }
 
       /**
        * Pause the practice session.
        */
       resume() {
-        if (this.started) this.paused = true;
+        if (this.started) {
+          this.paused = true;
+          this.$.input.focus();
+        }
       }
 
       /**
@@ -247,13 +318,14 @@
        */
       end() {
         this.ended = true;
+        this.$.input.blur();
         this.dispatchEvent(new CustomEvent('typing-ended', {detail: {length: this._length}}));
       }
 
       /**
        * Called after each key press.
        */
-      _checkInput(keyCode, keyName) {
+      _checkInput(keyName) {
         if (!this.started || this.paused || this.ended) {
           // ignore input outside practice sessions
           return;
@@ -335,7 +407,6 @@
           "line": line,
           "character": TypioEditor.keyNameToChar(character),
           "keyName": keyName,
-          "keyCode": keyCode,
           "valid": valid,
           "accepted": accepted,
         }
@@ -518,130 +589,6 @@
         if (keyName === 'Enter') return '\n';
         // Add specific cases here
         return keyName;
-      }
-
-      /**
-       * Conenience method returns corresponding value for given keyName or keyCode.
-       *
-       * @param {Mixed} keyCode {Number} or keyName {String}
-       * @return {Number}
-       */
-      static keyNameToCode(keyName) {
-        // Source: http://jsfiddle.net/vWx8V/
-        // http://stackoverflow.com/questions/5603195/full-list-of-javascript-keycodes
-
-        if (!TypioEditor.keyNameToCode.codes) {
-          // populate dictionary
-
-          var codes = exports.code = exports.codes = {
-            'backspace': 8,
-            'tab': 9,
-            'enter': 13,
-            'shift': 16,
-            'ctrl': 17,
-            'alt': 18,
-            'pause/break': 19,
-            'caps lock': 20,
-            'esc': 27,
-            'space': 32,
-            'page up': 33,
-            'page down': 34,
-            'end': 35,
-            'home': 36,
-            'left': 37,
-            'up': 38,
-            'right': 39,
-            'down': 40,
-            'insert': 45,
-            'delete': 46,
-            'command': 91,
-            'left command': 91,
-            'right command': 93,
-            'numpad *': 106,
-            'numpad +': 107,
-            'numpad -': 109,
-            'numpad .': 110,
-            'numpad /': 111,
-            'num lock': 144,
-            'scroll lock': 145,
-            'my computer': 182,
-            'my calculator': 183,
-            ';': 186,
-            '=': 187,
-            ',': 188,
-            '-': 189,
-            '.': 190,
-            '/': 191,
-            '`': 192,
-            '[': 219,
-            '\\': 220,
-            ']': 221,
-            "'": 222
-          }
-
-          // Helper aliases
-
-          var aliases = exports.aliases = {
-            'windows': 91,
-            '⇧': 16,
-            '⌥': 18,
-            '⌃': 17,
-            '⌘': 91,
-            'ctl': 17,
-            'control': 17,
-            'option': 18,
-            'pause': 19,
-            'break': 19,
-            'caps': 20,
-            'return': 13,
-            'escape': 27,
-            'spc': 32,
-            'spacebar': 32,
-            'pgup': 33,
-            'pgdn': 34,
-            'ins': 45,
-            'del': 46,
-            'cmd': 91
-          }
-
-          /*!
-           * Programatically add the following
-           */
-
-          // lower case chars
-          for (i = 97; i < 123; i++) codes[String.fromCharCode(i)] = i - 32
-
-          // numbers
-          for (var i = 48; i < 58; i++) codes[i - 48] = i
-
-          // function keys
-          for (i = 1; i < 13; i++) codes['f'+i] = i + 111
-
-          // numpad keys
-          for (i = 0; i < 10; i++) codes['numpad '+i] = i + 96
-
-          // Add aliases
-          for (var alias in aliases) {
-            codes[alias] = aliases[alias]
-          }
-
-          TypioEditor.keyNameToCode.codes = codes;
-        }
-
-        const codes = TypioEditor.keyNameToCode.codes;
-
-        // check codes
-        var foundNamedKey = codes[keyName.toLowerCase()]
-        if (foundNamedKey) return foundNamedKey
-
-        // check aliases
-        var foundNamedKey = aliases[keyName.toLowerCase()]
-        if (foundNamedKey) return foundNamedKey
-
-        // weird character?
-        if (keyName.length === 1) return keyName.charCodeAt(0)
-
-        return undefined
       }
 
     }

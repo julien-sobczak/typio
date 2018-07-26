@@ -988,11 +988,13 @@
       }
 
       rewind(numberCharacters = 10) {
+        this.$.sleepTracker.newActivity();
         this.$.editor.backward(numberCharacters);
         this.$.stats.rewind(numberCharacters);
       }
 
       jumpForward(numberCharacters = 10) {
+        this.$.sleepTracker.newActivity();
         this.$.editor.forward(numberCharacters);
       }
 

@@ -208,7 +208,8 @@
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+shift+s" on-keys-pressed="_toggleDrawerShortcuts"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+enter" on-keys-pressed="actionStart"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+shift+space" on-keys-pressed="actionPause"></iron-a11y-keys>
-    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+left" on-keys-pressed="actionBack"></iron-a11y-keys>
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+shift+left" on-keys-pressed="actionBack"></iron-a11y-keys>
+    <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+shift+right" on-keys-pressed="actionForward"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="alt++" on-keys-pressed="actionMore"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="alt+-" on-keys-pressed="actionLess"></iron-a11y-keys>
     <iron-a11y-keys id="a11y" target="[[target]]" keys="ctrl+alt+i" on-keys-pressed="goToIntro"></iron-a11y-keys>
@@ -258,7 +259,11 @@
             </tr>
             <tr>
               <td class="description">Rewind</td>
-              <td class="shortcut"><span class="key">Ctrl</span><span class="key">Left</span></td>
+              <td class="shortcut"><span class="key">Ctrl</span><span class="key">Shift</span><span class="key">Left</span></td>
+            </tr>
+            <tr>
+              <td class="description">Jump forward</td>
+              <td class="shortcut"><span class="key">Ctrl</span><span class="key">Shift</span><span class="key">Right</span></td>
             </tr>
             <tr>
               <td class="description">Show all statistics</td>
@@ -447,6 +452,13 @@
         let screen = this._currentScreen();
         if (screen.actionBack) {
           screen.actionBack();
+        }
+      }
+
+      actionForward() {
+        let screen = this._currentScreen();
+        if (screen.actionForward) {
+          screen.actionForward();
         }
       }
 

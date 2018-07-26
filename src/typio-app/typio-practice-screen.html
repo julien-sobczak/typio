@@ -989,6 +989,10 @@
         this.$.stats.rewind(numberCharacters);
       }
 
+      jumpForward(numberCharacters = 10) {
+        this.$.editor.forward(numberCharacters);
+      }
+
       _characterEntered(e, detail) {
         // Update stats
         if (detail.indexValid <= 1) { // First character entered?
@@ -1198,6 +1202,10 @@
 
       actionBack() {
         this.rewind();
+      }
+
+      actionForward() {
+        this.jumpForward();
       }
 
       actionMore() {

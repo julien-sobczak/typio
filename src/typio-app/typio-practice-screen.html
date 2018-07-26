@@ -231,10 +231,13 @@
       #screen.ended-false #fabStats { display: none;  }
       #screen.ended-true  #fabStats { display: block; }
 
-      #screen.ended-false #fabRestart { display: block;  }
+      #screen.ended-false #fabRestart { display: block; }
       #screen.ended-true  #fabRestart { display: block; }
 
-      #screen.ended-false #fabRewind { display: block;  }
+      #screen.ended-false #fabPause { display: block; }
+      #screen.ended-true  #fabPause { display: none;  }
+
+      #screen.ended-false #fabRewind { display: block; }
       #screen.ended-true  #fabRewind { display: none;  }
 
       #screen.paused-true #editorFabs { display: none; }

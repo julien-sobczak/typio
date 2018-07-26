@@ -451,21 +451,22 @@
         if (!this.selectedProject) {
           let projects = this._getProjects(this.selectedProgrammingLanguage);
           this.selectedProject = projects[getRandomInt(projects.length)].name;
+
+          // Retrieve the project JSON file to select a file randomly
+          this.catalog.forEach(entry => {
+            if (entry.origin === 'github' && entry.name == this.selectedProject) {
+              let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
+              let commit = entry.commit
+              let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
+              this._urlMetadataSurprise = null; // force change
+              this._urlMetadataSurprise = '/content/github/' + slug + '.json';
+              this.isLoading = true;
+            }
+          });
+        } else {
+          // catalog is already loaded
+          this._selectRandomFile();
         }
-
-        console.log('[typio-catalog] Using randomly selected project ' + this.selectedProject + ' (' + this.selectedProgrammingLanguage + ')');
-
-        // Retrieve the project JSON file to select a file randomly
-        this.catalog.forEach(entry => {
-          if (entry.origin === 'github' && entry.name == this.selectedProject) {
-            let [organization, project] = entry.url.replace('https://github.com/', '').split('/')
-            let commit = entry.commit
-            let slug = entry.slug ? entry.slug : this._slug(organization + '_' + project + '_' + commit);
-            this._urlMetadataSurprise = null; // force change
-            this._urlMetadataSurprise = '/content/github/' + slug + '.json';
-            this.isLoading = true;
-          }
-        });
       }
 
       /**
@@ -478,10 +479,22 @@
         this.isLoading = false;
         console.log('[typio-catalog] _onMetadataSurpriseLoaded');
         this.metadata = TypioCatalogCode._uncompressMetadata(metadata);
-        let indexRandomFile = getRandomInt(this.metadata.files.length);
-        let file = this.metadata.files[indexRandomFile];
-        let filename = file.path.split('/').reverse()[0];
-        this.selectFile(file.path, filename, file.extension);
+        this._selectRandomFile();
+      }
+
+      /** Choose randomly a file among the currently loaded catalog. */
+      _selectRandomFile() {
+        console.log('[typio-catalog] Using randomly selected project ' + this.selectedProject + ' (' + this.selectedProgrammingLanguage + ')');
+
+        // Try until finding a matching file
+        let attempts = 0;
+        while (attempts++ < 10) {
+          let indexRandomFile = getRandomInt(this.metadata.files.length);
+          let file = this.metadata.files[indexRandomFile];
+          if (!this.$.project.matchCriteria(file)) continue;
+          let filename = file.path.split('/').reverse()[0];
+          this.selectFile(file.path, filename, file.extension);
+        }
       }
 
       static _uncompressMetadata(metadata) {

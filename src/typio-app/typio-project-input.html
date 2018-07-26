@@ -339,7 +339,7 @@
         if (this.extensionsPerLanguage.has(this.metadata.language)) {
           selectedExtensions.push(...this.extensionsPerLanguage.get(this.metadata.language));
         }
-        console.log(selectedExtensions);
+
         this.$.extensionSelection.selectedValues = selectedExtensions;
       }
 
@@ -463,10 +463,13 @@
       }
 
       _filterExtensions() {
-        return file => {
-          const selectedExtensions = this.$.extensionSelection.selectedValues;
-          return selectedExtensions.includes(file.extension);
-        }
+        return file => this.matchCriteria(file);
+      }
+
+      /** Return true if the file respects the current criteria. */
+      matchCriteria(file) {
+        const selectedExtensions = this.$.extensionSelection.selectedValues;
+        return selectedExtensions.includes(file.extension);
       }
 
       /*

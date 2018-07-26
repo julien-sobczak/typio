@@ -122,6 +122,11 @@
     <section id="settings" class$="hidden-[[hidden]] type-[[type]]">
 
       <div class="fabs">
+        <paper-fab id="fabShuffle" icon="av:shuffle" on-click="surpriseMe"></paper-fab>
+        <paper-tooltip for="fabShuffle" position="left">
+          <span class="description">Surprise me</span>
+        </paper-tooltip>
+
         <paper-fab id="fabStart" icon="chevron-right" on-click="start"></paper-fab>
         <paper-tooltip for="fabStart" position="left">
           <span class="description">Start</span>
@@ -421,6 +426,15 @@
         });
       }
 
+      surpriseMe() {
+        let detail = {
+          type: this.type,
+          language: this.language,
+          resource: this.resource,
+        };
+
+        this.dispatchEvent(new CustomEvent('surprise-me-requested', {detail: detail, bubbles: true, composed: true}));
+      }
 
       /*
        * Settings

@@ -469,7 +469,7 @@
       /** Return true if the file respects the current criteria. */
       matchCriteria(file) {
         const selectedExtensions = this.$.extensionSelection.selectedValues;
-        return selectedExtensions.includes(file.extension);
+        return selectedExtensions.length == 0 || selectedExtensions.includes(file.extension);
       }
 
       /*

@@ -297,7 +297,7 @@
     <iron-pages selected="[[routeData.view]]" attr-for-selected="name">
       <typio-intro-screen id="intro" name="intro"></typio-intro-screen>
       <typio-catalog-screen id="catalog" name="catalog" class="full-screen" on-entry-selected="_initCodeEditor" route="{{subroute}}"></typio-catalog-screen>
-      <typio-practice-screen id="editor" name="editor" class="full-screen" route="{{route}}"></typio-practice-screen>
+      <typio-practice-screen id="editor" name="editor" class="full-screen" route="{{route}}" on-surprise-me-requested="_triggerSurpriseMe"></typio-practice-screen>
       <typio-drill-runner-screen id="drillRunner" name="drillRunner" class="full-screen" route="{{subroute}}"></typio-drill-runner-screen>
       <typio-drill-creator-screen id="drillCreator" name="drillCreator" class="full-screen" route="{{subroute}}"></typio-drill-creator-screen>
     </intro-pages>
@@ -412,6 +412,10 @@
         this.$.editor.resourceItem = detail.resourceItem;
         this.$.editor.reset();
         this.set('route.path', '/editor');
+      }
+
+      _triggerSurpriseMe(e, detail) {
+        this.$.catalog.surpriseMe();
       }
 
       //

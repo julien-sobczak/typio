@@ -234,6 +234,9 @@
       #screen.ended-false #fabRestart { display: block; }
       #screen.ended-true  #fabRestart { display: block; }
 
+      #screen.ended-false #fabShuffle { display: block; }
+      #screen.ended-true  #fabShuffle { display: block; }
+
       #screen.ended-false #fabPause { display: block; }
       #screen.ended-true  #fabPause { display: none;  }
 
@@ -385,6 +388,11 @@
         <paper-fab id="fabRestart" icon="autorenew" on-click="restart"></paper-fab>
         <paper-tooltip for="fabRestart" position="left">
           <span class="description">Restart using same content</span>
+        </paper-tooltip>
+
+        <paper-fab id="fabShuffle" icon="av:shuffle" on-click="surpriseMe"></paper-fab>
+        <paper-tooltip for="fabShuffle" position="left">
+          <span class="description">Surprise me</span>
         </paper-tooltip>
       </div>
 
@@ -996,6 +1004,16 @@
       jumpForward(numberCharacters = 10) {
         this.$.sleepTracker.newActivity();
         this.$.editor.forward(numberCharacters);
+      }
+
+      surpriseMe() {
+        let detail = {
+          type: this.type,
+          language: this.language,
+          resource: this.resource,
+        };
+
+        this.dispatchEvent(new CustomEvent('surprise-me-requested', {detail: detail, bubbles: true, composed: true}));
       }
 
       _characterEntered(e, detail) {

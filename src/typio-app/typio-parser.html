@@ -367,6 +367,8 @@
 
           // Ignore module declarations
           if (this.ignoreModuleDeclarations) {
+
+            // Basic case: module instructions have the `module` CSS class
             for (let i = 0; i < len; i++) {
               if (classes[i].includes('module') && !classes[i].includes('ignorable')) {
                 classes[i].push('ignorable');
@@ -400,6 +402,31 @@
                 }
               }
             }
+
+            // Advanced case: module are not flagged with `module` class.
+            // We use a regex to identify the module
+            const MODULE_DEFINITIONS = new Map();
+            MODULE_DEFINITIONS.set('go', [
+              /import ".*?"/g,
+              /import \(.*?\)/mgs
+            ]);
+            // Add support for other languages here
+
+            if (MODULE_DEFINITIONS.has(this.language.toLowerCase())) {
+              let regexes = MODULE_DEFINITIONS.get(this.language.toLowerCase());
+              if (!Array.isArray(regexes)) {
+                regexes = [regexes];
+              }
+              for (let regex1 of regexes) {
+                let found;
+                while ((found = regex1.exec(this.targetContent)) !== null) {
+                  for (let i = regex1.lastIndex - found[0].length; i <= regex1.lastIndex; i++) {
+                    if (!classes[i].includes('ignorable')) classes[i].push('ignorable');
+                  }
+                }
+              }
+            }
+
           }
 
         }

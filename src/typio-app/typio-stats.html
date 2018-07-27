@@ -338,6 +338,9 @@
        */
       rewind(numberOfCharacters = 5) {
         let lastInput = this._inputs[this._inputs.length -1];
+
+        if (!lastInput) return; // Possible if user only forward, and then try to rewind
+
         if (numberOfCharacters > lastInput.index) {
           // Just reset everything...
           this.reset();

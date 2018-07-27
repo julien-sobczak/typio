@@ -483,13 +483,18 @@
       }
 
       /**
-       * Move forward and ignore the next n characters.
+       * Move until the next line.
        */
-      forward(n = 1) {
-        for (let i = 0; i < n; i++) {
-          if (this.ended) return;
-          this.advance();
+      forward() {
+        this.advance(); // line number is only updated after first entered character
+        let initialLine = this._currentLine;
+        while (!this.endOfFile()) {
+            this.advance();
+            if (this._currentLine != initialLine) {
+              break;
+            }
         }
+
       }
 
       /**

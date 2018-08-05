@@ -6,6 +6,8 @@
    "data/**/*",
    "content/github/*.json",
    "content/gutenberg/**",
+   "content/quotes/*.json",
+   "content/tongue-twisters/*.json",
    "bower.json"
   ],
   "lint": {

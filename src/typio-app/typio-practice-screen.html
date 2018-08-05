@@ -62,9 +62,8 @@
 
       #statsPanel {
         position: fixed;
-        top: 0;
-        right: 0;
-        padding: 1in;
+        top: 120px;
+        right: 25px;
         transition: width 0.5s, height 0.5s;
       }
 
@@ -203,18 +202,14 @@
 
 
       #resourceName {
-        position: fixed;
-        top: 17px;
+        position: sticky;
         height: 30px;
-        left: 50%;
-        width: 650px;
-        margin-left: -250px;
+        width: 100%;
         padding: 5px 25px;
         color: white;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 150;
+        background: #333;
+        z-index: 100;
         text-align: center;
-        border-radius: 15px;
         overflow: hidden;
       }
 
@@ -341,13 +336,13 @@
 
     <typio-sleep-tracker id="sleepTracker" on-sleep-detected="_sleepDetected"></typio-sleep-tracker>
 
-    <div id="screen" class$="initialized-[[initialized]] showChart-{{showChart}} mode-{{mode}} started-{{started}} paused-{{paused}} ended-{{ended}} theme-{{theme}}">
+    <template is="dom-if" if="{{resource}}">
+      <div id="resourceName">
+        <strong>[[resource]]</strong> | [[resourceItem]]
+      </div>
+    </template>
 
-      <template is="dom-if" if="{{resource}}">
-        <div id="resourceName">
-          <strong>[[resource]]</strong> | [[resourceItem]]
-        </div>
-      </template>
+    <div id="screen" class$="initialized-[[initialized]] showChart-{{showChart}} mode-{{mode}} started-{{started}} paused-{{paused}} ended-{{ended}} theme-{{theme}}">
 
       <div id="pauseDialog" class="theme-transparent">
         <h1>Are you sleeping?</h1>
